@@ -441,11 +441,20 @@ await using (var scope =
         scope.ServiceProvider
             .GetRequiredService<AppDbContext>();
 
-    await db.Database.MigrateAsync();
+    var migrateOnStartup =
+        app.Environment.IsDevelopment() ||
+        app.Configuration.GetValue<bool>(
+            "DatabaseInitialization:MigrateOnStartup");
+
+    if (migrateOnStartup)
+    {
+        await db.Database.MigrateAsync();
+    }
 
     await DbSeeder.SeedAsync(
         db,
-        builder.Configuration);
+        builder.Configuration,
+        app.Environment);
 
     if (
         app.Configuration.GetValue<bool>(

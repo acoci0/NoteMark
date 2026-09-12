@@ -10,6 +10,7 @@ public static class DbSeeder
     public static async Task SeedAsync(
         AppDbContext db,
         IConfiguration configuration,
+        IHostEnvironment environment,
         CancellationToken cancellationToken = default)
     {
         /*
@@ -29,27 +30,44 @@ public static class DbSeeder
          */
 
         /*
-         * Admin kullanıcısı oluşturulur.
+         * Development ortamında admin otomatik oluşturulur.
+         * Production ortamında yalnızca açıkça izin verilirse çalışır.
          */
-        await SeedAdminAsync(
-            db,
-            configuration,
-            cancellationToken);
+        var seedAdmin =
+            environment.IsDevelopment() ||
+            configuration.GetValue<bool>(
+                "DatabaseInitialization:SeedAdminOnStartup");
+
+        if (seedAdmin)
+        {
+            await SeedAdminAsync(
+                db,
+                configuration,
+                cancellationToken);
+        }
 
         /*
-         * Sistemde hiç öğrenci yoksa demo
-         * kullanıcılar ve demo kayıtlar eklenir.
+         * Demo veriler yalnızca development ortamında
+         * veya açıkça etkinleştirildiğinde oluşturulur.
          */
-        var studentExists =
-            await db.Users.AnyAsync(
-                x => x.Role == UserRole.Student,
-                cancellationToken);
+        var seedDemoData =
+            environment.IsDevelopment() ||
+            configuration.GetValue<bool>(
+                "DatabaseInitialization:SeedDemoDataOnStartup");
 
-        if (!studentExists)
+        if (seedDemoData)
         {
-            await SeedDemoDataAsync(
-                db,
-                cancellationToken);
+            var studentExists =
+                await db.Users.AnyAsync(
+                    x => x.Role == UserRole.Student,
+                    cancellationToken);
+
+            if (!studentExists)
+            {
+                await SeedDemoDataAsync(
+                    db,
+                    cancellationToken);
+            }
         }
 
         /*
