@@ -89,20 +89,40 @@ public static class DbSeeder
         CancellationToken cancellationToken)
     {
         var adminEmail =
-            (
-                configuration["SeedAdmin:Email"] ??
-                "admin@notmarket.local"
-            )
-            .Trim()
-            .ToLowerInvariant();
+            configuration["SeedAdmin:Email"]
+                ?.Trim()
+                .ToLowerInvariant();
 
         var adminPassword =
-            configuration["SeedAdmin:Password"] ??
-            "ChangeMe123!";
+            configuration["SeedAdmin:Password"];
 
         var adminDisplayName =
-            configuration["SeedAdmin:DisplayName"] ??
-            "NotMarket Admin";
+            configuration["SeedAdmin:DisplayName"]
+                ?.Trim();
+
+        if (string.IsNullOrWhiteSpace(adminEmail))
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:Email tanımlı olmalıdır.");
+        }
+
+        if (string.IsNullOrWhiteSpace(adminPassword))
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:Password tanımlı olmalıdır.");
+        }
+
+        if (adminPassword.Length < 12)
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:Password en az 12 karakter olmalıdır.");
+        }
+
+        if (string.IsNullOrWhiteSpace(adminDisplayName))
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:DisplayName tanımlı olmalıdır.");
+        }
 
         var admin =
             await db.Users.SingleOrDefaultAsync(

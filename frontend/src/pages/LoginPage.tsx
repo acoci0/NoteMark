@@ -6,8 +6,8 @@ import { useAuth } from "../auth/AuthContext";
 export default function LoginPage() {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@notmarket.local");
-  const [password, setPassword] = useState("ChangeMe123!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -73,7 +73,7 @@ export default function LoginPage() {
         <form className="login-card" onSubmit={handleSubmit}>
           <span className="section-kicker">Yetkili giriş</span>
           <h2>Admin paneline giriş yap</h2>
-          <p>Geliştirme hesabı form üzerinde hazır gelir.</p>
+          <p>Yetkili hesap bilgilerinizle giriş yapın.</p>
 
           <label>
             E-posta
