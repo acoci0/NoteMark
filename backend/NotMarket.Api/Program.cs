@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using NotMarket.Api.Data;
 using NotMarket.Api.Data.AcademicCatalog;
 using NotMarket.Api.Services;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -120,12 +121,45 @@ builder.Services.AddOpenApi();
 /*
  * Veritabanı
  */
+var defaultConnectionString =
+    builder.Configuration
+        .GetConnectionString(
+            "DefaultConnection")
+    ??
+    throw new InvalidOperationException(
+        "ConnectionStrings:DefaultConnection tanımlı değil.");
+
+if (!builder.Environment.IsDevelopment())
+{
+    var parsedConnectionString =
+        new NpgsqlConnectionStringBuilder(
+            defaultConnectionString);
+
+    var usesDevelopmentDatabase =
+        string.Equals(
+            parsedConnectionString.Host,
+            "localhost",
+            StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(
+            parsedConnectionString.Host,
+            "127.0.0.1",
+            StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(
+            parsedConnectionString.Password,
+            "notmarket_dev",
+            StringComparison.Ordinal);
+
+    if (usesDevelopmentDatabase)
+    {
+        throw new InvalidOperationException(
+            "Production ortamında development veritabanı bağlantısı kullanılamaz.");
+    }
+}
+
 builder.Services.AddDbContext<AppDbContext>(
     options =>
         options.UseNpgsql(
-            builder.Configuration
-                .GetConnectionString(
-                    "DefaultConnection")));
+            defaultConnectionString));
 
 /*
  * Akademik katalog servisleri
@@ -411,6 +445,18 @@ if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
         "Jwt:Key en az 32 byte uzunluğunda olmalıdır.");
 }
 
+if (
+    !builder.Environment.IsDevelopment() &&
+    string.Equals(
+        jwtKey,
+        "NOTMARKET-DEV-KEY-CHANGE-THIS-AT-LEAST-32-CHARS",
+        StringComparison.Ordinal)
+)
+{
+    throw new InvalidOperationException(
+        "Production ortamında development JWT anahtarı kullanılamaz.");
+}
+
 builder.Services
     .AddAuthentication(
         JwtBearerDefaults.AuthenticationScheme)
@@ -530,6 +576,16 @@ app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGet(
+    "/health",
+    () =>
+        Results.Ok(
+            new
+            {
+                status = "ok"
+            }))
+    .AllowAnonymous();
 
 app.MapControllers();
 
