@@ -2,6 +2,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.RateLimiting;
+using Amazon.Runtime;
+using Amazon.S3;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -145,14 +147,115 @@ builder.Services.AddScoped<
 
 /*
  * Belge saklama servisleri
+ *
+ * Development:
+ * - local App_Data
+ *
+ * Production:
+ * - private Supabase Storage bucket'ları
  */
-builder.Services.AddSingleton<
-    IVerificationDocumentStorage,
-    LocalVerificationDocumentStorage>();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSingleton<
+        IVerificationDocumentStorage,
+        LocalVerificationDocumentStorage>();
 
-builder.Services.AddSingleton<
-    INoteDocumentStorage,
-    LocalNoteDocumentStorage>();
+    builder.Services.AddSingleton<
+        INoteDocumentStorage,
+        LocalNoteDocumentStorage>();
+}
+else
+{
+    builder.Services
+        .AddOptions<SupabaseStorageOptions>()
+        .Bind(
+            builder.Configuration.GetSection(
+                SupabaseStorageOptions.SectionName))
+        .Validate(
+            options =>
+                Uri.TryCreate(
+                    options.Endpoint,
+                    UriKind.Absolute,
+                    out _),
+            "Supabase Storage endpoint geçerli değildir.")
+        .Validate(
+            options =>
+                !string.IsNullOrWhiteSpace(
+                    options.Region),
+            "Supabase Storage region tanımlı olmalıdır.")
+        .Validate(
+            options =>
+                !string.IsNullOrWhiteSpace(
+                    options.AccessKeyId),
+            "Supabase Storage access key tanımlı olmalıdır.")
+        .Validate(
+            options =>
+                !string.IsNullOrWhiteSpace(
+                    options.SecretAccessKey),
+            "Supabase Storage secret key tanımlı olmalıdır.")
+        .Validate(
+            options =>
+                !string.IsNullOrWhiteSpace(
+                    options.VerificationBucket),
+            "Doğrulama belgesi bucket adı tanımlı olmalıdır.")
+        .Validate(
+            options =>
+                !string.IsNullOrWhiteSpace(
+                    options.NotesBucket),
+            "Not belgesi bucket adı tanımlı olmalıdır.")
+        .ValidateOnStart();
+
+    builder.Services.AddSingleton<IAmazonS3>(
+        serviceProvider =>
+        {
+            var options =
+                serviceProvider
+                    .GetRequiredService<
+                        IOptions<SupabaseStorageOptions>>()
+                    .Value;
+
+            var credentials =
+                new BasicAWSCredentials(
+                    options.AccessKeyId,
+                    options.SecretAccessKey);
+
+            var configuration =
+                new AmazonS3Config
+                {
+                    ServiceURL =
+                        options.Endpoint.TrimEnd('/'),
+
+                    AuthenticationRegion =
+                        options.Region,
+
+                    ForcePathStyle =
+                        true,
+
+                    RequestChecksumCalculation =
+                        RequestChecksumCalculation
+                            .WHEN_REQUIRED,
+
+                    ResponseChecksumValidation =
+                        ResponseChecksumValidation
+                            .WHEN_REQUIRED
+                };
+
+            return new AmazonS3Client(
+                credentials,
+                configuration);
+        });
+
+    builder.Services.AddSingleton<
+        SupabaseS3ObjectStore>();
+
+    builder.Services.AddSingleton<
+        IVerificationDocumentStorage,
+        SupabaseVerificationDocumentStorage>();
+
+    builder.Services.AddSingleton<
+        INoteDocumentStorage,
+        SupabaseNoteDocumentStorage>();
+}
 
 /*
  * AI not inceleme servisleri
