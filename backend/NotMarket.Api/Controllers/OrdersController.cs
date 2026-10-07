@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NotMarket.Api.Contracts;
 using NotMarket.Api.Data;
 using NotMarket.Api.Domain;
+using NotMarket.Api.Services;
 using Npgsql;
 
 namespace NotMarket.Api.Controllers;
@@ -13,7 +14,8 @@ namespace NotMarket.Api.Controllers;
 [Route("api/orders")]
 [Authorize(Policy = "StudentOnly")]
 public sealed class OrdersController(
-    AppDbContext db) : ControllerBase
+    AppDbContext db,
+    INoteDocumentStorage storage) : ControllerBase
 {
     /*
      * Platformun her satıştan aldığı
@@ -119,6 +121,149 @@ public sealed class OrdersController(
         }
 
         return Ok(order);
+    }
+
+    /*
+     * Yalnızca ödeme işlemi başarıyla
+     * tamamlanmış siparişin sahibi,
+     * satın aldığı üretilmiş PDF'i
+     * indirebilir.
+     *
+     * GET /api/orders/{orderId}/download
+     */
+    [HttpGet("{orderId:guid}/download")]
+    public async Task<IActionResult>
+        Download(
+            Guid orderId,
+            CancellationToken cancellationToken)
+    {
+        var buyerId =
+            GetUserId();
+
+        if (buyerId is null)
+        {
+            return Unauthorized();
+        }
+
+        /*
+         * Token üretildikten sonra hesap askıya
+         * alınmış veya kapatılmış olabilir.
+         */
+        var buyerIsActive =
+            await db.Users
+                .AsNoTracking()
+                .AnyAsync(
+                    x =>
+                        x.Id == buyerId.Value &&
+                        x.Status ==
+                            AccountStatus.Active,
+                    cancellationToken);
+
+        if (!buyerIsActive)
+        {
+            return Forbid();
+        }
+
+        /*
+         * BuyerId sorguya dahil edilerek başka
+         * kullanıcıların sipariş varlığını dahi
+         * öğrenmesi engellenir.
+         */
+        var order =
+            await db.Orders
+                .AsNoTracking()
+                .Include(
+                    x => x.Payment)
+                .Include(
+                    x => x.NoteSubmission)
+                .SingleOrDefaultAsync(
+                    x =>
+                        x.Id == orderId &&
+                        x.BuyerId ==
+                            buyerId.Value,
+                    cancellationToken);
+
+        if (order is null)
+        {
+            return NotFound(new
+            {
+                message =
+                    "Sipariş bulunamadı."
+            });
+        }
+
+        /*
+         * Sadece hem sipariş hem de ödeme kaydı
+         * başarılı durumdaysa teslim yetkisi verilir.
+         */
+        if (
+            order.Status !=
+                OrderStatus.Paid ||
+            order.Payment is null ||
+            order.Payment.Status !=
+                PaymentStatus.Succeeded
+        )
+        {
+            return StatusCode(
+                StatusCodes.Status403Forbidden,
+                new
+                {
+                    message =
+                        "PDF yalnızca başarılı ödeme sonrasında indirilebilir."
+                });
+        }
+
+        var generatedPdfPath =
+            order.NoteSubmission
+                .GeneratedPdfBlobPath;
+
+        if (
+            string.IsNullOrWhiteSpace(
+                generatedPdfPath)
+        )
+        {
+            return Problem(
+                statusCode:
+                    StatusCodes
+                        .Status503ServiceUnavailable,
+                title:
+                    "Satın alınan PDF şu anda teslim edilemiyor.");
+        }
+
+        var document =
+            await storage.OpenReadAsync(
+                generatedPdfPath,
+                cancellationToken);
+
+        if (document is null)
+        {
+            return Problem(
+                statusCode:
+                    StatusCodes
+                        .Status503ServiceUnavailable,
+                title:
+                    "Satın alınan PDF dosyası storage üzerinde bulunamadı.");
+        }
+
+        /*
+         * Ücretli içeriğin proxy veya tarayıcı
+         * cache'lerinde kalmasını engeller.
+         */
+        Response.Headers.CacheControl =
+            "private, no-store, max-age=0";
+
+        Response.Headers.Pragma =
+            "no-cache";
+
+        var downloadFileName =
+            $"notmarket-{order.NoteSubmissionId:N}.pdf";
+
+        return File(
+            document,
+            "application/pdf",
+            downloadFileName,
+            enableRangeProcessing:
+                true);
     }
 
     /*
