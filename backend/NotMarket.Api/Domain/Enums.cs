@@ -59,6 +59,13 @@ public enum PaymentStatus
     Failed = 3,
     Refunded = 4
 }
+public enum NoteRequestContentType
+{
+    NoteOnly = 1,
+    DetailedSummary = 2,
+    StudyQuestions = 3
+}
+
 public enum NoteReviewDecision
 {
     AutoApprove = 1,

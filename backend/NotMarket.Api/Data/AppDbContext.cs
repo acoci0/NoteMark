@@ -61,6 +61,7 @@ public sealed class AppDbContext(
         ConfigureAcademicUnit(modelBuilder);
         ConfigureAcademicProgram(modelBuilder);
         ConfigureStudentVerification(modelBuilder);
+        ConfigureNoteRequest(modelBuilder);
         ConfigureNoteSubmission(modelBuilder);
         ConfigureNotePdfGenerationArtifact(modelBuilder);
         ConfigureNoteAiReview(modelBuilder);
@@ -390,6 +391,40 @@ public sealed class AppDbContext(
                 x.AcademicUnitId,
                 x.AcademicProgramId,
                 x.Status
+            });
+    }
+
+    private static void ConfigureNoteRequest(
+        ModelBuilder modelBuilder)
+    {
+        var noteRequest =
+            modelBuilder.Entity<NoteRequest>();
+
+        noteRequest.Property(
+                x => x.ContentType)
+            .HasConversion<string>();
+
+        noteRequest.ToTable(
+            "NoteRequests",
+            table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_NoteRequests_QuestionCount",
+                    "(" +
+                    "\"ContentType\" IS NULL AND " +
+                    "\"QuestionCount\" IS NULL" +
+                    ") OR (" +
+                    "\"ContentType\" = 'StudyQuestions' AND " +
+                    "\"QuestionCount\" IN (10, 15, 20, 25, 30)" +
+                    ") OR (" +
+                    "\"ContentType\" IN ('NoteOnly', 'DetailedSummary') AND " +
+                    "\"QuestionCount\" IS NULL" +
+                    ")");
+
+                table.HasCheckConstraint(
+                    "CK_NoteRequests_PriceRange",
+                    "\"SuggestedMinPrice\" > 0 AND " +
+                    "\"SuggestedMaxPrice\" >= \"SuggestedMinPrice\"");
             });
     }
 
