@@ -16,6 +16,9 @@ import NotesPage from "./pages/NotesPage";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import ReportsPage from "./pages/ReportsPage";
 import StudentLoginPage from "./pages/StudentLoginPage";
+import StudentMarketplacePage from "./pages/StudentMarketplacePage";
+import StudentNoteRequestPage from "./pages/StudentNoteRequestPage";
+import StudentNoteRequestsPage from "./pages/StudentNoteRequestsPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
 import UsersPage from "./pages/UsersPage";
 import VerificationsPage from "./pages/VerificationsPage";
@@ -40,6 +43,21 @@ export default function App() {
         <Route
           path="/student/profile"
           element={<StudentProfilePage />}
+        />
+
+        <Route
+          path="/student/marketplace"
+          element={<StudentMarketplacePage />}
+        />
+
+        <Route
+          path="/student/note-requests"
+          element={<StudentNoteRequestsPage />}
+        />
+
+        <Route
+          path="/student/note-requests/new"
+          element={<StudentNoteRequestPage />}
         />
       </Route>
 

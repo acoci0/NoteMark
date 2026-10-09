@@ -18,6 +18,10 @@ import {
 
 import { isAxiosError } from "axios";
 
+import {
+  Link,
+} from "react-router-dom";
+
 import studentApi from "../api/studentClient";
 
 import { useStudentAuth } from "../auth/StudentAuthContext";
@@ -1259,13 +1263,37 @@ export default function StudentProfilePage() {
           </p>
         </div>
 
-        <button
-          className="secondary-button"
-          type="button"
-          onClick={logout}
-        >
-          Çıkış yap
-        </button>
+        <div className="student-profile-actions">
+          <Link
+            className="secondary-button"
+            to="/student/marketplace"
+          >
+            Talep Panosu
+          </Link>
+
+          <Link
+            className="secondary-button"
+            to="/student/note-requests"
+          >
+            Taleplerim
+          </Link>
+
+          <Link
+            className="primary-button"
+            to="/student/note-requests/new"
+          >
+            <Plus size={17} />
+            Not İste
+          </Link>
+
+          <button
+            className="secondary-button"
+            type="button"
+            onClick={logout}
+          >
+            Çıkış yap
+          </button>
+        </div>
       </header>
 
       {message && (

@@ -116,6 +116,39 @@ export type AcademicProgram = {
   name: string;
 };
 
+export type NoteRequestContentType =
+  | "NoteOnly"
+  | "DetailedSummary"
+  | "StudyQuestions";
+
+export type StudentNoteRequest = {
+  id: string;
+  universityName: string;
+  departmentName: string;
+  courseName: string;
+  classLevel: number;
+  topic: string;
+  contentType: NoteRequestContentType | "Legacy";
+  questionCount?: number | null;
+  additionalNotes?: string | null;
+  suggestedMinPrice: number;
+  suggestedMaxPrice: number;
+  createdAt: string;
+};
+
+export type MarketplaceNoteRequest =
+  StudentNoteRequest & {
+    hasActiveSubmission: boolean;
+  };
+
+export type StudentNoteSubmissionCreated = {
+  id: string;
+  requestId: string;
+  title: string;
+  status: string;
+  createdAt: string;
+};
+
 export type ReportSummary = {
   totalUsers: number;
   verifiedStudents: number;

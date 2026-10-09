@@ -557,6 +557,8 @@ public sealed class StudentNoteSubmissionsController(
                 NoteSubmissionStatus.AiReview,
                 NoteSubmissionStatus.ManualReview,
                 NoteSubmissionStatus.PdfGeneration,
+                NoteSubmissionStatus.PdfGenerating,
+                NoteSubmissionStatus.PdfGenerationFailed,
                 NoteSubmissionStatus.Approved
             };
 

@@ -27,6 +27,171 @@ public sealed class StudentNoteRequestsController(
         ];
 
     /*
+     * Öğrencinin doğrulanmış üniversite ve
+     * bölümleriyle eşleşen açık talepleri
+     * listeler.
+     *
+     * Kullanıcının kendi talepleri gösterilmez.
+     *
+     * GET /api/student/note-requests/marketplace
+     */
+    [HttpGet("marketplace")]
+    public async Task<
+        ActionResult<
+            IReadOnlyList<
+                MarketplaceNoteRequestResponse>>>
+        GetMarketplace(
+            CancellationToken cancellationToken)
+    {
+        var sellerId =
+            GetUserId();
+
+        if (sellerId is null)
+        {
+            return Unauthorized();
+        }
+
+        var now =
+            DateTimeOffset.UtcNow;
+
+        /*
+         * Satıcının yalnızca geçerli ve
+         * onaylanmış akademik yetkileri
+         * marketplace görünürlüğü sağlar.
+         */
+        var scopes =
+            await db.StudentVerifications
+                .AsNoTracking()
+                .Where(
+                    x =>
+                        x.UserId ==
+                            sellerId.Value &&
+                        x.Status ==
+                            VerificationStatus.Approved &&
+                        (
+                            x.ExpiresAt == null ||
+                            x.ExpiresAt > now
+                        ))
+                .Select(
+                    x => new
+                    {
+                        x.UniversityName,
+                        x.DepartmentName
+                    })
+                .Distinct()
+                .ToListAsync(
+                    cancellationToken);
+
+        if (scopes.Count == 0)
+        {
+            return Ok(
+                Array.Empty<
+                    MarketplaceNoteRequestResponse>());
+        }
+
+        /*
+         * Eski legacy talepler yerine yalnızca
+         * yeni yapılandırılmış talepler panoda
+         * gösterilir.
+         */
+        var candidateRequests =
+            await db.NoteRequests
+                .AsNoTracking()
+                .Where(
+                    x =>
+                        x.BuyerId !=
+                            sellerId.Value &&
+                        x.Topic != null &&
+                        x.ContentType != null)
+                .OrderByDescending(
+                    x => x.CreatedAt)
+                .Take(200)
+                .ToListAsync(
+                    cancellationToken);
+
+        var matchingRequests =
+            candidateRequests
+                .Where(
+                    request =>
+                        scopes.Any(
+                            scope =>
+                                scope.UniversityName ==
+                                    request.UniversityName &&
+                                scope.DepartmentName ==
+                                    request.DepartmentName))
+                .Take(100)
+                .ToList();
+
+        var requestIds =
+            matchingRequests
+                .Select(
+                    x => x.Id)
+                .ToArray();
+
+        /*
+         * Aynı satıcının halen aktif bir not
+         * gönderimi bulunan talepler belirlenir.
+         */
+        var activeStatuses =
+            new[]
+            {
+                NoteSubmissionStatus.Uploaded,
+                NoteSubmissionStatus.AiReview,
+                NoteSubmissionStatus.ManualReview,
+                NoteSubmissionStatus.PdfGeneration,
+                NoteSubmissionStatus.PdfGenerating,
+                NoteSubmissionStatus.PdfGenerationFailed,
+                NoteSubmissionStatus.Approved
+            };
+
+        var submittedRequestIds =
+            requestIds.Length == 0
+                ? new HashSet<Guid>()
+                : (
+                    await db.NoteSubmissions
+                        .AsNoTracking()
+                        .Where(
+                            x =>
+                                x.SellerId ==
+                                    sellerId.Value &&
+                                requestIds.Contains(
+                                    x.RequestId) &&
+                                activeStatuses.Contains(
+                                    x.Status))
+                        .Select(
+                            x => x.RequestId)
+                        .Distinct()
+                        .ToListAsync(
+                            cancellationToken)
+                  ).ToHashSet();
+
+        var response =
+            matchingRequests
+                .Select(
+                    request =>
+                        new MarketplaceNoteRequestResponse(
+                            request.Id,
+                            request.UniversityName,
+                            request.DepartmentName,
+                            request.CourseName,
+                            request.ClassLevel,
+                            request.Topic!,
+                            request.ContentType!
+                                .Value
+                                .ToString(),
+                            request.QuestionCount,
+                            request.AdditionalNotes,
+                            request.SuggestedMinPrice,
+                            request.SuggestedMaxPrice,
+                            submittedRequestIds.Contains(
+                                request.Id),
+                            request.CreatedAt))
+                .ToArray();
+
+        return Ok(response);
+    }
+
+    /*
      * Öğrencinin kendi oluşturduğu
      * not taleplerini listeler.
      *

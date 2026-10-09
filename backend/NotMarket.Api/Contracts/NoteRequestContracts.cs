@@ -22,3 +22,18 @@ public sealed record NoteRequestResponse(
     decimal SuggestedMinPrice,
     decimal SuggestedMaxPrice,
     DateTimeOffset CreatedAt);
+
+public sealed record MarketplaceNoteRequestResponse(
+    Guid Id,
+    string UniversityName,
+    string DepartmentName,
+    string CourseName,
+    int ClassLevel,
+    string Topic,
+    string ContentType,
+    int? QuestionCount,
+    string? AdditionalNotes,
+    decimal SuggestedMinPrice,
+    decimal SuggestedMaxPrice,
+    bool HasActiveSubmission,
+    DateTimeOffset CreatedAt);
