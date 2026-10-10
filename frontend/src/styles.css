@@ -4248,3 +4248,79 @@ td {
     flex-direction: column;
   }
 }
+
+/* =========================================================
+   NOTE SUBMISSION STATUS
+   ========================================================= */
+
+.note-submission-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.note-submission-status--pending {
+  color: #596579;
+  background: #edf1f5;
+}
+
+.note-submission-status--processing {
+  color: #5747c5;
+  background: #efedff;
+}
+
+.note-submission-status--warning {
+  color: #946200;
+  background: #fff4d7;
+}
+
+.note-submission-status--approved {
+  color: #087f5b;
+  background: #e7f8f0;
+}
+
+.note-submission-status--danger {
+  color: #b02a37;
+  background: #ffebed;
+}
+
+.note-submission-footer {
+  margin-top: 15px;
+  padding-top: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  border-top: 1px solid var(--border);
+}
+
+.note-submission-footer span,
+.note-submission-footer strong {
+  display: block;
+}
+
+.note-submission-footer span {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.note-submission-footer strong {
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .note-submission-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

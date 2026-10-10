@@ -19,6 +19,7 @@ import StudentLoginPage from "./pages/StudentLoginPage";
 import StudentMarketplacePage from "./pages/StudentMarketplacePage";
 import StudentNoteRequestPage from "./pages/StudentNoteRequestPage";
 import StudentNoteRequestsPage from "./pages/StudentNoteRequestsPage";
+import StudentNoteSubmissionsPage from "./pages/StudentNoteSubmissionsPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
 import UsersPage from "./pages/UsersPage";
 import VerificationsPage from "./pages/VerificationsPage";
@@ -53,6 +54,11 @@ export default function App() {
         <Route
           path="/student/note-requests"
           element={<StudentNoteRequestsPage />}
+        />
+
+        <Route
+          path="/student/note-submissions"
+          element={<StudentNoteSubmissionsPage />}
         />
 
         <Route

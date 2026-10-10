@@ -1279,6 +1279,13 @@ export default function StudentProfilePage() {
           </Link>
 
           <Link
+            className="secondary-button"
+            to="/student/note-submissions"
+          >
+            Gönderdiğim Notlar
+          </Link>
+
+          <Link
             className="primary-button"
             to="/student/note-requests/new"
           >

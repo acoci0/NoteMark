@@ -149,6 +149,25 @@ export type StudentNoteSubmissionCreated = {
   createdAt: string;
 };
 
+export type StudentNoteSubmission = {
+  id: string;
+  requestId: string;
+  title: string;
+  universityName: string;
+  departmentName: string;
+  courseName: string;
+  status: string;
+  salePrice?: number | null;
+  overallScore?: number | null;
+  reviewDecision?: string | null;
+  generatedPdfAvailable: boolean;
+  pdfGenerationAttemptCount: number;
+  pdfGeneratedAt?: string | null;
+  pdfGenerationMessage?: string | null;
+  reviewedAt?: string | null;
+  createdAt: string;
+};
+
 export type ReportSummary = {
   totalUsers: number;
   verifiedStudents: number;
