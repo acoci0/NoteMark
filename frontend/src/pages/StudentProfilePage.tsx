@@ -18,10 +18,6 @@ import {
 
 import { isAxiosError } from "axios";
 
-import {
-  Link,
-} from "react-router-dom";
-
 import studentApi from "../api/studentClient";
 
 import { useStudentAuth } from "../auth/StudentAuthContext";
@@ -43,7 +39,6 @@ const MAX_FILE_SIZE =
 export default function StudentProfilePage() {
   const {
     student,
-    logout,
   } = useStudentAuth();
 
   const [items, setItems] =
@@ -1243,11 +1238,36 @@ export default function StudentProfilePage() {
     setMessage("");
   };
 
+  const approvedCount =
+    items.filter(
+      (item) =>
+        item.status === "Approved"
+    ).length;
+
+  const pendingCount =
+    items.filter(
+      (item) =>
+        item.status === "Pending"
+    ).length;
+
+  const activeUniversityCount =
+    new Set(
+      items
+        .filter(
+          (item) =>
+            item.status === "Approved"
+        )
+        .map(
+          (item) =>
+            item.universityName
+        )
+    ).size;
+
   return (
     <div className="student-profile-page">
       <header className="student-profile-header">
-        <div>
-          <span className="section-kicker">
+        <div className="student-profile-header__content">
+          <span className="student-profile-eyebrow">
             ÖĞRENCİ HESABI
           </span>
 
@@ -1257,49 +1277,43 @@ export default function StudentProfilePage() {
           </h1>
 
           <p>
-            Üniversite ve bölüm
-            doğrulamalarınızı buradan
-            yönetebilirsiniz.
+            Akademik doğrulamalarınızı,
+            üniversitelerinizi ve bölüm
+            yetkilerinizi tek noktadan
+            yönetin.
           </p>
         </div>
 
-        <div className="student-profile-actions">
-          <Link
-            className="secondary-button"
-            to="/student/marketplace"
-          >
-            Talep Panosu
-          </Link>
+        <div className="student-profile-stats">
+          <div>
+            <strong>
+              {approvedCount}
+            </strong>
 
-          <Link
-            className="secondary-button"
-            to="/student/note-requests"
-          >
-            Taleplerim
-          </Link>
+            <span>
+              Doğrulanmış bölüm
+            </span>
+          </div>
 
-          <Link
-            className="secondary-button"
-            to="/student/note-submissions"
-          >
-            Gönderdiğim Notlar
-          </Link>
+          <div>
+            <strong>
+              {activeUniversityCount}
+            </strong>
 
-          <Link
-            className="primary-button"
-            to="/student/note-requests/new"
-          >
-            <Plus size={17} />
-            Not İste
-          </Link>
+            <span>
+              Aktif üniversite
+            </span>
+          </div>
 
-          <button
-            className="secondary-button"
-            type="button"
-            onClick={logout}
-          >
-            Çıkış yap
-          </button>
+          <div>
+            <strong>
+              {pendingCount}
+            </strong>
+
+            <span>
+              Bekleyen başvuru
+            </span>
+          </div>
         </div>
       </header>
 
@@ -1322,7 +1336,7 @@ export default function StudentProfilePage() {
 
             <p>
               Onaylanan her bölüm
-              NotMarket içerisinde ayrı
+              NotMark içerisinde ayrı
               akademik yetki sağlar.
             </p>
           </div>

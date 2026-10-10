@@ -35,7 +35,7 @@ export default function AdminLayout() {
             <ShieldCheck size={21} />
           </div>
           <div>
-            <strong>NotMarket</strong>
+            <strong>NotMark</strong>
             <span>Admin</span>
           </div>
         </div>

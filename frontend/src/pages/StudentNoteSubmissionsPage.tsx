@@ -106,7 +106,7 @@ export default function StudentNoteSubmissionsPage() {
 
       link.href = url;
       link.download =
-        `notmarket-${submission.id}.pdf`;
+        `notmark-${submission.id}.pdf`;
 
       document.body.appendChild(link);
 
@@ -139,7 +139,7 @@ export default function StudentNoteSubmissionsPage() {
           </Link>
 
           <span className="section-kicker">
-            NOTMARKET
+            NOTMARK
           </span>
 
           <h1>

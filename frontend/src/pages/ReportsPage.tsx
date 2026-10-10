@@ -251,7 +251,7 @@ export default function ReportsPage() {
     const selectedRange =
       timeRanges.find((item) => item.value === timeRange)?.label ?? "Aylık";
     const rows: Array<Array<string | number>> = [
-      ["NotMarket Raporu"],
+      ["NotMark Raporu"],
       ["Zaman Aralığı", selectedRange],
       ["Üniversite", selectedUniversity],
       ["Toplam Kullanıcı", summary.totalUsers],

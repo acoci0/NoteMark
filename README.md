@@ -1,6 +1,6 @@
-# NotMarket Admin Starter
+# NotMark
 
-Bu başlangıç paketi NotMarket projesinin ilk geliştirme fazıdır.
+Bu başlangıç paketi NotMark projesinin ilk geliştirme fazıdır.
 
 ## İçerik
 

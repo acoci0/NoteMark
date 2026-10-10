@@ -4324,3 +4324,725 @@ td {
     flex-direction: column;
   }
 }
+
+/* =========================================================
+   STUDENT APPLICATION SHELL
+   ========================================================= */
+
+.student-app-shell {
+  min-height: 100vh;
+  background: #f4f6fa;
+}
+
+.student-appbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+
+  border-bottom:
+    1px solid rgba(
+      218,
+      224,
+      234,
+      0.9
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 7px 28px
+    rgba(
+      20,
+      32,
+      51,
+      0.055
+    );
+}
+
+.student-appbar__inner {
+  width:
+    min(
+      1180px,
+      calc(100% - 40px)
+    );
+
+  min-height: 78px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.student-brand {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-brand__mark {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7866ec,
+      #5947d3
+    );
+
+  box-shadow:
+    0 9px 24px
+    rgba(
+      108,
+      92,
+      231,
+      0.25
+    );
+}
+
+.student-brand strong,
+.student-brand span {
+  display: block;
+}
+
+.student-brand strong {
+  font-size: 15px;
+  color: #172235;
+}
+
+.student-brand span {
+  margin-top: 1px;
+
+  color: #8892a3;
+  font-size: 10px;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.student-main-nav {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.student-nav-link {
+  min-height: 40px;
+  padding: 0 13px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border:
+    1px solid #e1e6ee;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+  color: #425069;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.student-nav-link:hover {
+  transform:
+    translateY(-1px);
+
+  border-color: #cbc4f6;
+
+  color: #5d4dd0;
+
+  box-shadow:
+    0 6px 17px
+    rgba(
+      22,
+      34,
+      55,
+      0.07
+    );
+}
+
+/*
+ * Aktif sayfa:
+ * Kullanıcının istediği sarı vurgu.
+ */
+.student-nav-link--active,
+.student-nav-link--active:hover {
+  border-color: #e6b91f;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffd95b,
+      #f3bd25
+    );
+
+  color: #372b08;
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      226,
+      174,
+      20,
+      0.28
+    );
+
+  transform: none;
+}
+
+.student-account-area {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.student-account-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.student-account-chip__avatar {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #eeeaff;
+  color: #5f4ed4;
+
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.student-account-chip__text strong,
+.student-account-chip__text span {
+  display: block;
+}
+
+.student-account-chip__text strong {
+  max-width: 120px;
+
+  overflow: hidden;
+
+  color: #243047;
+  font-size: 12px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-account-chip__text span {
+  margin-top: 2px;
+
+  color: #929bab;
+  font-size: 10px;
+}
+
+.student-logout-button {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid #e2e6ed;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #6f7a8d;
+}
+
+.student-logout-button:hover {
+  border-color: #f0bcc1;
+  background: #fff3f4;
+  color: #bd3540;
+}
+
+.student-app-content {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   STUDENT PROFILE VISUAL REFRESH
+   ========================================================= */
+
+.student-profile-page {
+  padding:
+    32px 24px
+    70px;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(
+        108,
+        92,
+        231,
+        0.08
+      ),
+      transparent 25%
+    ),
+    #f4f6fa;
+}
+
+.student-profile-header {
+  max-width: 1100px;
+  min-height: 210px;
+
+  margin:
+    0 auto
+    24px;
+
+  padding: 31px 34px;
+
+  align-items: center;
+
+  border-radius: 22px;
+
+  color: #ffffff;
+
+  background:
+    radial-gradient(
+      circle at 82% 25%,
+      rgba(
+        130,
+        108,
+        245,
+        0.55
+      ),
+      transparent 30%
+    ),
+    linear-gradient(
+      125deg,
+      #0d1d32,
+      #172a43
+    );
+
+  box-shadow:
+    0 18px 45px
+    rgba(
+      16,
+      31,
+      53,
+      0.16
+    );
+
+  overflow: hidden;
+}
+
+.student-profile-header__content {
+  max-width: 550px;
+}
+
+.student-profile-eyebrow {
+  display: inline-flex;
+
+  margin-bottom: 10px;
+  padding:
+    6px 9px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  color: #c6bfff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.11em;
+}
+
+.student-profile-header h1 {
+  margin:
+    0 0
+    9px;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      28px,
+      3vw,
+      38px
+    );
+
+  letter-spacing:
+    -0.035em;
+}
+
+.student-profile-header p {
+  max-width: 530px;
+
+  margin: 0;
+
+  color: #adbdd1;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.student-profile-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(105px, 1fr)
+    );
+
+  gap: 10px;
+}
+
+.student-profile-stats > div {
+  min-width: 105px;
+
+  padding:
+    16px 15px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  border-radius: 15px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.075
+    );
+
+  backdrop-filter:
+    blur(7px);
+}
+
+.student-profile-stats strong,
+.student-profile-stats span {
+  display: block;
+}
+
+.student-profile-stats strong {
+  margin-bottom: 4px;
+
+  color: #ffffff;
+
+  font-size: 24px;
+}
+
+.student-profile-stats span {
+  color: #acbbcd;
+
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+
+/* Verification kartlarını biraz daha
+   modern ve interaktif gösterir. */
+
+.student-profile-section {
+  box-shadow:
+    0 13px 38px
+    rgba(
+      26,
+      39,
+      64,
+      0.055
+    );
+}
+
+.student-verification-card {
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.student-verification-card:hover {
+  transform:
+    translateY(-2px);
+
+  border-color: #d2cdf4;
+
+  box-shadow:
+    0 11px 28px
+    rgba(
+      25,
+      39,
+      64,
+      0.075
+    );
+}
+
+
+/* =========================================================
+   STUDENT RESPONSIVE NAV
+   ========================================================= */
+
+@media (
+  max-width: 1080px
+) {
+  .student-appbar__inner {
+    width:
+      min(
+        100%,
+        calc(100% - 28px)
+      );
+
+    flex-wrap: wrap;
+
+    padding:
+      12px 0;
+  }
+
+  .student-main-nav {
+    order: 3;
+
+    width: 100%;
+    flex: 0 0 100%;
+
+    justify-content:
+      flex-start;
+
+    overflow-x: auto;
+
+    padding-bottom: 2px;
+
+    scrollbar-width: none;
+  }
+
+  .student-main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .student-account-area {
+    margin-left: auto;
+  }
+}
+
+@media (
+  max-width: 760px
+) {
+  .student-appbar {
+    position: static;
+  }
+
+  .student-brand span,
+  .student-account-chip__text {
+    display: none;
+  }
+
+  .student-nav-link {
+    min-height: 38px;
+
+    padding:
+      0 11px;
+
+    font-size: 12px;
+  }
+
+  .student-profile-header {
+    padding: 24px;
+
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .student-profile-stats {
+    width: 100%;
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+
+  .student-profile-stats > div {
+    min-width: 0;
+  }
+}
+
+@media (
+  max-width: 520px
+) {
+  .student-profile-page {
+    padding:
+      22px 14px
+      45px;
+  }
+
+  .student-profile-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   STUDENT NAV BORDER GLOW
+   ========================================================= */
+
+.student-nav-link {
+  position: relative;
+
+  transition:
+    transform 170ms ease,
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    background-color 170ms ease,
+    color 170ms ease;
+}
+
+/* Normal menü butonları: mor border glow */
+.student-nav-link:not(.student-nav-link--active):hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(108, 92, 231, 0.72);
+
+  box-shadow:
+    0 0 0 1px
+      rgba(108, 92, 231, 0.18),
+    0 0 12px
+      rgba(108, 92, 231, 0.20),
+    0 8px 20px
+      rgba(22, 34, 55, 0.08);
+}
+
+/* Aktif sayfa: sarı border glow */
+.student-nav-link--active {
+  border-color: #e6b91f;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(255, 205, 55, 0.24),
+    0 7px 20px
+      rgba(226, 174, 20, 0.24);
+}
+
+.student-nav-link--active:hover {
+  transform: translateY(-2px);
+
+  border-color: #ffd84d;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(255, 216, 77, 0.34),
+    0 0 14px
+      rgba(255, 201, 44, 0.42),
+    0 10px 24px
+      rgba(190, 139, 10, 0.20);
+}
+
+/* İkon da glow ile hafif canlansın */
+.student-nav-link svg {
+  transition:
+    transform 170ms ease,
+    filter 170ms ease;
+}
+
+.student-nav-link:hover svg {
+  transform: scale(1.08);
+
+  filter:
+    drop-shadow(
+      0 0 4px
+      rgba(108, 92, 231, 0.30)
+    );
+}
+
+.student-nav-link--active:hover svg {
+  filter:
+    drop-shadow(
+      0 0 4px
+      rgba(130, 92, 0, 0.28)
+    );
+}
+
+/* Tıklama hissi */
+.student-nav-link:active {
+  transform:
+    translateY(0)
+    scale(0.97);
+}
+
+/* Hareket azaltma tercihi */
+@media (prefers-reduced-motion: reduce) {
+  .student-nav-link,
+  .student-nav-link svg {
+    transition: none;
+  }
+
+  .student-nav-link:hover,
+  .student-nav-link:active {
+    transform: none;
+  }
+}

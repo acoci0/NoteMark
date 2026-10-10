@@ -89,7 +89,7 @@ export default function StudentNoteRequestsPage() {
           </Link>
 
           <span className="section-kicker">
-            NOTMARKET
+            NOTMARK
           </span>
 
           <h1>

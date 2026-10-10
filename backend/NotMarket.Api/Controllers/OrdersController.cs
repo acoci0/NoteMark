@@ -256,7 +256,7 @@ public sealed class OrdersController(
             "no-cache";
 
         var downloadFileName =
-            $"notmarket-{order.NoteSubmissionId:N}.pdf";
+            $"notmark-{order.NoteSubmissionId:N}.pdf";
 
         return File(
             document,

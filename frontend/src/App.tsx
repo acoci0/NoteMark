@@ -9,6 +9,7 @@ import SiteVisitTracker from "./components/SiteVisitTracker";
 import StudentProtectedRoute from "./components/StudentProtectedRoute";
 
 import AdminLayout from "./layout/AdminLayout";
+import StudentLayout from "./layout/StudentLayout";
 
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
@@ -42,29 +43,33 @@ export default function App() {
         element={<StudentProtectedRoute />}
       >
         <Route
-          path="/student/profile"
-          element={<StudentProfilePage />}
-        />
+          element={<StudentLayout />}
+        >
+          <Route
+            path="/student/profile"
+            element={<StudentProfilePage />}
+          />
 
-        <Route
-          path="/student/marketplace"
-          element={<StudentMarketplacePage />}
-        />
+          <Route
+            path="/student/marketplace"
+            element={<StudentMarketplacePage />}
+          />
 
-        <Route
-          path="/student/note-requests"
-          element={<StudentNoteRequestsPage />}
-        />
+          <Route
+            path="/student/note-requests"
+            element={<StudentNoteRequestsPage />}
+          />
 
-        <Route
-          path="/student/note-submissions"
-          element={<StudentNoteSubmissionsPage />}
-        />
+          <Route
+            path="/student/note-submissions"
+            element={<StudentNoteSubmissionsPage />}
+          />
 
-        <Route
-          path="/student/note-requests/new"
-          element={<StudentNoteRequestPage />}
-        />
+          <Route
+            path="/student/note-requests/new"
+            element={<StudentNoteRequestPage />}
+          />
+        </Route>
       </Route>
 
       {/* ========================= */}

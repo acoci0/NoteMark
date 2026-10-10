@@ -349,7 +349,7 @@ public sealed class StudentNoteSubmissionsController(
         return File(
             stream,
             "application/pdf",
-            $"notmarket-{submission.Id:N}.pdf",
+            $"notmark-{submission.Id:N}.pdf",
             enableRangeProcessing:
                 true);
     }
