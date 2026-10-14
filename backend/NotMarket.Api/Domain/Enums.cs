@@ -72,3 +72,19 @@ public enum NoteReviewDecision
     ManualReview = 2,
     TechnicalReject = 3
 }
+public enum ComplaintCategory
+{
+    Verification = 1,
+    Note = 2,
+    Order = 3,
+    Account = 4,
+    Other = 5
+}
+
+public enum ComplaintStatus
+{
+    Open = 1,
+    InReview = 2,
+    Resolved = 3,
+    Rejected = 4
+}

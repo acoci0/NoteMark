@@ -4,7 +4,9 @@ import {
   LayoutGrid,
   LogOut,
   Plus,
+  Settings,
   UserRound,
+  WalletCards,
 } from "lucide-react";
 
 import {
@@ -16,11 +18,22 @@ import {
   useStudentAuth,
 } from "../auth/StudentAuthContext";
 
+
+import {
+  useStudentAppearance,
+} from "../auth/StudentAppearanceContext";
+
 export default function StudentLayout() {
   const {
     student,
     logout,
   } = useStudentAuth();
+
+  const {
+    resolvedTheme,
+    accent,
+    motion,
+  } = useStudentAppearance();
 
   const initials =
     student?.displayName
@@ -33,7 +46,12 @@ export default function StudentLayout() {
       .join("") || "Ö";
 
   return (
-    <div className="student-app-shell">
+    <div
+      className="student-app-shell"
+      data-theme={resolvedTheme}
+      data-accent={accent}
+      data-motion={motion}
+    >
       <header className="student-appbar">
         <div className="student-appbar__inner">
           <NavLink
@@ -41,20 +59,23 @@ export default function StudentLayout() {
             className="student-brand"
           >
             <div className="student-brand__mark">
-              N
+              <img
+                src="/brand/notmark-logo.png"
+                alt="NotMark"
+                className="notmark-logo-img"
+              />
             </div>
 
-            <div>
-              <strong>
-                NotMark
+            <div className="student-brand__text">
+              <strong className="student-brand__name">
+                Not<span>Mark</span>
               </strong>
 
-              <span>
+              <span className="student-brand__subtitle">
                 Öğrenci
               </span>
             </div>
           </NavLink>
-
           <nav
             className="student-main-nav"
             aria-label="Öğrenci menüsü"
@@ -107,6 +128,19 @@ export default function StudentLayout() {
               Gönderdiğim Notlar
             </NavLink>
 
+
+            <NavLink
+              to="/student/earnings"
+              end
+              className={
+                getNavClassName
+              }
+            >
+              <WalletCards size={17} />
+
+              Kazançlarım
+            </NavLink>
+
             <NavLink
               to="/student/note-requests/new"
               end
@@ -121,7 +155,11 @@ export default function StudentLayout() {
           </nav>
 
           <div className="student-account-area">
-            <div className="student-account-chip">
+            <NavLink
+              to="/student/profile"
+              className="student-account-chip"
+              title="Hesabıma git"
+            >
               <div className="student-account-chip__avatar">
                 {initials}
               </div>
@@ -135,7 +173,20 @@ export default function StudentLayout() {
                   Öğrenci hesabı
                 </span>
               </div>
-            </div>
+            </NavLink>
+
+            <NavLink
+              to="/student/settings"
+              className={({ isActive }) =>
+                isActive
+                  ? "student-settings-button student-settings-button--active"
+                  : "student-settings-button"
+              }
+              title="Ayarlar"
+              aria-label="Ayarlar"
+            >
+              <Settings size={18} />
+            </NavLink>
 
             <button
               className="student-logout-button"

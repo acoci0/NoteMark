@@ -1,8 +1,10 @@
 import {
   BookOpen,
-  ChevronLeft,
+  CalendarDays,
   FileText,
+  GraduationCap,
   ListChecks,
+  MessageSquareText,
   Plus,
   Sparkles,
 } from "lucide-react";
@@ -80,32 +82,31 @@ export default function StudentNoteRequestsPage() {
     <div className="student-requests-page">
       <header className="student-requests-header">
         <div>
-          <Link
-            className="note-request-back"
-            to="/student/profile"
-          >
-            <ChevronLeft size={17} />
-            Öğrenci hesabına dön
-          </Link>
-
           <span className="section-kicker">
             NOTMARK
           </span>
 
-          <h1>
-            Taleplerim
-          </h1>
+          <div className="student-requests-title-row">
+            <h1>
+              Taleplerim
+            </h1>
+
+            {!loading && (
+              <span className="student-request-count">
+                {requests.length} talep
+              </span>
+            )}
+          </div>
 
           <p>
-            Yayınladığınız not
-            taleplerini ve talep
-            ayrıntılarını buradan
+            Yayınladığınız not taleplerini
+            ve talep ayrıntılarını buradan
             görüntüleyebilirsiniz.
           </p>
         </div>
 
         <Link
-          className="primary-button"
+          className="primary-button student-request-new-button"
           to="/student/note-requests/new"
         >
           <Plus size={17} />
@@ -155,21 +156,23 @@ export default function StudentNoteRequestsPage() {
                 className="student-request-card"
                 key={request.id}
               >
+                <div className="student-request-card__accent" />
+
                 <div className="student-request-card__top">
                   <div className="student-request-card__icon">
                     {request.contentType ===
                     "StudyQuestions" ? (
                       <ListChecks
-                        size={21}
+                        size={22}
                       />
                     ) : request.contentType ===
                       "DetailedSummary" ? (
                       <Sparkles
-                        size={21}
+                        size={22}
                       />
                     ) : (
                       <FileText
-                        size={21}
+                        size={22}
                       />
                     )}
                   </div>
@@ -184,16 +187,23 @@ export default function StudentNoteRequestsPage() {
                     </p>
                   </div>
 
-                  <span className="student-request-card__price">
-                    {request.suggestedMinPrice}
-                    {" – "}
-                    {request.suggestedMaxPrice}
-                    {" TL"}
-                  </span>
+                  <div className="student-request-card__price">
+                    <span>
+                      Önerilen fiyat
+                    </span>
+
+                    <strong>
+                      {request.suggestedMinPrice}
+                      {" – "}
+                      {request.suggestedMaxPrice}
+                      {" TL"}
+                    </strong>
+                  </div>
                 </div>
 
                 <div className="student-request-card__academic">
                   <span>
+                    <GraduationCap size={14} />
                     {request.universityName}
                   </span>
 
@@ -209,6 +219,7 @@ export default function StudentNoteRequestsPage() {
                 <div className="student-request-card__details">
                   <div>
                     <span>
+                      <FileText size={15} />
                       İçerik türü
                     </span>
 
@@ -219,22 +230,22 @@ export default function StudentNoteRequestsPage() {
                     </strong>
                   </div>
 
-                  {request.questionCount && (
-                    <div>
-                      <span>
-                        Soru sayısı
-                      </span>
+                  <div>
+                    <span>
+                      <ListChecks size={15} />
+                      Soru sayısı
+                    </span>
 
-                      <strong>
-                        {
-                          request.questionCount
-                        }
-                      </strong>
-                    </div>
-                  )}
+                    <strong>
+                      {request.questionCount
+                        ? `${request.questionCount} soru`
+                        : "—"}
+                    </strong>
+                  </div>
 
                   <div>
                     <span>
+                      <CalendarDays size={15} />
                       Yayın tarihi
                     </span>
 
@@ -248,15 +259,23 @@ export default function StudentNoteRequestsPage() {
 
                 {request.additionalNotes && (
                   <div className="student-request-card__note">
-                    <span>
-                      Ek açıklama
-                    </span>
+                    <div className="student-request-card__note-icon">
+                      <MessageSquareText
+                        size={17}
+                      />
+                    </div>
 
-                    <p>
-                      {
-                        request.additionalNotes
-                      }
-                    </p>
+                    <div>
+                      <span>
+                        Ek açıklama
+                      </span>
+
+                      <p>
+                        {
+                          request.additionalNotes
+                        }
+                      </p>
+                    </div>
                   </div>
                 )}
               </article>
@@ -277,7 +296,7 @@ function getContentTypeLabel(
       return "Yalnızca ders notu";
 
     case "DetailedSummary":
-      return "Ders notunun detaylı özeti";
+      return "Detaylı özet";
 
     case "StudyQuestions":
       return "Çalışma soruları";

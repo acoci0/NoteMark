@@ -1,10 +1,17 @@
-import { Search } from "lucide-react";
+import {
+  Eye,
+  Search,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/client";
 import StatusBadge from "../components/StatusBadge";
 import type { AdminUser } from "../types";
 
 export default function UsersPage() {
+  const navigate =
+    useNavigate();
+
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [search, setSearch] = useState("");
 
@@ -61,7 +68,9 @@ export default function UsersPage() {
               <tr>
                 <th>Kullanıcı</th>
                 <th>Rol</th>
-                <th>Durum</th>
+                <th className="admin-users-status-column">
+                  Durum
+                </th>
                 <th>Doğrulama</th>
                 <th>Kayıt tarihi</th>
                 <th />
@@ -75,7 +84,7 @@ export default function UsersPage() {
                     <span className="table-subtext">{user.email}</span>
                   </td>
                   <td>{user.role}</td>
-                  <td>
+                  <td className="admin-users-status-column">
                     <StatusBadge status={user.status} />
                   </td>
                   <td>{user.verificationCount}</td>
@@ -83,12 +92,25 @@ export default function UsersPage() {
                     {new Date(user.createdAt).toLocaleDateString("tr-TR")}
                   </td>
                   <td className="table-actions">
+                    <button
+                      type="button"
+                      className="secondary-button admin-user-table-action admin-user-table-action--detail"
+                      onClick={() =>
+                        navigate(
+                          `/users/${user.id}`
+                        )
+                      }
+                    >
+                      <Eye size={15} />
+                      Detaylı İncele
+                    </button>
+
                     {user.role !== "Admin" && (
                       <button
                         className={
                           user.status === "Active"
-                            ? "secondary-button danger-text"
-                            : "secondary-button"
+                            ? "secondary-button admin-user-table-action admin-user-table-action--suspend"
+                            : "secondary-button admin-user-table-action admin-user-table-action--activate"
                         }
                         onClick={() => void toggleStatus(user)}
                       >

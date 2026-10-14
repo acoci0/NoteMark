@@ -1,7 +1,6 @@
 import {
   AlertTriangle,
   CheckCircle2,
-  ChevronLeft,
   Download,
   FileText,
   Sparkles,
@@ -22,6 +21,8 @@ import {
 } from "axios";
 
 import studentApi from "../api/studentClient";
+
+import StudentComplaintDialog from "../components/StudentComplaintDialog";
 
 import type {
   StudentNoteSubmission,
@@ -51,6 +52,13 @@ export default function StudentNoteSubmissionsPage() {
     downloadingId,
     setDownloadingId,
   ] = useState<string | null>(null);
+
+  const [
+    appealTarget,
+    setAppealTarget,
+  ] = useState<StudentNoteSubmission | null>(
+    null
+  );
 
   useEffect(() => {
     const load = async () => {
@@ -127,24 +135,24 @@ export default function StudentNoteSubmissionsPage() {
   };
 
   return (
-    <div className="student-requests-page">
-      <header className="student-requests-header">
+    <div className="student-requests-page note-submissions-page">
+      <header className="student-requests-header note-submissions-header">
         <div>
-          <Link
-            className="note-request-back"
-            to="/student/profile"
-          >
-            <ChevronLeft size={17} />
-            Öğrenci hesabına dön
-          </Link>
-
           <span className="section-kicker">
             NOTMARK
           </span>
 
-          <h1>
-            Gönderdiğim Notlar
-          </h1>
+          <div className="note-submissions-title-row">
+            <h1>
+              Gönderdiğim Notlar
+            </h1>
+
+            {!loading && (
+              <span className="note-submissions-count">
+                {submissions.length} gönderim
+              </span>
+            )}
+          </div>
 
           <p>
             Talep panosuna gönderdiğiniz
@@ -154,7 +162,7 @@ export default function StudentNoteSubmissionsPage() {
         </div>
 
         <Link
-          className="primary-button"
+          className="secondary-button note-submissions-marketplace-link"
           to="/student/marketplace"
         >
           Talep Panosuna Git
@@ -172,7 +180,7 @@ export default function StudentNoteSubmissionsPage() {
           Gönderilen notlar yükleniyor...
         </div>
       ) : submissions.length === 0 ? (
-        <section className="student-requests-empty">
+        <section className="student-requests-empty note-submissions-empty">
           <div className="student-requests-empty__icon">
             <FileText size={28} />
           </div>
@@ -333,6 +341,21 @@ export default function StudentNoteSubmissionsPage() {
                           : "Oluşturulan PDF"}
                       </button>
                     )}
+
+                    {submission.status === "Rejected" && (
+                      <button
+                        className="student-appeal-button"
+                        type="button"
+                        onClick={() =>
+                          setAppealTarget(
+                            submission
+                          )
+                        }
+                      >
+                        <AlertTriangle size={16} />
+                        Karara İtiraz Et
+                      </button>
+                    )}
                   </div>
                 </article>
               );
@@ -340,6 +363,27 @@ export default function StudentNoteSubmissionsPage() {
           )}
         </div>
       )}
+      <StudentComplaintDialog
+        open={appealTarget !== null}
+        category="Note"
+        relatedEntityId={
+          appealTarget?.id ?? ""
+        }
+        title="Not Kararına İtiraz"
+        description={
+          appealTarget
+            ? `${appealTarget.title} için verilen ret kararının yeniden incelenmesini talep edebilirsiniz.`
+            : undefined
+        }
+        defaultSubject={
+          appealTarget
+            ? `${appealTarget.title} ret kararına itiraz`
+            : ""
+        }
+        onClose={() =>
+          setAppealTarget(null)
+        }
+      />
     </div>
   );
 }

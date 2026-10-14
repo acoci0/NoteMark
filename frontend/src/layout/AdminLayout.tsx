@@ -4,12 +4,15 @@ import {
   FileBadge2,
   LayoutDashboard,
   LogOut,
+  ScrollText,
   Settings,
-  ShieldCheck,
-  Users
+  Users,
+  MessageSquareWarning,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { useAdminAppearance } from "../auth/AdminAppearanceContext";
+import AdminNotificationCenter from "../components/AdminNotificationCenter";
 
 const menu = [
   { to: "/", label: "Panel", icon: LayoutDashboard },
@@ -21,22 +24,58 @@ const menu = [
   },
   { to: "/notes", label: "Not Kontrolü", icon: BookCheck },
   { to: "/reports", label: "Raporlar", icon: BarChart3 },
+  {
+    to: "/complaints",
+    label: "Şikâyetler / İtirazlar",
+    icon: MessageSquareWarning,
+  },
+  {
+    to: "/audit-logs",
+    label: "İşlem Kayıtları",
+    icon: ScrollText
+  },
   { to: "/settings", label: "Ayarlar", icon: Settings }
 ];
 
 export default function AdminLayout() {
   const { admin, logout } = useAuth();
 
+  const {
+    resolvedTheme,
+  } = useAdminAppearance();
+
+  const initials =
+    admin?.displayName
+      ?.split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) =>
+        part[0]?.toUpperCase()
+      )
+      .join("") || "A";
+
   return (
-    <div className="app-shell">
+    <div
+      className="app-shell admin-app-shell"
+      data-theme={resolvedTheme}
+    >
       <aside className="sidebar">
-        <div className="brand">
-          <div className="brand__mark">
-            <ShieldCheck size={21} />
+        <div className="brand admin-brand">
+          <div className="brand__mark admin-brand__mark">
+            <img
+              src="/brand/notmark-logo.png"
+              alt="NotMark"
+            />
           </div>
-          <div>
-            <strong>NotMark</strong>
-            <span>Admin</span>
+
+          <div className="admin-brand__text">
+            <strong className="admin-brand__name">
+              Not<span>Mark</span>
+            </strong>
+
+            <small>
+              YÖNETİM
+            </small>
           </div>
         </div>
 
@@ -69,13 +108,18 @@ export default function AdminLayout() {
             <strong>Operasyon ve moderasyon paneli</strong>
           </div>
 
-          <div className="admin-chip">
-            <div className="admin-chip__avatar">
-              {admin?.displayName.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <strong>{admin?.displayName}</strong>
-              <span>{admin?.email}</span>
+          <div className="admin-topbar-actions">
+            <AdminNotificationCenter />
+
+            <div className="admin-chip">
+              <div className="admin-chip__avatar">
+                {initials}
+              </div>
+
+              <div>
+                <strong>{admin?.displayName}</strong>
+                <span>{admin?.email}</span>
+              </div>
             </div>
           </div>
         </header>

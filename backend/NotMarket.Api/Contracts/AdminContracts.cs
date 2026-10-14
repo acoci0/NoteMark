@@ -98,3 +98,62 @@ public sealed record NoteReviewDecisionRequest(
 
 public sealed record AccountStatusRequest(
     string Status);
+public sealed record AdminNoteAiReviewDto(
+    bool IsTechnicallyValid,
+    int ReadabilityScore,
+    int CourseMatchScore,
+    int DepartmentMatchScore,
+    int ContentCompletenessScore,
+    int OriginalityAndReliabilityScore,
+    int OriginalityRiskScore,
+    int OverallScore,
+    int ConfidenceScore,
+    string Decision,
+    string Summary,
+    IReadOnlyList<string> Findings,
+    string? DetectedCourse,
+    string? DetectedDepartment,
+    string ModelName,
+    string PromptVersion,
+    DateTimeOffset ReviewedAt);
+
+public sealed record AdminNoteDetailDto(
+    Guid Id,
+    Guid RequestId,
+    string Title,
+    string SellerName,
+    string UniversityName,
+    string DepartmentName,
+    string CourseName,
+    int ClassLevel,
+    string RequestCriteriaJson,
+    decimal SuggestedMinPrice,
+    decimal SuggestedMaxPrice,
+    decimal? SalePrice,
+    string Status,
+    string? ReviewNote,
+    DateTimeOffset? ReviewedAt,
+    bool GeneratedPdfAvailable,
+    int PdfGenerationAttemptCount,
+    string? PdfGenerationError,
+    DateTimeOffset? PdfGeneratedAt,
+    string? PdfGenerationModelName,
+    string? PdfConversionPromptVersion,
+    string? PdfTemplateVersion,
+    string? PdfCompilerName,
+    AdminNoteAiReviewDto? AiReview,
+    DateTimeOffset CreatedAt);
+
+public sealed record AdminNotificationDto(
+    string Id,
+    string Type,
+    string Title,
+    string Message,
+    string TargetPath,
+    string Severity,
+    DateTimeOffset CreatedAt);
+
+public sealed record AdminNotificationSummaryDto(
+    int TotalActionItems,
+    IReadOnlyList<AdminNotificationDto> Items);
+

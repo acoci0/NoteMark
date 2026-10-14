@@ -1,6 +1,4 @@
 import {
-  BookOpen,
-  ChevronLeft,
   FileText,
   GraduationCap,
   ListChecks,
@@ -14,10 +12,6 @@ import {
   useState,
   type FormEvent,
 } from "react";
-
-import {
-  Link,
-} from "react-router-dom";
 
 import {
   isAxiosError,
@@ -383,17 +377,6 @@ export default function StudentNoteRequestPage() {
     <div className="note-request-page">
       <header className="note-request-header">
         <div>
-          <Link
-            className="note-request-back"
-            to="/student/profile"
-          >
-            <ChevronLeft
-              size={17}
-            />
-
-            Öğrenci hesabına dön
-          </Link>
-
           <span className="section-kicker">
             NOTMARK
           </span>
@@ -410,9 +393,6 @@ export default function StudentNoteRequestPage() {
           </p>
         </div>
 
-        <div className="note-request-header__icon">
-          <BookOpen size={28} />
-        </div>
       </header>
 
       {error && (

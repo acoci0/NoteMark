@@ -46,12 +46,29 @@ const rangeTitles: Record<TimeRange, string> = {
 };
 
 const distributionColors = [
-  "#6c5ce7",
+  "#ff6b0b",
   "#14a873",
   "#2782e7",
   "#e89a18",
   "#dc4b56"
 ];
+
+function getUniversityColor(
+  name: string,
+  index: number
+) {
+  if (
+    name
+      .toLocaleLowerCase("tr-TR")
+      .includes("marmara")
+  ) {
+    return "#0071CE";
+  }
+
+  return distributionColors[
+    index % distributionColors.length
+  ];
+}
 
 const emptySummary: ReportSummary = {
   totalUsers: 0,
@@ -108,8 +125,8 @@ function VisitLineChart({ points }: { points: ReportChartPoint[] }) {
       <svg viewBox={`0 0 ${width} ${height}`} role="img">
         <defs>
           <linearGradient id="reportsAreaGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6c5ce7" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#6c5ce7" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="#ff6b0b" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#ff6b0b" stopOpacity="0.02" />
           </linearGradient>
         </defs>
 
@@ -167,7 +184,7 @@ function UniversityDonut({
       accumulated = index === items.length - 1
         ? 100
         : accumulated + item.percentage;
-      return `${distributionColors[index % distributionColors.length]} ${start}% ${accumulated}%`;
+      return `${getUniversityColor(item.name, index)} ${start}% ${accumulated}%`;
     })
     .join(", ");
 
@@ -191,7 +208,7 @@ function UniversityDonut({
             <span
               className="reports-legend-dot"
               style={{
-                background: distributionColors[index % distributionColors.length]
+                background: getUniversityColor(item.name, index)
               }}
             />
             <span>{item.name}</span>
@@ -272,7 +289,7 @@ export default function ReportsPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `notmarket-rapor-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.download = `notmark-rapor-${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   };

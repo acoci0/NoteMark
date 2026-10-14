@@ -1,4 +1,5 @@
 import {
+  AlertTriangle,
   CheckCircle2,
   Clock3,
   GraduationCap,
@@ -19,6 +20,8 @@ import {
 import { isAxiosError } from "axios";
 
 import studentApi from "../api/studentClient";
+
+import StudentComplaintDialog from "../components/StudentComplaintDialog";
 
 import { useStudentAuth } from "../auth/StudentAuthContext";
 
@@ -2175,6 +2178,11 @@ function VerificationCard({
     item: StudentVerificationItem
   ) => Promise<void>;
 }) {
+  const [
+    appealOpen,
+    setAppealOpen,
+  ] = useState(false);
+
   return (
     <article className="student-verification-card">
       <div className="student-verification-icon">
@@ -2253,6 +2261,33 @@ function VerificationCard({
               </p>
             </div>
           )}
+
+        {item.status === "Rejected" && (
+          <div className="student-verification-card__actions">
+            <button
+              type="button"
+              className="student-appeal-button"
+              onClick={() =>
+                setAppealOpen(true)
+              }
+            >
+              <AlertTriangle size={16} />
+              Karara İtiraz Et
+            </button>
+          </div>
+        )}
+
+        <StudentComplaintDialog
+          open={appealOpen}
+          category="Verification"
+          relatedEntityId={item.id}
+          title="Doğrulama Kararına İtiraz"
+          description={`${item.universityName} doğrulaması için verilen ret kararının yeniden incelenmesini talep edebilirsiniz.`}
+          defaultSubject={`${item.universityName} doğrulama ret kararına itiraz`}
+          onClose={() =>
+            setAppealOpen(false)
+          }
+        />
       </div>
     </article>
   );

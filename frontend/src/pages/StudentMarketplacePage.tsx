@@ -1,7 +1,6 @@
 import {
   BookOpen,
   CheckCircle2,
-  ChevronLeft,
   FileText,
   FileUp,
   ListChecks,
@@ -244,22 +243,21 @@ export default function StudentMarketplacePage() {
     <div className="marketplace-page">
       <header className="marketplace-header">
         <div>
-          <Link
-            className="note-request-back"
-            to="/student/profile"
-          >
-            <ChevronLeft size={17} />
-
-            Öğrenci hesabına dön
-          </Link>
-
           <span className="section-kicker">
             NOTMARK
           </span>
 
-          <h1>
-            Talep Panosu
-          </h1>
+          <div className="marketplace-title-row">
+            <h1>
+              Talep Panosu
+            </h1>
+
+            {!loading && (
+              <span className="marketplace-request-count">
+                {requests.length} talep
+              </span>
+            )}
+          </div>
 
           <p>
             Doğrulanmış üniversite
@@ -269,9 +267,6 @@ export default function StudentMarketplacePage() {
           </p>
         </div>
 
-        <div className="marketplace-header__icon">
-          <BookOpen size={27} />
-        </div>
       </header>
 
       {error && (

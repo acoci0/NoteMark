@@ -50,6 +50,10 @@ public sealed class AppDbContext(
     public DbSet<Payment> Payments =>
         Set<Payment>();
 
+
+    public DbSet<Complaint> Complaints =>
+        Set<Complaint>();
+
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
     {
@@ -67,6 +71,7 @@ public sealed class AppDbContext(
         ConfigureNoteAiReview(modelBuilder);
         ConfigureOrder(modelBuilder);
         ConfigurePayment(modelBuilder);
+        ConfigureComplaint(modelBuilder);
         ConfigureAuditLog(modelBuilder);
         ConfigureSiteVisit(modelBuilder);
     }
@@ -829,6 +834,105 @@ public sealed class AppDbContext(
 
         payment.HasIndex(
             x => x.CreatedAt);
+    }
+
+    private static void ConfigureComplaint(
+        ModelBuilder modelBuilder)
+    {
+        var complaint =
+            modelBuilder.Entity<Complaint>();
+
+        complaint.ToTable(
+            "Complaints",
+            table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Complaints_RelatedEntity",
+                    "(" +
+                    "\"RelatedEntityType\" IS NULL AND " +
+                    "\"RelatedEntityId\" IS NULL" +
+                    ") OR (" +
+                    "\"RelatedEntityType\" IS NOT NULL AND " +
+                    "\"RelatedEntityId\" IS NOT NULL" +
+                    ")");
+            });
+
+        complaint.HasKey(
+            x => x.Id);
+
+        complaint.Property(
+                x => x.Category)
+            .HasConversion<string>();
+
+        complaint.Property(
+                x => x.Status)
+            .HasConversion<string>();
+
+        complaint.Property(
+                x => x.Subject)
+            .HasMaxLength(180)
+            .IsRequired();
+
+        complaint.Property(
+                x => x.Description)
+            .HasMaxLength(2000)
+            .IsRequired();
+
+        complaint.Property(
+                x => x.RelatedEntityType)
+            .HasMaxLength(100);
+
+        complaint.Property(
+                x => x.RelatedEntityId)
+            .HasMaxLength(100);
+
+        complaint.Property(
+                x => x.AdminResponse)
+            .HasMaxLength(2000);
+
+        complaint.HasOne(
+                x => x.User)
+            .WithMany()
+            .HasForeignKey(
+                x => x.UserId)
+            .OnDelete(
+                DeleteBehavior.Restrict);
+
+        complaint.HasOne(
+                x => x.ReviewedByUser)
+            .WithMany()
+            .HasForeignKey(
+                x => x.ReviewedByUserId)
+            .OnDelete(
+                DeleteBehavior.Restrict);
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.UserId,
+                x.CreatedAt
+            });
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.Status,
+                x.CreatedAt
+            });
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.Category,
+                x.CreatedAt
+            });
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.RelatedEntityType,
+                x.RelatedEntityId
+            });
     }
 
     private static void ConfigureAuditLog(
