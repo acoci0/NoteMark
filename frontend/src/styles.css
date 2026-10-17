@@ -24690,3 +24690,112 @@ body:has(.student-app-shell[data-theme="light"]) {
 .student-app-shell[data-theme="light"] {
   background-color: #f4f6fa;
 }
+
+/* =========================================================
+   NOTMARK - THEME AWARE NOTE REQUEST SUCCESS
+   ========================================================= */
+
+.student-app-shell .note-request-success {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 16px 18px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .30
+    );
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        var(--student-accent-rgb),
+        .12
+      ),
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      )
+    ),
+    var(--student-surface);
+
+  color:
+    var(--student-text);
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      var(--student-accent-rgb),
+      .07
+    );
+}
+
+.student-app-shell
+.note-request-success__icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .22
+    );
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .13
+    );
+
+  color:
+    var(--student-accent);
+}
+
+.student-app-shell
+.note-request-success strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color:
+    var(--student-accent);
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.student-app-shell
+.note-request-success p {
+  margin: 0 0 3px;
+
+  color:
+    var(--student-text);
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.student-app-shell
+.note-request-success span {
+  display: block;
+
+  color:
+    var(--student-accent-strong);
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
