@@ -24799,3 +24799,42 @@ body:has(.student-app-shell[data-theme="light"]) {
   font-weight: 750;
 }
 
+
+/* =========================================================
+   NOTMARK - FIX NAVBAR CLIPPING
+   Beyaz overscroll engellenir, navbar kesilmez.
+   ========================================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+.student-app-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: visible;
+}
+
+/* Tüm elemanların viewport dışına gereksiz genişlemesini önle */
+.student-app-shell,
+.student-app-shell * {
+  box-sizing: border-box;
+}
+
+/* Safari overscroll sırasında arka plan beyaza dönmesin */
+body {
+  background: #0c1420;
+}
+
+.student-app-shell[data-theme="light"] {
+  background-color: #f4f6fa;
+}
+
+.student-app-shell[data-theme="dark"] {
+  background-color: #0c1420;
+}
