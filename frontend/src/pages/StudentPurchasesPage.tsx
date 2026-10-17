@@ -288,8 +288,8 @@ export default function StudentPurchasesPage() {
                     </div>
                   </div>
 
-                  {order.status ===
-                    "Paid" && (
+                  {(order.status === "Paid" ||
+                    order.status === "Demo") && (
                     <footer className="student-purchase-card__actions">
                       <button
                         type="button"
@@ -314,6 +314,7 @@ export default function StudentPurchasesPage() {
                           : "PDF'i İndir"}
                       </button>
 
+                      {order.status === "Paid" && (
                       <button
                         type="button"
                         className="student-report-problem-button"
@@ -329,6 +330,7 @@ export default function StudentPurchasesPage() {
 
                         Sorun Bildir
                       </button>
+                      )}
                     </footer>
                   )}
                 </div>
@@ -370,6 +372,8 @@ function OrderStatus({
         "Ödeme bekliyor",
       Paid:
         "Tamamlandı",
+      Demo:
+        "Demo satın alma",
       PaymentFailed:
         "Ödeme başarısız",
       Cancelled:
