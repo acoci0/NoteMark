@@ -25299,3 +25299,836 @@ body {
 
   font-weight: 800;
 }
+
+
+/* =========================================================
+   NOTMARK AUTH EXPERIENCE V1
+   ========================================================= */
+
+@property --notmark-auth-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.notmark-auth-page {
+  --auth-mouse-x: 50%;
+  --auth-mouse-y: 50%;
+  --auth-rotate-x: 0deg;
+  --auth-rotate-y: 0deg;
+
+  position: relative;
+
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.08fr)
+    minmax(430px, .92fr);
+
+  overflow: hidden;
+
+  color: #f5f7fa;
+
+  background:
+    radial-gradient(
+      circle at var(--auth-mouse-x)
+        var(--auth-mouse-y),
+      rgba(255, 107, 11, .13),
+      transparent 23%
+    ),
+    radial-gradient(
+      circle at 70% 15%,
+      rgba(55, 88, 150, .16),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #07131f,
+      #0b1724 48%,
+      #09131d
+    );
+}
+
+.notmark-auth-page::before {
+  content: "";
+
+  position: absolute;
+  inset: -30%;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at var(--auth-mouse-x)
+        var(--auth-mouse-y),
+      rgba(255, 107, 11, .085),
+      transparent 16%
+    );
+
+  transition:
+    background-position .08s linear;
+}
+
+.notmark-auth-grid {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: .16;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.035) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    54px 54px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.6),
+      transparent 88%
+    );
+}
+
+.notmark-auth-visual {
+  position: relative;
+  z-index: 1;
+
+  min-width: 0;
+
+  padding:
+    clamp(42px, 6vw, 82px);
+
+  display: flex;
+  align-items: center;
+}
+
+.notmark-auth-visual__content {
+  width: min(700px, 100%);
+
+  transform:
+    translate3d(
+      calc(
+        (var(--auth-mouse-x) - 50%) * .018
+      ),
+      calc(
+        (var(--auth-mouse-y) - 50%) * .012
+      ),
+      0
+    );
+}
+
+.notmark-auth-brand {
+  margin-bottom: 68px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.notmark-auth-logo-frame {
+  --notmark-auth-angle: 0deg;
+
+  width: 68px;
+  height: 68px;
+
+  flex: 0 0 68px;
+
+  padding: 2px;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 19px;
+
+  background:
+    linear-gradient(
+      #09141f,
+      #09141f
+    ) padding-box,
+    conic-gradient(
+      from var(--notmark-auth-angle),
+      transparent 0deg,
+      transparent 245deg,
+      rgba(255,107,11,.12) 270deg,
+      rgba(255,107,11,.65) 302deg,
+      #ff6b0b 322deg,
+      rgba(255,107,11,.65) 342deg,
+      transparent 360deg
+    ) border-box;
+
+  animation:
+    notmark-auth-border-spin
+    3.3s linear infinite;
+}
+
+.notmark-auth-logo-inner {
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background: #0b1724;
+}
+
+.notmark-auth-logo-inner img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+@keyframes notmark-auth-border-spin {
+  to {
+    --notmark-auth-angle: 360deg;
+  }
+}
+
+.notmark-auth-brand strong {
+  display: block;
+
+  font-size: 22px;
+  font-weight: 850;
+  letter-spacing: -.03em;
+}
+
+.notmark-auth-brand strong span {
+  color: #ff6b0b;
+}
+
+.notmark-auth-brand small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #8292a4;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  text-transform: uppercase;
+  letter-spacing: .15em;
+}
+
+.notmark-auth-eyebrow {
+  margin-bottom: 15px;
+
+  color: #ff6b0b;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  letter-spacing: .18em;
+}
+
+.notmark-auth-visual h1 {
+  max-width: 680px;
+
+  margin: 0;
+
+  font-size:
+    clamp(48px, 5.5vw, 78px);
+
+  line-height: .98;
+
+  letter-spacing: -.06em;
+}
+
+.notmark-auth-visual > div > p {
+  max-width: 610px;
+
+  margin:
+    25px 0 0;
+
+  color: #a5b2c1;
+
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.notmark-auth-features {
+  margin-top: 48px;
+
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.notmark-auth-features article {
+  min-height: 132px;
+
+  padding: 17px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.075);
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.018)
+    );
+
+  backdrop-filter:
+    blur(14px);
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+}
+
+.notmark-auth-features article:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(255,107,11,.30);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,107,11,.07),
+      rgba(255,255,255,.025)
+    );
+}
+
+.notmark-auth-features article > span {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: #ff6b0b;
+
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.notmark-auth-features strong {
+  display: block;
+
+  font-size: 13px;
+}
+
+.notmark-auth-features p {
+  margin: 7px 0 0;
+
+  color: #8291a1;
+
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* FORM SIDE */
+
+.notmark-auth-form-panel {
+  position: relative;
+  z-index: 2;
+
+  min-width: 0;
+
+  padding:
+    38px;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.025),
+      rgba(255,255,255,.008)
+    );
+
+  border-left:
+    1px solid
+    rgba(255,255,255,.055);
+
+  backdrop-filter:
+    blur(20px);
+}
+
+.notmark-auth-card {
+  --notmark-auth-angle: 0deg;
+
+  width: min(470px, 100%);
+
+  padding: 2px;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      #111b26,
+      #111b26
+    ) padding-box,
+    conic-gradient(
+      from var(--notmark-auth-angle),
+      rgba(255,255,255,.07),
+      rgba(255,255,255,.07) 245deg,
+      rgba(255,107,11,.18) 278deg,
+      #ff6b0b 318deg,
+      rgba(255,107,11,.22) 350deg,
+      rgba(255,255,255,.07)
+    ) border-box;
+
+  box-shadow:
+    0 35px 100px
+    rgba(0,0,0,.35);
+
+  animation:
+    notmark-auth-border-spin
+    5s linear infinite;
+
+  transform:
+    perspective(1100px)
+    rotateX(
+      var(--auth-rotate-x)
+    )
+    rotateY(
+      var(--auth-rotate-y)
+    );
+
+  transform-style:
+    preserve-3d;
+
+  transition:
+    transform .12s ease-out;
+}
+
+.notmark-auth-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.notmark-auth-card {
+  padding:
+    38px;
+
+  background:
+    radial-gradient(
+      circle at var(--auth-mouse-x)
+        var(--auth-mouse-y),
+      rgba(255,107,11,.055),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(20,31,43,.98),
+      rgba(13,23,33,.98)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+}
+
+.notmark-auth-card::before {
+  content: "";
+
+  position: absolute;
+  inset: -1px;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    conic-gradient(
+      from var(--notmark-auth-angle),
+      transparent 0deg,
+      transparent 255deg,
+      rgba(255,107,11,.15) 280deg,
+      #ff6b0b 320deg,
+      rgba(255,107,11,.30) 345deg,
+      transparent 360deg
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0)
+      content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite:
+    xor;
+
+  mask-composite:
+    exclude;
+
+  animation:
+    notmark-auth-border-spin
+    4.4s linear infinite;
+}
+
+.notmark-auth-card__top {
+  margin-bottom: 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.notmark-auth-card-logo {
+  width: 46px;
+  height: 46px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(255,107,11,.22);
+
+  border-radius: 13px;
+
+  box-shadow:
+    0 0 22px
+    rgba(255,107,11,.10);
+}
+
+.notmark-auth-card-logo img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.notmark-auth-card__top span {
+  display: block;
+
+  color: #ff6b0b;
+
+  font-size: 10px;
+  font-weight: 850;
+
+  letter-spacing: .15em;
+}
+
+.notmark-auth-card__top small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #758596;
+
+  font-size: 10px;
+}
+
+.notmark-auth-card h2 {
+  margin: 0;
+
+  color: #f5f7fa;
+
+  font-size: 29px;
+  line-height: 1.15;
+
+  letter-spacing: -.035em;
+}
+
+.notmark-auth-card__description {
+  margin:
+    10px 0 27px;
+
+  color: #8795a5;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.notmark-auth-field {
+  display: grid;
+
+  gap: 8px;
+
+  margin-bottom: 17px;
+}
+
+.notmark-auth-field > span {
+  color: #cbd4dd;
+
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.notmark-auth-field input {
+  width: 100%;
+  height: 48px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.085);
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background:
+    rgba(3,10,17,.38);
+
+  color: #f5f7fa;
+
+  font: inherit;
+  font-size: 13px;
+
+  transition:
+    border-color .17s ease,
+    box-shadow .17s ease,
+    background .17s ease;
+}
+
+.notmark-auth-field input::placeholder {
+  color: #586675;
+}
+
+.notmark-auth-field input:hover {
+  border-color:
+    rgba(255,255,255,.15);
+}
+
+.notmark-auth-field input:focus {
+  border-color:
+    rgba(255,107,11,.80);
+
+  background:
+    rgba(3,10,17,.55);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(255,107,11,.07),
+    0 0 20px
+    rgba(255,107,11,.10);
+}
+
+.notmark-auth-submit {
+  position: relative;
+
+  width: 100%;
+  min-height: 48px;
+
+  margin-top: 5px;
+
+  overflow: hidden;
+
+  border:
+    1px solid #ff6b0b;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff7b26,
+      #ff5f00
+    );
+
+  color: #fff;
+
+  font: inherit;
+
+  font-size: 13px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 11px 30px
+    rgba(255,107,11,.20);
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.notmark-auth-submit::before {
+  content: "";
+
+  position: absolute;
+  top: -80%;
+  left: -35%;
+
+  width: 35%;
+  height: 260%;
+
+  transform:
+    rotate(20deg);
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(255,255,255,.35),
+      transparent
+    );
+
+  transition:
+    left .45s ease;
+}
+
+.notmark-auth-submit:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 15px 36px
+    rgba(255,107,11,.29);
+}
+
+.notmark-auth-submit:hover::before {
+  left: 115%;
+}
+
+.notmark-auth-submit:active {
+  transform:
+    translateY(0);
+}
+
+.notmark-auth-submit:disabled {
+  opacity: .58;
+  cursor: wait;
+}
+
+.notmark-auth-submit span {
+  position: relative;
+  z-index: 1;
+}
+
+.notmark-auth-error {
+  margin:
+    2px 0 15px;
+
+  padding:
+    11px 12px;
+
+  border:
+    1px solid
+    rgba(241,92,105,.22);
+
+  border-radius: 10px;
+
+  background:
+    rgba(241,92,105,.075);
+
+  color: #ff9ca5;
+
+  font-size: 11px;
+}
+
+.notmark-auth-security {
+  margin-top: 23px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  color: #5f6d7b;
+
+  font-size: 9px;
+  font-weight: 650;
+
+  letter-spacing: .035em;
+}
+
+.notmark-auth-security span {
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: #ff6b0b;
+}
+
+/* STUDENT DIFFERENTIATION */
+
+.notmark-auth-page--student
+.notmark-auth-visual h1 {
+  max-width: 620px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .notmark-auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .notmark-auth-visual {
+    display: none;
+  }
+
+  .notmark-auth-form-panel {
+    min-height: 100vh;
+
+    border-left: 0;
+  }
+
+  .notmark-auth-card {
+    width: min(480px, 100%);
+  }
+}
+
+@media (max-width: 560px) {
+  .notmark-auth-form-panel {
+    padding: 18px;
+  }
+
+  .notmark-auth-card {
+    padding: 27px 22px;
+    border-radius: 20px;
+  }
+
+  .notmark-auth-card h2 {
+    font-size: 25px;
+  }
+}
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+  .notmark-auth-logo-frame,
+  .notmark-auth-card::before {
+    animation: none;
+  }
+
+  .notmark-auth-card {
+    transform: none !important;
+  }
+
+  .notmark-auth-features article,
+  .notmark-auth-submit {
+    transition: none;
+  }
+}
