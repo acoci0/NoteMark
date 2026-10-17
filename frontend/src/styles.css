@@ -27138,3 +27138,369 @@ span {
       0;
   }
 }
+
+/* =========================================================
+   NOTMARK PROFILE PREMIUM STATS V6
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   İSTATİSTİK KARTLARI
+   --------------------------------------------------------- */
+
+.student-profile-stats {
+  align-items: stretch;
+  gap: 13px;
+}
+
+.student-profile-stat-card {
+  position: relative;
+
+  height: 178px !important;
+  min-height: 178px !important;
+
+  padding: 19px 18px 18px;
+
+  overflow: hidden;
+
+  justify-content: flex-start;
+
+  border-radius: 18px !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .16
+    ) !important;
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        .035
+      ) 48%,
+      rgba(
+        255,
+        255,
+        255,
+        .015
+      )
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,.055),
+    0 14px 32px
+      rgba(0,0,0,.10);
+
+  backdrop-filter:
+    blur(16px);
+
+  transition:
+    transform .20s ease,
+    border-color .20s ease,
+    box-shadow .20s ease,
+    background .20s ease;
+}
+
+.student-profile-stat-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 14px;
+  right: 14px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        var(--student-accent-rgb),
+        .65
+      ),
+      transparent
+    );
+
+  opacity: .85;
+}
+
+.student-profile-stat-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 95px;
+  height: 95px;
+
+  right: -35px;
+  bottom: -38px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        var(--student-accent-rgb),
+        .16
+      ),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+.student-profile-stat-card:hover {
+  transform:
+    translateY(-4px) !important;
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .34
+    ) !important;
+
+  box-shadow:
+    0 20px 42px
+      rgba(0,0,0,.16),
+    inset 0 1px 0
+      rgba(255,255,255,.07);
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(
+        var(--student-accent-rgb),
+        .15
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        .045
+      ) 50%,
+      rgba(
+        255,
+        255,
+        255,
+        .02
+      )
+    ) !important;
+}
+
+.student-profile-stat-card__icon {
+  width: 38px;
+  height: 38px;
+
+  margin-bottom: 25px;
+
+  flex: 0 0 38px;
+
+  border-radius: 11px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .24
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        var(--student-accent-rgb),
+        .18
+      ),
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      )
+    );
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      var(--student-accent-rgb),
+      .08
+    );
+}
+
+.student-profile-stat-card strong {
+  margin: 0 0 7px !important;
+
+  font-size: 31px !important;
+  font-weight: 850;
+
+  letter-spacing: -.045em;
+}
+
+.student-profile-stat-card span {
+  font-size: 10px !important;
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  letter-spacing: .01em;
+}
+
+/* Açık tema */
+.student-app-shell[data-theme="light"]
+.student-profile-stat-card {
+  background:
+    linear-gradient(
+      155deg,
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      ),
+      rgba(255,255,255,.92) 55%,
+      rgba(255,255,255,.74)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px
+      rgba(25, 39, 58, .08),
+    inset 0 1px 0
+      rgba(255,255,255,.85);
+}
+
+/* ---------------------------------------------------------
+   ÇEVRİMİÇİ KULLANICI GÖSTERGESİ
+   --------------------------------------------------------- */
+
+.student-profile-live-users {
+  min-width: 176px;
+  min-height: 56px;
+
+  padding:
+    9px 13px;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    rgba(34,197,94,.28) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34,197,94,.10),
+      rgba(34,197,94,.035)
+    ) !important;
+
+  box-shadow:
+    0 12px 28px
+      rgba(0,0,0,.10),
+    inset 0 1px 0
+      rgba(255,255,255,.04);
+}
+
+.student-profile-live-users__dot {
+  width: 9px !important;
+  height: 9px !important;
+
+  flex:
+    0 0 9px !important;
+
+  background:
+    #22c55e !important;
+
+  box-shadow:
+    0 0 0 4px
+      rgba(34,197,94,.10),
+    0 0 13px
+      rgba(34,197,94,.72) !important;
+}
+
+/* Sabit ışık: pulse yok */
+.student-profile-live-users__dot::after {
+  display: none !important;
+  animation: none !important;
+}
+
+.student-profile-live-users__content {
+  display: flex !important;
+
+  flex-direction: column;
+
+  align-items: flex-start !important;
+
+  gap: 3px !important;
+}
+
+.student-profile-live-users__content span {
+  color:
+    var(--profile-hero-muted) !important;
+
+  font-size: 8px !important;
+  font-weight: 750 !important;
+
+  line-height: 1.2;
+
+  letter-spacing: .025em;
+
+  white-space: nowrap;
+}
+
+.student-profile-live-users__content strong {
+  color: #22c55e !important;
+
+  font-size: 18px !important;
+  font-weight: 850;
+
+  line-height: 1;
+
+  letter-spacing: -.025em;
+}
+
+/* Açık temada da yeşil sabit kalır */
+.student-app-shell[data-theme="light"]
+.student-profile-live-users {
+  border-color:
+    rgba(22,163,74,.22) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34,197,94,.11),
+      rgba(255,255,255,.72)
+    ) !important;
+
+  box-shadow:
+    0 12px 28px
+      rgba(22,40,65,.08);
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .student-profile-stat-card {
+    height: 164px !important;
+    min-height: 164px !important;
+  }
+}
+
+@media (max-width: 650px) {
+  .student-profile-stat-card {
+    height: auto !important;
+    min-height: 116px !important;
+  }
+
+  .student-profile-live-users {
+    min-width: 0;
+  }
+}

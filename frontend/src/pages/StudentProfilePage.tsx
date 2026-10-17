@@ -1340,14 +1340,14 @@ export default function StudentProfilePage() {
         >
           <span className="student-profile-live-users__dot" />
 
-          <div>
+          <div className="student-profile-live-users__content">
+            <span>
+              Çevrimiçi kullanıcı sayısı
+            </span>
+
             <strong>
               {activeStudentCount}
             </strong>
-
-            <span>
-              aktif kişi
-            </span>
           </div>
         </div>
 
