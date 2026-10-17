@@ -1,0 +1,63 @@
+name: NoteMark CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    name: Backend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository kodlarini al
+        uses: actions/checkout@v4
+
+      - name: .NET 10 kur
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Backend bagimliliklarini yukle
+        run: dotnet restore backend/NotMarket.Api/NotMarket.Api.csproj
+
+      - name: Backend build
+        run: >
+          dotnet build
+          backend/NotMarket.Api/NotMarket.Api.csproj
+          --configuration Release
+          --no-restore
+
+  frontend:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Repository kodlarini al
+        uses: actions/checkout@v4
+
+      - name: Node.js 22 kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Frontend bagimliliklarini yukle
+        run: npm ci
+
+      - name: ESLint kontrolu
+        run: npm run lint
+
+      - name: Frontend build
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: https://localhost:7001/api
