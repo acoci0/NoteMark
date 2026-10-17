@@ -1495,7 +1495,7 @@ export default function StudentProfilePage() {
             </span>
 
             <span className="student-profile-hero-status__label">
-              NotMark akademik profiliniz aktif
+              Akademik Erişiminiz Aktif
             </span>
           </div>
         </div>

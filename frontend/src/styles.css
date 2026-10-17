@@ -30441,3 +30441,107 @@ textarea:not(
       9px !important;
   }
 }
+
+/* =========================================================
+   NOTMARK ACADEMIC STATUS - LIVE CHECK V3
+   ========================================================= */
+
+.student-profile-hero-status__icon {
+  position: relative;
+
+  animation:
+    notmark-academic-check-glow
+    2.4s
+    ease-in-out
+    infinite !important;
+}
+
+.student-profile-hero-status__icon::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -4px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(34, 197, 94, .22);
+
+  opacity: .25;
+
+  pointer-events: none;
+
+  animation:
+    notmark-academic-check-ring
+    2.4s
+    ease-in-out
+    infinite !important;
+}
+
+.student-profile-hero-status__icon svg {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes notmark-academic-check-glow {
+  0%,
+  100% {
+    color: #40d878;
+
+    box-shadow:
+      0 0 0 3px
+        rgba(34, 197, 94, .03),
+      0 0 5px
+        rgba(34, 197, 94, .16);
+
+    filter:
+      brightness(.96);
+  }
+
+  50% {
+    color: #65e394;
+
+    box-shadow:
+      0 0 0 4px
+        rgba(34, 197, 94, .07),
+      0 0 13px
+        rgba(34, 197, 94, .42);
+
+    filter:
+      brightness(1.18);
+  }
+}
+
+@keyframes notmark-academic-check-ring {
+  0%,
+  100% {
+    opacity: .14;
+
+    transform:
+      scale(.88);
+  }
+
+  50% {
+    opacity: .52;
+
+    transform:
+      scale(1.08);
+  }
+}
+
+/* Hareket kapalıysa sabit */
+.student-app-shell[data-motion="off"]
+.student-profile-hero-status__icon,
+.student-app-shell[data-motion="off"]
+.student-profile-hero-status__icon::after {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-hero-status__icon,
+  .student-profile-hero-status__icon::after {
+    animation: none !important;
+  }
+}
