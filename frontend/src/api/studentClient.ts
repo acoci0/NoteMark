@@ -1,11 +1,19 @@
 import axios from "axios";
 
-const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL ??
-  "https://localhost:7001";
+const configuredBaseUrl =
+  (
+    import.meta.env.VITE_API_BASE_URL ??
+    "https://localhost:7001"
+  )
+    .trim()
+    .replace(/\/+$/, "");
+
+const apiBaseUrl = configuredBaseUrl.endsWith("/api")
+  ? configuredBaseUrl
+  : `${configuredBaseUrl}/api`;
 
 const studentApi = axios.create({
-  baseURL: `${apiBaseUrl}/api`,
+  baseURL: apiBaseUrl,
   timeout: 15000,
 });
 
