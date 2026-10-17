@@ -49,7 +49,8 @@ public enum OrderStatus
     Paid = 2,
     PaymentFailed = 3,
     Cancelled = 4,
-    Refunded = 5
+    Refunded = 5,
+    Demo = 6
 }
 
 public enum PaymentStatus

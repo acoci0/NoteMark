@@ -196,13 +196,18 @@ public sealed class OrdersController(
          * Sadece hem sipariş hem de ödeme kaydı
          * başarılı durumdaysa teslim yetkisi verilir.
          */
-        if (
-            order.Status !=
-                OrderStatus.Paid ||
-            order.Payment is null ||
-            order.Payment.Status !=
-                PaymentStatus.Succeeded
-        )
+        var isDemo =
+            order.Status == OrderStatus.Demo &&
+            order.Payment?.Provider == "local-test" &&
+            order.Payment.Status ==
+                PaymentStatus.Succeeded;
+
+        var isPaid =
+            order.Status == OrderStatus.Paid &&
+            order.Payment?.Status ==
+                PaymentStatus.Succeeded;
+
+        if (!isDemo && !isPaid)
         {
             return StatusCode(
                 StatusCodes.Status403Forbidden,
