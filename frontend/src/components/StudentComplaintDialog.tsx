@@ -1,5 +1,4 @@
 import {
-  AlertTriangle,
   Send,
   X,
 } from "lucide-react";
@@ -355,8 +354,10 @@ export default function StudentComplaintDialog({
         <header className="student-complaint-dialog__header">
           <div className="student-complaint-dialog__title">
             <div className="student-complaint-dialog__icon">
-              <AlertTriangle
-                size={20}
+              <img
+                src="/brand/notmark-logo.png"
+                alt="NotMark"
+                className="student-complaint-dialog__logo"
               />
             </div>
 

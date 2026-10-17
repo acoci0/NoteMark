@@ -28912,3 +28912,29 @@ p {
   color:
     var(--appeal-text) !important;
 }
+
+/* =========================================================
+   NOTMARK "İTİRAZ" TEMPLATE - LOGO
+   ========================================================= */
+
+.student-complaint-dialog__icon {
+  overflow: hidden;
+
+  background:
+    rgba(255, 107, 11, .055) !important;
+}
+
+.student-complaint-dialog__logo {
+  display: block;
+
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 4px 10px
+      rgba(255, 107, 11, .20)
+    );
+}
