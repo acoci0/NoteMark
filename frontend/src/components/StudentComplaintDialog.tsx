@@ -14,6 +14,10 @@ import {
   isAxiosError,
 } from "axios";
 
+import {
+  createPortal,
+} from "react-dom";
+
 import studentApi from "../api/studentClient";
 
 type ComplaintCategory =
@@ -84,6 +88,48 @@ export default function StudentComplaintDialog({
     open,
     defaultSubject,
     relatedEntityId,
+  ]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const notmarkComplaintPreviousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow =
+      "hidden";
+
+    const handleKeyDown = (
+      event: KeyboardEvent
+    ) => {
+      if (
+        event.key === "Escape" &&
+        !submitting
+      ) {
+        onClose();
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      document.body.style.overflow =
+        notmarkComplaintPreviousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [
+    open,
+    submitting,
+    onClose,
   ]);
 
   if (!open) {
@@ -166,7 +212,12 @@ export default function StudentComplaintDialog({
     }
   };
 
-  return (
+  const portalTarget =
+    document.querySelector<HTMLElement>(
+      ".student-app-shell"
+    ) ?? document.body;
+
+  return createPortal(
     <div
       className="student-complaint-dialog-backdrop"
       onMouseDown={() => {
@@ -329,6 +380,7 @@ export default function StudentComplaintDialog({
           </form>
         )}
       </section>
-    </div>
+    </div>,
+    portalTarget
   );
 }
