@@ -27769,3 +27769,22 @@ span {
     animation: none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK ONLINE LABEL V9
+   ========================================================= */
+
+.student-profile-live-users__content span {
+  text-transform: uppercase !important;
+
+  font-size: 10px !important;
+  font-weight: 800 !important;
+
+  letter-spacing: .04em !important;
+
+  line-height: 1 !important;
+}
+
+.student-profile-live-users__content strong {
+  font-size: 18px !important;
+}
