@@ -36,6 +36,11 @@ type ApiErrorResponse = {
   message?: string;
 };
 
+type ActiveStudentResponse = {
+  activeCount: number;
+  windowSeconds: number;
+};
+
 const MAX_FILE_SIZE =
   10 * 1024 * 1024;
 
@@ -61,6 +66,11 @@ export default function StudentProfilePage() {
 
   const [message, setMessage] =
     useState("");
+
+  const [
+    activeStudentCount,
+    setActiveStudentCount,
+  ] = useState(1);
 
   /*
    * Üniversite autocomplete state'leri.
@@ -226,6 +236,60 @@ export default function StudentProfilePage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  /*
+   * Öğrenci panelindeki aktif oturum
+   * sayısını periyodik olarak yeniler.
+   */
+  useEffect(() => {
+    let cancelled =
+      false;
+
+    const loadActiveStudents =
+      async () => {
+        try {
+          const { data } =
+            await studentApi.get<
+              ActiveStudentResponse
+            >(
+              "/analytics/active-students"
+            );
+
+          if (!cancelled) {
+            setActiveStudentCount(
+              Math.max(
+                1,
+                data.activeCount
+              )
+            );
+          }
+        } catch {
+          /*
+           * Sayaç hatası profil ekranını
+           * etkilememelidir.
+           */
+        }
+      };
+
+    void loadActiveStudents();
+
+    const timer =
+      window.setInterval(
+        () => {
+          void loadActiveStudents();
+        },
+        30_000
+      );
+
+    return () => {
+      cancelled =
+        true;
+
+      window.clearInterval(
+        timer
+      );
+    };
+  }, []);
 
   /*
    * contentEditable alanların görünen
@@ -1269,6 +1333,24 @@ export default function StudentProfilePage() {
   return (
     <div className="student-profile-page">
       <header className="student-profile-header">
+        <div
+          className="student-profile-live-users"
+          title="Son 90 saniyede aktif öğrenci oturumları"
+          aria-live="polite"
+        >
+          <span className="student-profile-live-users__dot" />
+
+          <div>
+            <strong>
+              {activeStudentCount}
+            </strong>
+
+            <span>
+              aktif kişi
+            </span>
+          </div>
+        </div>
+
         <div className="student-profile-header__content">
           <span className="student-profile-eyebrow">
             <span className="student-profile-eyebrow__dot" />

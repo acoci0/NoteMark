@@ -26652,3 +26652,489 @@ body {
       4px;
   }
 }
+
+
+/* =========================================================
+   NOTMARK STUDENT HERO LIVE V5
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   NAVBAR: BUTONLAR SOLDAN BAŞLAR
+   --------------------------------------------------------- */
+
+.student-appbar__inner {
+  gap: 0;
+}
+
+.student-appbar .student-main-nav {
+  flex:
+    1 1 auto;
+
+  min-width: 0;
+
+  margin-left:
+    clamp(
+      20px,
+      2.4vw,
+      38px
+    );
+
+  margin-right:
+    20px;
+
+  justify-content:
+    flex-start !important;
+
+  overflow:
+    visible !important;
+}
+
+.student-appbar
+.student-account-area {
+  margin-left: auto;
+}
+
+/* ---------------------------------------------------------
+   HERO TEMA DEĞİŞKENLERİ
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme="dark"]
+.student-profile-header {
+  --profile-hero-a:
+    #091827;
+
+  --profile-hero-b:
+    #102238;
+
+  --profile-hero-c:
+    #111b2d;
+
+  --profile-hero-title:
+    #ffffff;
+
+  --profile-hero-muted:
+    #aab8c8;
+
+  --profile-stat-bg:
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    );
+
+  --profile-stat-border:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+
+  --profile-stat-text:
+    #ffffff;
+
+  --profile-stat-muted:
+    #9eacbd;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-header {
+  --profile-hero-a:
+    #f9fbff;
+
+  --profile-hero-b:
+    #eef3fb;
+
+  --profile-hero-c:
+    #f8fafc;
+
+  --profile-hero-title:
+    #142033;
+
+  --profile-hero-muted:
+    #66768a;
+
+  --profile-stat-bg:
+    rgba(
+      255,
+      255,
+      255,
+      .72
+    );
+
+  --profile-stat-border:
+    rgba(
+      29,
+      43,
+      64,
+      .09
+    );
+
+  --profile-stat-text:
+    #162135;
+
+  --profile-stat-muted:
+    #69778a;
+}
+
+/* ---------------------------------------------------------
+   HAREKETLİ PROFİL HERO
+   --------------------------------------------------------- */
+
+.student-profile-header {
+  position: relative;
+
+  background:
+    radial-gradient(
+      circle at 15% 22%,
+      rgba(
+        var(--student-accent-rgb),
+        .18
+      ),
+      transparent 33%
+    ),
+    radial-gradient(
+      circle at 88% 72%,
+      rgba(
+        var(--student-accent-rgb),
+        .17
+      ),
+      transparent 32%
+    ),
+    linear-gradient(
+      125deg,
+      var(--profile-hero-a),
+      var(--profile-hero-b) 52%,
+      var(--profile-hero-c)
+    ) !important;
+
+  background-size:
+    165% 165%,
+    175% 175%,
+    145% 145%;
+
+  animation:
+    notmark-profile-gradient-drift
+    18s ease-in-out
+    infinite alternate;
+
+  will-change:
+    background-position;
+}
+
+@keyframes
+notmark-profile-gradient-drift {
+  0% {
+    background-position:
+      0% 15%,
+      100% 80%,
+      0% 50%;
+  }
+
+  50% {
+    background-position:
+      42% 52%,
+      58% 35%,
+      55% 48%;
+  }
+
+  100% {
+    background-position:
+      100% 70%,
+      0% 18%,
+      100% 50%;
+  }
+}
+
+.student-profile-header h1,
+.student-profile-header h1 span {
+  color:
+    var(
+      --profile-hero-title
+    ) !important;
+}
+
+.student-profile-header p {
+  color:
+    var(
+      --profile-hero-muted
+    ) !important;
+}
+
+/* ---------------------------------------------------------
+   AKTİF KİŞİ
+   --------------------------------------------------------- */
+
+.student-profile-live-users {
+  position: absolute;
+
+  top: 24px;
+  right: 26px;
+
+  z-index: 5;
+
+  min-height: 42px;
+
+  padding:
+    7px 11px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .24
+    );
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .075
+    );
+
+  backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      0,
+      0,
+      0,
+      .08
+    );
+}
+
+.student-profile-live-users__dot {
+  position: relative;
+
+  width: 8px;
+  height: 8px;
+
+  flex:
+    0 0 8px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(
+      --student-accent
+    );
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    );
+}
+
+.student-profile-live-users__dot::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -4px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .55
+    );
+
+  border-radius:
+    50%;
+
+  animation:
+    notmark-live-pulse
+    2.2s ease-out
+    infinite;
+}
+
+@keyframes notmark-live-pulse {
+  0% {
+    opacity: .75;
+    transform:
+      scale(.65);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      scale(1.7);
+  }
+}
+
+.student-profile-live-users
+div {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.student-profile-live-users
+strong {
+  color:
+    var(
+      --profile-hero-title
+    );
+
+  font-size: 15px;
+  line-height: 1;
+}
+
+.student-profile-live-users
+span:not(
+  .student-profile-live-users__dot
+) {
+  color:
+    var(
+      --profile-hero-muted
+    );
+
+  font-size: 9px;
+  font-weight: 750;
+
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------
+   HERO STAT KARTLARI TEMA UYUMU
+   --------------------------------------------------------- */
+
+.student-profile-stat-card {
+  border-color:
+    var(
+      --profile-stat-border
+    ) !important;
+
+  background:
+    var(
+      --profile-stat-bg
+    ) !important;
+}
+
+.student-profile-stat-card
+strong {
+  color:
+    var(
+      --profile-stat-text
+    ) !important;
+}
+
+.student-profile-stat-card
+span {
+  color:
+    var(
+      --profile-stat-muted
+    ) !important;
+}
+
+.student-profile-stat-card:hover {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .34
+    ) !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    ) !important;
+}
+
+/* ---------------------------------------------------------
+   MOTION AYARLARI
+   --------------------------------------------------------- */
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-header {
+  animation-duration:
+    38s;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-live-users__dot::after {
+  animation-duration:
+    4s;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-header,
+.student-app-shell[data-motion="off"]
+.student-profile-live-users__dot::after {
+  animation:
+    none !important;
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .student-profile-header,
+  .student-profile-live-users__dot::after {
+    animation:
+      none !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+  .student-appbar
+  .student-main-nav {
+    margin-left:
+      16px;
+
+    margin-right:
+      12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .student-profile-header {
+    padding-top:
+      28px;
+  }
+
+  .student-profile-live-users {
+    position: static;
+
+    width: fit-content;
+
+    margin-bottom:
+      -8px;
+
+    grid-column:
+      1;
+  }
+}
+
+@media (max-width: 650px) {
+  .student-appbar
+  .student-main-nav {
+    margin-left:
+      8px;
+  }
+
+  .student-profile-live-users {
+    margin-bottom:
+      0;
+  }
+}

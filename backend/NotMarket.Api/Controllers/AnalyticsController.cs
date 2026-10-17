@@ -78,4 +78,41 @@ public sealed class AnalyticsController(AppDbContext db)
 
         return Accepted();
     }
+
+    /*
+     * Öğrenci panelinde son 90 saniye içinde
+     * heartbeat gönderen benzersiz oturumları
+     * aktif kabul eder.
+     */
+    [AllowAnonymous]
+    [HttpGet("active-students")]
+    public async Task<IActionResult> GetActiveStudents(
+        CancellationToken cancellationToken)
+    {
+        var cutoff =
+            DateTimeOffset.UtcNow
+                .AddSeconds(-90);
+
+        var activeCount =
+            await db.SiteVisits
+                .Where(
+                    x =>
+                        x.VisitedAt >= cutoff &&
+                        x.Path.StartsWith(
+                            "/student/") &&
+                        x.Path !=
+                            "/student/login")
+                .Select(
+                    x => x.SessionHash)
+                .Distinct()
+                .CountAsync(
+                    cancellationToken);
+
+        return Ok(new
+        {
+            activeCount,
+            windowSeconds = 90
+        });
+    }
+
 }
