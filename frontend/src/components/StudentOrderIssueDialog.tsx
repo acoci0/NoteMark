@@ -107,11 +107,6 @@ export default function StudentOrderIssueDialog({
       null
     );
 
-  const [
-    typingPulse,
-    setTypingPulse,
-  ] = useState(false);
-
   useEffect(() => {
     return () => {
       if (
