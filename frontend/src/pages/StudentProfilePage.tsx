@@ -1345,52 +1345,88 @@ export default function StudentProfilePage() {
             event.currentTarget
               .getBoundingClientRect();
 
-          const horizontal =
-            (
-              (
-                event.clientX -
-                rect.left
-              ) /
-              rect.width -
-              0.5
-            ) * 2;
+          const x =
+            Math.max(
+              0,
+              Math.min(
+                1,
+                (
+                  event.clientX -
+                  rect.left
+                ) /
+                rect.width
+              )
+            );
 
-          const vertical =
-            (
-              (
-                event.clientY -
-                rect.top
-              ) /
-              rect.height -
-              0.5
-            ) * 2;
+          const y =
+            Math.max(
+              0,
+              Math.min(
+                1,
+                (
+                  event.clientY -
+                  rect.top
+                ) /
+                rect.height
+              )
+            );
 
           event.currentTarget.style
             .setProperty(
-              "--hero-parallax-x",
+              "--hero-mouse-x",
               `${(
-                horizontal * -9
+                x * 100
+              ).toFixed(1)}%`
+            );
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-mouse-y",
+              `${(
+                y * 100
+              ).toFixed(1)}%`
+            );
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-shift-x",
+              `${(
+                (x - 0.5) *
+                -22
               ).toFixed(2)}px`
             );
 
           event.currentTarget.style
             .setProperty(
-              "--hero-parallax-y",
+              "--hero-shift-y",
               `${(
-                vertical * -6
+                (y - 0.5) *
+                -14
               ).toFixed(2)}px`
             );
         }}
         onPointerLeave={(event) => {
           event.currentTarget.style
             .setProperty(
-              "--hero-parallax-x",
+              "--hero-mouse-x",
+              "50%"
+            );
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-mouse-y",
+              "50%"
+            );
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-shift-x",
               "0px"
             );
 
           event.currentTarget.style
             .setProperty(
-              "--hero-parallax-y",
+              "--hero-shift-y",
               "0px"
             );
         }}

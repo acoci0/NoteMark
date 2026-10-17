@@ -29169,285 +29169,475 @@ textarea:not(
 }
 
 /* =========================================================
-   NOTMARK AURORA HERO V11
+   NOTMARK AURORA HERO V12
+   Stable layout + visible mouse reaction
    ========================================================= */
 
-.student-profile-header {
-  --hero-parallax-x: 0px;
-  --hero-parallax-y: 0px;
-
-  isolation: isolate;
-}
-
-/*
- * İçerik hareket etmez.
- * Yalnızca dekoratif arka plan katmanı tepki verir.
- */
-.student-profile-header__content,
-.student-profile-stats,
-.student-profile-live-users {
-  position: relative;
-  z-index: 3;
-}
 
 /* ---------------------------------------------------------
-   AURORA KATMANI
+   HERO TEMEL YAPI
+   --------------------------------------------------------- */
+
+.student-profile-header {
+  --hero-mouse-x: 50%;
+  --hero-mouse-y: 50%;
+
+  --hero-shift-x: 0px;
+  --hero-shift-y: 0px;
+
+  position: relative !important;
+
+  isolation: isolate;
+
+  overflow: hidden !important;
+
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(390px, .85fr) !important;
+
+  align-items:
+    center !important;
+}
+
+
+/* ---------------------------------------------------------
+   LAYOUT KİLİDİ
+   --------------------------------------------------------- */
+
+/* Hoş geldin bölümü daima solda */
+
+.student-profile-header__content {
+  position: relative !important;
+
+  z-index: 5 !important;
+
+  grid-column:
+    1 !important;
+
+  grid-row:
+    1 !important;
+
+  align-self:
+    center !important;
+}
+
+
+/* Üç istatistik kartı daima sağda */
+
+.student-profile-stats {
+  position: relative !important;
+
+  z-index: 5 !important;
+
+  grid-column:
+    2 !important;
+
+  grid-row:
+    1 !important;
+
+  margin-top:
+    42px !important;
+}
+
+
+/* Çevrimiçi kutusu grid'e dahil olmayacak */
+
+.student-profile-live-users {
+  position:
+    absolute !important;
+
+  top:
+    22px !important;
+
+  right:
+    38px !important;
+
+  z-index:
+    8 !important;
+
+  margin:
+    0 !important;
+}
+
+
+/* ---------------------------------------------------------
+   AURORA ARKA PLAN
    --------------------------------------------------------- */
 
 .student-profile-aurora {
-  position: absolute;
-  inset: 0;
+  position:
+    absolute !important;
 
-  z-index: 0;
+  inset:
+    -35px !important;
 
-  overflow: hidden;
+  z-index:
+    0 !important;
 
-  border-radius: inherit;
+  overflow:
+    hidden !important;
 
-  pointer-events: none;
+  pointer-events:
+    none !important;
+
+  border-radius:
+    inherit;
+
+  /*
+   * Mouse neredeyse burada doğrudan
+   * tema renginde ışık oluşur.
+   */
+  background:
+    radial-gradient(
+      circle
+      at
+      var(--hero-mouse-x)
+      var(--hero-mouse-y),
+
+      rgba(
+        var(--student-accent-rgb),
+        .34
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .19
+      )
+      14%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      )
+      29%,
+
+      transparent
+      48%
+    );
 
   transform:
     translate3d(
-      var(--hero-parallax-x),
-      var(--hero-parallax-y),
+      var(--hero-shift-x),
+      var(--hero-shift-y),
       0
     );
 
   transition:
     transform
-    700ms
-    cubic-bezier(.2,.8,.2,1);
+    160ms
+    ease-out;
 
-  will-change: transform;
+  will-change:
+    transform;
 }
 
+
+/* ---------------------------------------------------------
+   AURORA IŞIK KÜRELERİ
+   --------------------------------------------------------- */
+
 .student-profile-aurora__blob {
-  position: absolute;
+  position:
+    absolute;
 
-  display: block;
+  display:
+    block;
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
-  pointer-events: none;
+  pointer-events:
+    none;
 
   will-change:
     transform,
     opacity;
 
-  filter:
-    blur(28px);
+  mix-blend-mode:
+    screen;
 }
 
-/* Sol-alt ana ışık */
+
+/* SOL ALT */
 
 .student-profile-aurora__blob--one {
-  width: 48%;
-  aspect-ratio: 1;
+  width:
+    62%;
 
-  left: -12%;
-  bottom: -55%;
+  aspect-ratio:
+    1;
+
+  left:
+    -22%;
+
+  bottom:
+    -76%;
 
   background:
     radial-gradient(
       circle,
+
       rgba(
         var(--student-accent-rgb),
-        .23
-      ) 0%,
+        .42
+      )
+      0%,
+
       rgba(
         var(--student-accent-rgb),
-        .10
-      ) 34%,
-      transparent 70%
+        .19
+      )
+      34%,
+
+      transparent
+      70%
     );
 
+  filter:
+    blur(24px);
+
   animation:
-    notmark-aurora-one
-    22s
+    notmark-aurora-v12-left
+    12s
     ease-in-out
-    infinite alternate;
+    infinite
+    alternate;
 }
 
-/* Sağ-üst ışık */
+
+/* SAĞ ÜST */
 
 .student-profile-aurora__blob--two {
-  width: 43%;
-  aspect-ratio: 1;
+  width:
+    55%;
 
-  right: -12%;
-  top: -46%;
+  aspect-ratio:
+    1;
+
+  right:
+    -18%;
+
+  top:
+    -66%;
 
   background:
     radial-gradient(
       circle,
+
+      rgba(
+        var(--student-accent-rgb),
+        .38
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .16
+      )
+      36%,
+
+      transparent
+      72%
+    );
+
+  filter:
+    blur(28px);
+
+  animation:
+    notmark-aurora-v12-right
+    15s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+
+/* ORTA IŞIK */
+
+.student-profile-aurora__blob--three {
+  width:
+    42%;
+
+  aspect-ratio:
+    1;
+
+  left:
+    34%;
+
+  top:
+    18%;
+
+  background:
+    radial-gradient(
+      circle,
+
       rgba(
         var(--student-accent-rgb),
         .20
-      ) 0%,
+      )
+      0%,
+
       rgba(
         var(--student-accent-rgb),
-        .075
-      ) 38%,
-      transparent 71%
-    );
+        .07
+      )
+      36%,
 
-  animation:
-    notmark-aurora-two
-    27s
-    ease-in-out
-    infinite alternate;
-}
-
-/* Merkezde çok hafif ikinci derinlik */
-
-.student-profile-aurora__blob--three {
-  width: 34%;
-  aspect-ratio: 1;
-
-  left: 42%;
-  top: 25%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(
-        var(--student-accent-rgb),
-        .085
-      ),
-      transparent 69%
+      transparent
+      70%
     );
 
   filter:
     blur(36px);
 
   animation:
-    notmark-aurora-three
-    18s
+    notmark-aurora-v12-center
+    10s
     ease-in-out
-    infinite alternate;
+    infinite
+    alternate;
 }
+
 
 /* ---------------------------------------------------------
-   YAVAŞ AURORA HAREKETLERİ
+   SÜREKLİ HAREKET
    --------------------------------------------------------- */
 
-@keyframes notmark-aurora-one {
+@keyframes notmark-aurora-v12-left {
   0% {
     transform:
       translate3d(
-        -3%,
-        5%,
-        0
-      )
-      scale(.94);
-
-    opacity: .65;
-  }
-
-  45% {
-    transform:
-      translate3d(
-        16%,
-        -13%,
-        0
-      )
-      scale(1.08);
-
-    opacity: .92;
-  }
-
-  100% {
-    transform:
-      translate3d(
-        30%,
-        -4%,
-        0
-      )
-      scale(1.01);
-
-    opacity: .72;
-  }
-}
-
-@keyframes notmark-aurora-two {
-  0% {
-    transform:
-      translate3d(
+        -5%,
         8%,
-        -4%,
         0
       )
-      scale(1);
-    opacity: .66;
+      scale(.92);
+
+    opacity:
+      .55;
   }
 
   50% {
     transform:
       translate3d(
-        -18%,
-        15%,
+        22%,
+        -19%,
         0
       )
-      scale(1.12);
+      scale(1.16);
 
-    opacity: .90;
+    opacity:
+      .96;
   }
 
   100% {
     transform:
       translate3d(
-        -5%,
-        24%,
-        0
-      )
-      scale(.96);
-
-    opacity: .68;
-  }
-}
-
-@keyframes notmark-aurora-three {
-  0% {
-    transform:
-      translate3d(
-        -15%,
+        43%,
         -4%,
         0
       )
-      scale(.90);
+      scale(1.04);
 
-    opacity: .28;
+    opacity:
+      .70;
   }
+}
 
-  100% {
+
+@keyframes notmark-aurora-v12-right {
+  0% {
     transform:
       translate3d(
-        24%,
         10%,
+        -6%,
+        0
+      )
+      scale(.94);
+
+    opacity:
+      .52;
+  }
+
+  50% {
+    transform:
+      translate3d(
+        -31%,
+        28%,
         0
       )
       scale(1.18);
 
-    opacity: .60;
+    opacity:
+      .92;
+  }
+
+  100% {
+    transform:
+      translate3d(
+        -9%,
+        37%,
+        0
+      )
+      scale(1.02);
+
+    opacity:
+      .64;
   }
 }
 
+
+@keyframes notmark-aurora-v12-center {
+  0% {
+    transform:
+      translate3d(
+        -24%,
+        -15%,
+        0
+      )
+      scale(.82);
+
+    opacity:
+      .28;
+  }
+
+  100% {
+    transform:
+      translate3d(
+        37%,
+        20%,
+        0
+      )
+      scale(1.26);
+
+    opacity:
+      .70;
+  }
+}
+
+
 /* ---------------------------------------------------------
-   MEVCUT GEOMETRİK HALKA DA YAVAŞÇA CANLANSIN
+   ARKADAKİ HALKA
    --------------------------------------------------------- */
 
 .student-profile-header::after {
+  z-index:
+    1 !important;
+
   animation:
-    notmark-profile-ring-float
-    34s
+    notmark-profile-ring-v12
+    24s
     ease-in-out
-    infinite alternate !important;
+    infinite
+    alternate !important;
 
   transform-origin:
     center;
 }
 
-@keyframes notmark-profile-ring-float {
+
+@keyframes notmark-profile-ring-v12 {
   0% {
     transform:
       translate3d(
@@ -29455,99 +29645,173 @@ textarea:not(
         0,
         0
       )
-      rotate(-3deg);
+      rotate(-5deg);
   }
 
   50% {
     transform:
       translate3d(
-        -14px,
-        9px,
+        -20px,
+        13px,
         0
       )
-      rotate(4deg);
+      rotate(5deg);
   }
 
   100% {
     transform:
       translate3d(
-        8px,
-        17px,
+        11px,
+        23px,
         0
       )
-      rotate(9deg);
+      rotate(10deg);
   }
 }
 
+
+/* Üst renk çizgisi */
+.student-profile-header::before {
+  z-index:
+    7 !important;
+}
+
+
 /* ---------------------------------------------------------
-   AÇIK TEMA
+   LIGHT THEME
    --------------------------------------------------------- */
 
 .student-app-shell[data-theme="light"]
-.student-profile-aurora__blob--one {
-  opacity: .55;
-}
-
-.student-app-shell[data-theme="light"]
-.student-profile-aurora__blob--two {
-  opacity: .50;
-}
-
-.student-app-shell[data-theme="light"]
-.student-profile-aurora__blob--three {
-  opacity: .34;
-}
-
-/* ---------------------------------------------------------
-   HAREKET TERCİHLERİ
-   --------------------------------------------------------- */
-
-.student-app-shell[data-motion="reduced"]
 .student-profile-aurora {
-  transform: none;
+  background:
+    radial-gradient(
+      circle
+      at
+      var(--hero-mouse-x)
+      var(--hero-mouse-y),
+
+      rgba(
+        var(--student-accent-rgb),
+        .22
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      )
+      18%,
+
+      transparent
+      47%
+    );
 }
+
+.student-app-shell[data-theme="light"]
+.student-profile-aurora__blob {
+  mix-blend-mode:
+    multiply;
+}
+
+
+/* ---------------------------------------------------------
+   TABLET
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+  .student-profile-header {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .student-profile-header__content {
+    grid-column:
+      1 !important;
+
+    grid-row:
+      auto !important;
+  }
+
+  .student-profile-stats {
+    grid-column:
+      1 !important;
+
+    grid-row:
+      auto !important;
+
+    margin-top:
+      0 !important;
+  }
+
+  .student-profile-live-users {
+    position:
+      static !important;
+
+    width:
+      fit-content !important;
+
+    margin:
+      0 0 12px auto !important;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   HAREKET AYARLARI
+   --------------------------------------------------------- */
 
 .student-app-shell[data-motion="reduced"]
 .student-profile-aurora__blob--one {
-  animation-duration: 44s;
+  animation-duration:
+    26s;
 }
 
 .student-app-shell[data-motion="reduced"]
 .student-profile-aurora__blob--two {
-  animation-duration: 52s;
+  animation-duration:
+    32s;
 }
 
 .student-app-shell[data-motion="reduced"]
 .student-profile-aurora__blob--three {
-  animation-duration: 40s;
+  animation-duration:
+    24s;
 }
 
-.student-app-shell[data-motion="reduced"]
-.student-profile-header::after {
-  animation-duration: 60s !important;
-}
 
 .student-app-shell[data-motion="off"]
 .student-profile-aurora {
-  transform: none !important;
-  transition: none !important;
+  transform:
+    none !important;
+
+  transition:
+    none !important;
 }
 
 .student-app-shell[data-motion="off"]
 .student-profile-aurora__blob,
 .student-app-shell[data-motion="off"]
 .student-profile-header::after {
-  animation: none !important;
+  animation:
+    none !important;
 }
 
+
+/* Sistem azaltılmış hareket modunda bile
+   mouse ışığı çalışır, yalnızca sürekli
+   animasyonlar kapatılır. */
+
 @media (prefers-reduced-motion: reduce) {
-  .student-profile-aurora {
-    transform: none !important;
-    transition: none !important;
-  }
 
   .student-profile-aurora__blob,
   .student-profile-header::after {
-    animation: none !important;
+    animation:
+      none !important;
+  }
+
+  .student-profile-aurora {
+    transition:
+      none !important;
   }
 }
