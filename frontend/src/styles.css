@@ -27665,3 +27665,107 @@ span {
     min-height: 116px !important;
   }
 }
+
+/* =========================================================
+   NOTMARK PROFILE ONLINE INDICATOR V8
+   ========================================================= */
+
+/* Sağ kenarı hero içeriğiyle aynı hizaya getir */
+.student-profile-live-users {
+  right: 38px !important;
+}
+
+/* Canlı bağlantı noktası */
+.student-profile-live-users__dot {
+  position: relative !important;
+
+  width: 9px !important;
+  height: 9px !important;
+
+  flex: 0 0 9px !important;
+
+  background: #22c55e !important;
+
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, .10),
+    0 0 10px rgba(34, 197, 94, .62) !important;
+
+  animation:
+    notmark-online-dot-live
+    2.1s ease-in-out
+    infinite !important;
+}
+
+/* Noktanın çevresindeki yumuşak canlı halo */
+.student-profile-live-users__dot::after {
+  content: "" !important;
+
+  display: block !important;
+
+  position: absolute;
+
+  inset: -6px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(34, 197, 94, .13);
+
+  box-shadow:
+    0 0 14px
+    rgba(34, 197, 94, .30);
+
+  pointer-events: none;
+
+  animation:
+    notmark-online-halo-live
+    2.1s ease-in-out
+    infinite !important;
+}
+
+@keyframes notmark-online-dot-live {
+  0%,
+  100% {
+    filter: brightness(.92);
+
+    box-shadow:
+      0 0 0 4px rgba(34, 197, 94, .07),
+      0 0 7px rgba(34, 197, 94, .38);
+  }
+
+  50% {
+    filter: brightness(1.35);
+
+    box-shadow:
+      0 0 0 5px rgba(34, 197, 94, .12),
+      0 0 17px rgba(34, 197, 94, .90);
+  }
+}
+
+@keyframes notmark-online-halo-live {
+  0%,
+  100% {
+    opacity: .18;
+    transform: scale(.82);
+  }
+
+  50% {
+    opacity: .75;
+    transform: scale(1.14);
+  }
+}
+
+/* Kullanıcı hareketleri kapattıysa sabit kalır */
+.student-app-shell[data-motion="off"]
+.student-profile-live-users__dot,
+.student-app-shell[data-motion="off"]
+.student-profile-live-users__dot::after {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-live-users__dot,
+  .student-profile-live-users__dot::after {
+    animation: none !important;
+  }
+}
