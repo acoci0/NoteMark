@@ -29167,3 +29167,387 @@ textarea:not(
     transform: none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK AURORA HERO V11
+   ========================================================= */
+
+.student-profile-header {
+  --hero-parallax-x: 0px;
+  --hero-parallax-y: 0px;
+
+  isolation: isolate;
+}
+
+/*
+ * İçerik hareket etmez.
+ * Yalnızca dekoratif arka plan katmanı tepki verir.
+ */
+.student-profile-header__content,
+.student-profile-stats,
+.student-profile-live-users {
+  position: relative;
+  z-index: 3;
+}
+
+/* ---------------------------------------------------------
+   AURORA KATMANI
+   --------------------------------------------------------- */
+
+.student-profile-aurora {
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  border-radius: inherit;
+
+  pointer-events: none;
+
+  transform:
+    translate3d(
+      var(--hero-parallax-x),
+      var(--hero-parallax-y),
+      0
+    );
+
+  transition:
+    transform
+    700ms
+    cubic-bezier(.2,.8,.2,1);
+
+  will-change: transform;
+}
+
+.student-profile-aurora__blob {
+  position: absolute;
+
+  display: block;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  will-change:
+    transform,
+    opacity;
+
+  filter:
+    blur(28px);
+}
+
+/* Sol-alt ana ışık */
+
+.student-profile-aurora__blob--one {
+  width: 48%;
+  aspect-ratio: 1;
+
+  left: -12%;
+  bottom: -55%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        var(--student-accent-rgb),
+        .23
+      ) 0%,
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      ) 34%,
+      transparent 70%
+    );
+
+  animation:
+    notmark-aurora-one
+    22s
+    ease-in-out
+    infinite alternate;
+}
+
+/* Sağ-üst ışık */
+
+.student-profile-aurora__blob--two {
+  width: 43%;
+  aspect-ratio: 1;
+
+  right: -12%;
+  top: -46%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        var(--student-accent-rgb),
+        .20
+      ) 0%,
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      ) 38%,
+      transparent 71%
+    );
+
+  animation:
+    notmark-aurora-two
+    27s
+    ease-in-out
+    infinite alternate;
+}
+
+/* Merkezde çok hafif ikinci derinlik */
+
+.student-profile-aurora__blob--three {
+  width: 34%;
+  aspect-ratio: 1;
+
+  left: 42%;
+  top: 25%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        var(--student-accent-rgb),
+        .085
+      ),
+      transparent 69%
+    );
+
+  filter:
+    blur(36px);
+
+  animation:
+    notmark-aurora-three
+    18s
+    ease-in-out
+    infinite alternate;
+}
+
+/* ---------------------------------------------------------
+   YAVAŞ AURORA HAREKETLERİ
+   --------------------------------------------------------- */
+
+@keyframes notmark-aurora-one {
+  0% {
+    transform:
+      translate3d(
+        -3%,
+        5%,
+        0
+      )
+      scale(.94);
+
+    opacity: .65;
+  }
+
+  45% {
+    transform:
+      translate3d(
+        16%,
+        -13%,
+        0
+      )
+      scale(1.08);
+
+    opacity: .92;
+  }
+
+  100% {
+    transform:
+      translate3d(
+        30%,
+        -4%,
+        0
+      )
+      scale(1.01);
+
+    opacity: .72;
+  }
+}
+
+@keyframes notmark-aurora-two {
+  0% {
+    transform:
+      translate3d(
+        8%,
+        -4%,
+        0
+      )
+      scale(1);
+    opacity: .66;
+  }
+
+  50% {
+    transform:
+      translate3d(
+        -18%,
+        15%,
+        0
+      )
+      scale(1.12);
+
+    opacity: .90;
+  }
+
+  100% {
+    transform:
+      translate3d(
+        -5%,
+        24%,
+        0
+      )
+      scale(.96);
+
+    opacity: .68;
+  }
+}
+
+@keyframes notmark-aurora-three {
+  0% {
+    transform:
+      translate3d(
+        -15%,
+        -4%,
+        0
+      )
+      scale(.90);
+
+    opacity: .28;
+  }
+
+  100% {
+    transform:
+      translate3d(
+        24%,
+        10%,
+        0
+      )
+      scale(1.18);
+
+    opacity: .60;
+  }
+}
+
+/* ---------------------------------------------------------
+   MEVCUT GEOMETRİK HALKA DA YAVAŞÇA CANLANSIN
+   --------------------------------------------------------- */
+
+.student-profile-header::after {
+  animation:
+    notmark-profile-ring-float
+    34s
+    ease-in-out
+    infinite alternate !important;
+
+  transform-origin:
+    center;
+}
+
+@keyframes notmark-profile-ring-float {
+  0% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      rotate(-3deg);
+  }
+
+  50% {
+    transform:
+      translate3d(
+        -14px,
+        9px,
+        0
+      )
+      rotate(4deg);
+  }
+
+  100% {
+    transform:
+      translate3d(
+        8px,
+        17px,
+        0
+      )
+      rotate(9deg);
+  }
+}
+
+/* ---------------------------------------------------------
+   AÇIK TEMA
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme="light"]
+.student-profile-aurora__blob--one {
+  opacity: .55;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-aurora__blob--two {
+  opacity: .50;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-aurora__blob--three {
+  opacity: .34;
+}
+
+/* ---------------------------------------------------------
+   HAREKET TERCİHLERİ
+   --------------------------------------------------------- */
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-aurora {
+  transform: none;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-aurora__blob--one {
+  animation-duration: 44s;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-aurora__blob--two {
+  animation-duration: 52s;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-aurora__blob--three {
+  animation-duration: 40s;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-header::after {
+  animation-duration: 60s !important;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-aurora {
+  transform: none !important;
+  transition: none !important;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-aurora__blob,
+.student-app-shell[data-motion="off"]
+.student-profile-header::after {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-aurora {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .student-profile-aurora__blob,
+  .student-profile-header::after {
+    animation: none !important;
+  }
+}

@@ -1332,7 +1332,77 @@ export default function StudentProfilePage() {
 
   return (
     <div className="student-profile-page">
-      <header className="student-profile-header">
+      <header
+        className="student-profile-header"
+        onPointerMove={(event) => {
+          if (
+            event.pointerType !== "mouse"
+          ) {
+            return;
+          }
+
+          const rect =
+            event.currentTarget
+              .getBoundingClientRect();
+
+          const horizontal =
+            (
+              (
+                event.clientX -
+                rect.left
+              ) /
+              rect.width -
+              0.5
+            ) * 2;
+
+          const vertical =
+            (
+              (
+                event.clientY -
+                rect.top
+              ) /
+              rect.height -
+              0.5
+            ) * 2;
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-parallax-x",
+              `${(
+                horizontal * -9
+              ).toFixed(2)}px`
+            );
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-parallax-y",
+              `${(
+                vertical * -6
+              ).toFixed(2)}px`
+            );
+        }}
+        onPointerLeave={(event) => {
+          event.currentTarget.style
+            .setProperty(
+              "--hero-parallax-x",
+              "0px"
+            );
+
+          event.currentTarget.style
+            .setProperty(
+              "--hero-parallax-y",
+              "0px"
+            );
+        }}
+      >
+        <div
+          className="student-profile-aurora"
+          aria-hidden="true"
+        >
+          <span className="student-profile-aurora__blob student-profile-aurora__blob--one" />
+          <span className="student-profile-aurora__blob student-profile-aurora__blob--two" />
+          <span className="student-profile-aurora__blob student-profile-aurora__blob--three" />
+        </div>
         <div
           className="student-profile-live-users"
           title="Son 90 saniyede aktif öğrenci oturumları"
