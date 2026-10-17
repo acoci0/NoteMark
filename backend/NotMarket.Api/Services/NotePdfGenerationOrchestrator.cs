@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NotMarket.Api.Data;
@@ -13,12 +15,26 @@ public sealed class NotePdfGenerationOrchestrator(
     ILatexDocumentRenderer documentRenderer,
     ILatexPdfCompiler pdfCompiler,
     IOptions<OpenAiOptions> openAiOptions,
+    IOptions<NotePdfGenerationOptions>
+        pdfGenerationOptions,
     ILogger<NotePdfGenerationOrchestrator> logger)
     : INotePdfGenerationOrchestrator
 {
+    private static readonly JsonSerializerOptions
+        ArtifactJsonOptions =
+            new(JsonSerializerDefaults.Web)
+            {
+                PropertyNameCaseInsensitive =
+                    true
+            };
+
     private readonly OpenAiOptions
         _openAiOptions =
             openAiOptions.Value;
+
+    private readonly NotePdfGenerationOptions
+        _pdfGenerationOptions =
+            pdfGenerationOptions.Value;
 
     public async Task<NotePdfGenerationResult>
         GenerateAsync(
@@ -96,6 +112,8 @@ public sealed class NotePdfGenerationOrchestrator(
                 await db.NoteSubmissions
                     .Include(
                         x => x.Request)
+                    .Include(
+                        x => x.PdfGenerationArtifact)
                     .SingleAsync(
                         x =>
                             x.Id ==
@@ -142,39 +160,81 @@ public sealed class NotePdfGenerationOrchestrator(
                     "Orijinal not PDF'i izin verilen dosya boyutunu aşıyor.");
             }
 
-            var conversionInput =
-                new NoteContentConversionInput(
-                    submission.Id,
-                    submission.Title,
-                    submission.Request
-                        .UniversityName,
-                    submission.Request
-                        .DepartmentName,
-                    submission.Request
-                        .CourseName,
-                    submission.Request
-                        .CriteriaJson,
-                    Path.GetFileName(
-                        submission.OriginalBlobPath),
-                    "application/pdf",
+            var sourceDocumentSha256 =
+                CalculateSha256(
                     documentBytes);
 
+            var artifact =
+                submission
+                    .PdfGenerationArtifact;
+
+            NoteDocumentModel? document =
+                null;
+
             /*
-             * Orijinal PDF yapılandırılmış
-             * akademik belge modeline dönüştürülür.
+             * Birinci seviye cache:
+             *
+             * Kaynak PDF, model ve prompt
+             * değişmemişse OpenAI tekrar
+             * çağrılmaz.
              */
-            var conversionResult =
-                await contentConversionService
-                    .ConvertAsync(
-                        conversionInput,
-                        cancellationToken);
+            var conversionCacheHit =
+                artifact is not null &&
+                string.Equals(
+                    artifact.SourceDocumentSha256,
+                    sourceDocumentSha256,
+                    StringComparison
+                        .OrdinalIgnoreCase) &&
+                string.Equals(
+                    artifact.ModelName,
+                    _pdfGenerationOptions.Model,
+                    StringComparison.Ordinal) &&
+                string.Equals(
+                    artifact.PromptVersion,
+                    _pdfGenerationOptions
+                        .PromptVersion,
+                    StringComparison.Ordinal) &&
+                !string.IsNullOrWhiteSpace(
+                    artifact.DocumentModelJson);
 
-            var generatedAt =
-                DateTimeOffset.UtcNow;
+            if (conversionCacheHit)
+            {
+                try
+                {
+                    document =
+                        JsonSerializer
+                            .Deserialize<
+                                NoteDocumentModel>(
+                                artifact!
+                                    .DocumentModelJson,
+                                ArtifactJsonOptions);
 
-            var renderInput =
-                new LatexDocumentRenderInput(
-                    new LatexDocumentMetadata(
+                    if (document is null)
+                    {
+                        conversionCacheHit =
+                            false;
+                    }
+                }
+                catch (JsonException exception)
+                {
+                    conversionCacheHit =
+                        false;
+
+                    logger.LogWarning(
+                        exception,
+                        "PDF artifact belge modeli okunamadı. OpenAI dönüşümü yeniden yapılacak. NoteSubmissionId: {NoteSubmissionId}",
+                        submission.Id);
+                }
+            }
+
+            string modelName;
+            string promptVersion;
+            DateTimeOffset convertedAt;
+
+            if (!conversionCacheHit)
+            {
+                var conversionInput =
+                    new NoteContentConversionInput(
                         submission.Id,
                         submission.Title,
                         submission.Request
@@ -183,16 +243,226 @@ public sealed class NotePdfGenerationOrchestrator(
                             .DepartmentName,
                         submission.Request
                             .CourseName,
-                        generatedAt),
-                    conversionResult.Document);
+                        submission.Request
+                            .CriteriaJson,
+                        Path.GetFileName(
+                            submission
+                                .OriginalBlobPath),
+                        "application/pdf",
+                        documentBytes);
+
+                /*
+                 * Cache geçersizse orijinal PDF
+                 * yeniden yapılandırılmış belge
+                 * modeline dönüştürülür.
+                 */
+                var conversionResult =
+                    await contentConversionService
+                        .ConvertAsync(
+                            conversionInput,
+                            cancellationToken);
+
+                document =
+                    conversionResult.Document;
+
+                modelName =
+                    conversionResult.ModelName;
+
+                promptVersion =
+                    conversionResult
+                        .PromptVersion;
+
+                convertedAt =
+                    conversionResult
+                        .ConvertedAt;
+            }
+            else
+            {
+                modelName =
+                    artifact!.ModelName;
+
+                promptVersion =
+                    artifact.PromptVersion;
+
+                convertedAt =
+                    artifact.ConvertedAt;
+
+                logger.LogInformation(
+                    "PDF içerik dönüşüm artifact cache hit. OpenAI çağrısı atlandı. NoteSubmissionId: {NoteSubmissionId}",
+                    submission.Id);
+            }
 
             /*
-             * Yapılandırılmış içerik sabit ve
-             * güvenli LaTeX şablonuna yerleştirilir.
+             * İkinci seviye cache:
+             *
+             * İçerik modeli geçerliyse ve
+             * LaTeX şablon sürümü de aynıysa
+             * mevcut LaTeX kaynağı kullanılır.
+             *
+             * Yalnızca şablon değişmişse OpenAI
+             * çağrılmadan yeniden render edilir.
              */
-            var renderResult =
-                documentRenderer.Render(
-                    renderInput);
+            var latexCacheHit =
+                conversionCacheHit &&
+                artifact is not null &&
+                string.Equals(
+                    artifact.TemplateVersion,
+                    _pdfGenerationOptions
+                        .TemplateVersion,
+                    StringComparison.Ordinal) &&
+                !string.IsNullOrWhiteSpace(
+                    artifact.LatexSource);
+
+            string latexSource;
+            string templateVersion;
+            DateTimeOffset renderedAt;
+
+            if (latexCacheHit)
+            {
+                latexSource =
+                    artifact!.LatexSource;
+
+                templateVersion =
+                    artifact.TemplateVersion;
+
+                renderedAt =
+                    artifact.RenderedAt;
+
+                logger.LogInformation(
+                    "PDF LaTeX artifact cache hit. Render işlemi atlandı. NoteSubmissionId: {NoteSubmissionId}",
+                    submission.Id);
+            }
+            else
+            {
+                var generatedAt =
+                    DateTimeOffset.UtcNow;
+
+                var renderInput =
+                    new LatexDocumentRenderInput(
+                        new LatexDocumentMetadata(
+                            submission.Id,
+                            submission.Title,
+                            submission.Request
+                                .UniversityName,
+                            submission.Request
+                                .DepartmentName,
+                            submission.Request
+                                .CourseName,
+                            generatedAt),
+                        document ??
+                        throw new InvalidOperationException(
+                            "PDF üretimi için belge modeli oluşturulamadı."));
+
+                var renderResult =
+                    documentRenderer.Render(
+                        renderInput);
+
+                latexSource =
+                    renderResult.Source;
+
+                templateVersion =
+                    renderResult
+                        .TemplateVersion;
+
+                renderedAt =
+                    DateTimeOffset.UtcNow;
+            }
+
+            /*
+             * Cache miss olduğunda veya yalnızca
+             * template değiştiğinde artifact
+             * güncellenir.
+             *
+             * Bu kayıt PDF derlenmeden önce
+             * saklanır. Böylece derleme daha sonra
+             * başarısız olsa bile OpenAI dönüşümü
+             * retry sırasında tekrar yapılmaz.
+             */
+            if (
+                !conversionCacheHit ||
+                !latexCacheHit
+            )
+            {
+                var documentModelJson =
+                    conversionCacheHit
+                        ? artifact!
+                            .DocumentModelJson
+                        : JsonSerializer.Serialize(
+                            document ??
+                            throw new InvalidOperationException(
+                                "Artifact için belge modeli bulunamadı."),
+                            ArtifactJsonOptions);
+
+                if (artifact is null)
+                {
+                    artifact =
+                        new NotePdfGenerationArtifact
+                        {
+                            NoteSubmissionId =
+                                submission.Id,
+                            NoteSubmission =
+                                submission,
+                            SourceDocumentSha256 =
+                                sourceDocumentSha256,
+                            DocumentModelJson =
+                                documentModelJson,
+                            LatexSource =
+                                latexSource,
+                            ModelName =
+                                modelName,
+                            PromptVersion =
+                                promptVersion,
+                            TemplateVersion =
+                                templateVersion,
+                            ConvertedAt =
+                                convertedAt,
+                            RenderedAt =
+                                renderedAt,
+                            UpdatedAt =
+                                DateTimeOffset.UtcNow
+                        };
+
+                    db.NotePdfGenerationArtifacts
+                        .Add(artifact);
+
+                    submission
+                        .PdfGenerationArtifact =
+                            artifact;
+                }
+                else
+                {
+                    artifact
+                        .SourceDocumentSha256 =
+                            sourceDocumentSha256;
+
+                    artifact.DocumentModelJson =
+                        documentModelJson;
+
+                    artifact.LatexSource =
+                        latexSource;
+
+                    artifact.ModelName =
+                        modelName;
+
+                    artifact.PromptVersion =
+                        promptVersion;
+
+                    artifact.TemplateVersion =
+                        templateVersion;
+
+                    artifact.ConvertedAt =
+                        convertedAt;
+
+                    artifact.RenderedAt =
+                        renderedAt;
+
+                    artifact.UpdatedAt =
+                        DateTimeOffset.UtcNow;
+                }
+
+                await db.SaveChangesAsync(
+                    cancellationToken);
+            }
 
             /*
              * LaTeX kaynağı izole geçici klasörde
@@ -202,7 +472,7 @@ public sealed class NotePdfGenerationOrchestrator(
                 await pdfCompiler.CompileAsync(
                     new LatexPdfCompilationInput(
                         submission.Id,
-                        renderResult.Source),
+                        latexSource),
                     cancellationToken);
 
             await using var generatedDocument =
@@ -232,13 +502,13 @@ public sealed class NotePdfGenerationOrchestrator(
                 compilationResult.CompiledAt;
 
             submission.PdfGenerationModelName =
-                conversionResult.ModelName;
+                modelName;
 
             submission.PdfConversionPromptVersion =
-                conversionResult.PromptVersion;
+                promptVersion;
 
             submission.PdfTemplateVersion =
-                renderResult.TemplateVersion;
+                templateVersion;
 
             submission.PdfCompilerName =
                 compilationResult.CompilerName;
@@ -280,9 +550,9 @@ public sealed class NotePdfGenerationOrchestrator(
                 compilationResult
                     .PdfBytes
                     .Length,
-                conversionResult.ModelName,
-                conversionResult.PromptVersion,
-                renderResult.TemplateVersion,
+                modelName,
+                promptVersion,
+                templateVersion,
                 compilationResult.CompilerName,
                 compilationResult.CompiledAt);
         }
@@ -326,6 +596,14 @@ public sealed class NotePdfGenerationOrchestrator(
 
             throw;
         }
+    }
+
+    private static string CalculateSha256(
+        ReadOnlySpan<byte> bytes)
+    {
+        return Convert.ToHexString(
+                SHA256.HashData(bytes))
+            .ToLowerInvariant();
     }
 
     private async Task

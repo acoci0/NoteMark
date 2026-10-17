@@ -1,0 +1,85 @@
+name: NotMark Backend Production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: notmark-backend-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Dockerfile
+        run: |
+          if [ ! -f backend/NotMarket.Api/Dockerfile ]; then
+            echo "::error::Production Dockerfile missing"
+            exit 1
+          fi
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build backend
+        run: |
+          dotnet restore backend/NotMarket.Api/NotMarket.Api.csproj
+          dotnet build backend/NotMarket.Api/NotMarket.Api.csproj \
+            -c Release --no-restore
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container
+        id: container
+        run: |
+          az acr login --name notmarketacr032467
+
+          IMAGE="notmarketacr032467.azurecr.io/notmarket-api:${GITHUB_SHA::12}"
+
+          docker build \
+            -f backend/NotMarket.Api/Dockerfile \
+            -t "$IMAGE" \
+            backend/NotMarket.Api
+
+          docker push "$IMAGE"
+
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy backend
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: notmarket-api-032467
+          images: ${{ steps.container.outputs.image }}
+
+      - name: Health check
+        run: |
+          for attempt in $(seq 1 18); do
+            if curl --fail --silent --show-error \
+              --max-time 15 \
+              https://notmarket-api-032467.azurewebsites.net/health; then
+              exit 0
+            fi
+
+            sleep 10
+          done
+
+          echo "::error::Backend health check failed"
+          exit 1

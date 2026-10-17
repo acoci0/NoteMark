@@ -1,0 +1,7 @@
+bin/
+obj/
+App_Data/
+.vscode/
+*.user
+*.suo
+.DS_Store
