@@ -6,6 +6,7 @@ import {
 
 import {
   useEffect,
+  useRef,
   useState,
   type FormEvent,
 } from "react";
@@ -28,6 +29,20 @@ type ComplaintCategory =
 type ApiErrorResponse = {
   message?: string;
 };
+
+type AppealTypingColor =
+  | "yellow"
+  | "purple"
+  | "blue"
+  | "green";
+
+const APPEAL_TYPING_COLORS:
+  AppealTypingColor[] = [
+    "yellow",
+    "purple",
+    "blue",
+    "green",
+  ];
 
 type Props = {
   open: boolean;
@@ -75,6 +90,39 @@ export default function StudentComplaintDialog({
     setSuccess,
   ] = useState("");
 
+  const [
+    typingColor,
+    setTypingColor,
+  ] = useState<AppealTypingColor>(
+    "yellow"
+  );
+
+  const [
+    typingActive,
+    setTypingActive,
+  ] = useState(false);
+
+  const typingColorIndexRef =
+    useRef(0);
+
+  const typingTimerRef =
+    useRef<number | null>(
+      null
+    );
+
+  useEffect(() => {
+    return () => {
+      if (
+        typingTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          typingTimerRef.current
+        );
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (!open) {
       return;
@@ -84,6 +132,29 @@ export default function StudentComplaintDialog({
     setComplaintDescription("");
     setError("");
     setSuccess("");
+
+    setTypingColor(
+      "yellow"
+    );
+
+    setTypingActive(
+      false
+    );
+
+    typingColorIndexRef.current =
+      0;
+
+    if (
+      typingTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        typingTimerRef.current
+      );
+
+      typingTimerRef.current =
+        null;
+    }
   }, [
     open,
     defaultSubject,
@@ -131,6 +202,54 @@ export default function StudentComplaintDialog({
     submitting,
     onClose,
   ]);
+
+  const pulseDescriptionBorder =
+    () => {
+      const index =
+        typingColorIndexRef
+          .current %
+        APPEAL_TYPING_COLORS
+          .length;
+
+      setTypingColor(
+        APPEAL_TYPING_COLORS[
+          index
+        ]
+      );
+
+      typingColorIndexRef.current =
+        (
+          index + 1
+        ) %
+        APPEAL_TYPING_COLORS
+          .length;
+
+      setTypingActive(
+        true
+      );
+
+      if (
+        typingTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          typingTimerRef.current
+        );
+      }
+
+      typingTimerRef.current =
+        window.setTimeout(
+          () => {
+            setTypingActive(
+              false
+            );
+
+            typingTimerRef.current =
+              null;
+          },
+          280
+        );
+    };
 
   if (!open) {
     return null;
@@ -336,6 +455,22 @@ export default function StudentComplaintDialog({
                     setComplaintDescription(
                       event.target.value
                     )
+                }
+                onKeyDown={() => {
+                  pulseDescriptionBorder();
+                }}
+                onBlur={() => {
+                  setTypingActive(
+                    false
+                  );
+                }}
+                data-typing-color={
+                  typingColor
+                }
+                data-typing-active={
+                  typingActive
+                    ? "true"
+                    : "false"
                 }
                 placeholder="Kararın neden tekrar incelenmesi gerektiğini açık şekilde belirtin."
               />

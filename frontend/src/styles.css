@@ -28399,3 +28399,516 @@ label > small {
       100% !important;
   }
 }
+
+/* =========================================================
+   NOTMARK APPEAL DIALOG - ADMIN ORANGE V3
+   ========================================================= */
+
+@property --appeal-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ---------------------------------------------------------
+   SABİT ADMIN TEMASI
+   --------------------------------------------------------- */
+
+.student-complaint-dialog {
+  --appeal-orange: #ff6b0b;
+  --appeal-orange-soft: #ff8a35;
+  --appeal-bg: #202936;
+  --appeal-bg-soft: #273241;
+  --appeal-text: #f2f5f9;
+  --appeal-muted: #9eabba;
+  --appeal-border: #394758;
+
+  border:
+    1px solid
+    transparent !important;
+
+  background:
+    linear-gradient(
+      var(--appeal-bg),
+      var(--appeal-bg)
+    )
+    padding-box,
+
+    conic-gradient(
+      from
+      var(--appeal-border-angle),
+
+      transparent 0deg,
+      transparent 235deg,
+
+      rgba(
+        255,
+        107,
+        11,
+        .15
+      ) 265deg,
+
+      #ff6b0b 302deg,
+
+      #ffb06f 325deg,
+
+      rgba(
+        255,
+        107,
+        11,
+        .20
+      ) 345deg,
+
+      transparent 360deg
+    )
+    border-box !important;
+
+  color:
+    var(--appeal-text) !important;
+
+  animation:
+    notmark-appeal-border-spin
+    4.8s linear
+    infinite !important;
+}
+
+@keyframes
+notmark-appeal-border-spin {
+  to {
+    --appeal-border-angle:
+      360deg;
+  }
+}
+
+/* HEADER */
+
+.student-complaint-dialog__header {
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      107,
+      11,
+      .14
+    ) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        255,
+        107,
+        11,
+        .075
+      ),
+      transparent 62%
+    ) !important;
+}
+
+.student-complaint-dialog__header::before {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #ff6b0b,
+      transparent
+    ) !important;
+}
+
+.student-complaint-dialog__icon {
+  border-color:
+    rgba(
+      255,
+      107,
+      11,
+      .30
+    ) !important;
+
+  background:
+    rgba(
+      255,
+      107,
+      11,
+      .10
+    ) !important;
+
+  color:
+    #ff6b0b !important;
+}
+
+.student-complaint-dialog__title span {
+  color:
+    #ff6b0b !important;
+}
+
+.student-complaint-dialog__title h2 {
+  color:
+    var(--appeal-text) !important;
+}
+
+.student-complaint-dialog__title p {
+  color:
+    var(--appeal-muted) !important;
+}
+
+/* CLOSE */
+
+.student-complaint-dialog__close {
+  border-color:
+    var(--appeal-border) !important;
+
+  background:
+    var(--appeal-bg-soft) !important;
+
+  color:
+    var(--appeal-muted) !important;
+}
+
+.student-complaint-dialog__close:hover:not(:disabled) {
+  border-color:
+    rgba(
+      255,
+      107,
+      11,
+      .48
+    ) !important;
+
+  background:
+    rgba(
+      255,
+      107,
+      11,
+      .10
+    ) !important;
+
+  color:
+    #ff6b0b !important;
+}
+
+/* ---------------------------------------------------------
+   FORM
+   --------------------------------------------------------- */
+
+.student-complaint-dialog__form
+label > span {
+  color:
+    var(--appeal-text) !important;
+}
+
+.student-complaint-dialog__form
+input,
+.student-complaint-dialog__form
+textarea {
+  border-color:
+    var(--appeal-border) !important;
+
+  background:
+    var(--appeal-bg-soft) !important;
+
+  color:
+    var(--appeal-text) !important;
+}
+
+.student-complaint-dialog__form
+input::placeholder,
+.student-complaint-dialog__form
+textarea::placeholder {
+  color:
+    var(--appeal-muted) !important;
+}
+
+/* Konu alanı sabit turuncu focus */
+
+.student-complaint-dialog__form
+input:focus {
+  border-color:
+    #ff6b0b !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        255,
+        107,
+        11,
+        .07
+      ),
+    0 0 14px
+      rgba(
+        255,
+        107,
+        11,
+        .12
+      ) !important;
+}
+
+/* ---------------------------------------------------------
+   AÇIKLAMA - IDLE TURUNCU
+   --------------------------------------------------------- */
+
+.student-complaint-dialog__form
+textarea {
+  border-color:
+    rgba(
+      255,
+      107,
+      11,
+      .72
+    ) !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        255,
+        107,
+        11,
+        .045
+      ),
+    0 0 13px
+      rgba(
+        255,
+        107,
+        11,
+        .09
+      ) !important;
+
+  transition:
+    border-color
+      110ms ease,
+    box-shadow
+      110ms ease !important;
+}
+
+.student-complaint-dialog__form
+textarea:focus {
+  border-color:
+    #ff6b0b !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        255,
+        107,
+        11,
+        .07
+      ),
+    0 0 16px
+      rgba(
+        255,
+        107,
+        11,
+        .14
+      ) !important;
+}
+
+/* ---------------------------------------------------------
+   HER TUŞTA RENK SIRASI
+   Sarı -> Mor -> Mavi -> Yeşil
+   --------------------------------------------------------- */
+
+/* SARI */
+
+.student-complaint-dialog
+textarea[
+  data-typing-active="true"
+][data-typing-color="yellow"] {
+  border-color:
+    #f3bd25 !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        243,
+        189,
+        37,
+        .13
+      ),
+    0 0 20px
+      rgba(
+        243,
+        189,
+        37,
+        .34
+      ) !important;
+}
+
+/* MOR */
+
+.student-complaint-dialog
+textarea[
+  data-typing-active="true"
+][data-typing-color="purple"] {
+  border-color:
+    #6c5ce7 !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        108,
+        92,
+        231,
+        .13
+      ),
+    0 0 20px
+      rgba(
+        108,
+        92,
+        231,
+        .36
+      ) !important;
+}
+
+/* MAVİ */
+
+.student-complaint-dialog
+textarea[
+  data-typing-active="true"
+][data-typing-color="blue"] {
+  border-color:
+    #2979e8 !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        41,
+        121,
+        232,
+        .13
+      ),
+    0 0 20px
+      rgba(
+        41,
+        121,
+        232,
+        .36
+      ) !important;
+}
+
+/* YEŞİL */
+
+.student-complaint-dialog
+textarea[
+  data-typing-active="true"
+][data-typing-color="green"] {
+  border-color:
+    #16a875 !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(
+        22,
+        168,
+        117,
+        .13
+      ),
+    0 0 20px
+      rgba(
+        22,
+        168,
+        117,
+        .36
+      ) !important;
+}
+
+/* COUNTERS */
+
+.student-complaint-dialog__form
+label > small {
+  color:
+    var(--appeal-muted) !important;
+}
+
+/* ---------------------------------------------------------
+   BUTTONS
+   --------------------------------------------------------- */
+
+.student-complaint-dialog__actions {
+  border-top:
+    1px solid
+    rgba(
+      255,
+      107,
+      11,
+      .11
+    ) !important;
+}
+
+.student-complaint-dialog__actions
+.primary-button,
+.student-complaint-dialog__success
+.primary-button {
+  border-color:
+    #ff6b0b !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff7b1c,
+      #ff5f00
+    ) !important;
+
+  color:
+    #ffffff !important;
+
+  box-shadow:
+    0 8px 22px
+      rgba(
+        255,
+        107,
+        11,
+        .18
+      );
+}
+
+.student-complaint-dialog__actions
+.primary-button:hover:not(:disabled),
+.student-complaint-dialog__success
+.primary-button:hover:not(:disabled) {
+  box-shadow:
+    0 10px 28px
+      rgba(
+        255,
+        107,
+        11,
+        .27
+      ) !important;
+}
+
+.student-complaint-dialog__actions
+.secondary-button {
+  border-color:
+    var(--appeal-border) !important;
+
+  background:
+    var(--appeal-bg-soft) !important;
+
+  color:
+    var(--appeal-text) !important;
+}
+
+/* ERROR / SUCCESS */
+
+.student-complaint-dialog__success {
+  color:
+    var(--appeal-text) !important;
+}
+
+.student-complaint-dialog__success
+strong {
+  color:
+    var(--appeal-text) !important;
+}
+
+.student-complaint-dialog__success
+p {
+  color:
+    var(--appeal-muted) !important;
+}
+
+/* Kullanıcının öğrenci temasından bağımsız */
+.student-app-shell[data-theme="light"]
+.student-complaint-dialog,
+.student-app-shell[data-theme="dark"]
+.student-complaint-dialog {
+  color:
+    var(--appeal-text) !important;
+}
