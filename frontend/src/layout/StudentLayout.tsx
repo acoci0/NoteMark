@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  ChevronDown,
   FileText,
   LayoutGrid,
   LogOut,
@@ -13,6 +14,7 @@ import {
 import {
   NavLink,
   Outlet,
+  useLocation,
 } from "react-router-dom";
 
 import {
@@ -25,6 +27,8 @@ import {
 } from "../auth/StudentAppearanceContext";
 
 export default function StudentLayout() {
+  const location = useLocation();
+
   const {
     student,
     logout,
@@ -35,6 +39,16 @@ export default function StudentLayout() {
     accent,
     motion,
   } = useStudentAppearance();
+
+  const panoActive =
+    location.pathname ===
+      "/student/note-requests" ||
+    location.pathname.startsWith(
+      "/student/note-submissions"
+    ) ||
+    location.pathname.startsWith(
+      "/student/purchases"
+    );
 
   const initials =
     student?.displayName
@@ -105,42 +119,82 @@ export default function StudentLayout() {
               Talep Panosu
             </NavLink>
 
-            <NavLink
-              to="/student/note-requests"
-              end
+            <div
               className={
-                getNavClassName
+                panoActive
+                  ? "student-nav-menu student-nav-menu--active"
+                  : "student-nav-menu"
               }
             >
-              <BookOpen size={17} />
+              <button
+                type="button"
+                className={
+                  panoActive
+                    ? "student-nav-link student-nav-link--active student-nav-menu__trigger"
+                    : "student-nav-link student-nav-menu__trigger"
+                }
+                aria-haspopup="true"
+              >
+                <BookOpen size={17} />
 
-              Taleplerim
-            </NavLink>
+                Pano
 
-            <NavLink
-              to="/student/note-submissions"
-              end
-              className={
-                getNavClassName
-              }
-            >
-              <FileText size={17} />
+                <ChevronDown
+                  size={14}
+                  className="student-nav-menu__chevron"
+                />
+              </button>
 
-              Gönderdiğim Notlar
-            </NavLink>
+              <div className="student-nav-menu__dropdown">
+                <NavLink
+                  to="/student/note-requests"
+                  end
+                  className={({ isActive }) =>
+                    isActive
+                      ? "student-nav-menu__item student-nav-menu__item--active"
+                      : "student-nav-menu__item"
+                  }
+                >
+                  <BookOpen size={17} />
 
+                  <span>
+                    Taleplerim
+                  </span>
+                </NavLink>
 
-            <NavLink
-              to="/student/purchases"
-              end
-              className={
-                getNavClassName
-              }
-            >
-              <ShoppingBag size={17} />
+                <NavLink
+                  to="/student/note-submissions"
+                  end
+                  className={({ isActive }) =>
+                    isActive
+                      ? "student-nav-menu__item student-nav-menu__item--active"
+                      : "student-nav-menu__item"
+                  }
+                >
+                  <FileText size={17} />
 
-              Satın Aldıklarım
-            </NavLink>
+                  <span>
+                    Gönderdiğim Notlar
+                  </span>
+                </NavLink>
+
+                <NavLink
+                  to="/student/purchases"
+                  end
+                  className={({ isActive }) =>
+                    isActive
+                      ? "student-nav-menu__item student-nav-menu__item--active"
+                      : "student-nav-menu__item"
+                  }
+                >
+                  <ShoppingBag size={17} />
+
+                  <span>
+                    Aldığım Notlar
+                  </span>
+                </NavLink>
+              </div>
+            </div>
 
             <NavLink
               to="/student/earnings"

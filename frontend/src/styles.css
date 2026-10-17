@@ -24921,3 +24921,242 @@ body {
     display: none;
   }
 }
+
+/* =========================================================
+   NOTMARK - STUDENT PANO MENU + NAV CLIPPING FIX
+   ========================================================= */
+
+/* Aktif butonların glow/gölgesi artık kesilmez */
+.student-appbar,
+.student-appbar__inner {
+  overflow: visible !important;
+}
+
+.student-appbar {
+  position: relative;
+  z-index: 1000;
+}
+
+.student-main-nav {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+
+  justify-content: center;
+
+  padding: 8px 4px;
+  margin: -8px -4px;
+}
+
+/* PANO */
+
+.student-nav-menu {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  overflow: visible;
+}
+
+.student-nav-menu__trigger {
+  appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.student-nav-menu__chevron {
+  margin-left: 1px;
+
+  opacity: .68;
+
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+.student-nav-menu:hover
+.student-nav-menu__chevron,
+.student-nav-menu:focus-within
+.student-nav-menu__chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* Dropdown */
+
+.student-nav-menu__dropdown {
+  position: absolute;
+
+  top: 100%;
+  left: 50%;
+
+  width: 235px;
+
+  padding: 8px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform:
+    translate(-50%, 7px);
+
+  border:
+    1px solid
+    var(--student-border);
+
+  border-radius: 14px;
+
+  background:
+    var(--student-surface);
+
+  box-shadow:
+    0 22px 55px
+    rgba(0, 0, 0, .22),
+    0 0 0 1px
+    rgba(
+      var(--student-accent-rgb),
+      .035
+    );
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    visibility 150ms ease;
+
+  z-index: 1500;
+}
+
+/* Hover alanında boşluk oluşmaması için */
+.student-nav-menu__dropdown::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: -9px;
+
+  height: 10px;
+}
+
+.student-nav-menu:hover
+.student-nav-menu__dropdown,
+.student-nav-menu:focus-within
+.student-nav-menu__dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform:
+    translate(-50%, 5px);
+}
+
+/* Menü öğeleri */
+
+.student-nav-menu__item {
+  min-height: 44px;
+
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 10px;
+
+  color:
+    var(--student-muted);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.student-nav-menu__item:hover {
+  transform:
+    translateX(2px);
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .14
+    );
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .07
+    );
+
+  color:
+    var(--student-accent);
+}
+
+.student-nav-menu__item--active {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .22
+    );
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .11
+    );
+
+  color:
+    var(--student-accent);
+
+  font-weight: 800;
+}
+
+/* Pano açıldığı zaman trigger glow alanı kesilmesin */
+
+.student-nav-menu:hover
+.student-nav-menu__trigger,
+.student-nav-menu:focus-within
+.student-nav-menu__trigger {
+  position: relative;
+  z-index: 2;
+}
+
+/* Artık üç ayrı büyük buton olmadığı için navbar scroll istemiyor */
+
+@media (max-width: 1450px) {
+  .student-main-nav {
+    gap: 7px;
+  }
+
+  .student-nav-link {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .student-nav-menu__dropdown {
+    left: 0;
+
+    transform:
+      translate(0, 7px);
+  }
+
+  .student-nav-menu:hover
+  .student-nav-menu__dropdown,
+  .student-nav-menu:focus-within
+  .student-nav-menu__dropdown {
+    transform:
+      translate(0, 5px);
+  }
+}
