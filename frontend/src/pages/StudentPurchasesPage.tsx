@@ -163,9 +163,19 @@ export default function StudentPurchasesPage() {
             NOTMARK
           </span>
 
-          <h1>
-            Satın Aldıklarım
-          </h1>
+          <div className="student-purchases-title-row">
+            <h1>
+              Satın Aldıklarım
+            </h1>
+
+            {!loading && (
+              <span className="student-purchases-count">
+                <ReceiptText size={14} />
+
+                {orders.length} sipariş
+              </span>
+            )}
+          </div>
 
           <p>
             Satın aldığınız notlara erişin
@@ -173,14 +183,6 @@ export default function StudentPurchasesPage() {
             sorunları bildirin.
           </p>
         </div>
-
-        {!loading && (
-          <div className="student-purchases-count">
-            <ReceiptText size={17} />
-
-            {orders.length} sipariş
-          </div>
-        )}
       </header>
 
       {error && (

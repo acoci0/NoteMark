@@ -24126,3 +24126,529 @@ textarea:focus[
     0 0 38px rgba(22, 168, 117, .11),
     inset 0 1px 2px rgba(0, 0, 0, .24) !important;
 }
+
+
+/* =========================================================
+   NOTMARK PURCHASES ALIGNMENT V2
+   Taleplerim sayfasıyla aynı oran ve görsel hiyerarşi
+   ========================================================= */
+
+.student-purchases-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+
+  padding:
+    42px 24px
+    70px;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(
+        var(--student-accent-rgb),
+        .08
+      ),
+      transparent 28%
+    ),
+    var(--student-bg);
+}
+
+.student-purchases-header,
+.student-purchases-list,
+.student-purchases-empty,
+.student-purchases-loading {
+  width: min(1000px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* HEADER */
+
+.student-purchases-header {
+  display: block;
+  margin-bottom: 25px;
+}
+
+.student-purchases-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.student-purchases-header h1 {
+  margin: 7px 0 8px;
+
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -.035em;
+}
+
+.student-purchases-header p {
+  max-width: 610px;
+  margin: 0;
+
+  color: var(--student-muted);
+  opacity: 1;
+
+  line-height: 1.6;
+}
+
+.student-purchases-count {
+  min-height: 0;
+  height: fit-content;
+
+  padding: 5px 9px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .22
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .075
+    );
+
+  color:
+    var(--student-accent);
+
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+/* LIST */
+
+.student-purchases-list {
+  display: grid;
+  gap: 15px;
+}
+
+/* CARD */
+
+.student-purchase-card {
+  position: relative;
+
+  padding:
+    21px 21px
+    21px 23px;
+
+  display: grid;
+  grid-template-columns:
+    44px minmax(0, 1fr);
+
+  align-items: start;
+  gap: 13px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--student-border);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      ),
+      transparent 42%
+    ),
+    var(--student-surface);
+
+  box-shadow:
+    0 12px 35px
+    rgba(0, 0, 0, .05);
+}
+
+.student-purchase-card::before {
+  content: "";
+
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 0;
+
+  width: 3px;
+
+  border-radius:
+    0 4px 4px 0;
+
+  background:
+    var(--student-accent);
+
+  box-shadow:
+    0 0 13px
+    rgba(
+      var(--student-accent-rgb),
+      .30
+    );
+}
+
+.student-purchase-card__icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .14
+    );
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    );
+
+  color:
+    var(--student-accent);
+}
+
+.student-purchase-card__content {
+  width: 100%;
+  min-width: 0;
+}
+
+/* CARD TOP */
+
+.student-purchase-card__top {
+  min-height: 44px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+}
+
+.student-purchase-card__top h2 {
+  margin: 0 0 5px;
+
+  color:
+    var(--student-text);
+
+  font-size: 18px;
+  line-height: 1.25;
+  letter-spacing: -.015em;
+}
+
+.student-purchase-card__top div > span {
+  display: block;
+
+  color:
+    var(--student-muted);
+
+  opacity: .70;
+
+  font-size: 10px;
+  line-height: 1.45;
+
+  word-break: break-word;
+}
+
+/* STATUS */
+
+.student-purchase-status {
+  flex: 0 0 auto;
+
+  min-height: 28px;
+  padding: 0 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.student-purchase-status--paid {
+  border:
+    1px solid
+    rgba(53, 201, 138, .18);
+
+  background:
+    rgba(53, 201, 138, .08);
+
+  color: #35c98a;
+}
+
+.student-purchase-status--demo {
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .20
+    );
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .08
+    );
+
+  color:
+    var(--student-accent);
+}
+
+/* INFO BOXES */
+
+.student-purchase-card__meta {
+  margin-top: 17px;
+
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 11px;
+}
+
+.student-purchase-card__meta > div {
+  min-height: 68px;
+
+  padding: 12px 13px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border:
+    1px solid
+    var(--student-border);
+
+  border-radius: 10px;
+
+  background:
+    var(--student-surface-soft);
+}
+
+.student-purchase-card__meta span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color:
+    var(--student-muted);
+
+  opacity: 1;
+
+  font-size: 11px;
+}
+
+.student-purchase-card__meta strong {
+  display: block;
+
+  color:
+    var(--student-text);
+
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.student-purchase-card__meta
+> div:first-child strong {
+  color:
+    var(--student-accent);
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* ACTION AREA */
+
+.student-purchase-card__actions {
+  margin-top: 17px;
+  padding-top: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  border-top:
+    1px solid
+    var(--student-border);
+}
+
+.student-purchase-card__actions
+.secondary-button {
+  min-height: 39px;
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    var(--student-border);
+
+  border-radius: 10px;
+
+  background:
+    var(--student-surface-soft);
+
+  color:
+    var(--student-text);
+
+  font-size: 11px;
+  font-weight: 750;
+
+  box-shadow: none;
+}
+
+.student-purchase-card__actions
+.secondary-button:hover:not(:disabled) {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .38
+    );
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .07
+    );
+
+  color:
+    var(--student-accent);
+}
+
+/* Sorun Bildir daima NotMark turuncusu */
+
+.student-purchase-card
+.student-report-problem-button {
+  min-height: 39px;
+  padding: 0 14px;
+
+  border:
+    1px solid
+    rgba(255, 107, 11, .48);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 107, 11, .10);
+
+  color: #ff6b0b;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.student-purchase-card
+.student-report-problem-button:hover {
+  border-color:
+    rgba(255, 107, 11, .78);
+
+  background:
+    rgba(255, 107, 11, .16);
+
+  color: #ff6b0b;
+
+  box-shadow:
+    0 0 16px
+    rgba(255, 107, 11, .10);
+}
+
+/* EMPTY / LOADING */
+
+.student-purchases-loading,
+.student-purchases-empty {
+  min-height: 330px;
+
+  padding: 45px 25px;
+
+  border:
+    1px solid
+    var(--student-border);
+
+  border-radius: 19px;
+
+  background:
+    var(--student-surface);
+
+  text-align: center;
+}
+
+.student-purchases-empty h2 {
+  margin: 4px 0 0;
+}
+
+.student-purchases-empty p {
+  margin: 0;
+
+  color:
+    var(--student-muted);
+
+  opacity: 1;
+
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 760px) {
+  .student-purchases-page {
+    padding:
+      30px 16px
+      55px;
+  }
+
+  .student-purchases-header h1 {
+    font-size: 30px;
+  }
+
+  .student-purchase-card {
+    padding:
+      18px 17px
+      18px 20px;
+  }
+
+  .student-purchase-card__top {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .student-purchase-card__meta {
+    grid-template-columns: 1fr;
+  }
+
+  .student-purchase-card__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .student-purchase-card__actions button {
+    width: 100%;
+  }
+}
