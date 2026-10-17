@@ -5,6 +5,7 @@ import {
   LogOut,
   Plus,
   Settings,
+  ShoppingBag,
   UserRound,
   WalletCards,
 } from "lucide-react";
@@ -128,6 +129,18 @@ export default function StudentLayout() {
               Gönderdiğim Notlar
             </NavLink>
 
+
+            <NavLink
+              to="/student/purchases"
+              end
+              className={
+                getNavClassName
+              }
+            >
+              <ShoppingBag size={17} />
+
+              Satın Aldıklarım
+            </NavLink>
 
             <NavLink
               to="/student/earnings"

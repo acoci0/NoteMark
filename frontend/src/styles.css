@@ -22562,3 +22562,1567 @@ svg {
     width: 100%;
   }
 }
+
+/* =========================================================
+   NOTMARK STUDENT - PURCHASES / ORDER ISSUES
+   ========================================================= */
+
+.student-purchases-page {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.student-purchases-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.student-purchases-header h1 {
+  margin: 5px 0 7px;
+}
+
+.student-purchases-header p {
+  margin: 0;
+  max-width: 620px;
+  opacity: .68;
+}
+
+.student-purchases-count {
+  min-height: 40px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 11px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.student-purchases-list {
+  display: grid;
+  gap: 13px;
+}
+
+.student-purchase-card {
+  padding: 18px;
+  display: flex;
+  gap: 15px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 15px;
+  background: rgba(255,255,255,.018);
+}
+
+.student-purchase-card__icon {
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(255,107,11,.09);
+  color: var(--student-accent, #ff6b0b);
+}
+
+.student-purchase-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.student-purchase-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.student-purchase-card__top h2 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.student-purchase-card__top div > span {
+  display: block;
+  opacity: .46;
+  font-size: 9px;
+  word-break: break-all;
+}
+
+.student-purchase-card__meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.student-purchase-card__meta > div {
+  padding: 10px 11px;
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 9px;
+  background: rgba(255,255,255,.018);
+}
+
+.student-purchase-card__meta span {
+  display: block;
+  margin-bottom: 4px;
+  opacity: .55;
+  font-size: 9px;
+}
+
+.student-purchase-card__meta strong {
+  font-size: 11px;
+}
+
+.student-purchase-card__actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.student-report-problem-button {
+  min-height: 38px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(245,186,48,.28);
+  border-radius: 10px;
+  background: rgba(245,186,48,.07);
+  color: #f5ba30;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.student-report-problem-button:hover {
+  border-color: rgba(245,186,48,.48);
+  background: rgba(245,186,48,.12);
+}
+
+.student-purchase-status {
+  padding: 6px 9px;
+  height: fit-content;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.student-purchase-status--paid {
+  background: rgba(53,201,138,.09);
+  color: #35c98a;
+}
+
+.student-purchase-status--pendingpayment {
+  background: rgba(245,186,48,.09);
+  color: #f5ba30;
+}
+
+.student-purchase-status--paymentfailed,
+.student-purchase-status--cancelled {
+  background: rgba(241,92,105,.09);
+  color: #f17480;
+}
+
+.student-purchase-status--refunded {
+  background: rgba(77,156,255,.09);
+  color: #6ba8ff;
+}
+
+.student-purchases-loading,
+.student-purchases-empty {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-align: center;
+}
+
+.student-purchases-empty h2 {
+  margin: 4px 0 0;
+}
+
+.student-purchases-empty p {
+  margin: 0;
+  opacity: .6;
+}
+
+/* Order issue dialog */
+
+.student-order-issue-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1700;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.66);
+  backdrop-filter: blur(5px);
+}
+
+.student-order-issue-dialog {
+  width: min(650px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  background: #13191f;
+  box-shadow: 0 24px 80px rgba(0,0,0,.42);
+}
+
+.student-order-issue-dialog__header {
+  padding: 19px 21px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid rgba(255,255,255,.065);
+}
+
+.student-order-issue-dialog__header span {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  opacity: .55;
+}
+
+.student-order-issue-dialog__header h2 {
+  margin: 5px 0 3px;
+  font-size: 20px;
+}
+
+.student-order-issue-dialog__header p {
+  margin: 0;
+  font-size: 11px;
+  opacity: .62;
+}
+
+.student-order-issue-dialog__close {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.student-order-issue-form {
+  padding: 20px;
+}
+
+.student-order-issue-section__heading strong,
+.student-order-issue-description > span {
+  display: block;
+  font-size: 11px;
+}
+
+.student-order-issue-section__heading span {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  opacity: .55;
+}
+
+.student-order-issue-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.student-order-issue-option {
+  padding: 13px;
+  display: flex;
+  gap: 11px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 11px;
+  cursor: pointer;
+  transition: .17s ease;
+}
+
+.student-order-issue-option:hover {
+  background: rgba(255,255,255,.025);
+}
+
+.student-order-issue-option--selected {
+  border-color: rgba(255,107,11,.46);
+  background: rgba(255,107,11,.06);
+}
+
+.student-order-issue-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.student-order-issue-option__radio {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  margin-top: 1px;
+  border: 2px solid rgba(255,255,255,.2);
+  border-radius: 50%;
+}
+
+.student-order-issue-option--selected
+.student-order-issue-option__radio {
+  border: 5px solid var(--student-accent, #ff6b0b);
+}
+
+.student-order-issue-option strong {
+  display: block;
+  font-size: 11px;
+}
+
+.student-order-issue-option p {
+  margin: 4px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  opacity: .58;
+}
+
+.student-order-issue-description {
+  display: block;
+  margin-top: 18px;
+}
+
+.student-order-issue-description textarea {
+  width: 100%;
+  min-height: 125px;
+  margin-top: 7px;
+  padding: 11px 12px;
+  resize: vertical;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255,255,255,.02);
+  color: inherit;
+  font: inherit;
+}
+
+.student-order-issue-description textarea:focus {
+  border-color: rgba(255,107,11,.48);
+}
+
+.student-order-issue-description small {
+  display: block;
+  margin-top: 5px;
+  text-align: right;
+  font-size: 9px;
+  opacity: .45;
+}
+
+.student-order-issue-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.student-order-issue-loading,
+.student-order-issue-success,
+.student-order-issue-empty {
+  padding: 30px 21px;
+}
+
+.student-order-issue-loading,
+.student-order-issue-success {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-align: center;
+}
+
+.student-order-issue-success > svg {
+  color: #35c98a;
+}
+
+.student-order-issue-success p {
+  max-width: 420px;
+  margin: 0 0 8px;
+  opacity: .6;
+  line-height: 1.55;
+}
+
+.student-order-issue-empty {
+  display: flex;
+  gap: 11px;
+  border: 1px solid rgba(245,186,48,.15);
+  border-radius: 11px;
+  background: rgba(245,186,48,.045);
+}
+
+.student-order-issue-empty > svg {
+  flex: 0 0 auto;
+  color: #f5ba30;
+}
+
+.student-order-issue-empty strong {
+  font-size: 11px;
+}
+
+.student-order-issue-empty p {
+  margin: 4px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  opacity: .6;
+}
+
+.student-order-issue-error {
+  margin-top: 13px;
+  padding: 10px 12px;
+  border: 1px solid rgba(241,92,105,.22);
+  border-radius: 9px;
+  background: rgba(241,92,105,.065);
+  color: #f17480;
+  font-size: 10px;
+}
+
+.student-order-issue-spinner {
+  animation: student-order-spin .8s linear infinite;
+}
+
+@keyframes student-order-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .student-purchases-header,
+  .student-purchase-card__top {
+    flex-direction: column;
+  }
+
+  .student-purchase-card__meta {
+    grid-template-columns: 1fr;
+  }
+
+  .student-purchase-card__actions {
+    flex-direction: column;
+  }
+
+  .student-purchase-card__actions button {
+    width: 100%;
+  }
+
+  .student-order-issue-backdrop {
+    padding: 8px;
+    align-items: flex-end;
+  }
+
+  .student-order-issue-dialog {
+    max-height: 92vh;
+  }
+
+  .student-order-issue-actions {
+    flex-direction: column-reverse;
+  }
+
+  .student-order-issue-actions button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   NOTMARK - ORDER ISSUE DIALOG VISUAL REFINEMENT
+   ========================================================= */
+
+.student-order-issue-dialog {
+  width: min(760px, 100%);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, .025),
+      rgba(255, 255, 255, 0)
+    ),
+    #11181e;
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, .52),
+    0 0 0 1px rgba(255, 255, 255, .018);
+}
+
+.student-order-issue-dialog__header {
+  padding: 24px 26px 20px;
+  align-items: flex-start;
+  border-bottom:
+    1px solid rgba(255, 255, 255, .055);
+}
+
+.student-order-issue-dialog__header span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  opacity: .52;
+}
+
+.student-order-issue-dialog__header h2 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 780;
+  line-height: 1.15;
+  letter-spacing: -.025em;
+}
+
+.student-order-issue-dialog__header p {
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: .58;
+}
+
+.student-order-issue-dialog__close {
+  width: 38px;
+  height: 38px;
+  border-color: rgba(255, 255, 255, .07);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .025);
+  opacity: .72;
+  transition:
+    background .16s ease,
+    border-color .16s ease,
+    opacity .16s ease,
+    transform .16s ease;
+}
+
+.student-order-issue-dialog__close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .12);
+}
+
+.student-order-issue-dialog__close:active {
+  transform: scale(.96);
+}
+
+.student-order-issue-form {
+  padding: 24px 26px 25px;
+}
+
+.student-order-issue-section__heading {
+  margin-bottom: 15px;
+}
+
+.student-order-issue-section__heading strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.student-order-issue-section__heading span {
+  margin-top: 5px;
+  font-size: 10.5px;
+  line-height: 1.45;
+  opacity: .5;
+}
+
+.student-order-issue-options {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 0;
+}
+
+.student-order-issue-option {
+  position: relative;
+  min-height: 112px;
+  padding: 16px 16px 15px;
+  align-items: flex-start;
+  gap: 12px;
+
+  border:
+    1px solid rgba(255, 255, 255, .075);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, .027),
+      rgba(255, 255, 255, .008)
+    );
+
+  transition:
+    border-color .18s ease,
+    background .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.student-order-issue-option:hover {
+  transform: translateY(-1px);
+
+  border-color:
+    rgba(255, 255, 255, .14);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, .042),
+      rgba(255, 255, 255, .012)
+    );
+}
+
+.student-order-issue-option--selected {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--student-accent, #ff6b0b) 62%,
+      transparent
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--student-accent, #ff6b0b) 10%,
+        transparent
+      ),
+      rgba(255, 255, 255, .012)
+    );
+
+  box-shadow:
+    0 0 0 1px
+      color-mix(
+        in srgb,
+        var(--student-accent, #ff6b0b) 12%,
+        transparent
+      ),
+    0 8px 28px
+      rgba(0, 0, 0, .16);
+}
+
+.student-order-issue-option__radio {
+  position: relative;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  margin-top: 1px;
+
+  border:
+    2px solid rgba(255, 255, 255, .22);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, .018);
+
+  transition:
+    border-color .18s ease,
+    background .18s ease;
+}
+
+.student-order-issue-option--selected
+.student-order-issue-option__radio {
+  border:
+    2px solid
+    var(--student-accent, #ff6b0b);
+
+  background:
+    color-mix(
+      in srgb,
+      var(--student-accent, #ff6b0b) 14%,
+      transparent
+    );
+}
+
+.student-order-issue-option--selected
+.student-order-issue-option__radio::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+
+  border-radius: 50%;
+
+  background:
+    var(--student-accent, #ff6b0b);
+}
+
+.student-order-issue-option strong {
+  display: block;
+  padding-right: 4px;
+  font-size: 12px;
+  font-weight: 730;
+  line-height: 1.4;
+  letter-spacing: -.005em;
+}
+
+.student-order-issue-option p {
+  margin: 7px 0 0;
+
+  font-size: 10px;
+  font-weight: 450;
+  line-height: 1.55;
+
+  opacity: .52;
+}
+
+.student-order-issue-description {
+  margin-top: 22px;
+}
+
+.student-order-issue-description > span {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 720;
+}
+
+.student-order-issue-description textarea {
+  min-height: 118px;
+  margin-top: 0;
+  padding: 13px 14px;
+
+  border:
+    1px solid rgba(255, 255, 255, .075);
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, .022);
+
+  font-size: 12px;
+  line-height: 1.55;
+
+  transition:
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease;
+}
+
+.student-order-issue-description textarea::placeholder {
+  color: inherit;
+  opacity: .34;
+}
+
+.student-order-issue-description textarea:focus {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--student-accent, #ff6b0b) 55%,
+      transparent
+    );
+
+  background:
+    rgba(255, 255, 255, .03);
+
+  box-shadow:
+    0 0 0 3px
+      color-mix(
+        in srgb,
+        var(--student-accent, #ff6b0b) 8%,
+        transparent
+      );
+}
+
+.student-order-issue-description small {
+  margin-top: 6px;
+  font-size: 9px;
+  opacity: .36;
+}
+
+.student-order-issue-actions {
+  margin-top: 18px;
+  padding-top: 16px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, .05);
+
+  gap: 10px;
+}
+
+.student-order-issue-actions button {
+  min-height: 40px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.student-order-issue-actions
+.primary-button {
+  min-width: 145px;
+}
+
+.student-order-issue-actions
+.secondary-button {
+  min-width: 92px;
+}
+
+.student-order-issue-error {
+  margin-top: 16px;
+  padding: 11px 13px;
+
+  border-color:
+    rgba(241, 92, 105, .18);
+
+  border-radius: 11px;
+
+  background:
+    rgba(241, 92, 105, .055);
+
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+@media (max-width: 720px) {
+  .student-order-issue-dialog {
+    width: 100%;
+    border-radius: 18px 18px 10px 10px;
+  }
+
+  .student-order-issue-dialog__header,
+  .student-order-issue-form {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .student-order-issue-options {
+    grid-template-columns: 1fr;
+  }
+
+  .student-order-issue-option {
+    min-height: auto;
+  }
+}
+
+/* =========================================================
+   NOTMARK - ORDER ISSUE DIALOG TYPOGRAPHY + ANIMATED LOGO
+   ========================================================= */
+
+@property --notmark-support-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.student-order-issue-dialog__identity {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.student-order-issue-dialog__logo-frame {
+  --notmark-support-angle: 0deg;
+
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+
+  padding: 2px;
+
+  border: 1px solid transparent;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      #11181e,
+      #11181e
+    ) padding-box,
+    conic-gradient(
+      from var(--notmark-support-angle),
+      transparent 0deg,
+      transparent 245deg,
+      rgba(255, 107, 11, .10) 270deg,
+      rgba(255, 107, 11, .62) 300deg,
+      #ff6b0b 320deg,
+      rgba(255, 107, 11, .58) 340deg,
+      transparent 360deg
+    ) border-box;
+
+  animation:
+    notmark-support-border-spin
+    3.2s
+    linear
+    infinite;
+}
+
+.student-order-issue-dialog__logo-inner {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+
+  background: #11181e;
+}
+
+.student-order-issue-dialog__logo-inner img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  object-fit: cover;
+}
+
+@keyframes notmark-support-border-spin {
+  to {
+    --notmark-support-angle: 360deg;
+  }
+}
+
+.student-order-issue-dialog__heading {
+  min-width: 0;
+}
+
+.student-order-issue-dialog__header span {
+  margin-bottom: 8px;
+
+  font-size: 10.5px;
+  font-weight: 850;
+  letter-spacing: .14em;
+
+  opacity: .58;
+}
+
+.student-order-issue-dialog__header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.student-order-issue-dialog__header p {
+  margin-top: 8px;
+
+  font-size: 13.5px;
+  font-weight: 520;
+  line-height: 1.4;
+
+  opacity: .62;
+}
+
+.student-order-issue-section__heading strong {
+  font-size: 14.5px;
+  font-weight: 780;
+}
+
+.student-order-issue-section__heading span {
+  margin-top: 6px;
+
+  font-size: 11.5px;
+  line-height: 1.5;
+
+  opacity: .54;
+}
+
+.student-order-issue-option strong {
+  font-size: 13.5px;
+  font-weight: 760;
+  line-height: 1.4;
+}
+
+.student-order-issue-option p {
+  margin-top: 7px;
+
+  font-size: 11.5px;
+  line-height: 1.58;
+
+  opacity: .56;
+}
+
+.student-order-issue-description > span {
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.student-order-issue-description textarea {
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.student-order-issue-description small {
+  font-size: 10px;
+}
+
+.student-order-issue-actions button {
+  font-size: 12px;
+}
+
+.student-order-issue-error {
+  font-size: 11.5px;
+}
+
+@media (max-width: 720px) {
+  .student-order-issue-dialog__identity {
+    gap: 13px;
+  }
+
+  .student-order-issue-dialog__logo-frame {
+    width: 60px;
+    height: 60px;
+    flex-basis: 60px;
+    border-radius: 16px;
+  }
+
+  .student-order-issue-dialog__logo-inner {
+    border-radius: 13px;
+  }
+
+  .student-order-issue-dialog__header h2 {
+    font-size: 24px;
+  }
+}
+
+/* =========================================================
+   NOTMARK SUPPORT - FIXED ADMIN ORANGE THEME
+   Student theme'den bağımsızdır.
+   ========================================================= */
+
+.student-order-issue-dialog {
+  --support-accent: #ff6b0b;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, .018),
+      rgba(255, 255, 255, 0)
+    ),
+    #11181e;
+
+  color: #f4f6f8;
+}
+
+/* Seçenek kartı - kullanıcı accent renginden bağımsız */
+.student-order-issue-option--selected {
+  border-color: rgba(255, 107, 11, .62);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 107, 11, .10),
+      rgba(255, 255, 255, .01)
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(255, 107, 11, .10),
+    0 8px 28px rgba(0, 0, 0, .18);
+}
+
+.student-order-issue-option--selected
+.student-order-issue-option__radio {
+  border-color: #ff6b0b;
+  background: rgba(255, 107, 11, .13);
+}
+
+.student-order-issue-option--selected
+.student-order-issue-option__radio::after {
+  background: #ff6b0b;
+}
+
+/* Açıklama alanını daha mat / koyu yap */
+.student-order-issue-description textarea {
+  border-color: rgba(255, 255, 255, .065);
+
+  background: #0c1217;
+
+  color: #eef1f4;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, .22);
+}
+
+.student-order-issue-description textarea:hover {
+  border-color: rgba(255, 255, 255, .09);
+  background: #0d1419;
+}
+
+.student-order-issue-description textarea:focus {
+  border-color: rgba(255, 107, 11, .52);
+
+  background: #0d1419;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 107, 11, .07),
+    inset 0 1px 2px rgba(0, 0, 0, .20);
+}
+
+.student-order-issue-description textarea::placeholder {
+  color: #6f7982;
+  opacity: .72;
+}
+
+/* Sorunu Bildir ana aksiyonu */
+.student-order-issue-dialog
+.student-order-issue-actions
+.primary-button {
+  border-color: #ff6b0b !important;
+  background: #ff6b0b !important;
+  color: #ffffff !important;
+
+  box-shadow:
+    0 7px 20px rgba(255, 107, 11, .16);
+}
+
+.student-order-issue-dialog
+.student-order-issue-actions
+.primary-button:hover:not(:disabled) {
+  border-color: #ff7a24 !important;
+  background: #ff7a24 !important;
+}
+
+.student-order-issue-dialog
+.student-order-issue-actions
+.primary-button:disabled {
+  border-color: rgba(255, 107, 11, .28) !important;
+  background: rgba(255, 107, 11, .28) !important;
+  color: rgba(255, 255, 255, .55) !important;
+  box-shadow: none;
+}
+
+/* Başarı ekranındaki buton da aynı sabit turuncu */
+.student-order-issue-success
+.primary-button {
+  border-color: #ff6b0b !important;
+  background: #ff6b0b !important;
+  color: #fff !important;
+}
+
+/* Logo animasyonu da sabit NotMark turuncusu */
+.student-order-issue-dialog__logo-frame {
+  background:
+    linear-gradient(
+      #11181e,
+      #11181e
+    ) padding-box,
+    conic-gradient(
+      from var(--notmark-support-angle),
+      transparent 0deg,
+      transparent 245deg,
+      rgba(255, 107, 11, .08) 270deg,
+      rgba(255, 107, 11, .58) 300deg,
+      #ff6b0b 320deg,
+      rgba(255, 107, 11, .55) 340deg,
+      transparent 360deg
+    ) border-box;
+}
+
+/* =========================================================
+   PURCHASES - REPORT PROBLEM BUTTON
+   ========================================================= */
+
+.student-report-problem-button {
+  border-color: rgba(255, 107, 11, .42);
+  background: rgba(255, 107, 11, .09);
+  color: #ff6b0b;
+}
+
+.student-report-problem-button:hover {
+  border-color: rgba(255, 107, 11, .72);
+  background: rgba(255, 107, 11, .15);
+  color: #ff7a24;
+}
+
+.student-report-problem-button:active {
+  background: rgba(255, 107, 11, .20);
+}
+
+/* =========================================================
+   NOTMARK SUPPORT - FIXED ORANGE DESCRIPTION BORDER
+   ========================================================= */
+
+.student-order-issue-dialog
+.student-order-issue-description textarea {
+  border: 1px solid rgba(255, 107, 11, .42) !important;
+  background: #0c1217 !important;
+  color: #eef1f4 !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}
+
+.student-order-issue-dialog
+.student-order-issue-description textarea:hover {
+  border-color: rgba(255, 107, 11, .58) !important;
+  background: #0c1217 !important;
+}
+
+.student-order-issue-dialog
+.student-order-issue-description textarea:focus {
+  border-color: #ff6b0b !important;
+  background: #0c1217 !important;
+  outline: none !important;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 107, 11, .07),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}
+
+.student-order-issue-dialog
+.student-order-issue-description textarea::placeholder {
+  color: #707981 !important;
+  opacity: .68 !important;
+}
+
+/* =========================================================
+   NOTMARK SUPPORT - DESCRIPTION INTERACTION
+   ========================================================= */
+
+/* Normal durumda turuncu görünmez */
+.student-order-issue-dialog
+.student-order-issue-description textarea {
+  border: 1px solid rgba(255, 255, 255, .075) !important;
+
+  background: #0c1217 !important;
+  color: #eef1f4 !important;
+
+  outline: none !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, .25) !important;
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease,
+    background .16s ease;
+}
+
+.student-order-issue-dialog
+.student-order-issue-description textarea:hover:not(:focus) {
+  border-color: rgba(255, 255, 255, .12) !important;
+  background: #0d1419 !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, .25) !important;
+}
+
+/* Yazı alanı aktifken sabit NotMark turuncusu */
+.student-order-issue-dialog
+.student-order-issue-description textarea:focus {
+  border-color: rgba(255, 107, 11, .78) !important;
+
+  background: #0c1217 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(255, 107, 11, .055),
+    0 0 13px rgba(255, 107, 11, .10),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}
+
+/*
+ * Her keydown'da A/B arasında geçiş yapıyoruz.
+ * İki ayrı animation adı sayesinde animasyon
+ * her tuşta yeniden başlar.
+ */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus[data-key-pulse="a"] {
+  animation:
+    notmark-description-key-pulse-a
+    190ms
+    ease-out;
+}
+
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus[data-key-pulse="b"] {
+  animation:
+    notmark-description-key-pulse-b
+    190ms
+    ease-out;
+}
+
+@keyframes notmark-description-key-pulse-a {
+  0% {
+    border-color: #ff6b0b;
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .09),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  30% {
+    border-color: #ff7a24;
+
+    box-shadow:
+      0 0 0 3px rgba(255, 107, 11, .14),
+      0 0 25px rgba(255, 107, 11, .34),
+      0 0 42px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  100% {
+    border-color: rgba(255, 107, 11, .78);
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .055),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+}
+
+@keyframes notmark-description-key-pulse-b {
+  0% {
+    border-color: #ff6b0b;
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .09),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  30% {
+    border-color: #ff7a24;
+
+    box-shadow:
+      0 0 0 3px rgba(255, 107, 11, .14),
+      0 0 25px rgba(255, 107, 11, .34),
+      0 0 42px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  100% {
+    border-color: rgba(255, 107, 11, .78);
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .055),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+}
+
+/* =========================================================
+   NOTMARK SUPPORT - EVERY KEY PRESS PULSE
+   ========================================================= */
+
+/*
+ * Pulse artık :focus şartına bağlı değil.
+ * Böylece Tab gibi odağı değiştiren tuşlarda da
+ * basma anındaki ışık animasyonu çalışır.
+ */
+
+.student-order-issue-dialog
+.student-order-issue-description
+textarea[data-key-pulse="a"] {
+  animation:
+    notmark-description-every-key-a
+    190ms
+    ease-out;
+}
+
+.student-order-issue-dialog
+.student-order-issue-description
+textarea[data-key-pulse="b"] {
+  animation:
+    notmark-description-every-key-b
+    190ms
+    ease-out;
+}
+
+@keyframes notmark-description-every-key-a {
+  0% {
+    border-color: #ff6b0b;
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .08),
+      0 0 12px rgba(255, 107, 11, .12),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  32% {
+    border-color: #ff812f;
+
+    box-shadow:
+      0 0 0 3px rgba(255, 107, 11, .15),
+      0 0 27px rgba(255, 107, 11, .38),
+      0 0 46px rgba(255, 107, 11, .12),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  100% {
+    border-color: rgba(255, 107, 11, .78);
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .055),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+}
+
+@keyframes notmark-description-every-key-b {
+  0% {
+    border-color: #ff6b0b;
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .08),
+      0 0 12px rgba(255, 107, 11, .12),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  32% {
+    border-color: #ff812f;
+
+    box-shadow:
+      0 0 0 3px rgba(255, 107, 11, .15),
+      0 0 27px rgba(255, 107, 11, .38),
+      0 0 46px rgba(255, 107, 11, .12),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  100% {
+    border-color: rgba(255, 107, 11, .78);
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .055),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+}
+
+/* =========================================================
+   NOTMARK SUPPORT - HARD RESTART KEY PULSE
+   Her keydown'da class kaldırılıp yeniden eklenir.
+   ========================================================= */
+
+.student-order-issue-dialog
+.student-order-issue-description
+textarea.student-order-issue-key-pulse {
+  animation:
+    notmark-description-hard-key-pulse
+    200ms
+    ease-out !important;
+}
+
+@keyframes notmark-description-hard-key-pulse {
+  0% {
+    border-color: #ff6b0b;
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .08),
+      0 0 12px rgba(255, 107, 11, .12),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  35% {
+    border-color: #ff8a3d;
+
+    box-shadow:
+      0 0 0 3px rgba(255, 107, 11, .18),
+      0 0 30px rgba(255, 107, 11, .48),
+      0 0 52px rgba(255, 107, 11, .15),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+
+  100% {
+    border-color: rgba(255, 107, 11, .78);
+
+    box-shadow:
+      0 0 0 2px rgba(255, 107, 11, .055),
+      0 0 13px rgba(255, 107, 11, .10),
+      inset 0 1px 2px rgba(0, 0, 0, .24);
+  }
+}
+
+/* =========================================================
+   NOTMARK SUPPORT - SEQUENTIAL THEME COLOR TYPING
+   ========================================================= */
+
+/*
+ * Önceki key-pulse animation denemelerini
+ * textarea üzerinde tamamen etkisiz bırak.
+ */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea {
+  animation: none !important;
+}
+
+/*
+ * Alan seçiliyken ve yazma yokken:
+ * sabit NotMark turuncusu.
+ */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus {
+  border-color: #ff6b0b !important;
+
+  box-shadow:
+    0 0 0 2px rgba(255, 107, 11, .055),
+    0 0 13px rgba(255, 107, 11, .10),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease !important;
+}
+
+/* Sarı */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus[
+  data-typing-active="true"
+][data-typing-color="yellow"] {
+  border-color: #f3bd25 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(243, 189, 37, .12),
+    0 0 20px rgba(243, 189, 37, .34),
+    0 0 38px rgba(243, 189, 37, .10),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}
+
+/* Mor */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus[
+  data-typing-active="true"
+][data-typing-color="purple"] {
+  border-color: #6c5ce7 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(108, 92, 231, .13),
+    0 0 20px rgba(108, 92, 231, .36),
+    0 0 38px rgba(108, 92, 231, .11),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}
+
+/* Mavi */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus[
+  data-typing-active="true"
+][data-typing-color="blue"] {
+  border-color: #2979e8 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(41, 121, 232, .13),
+    0 0 20px rgba(41, 121, 232, .36),
+    0 0 38px rgba(41, 121, 232, .11),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}
+
+/* Yeşil */
+.student-order-issue-dialog
+.student-order-issue-description
+textarea:focus[
+  data-typing-active="true"
+][data-typing-color="green"] {
+  border-color: #16a875 !important;
+
+  box-shadow:
+    0 0 0 2px rgba(22, 168, 117, .13),
+    0 0 20px rgba(22, 168, 117, .36),
+    0 0 38px rgba(22, 168, 117, .11),
+    inset 0 1px 2px rgba(0, 0, 0, .24) !important;
+}

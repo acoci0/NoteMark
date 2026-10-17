@@ -26,6 +26,7 @@ import StudentNoteSubmissionsPage from "./pages/StudentNoteSubmissionsPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
 import StudentSettingsPage from "./pages/StudentSettingsPage";
 import StudentEarningsPage from "./pages/StudentEarningsPage";
+import StudentPurchasesPage from "./pages/StudentPurchasesPage";
 import UsersPage from "./pages/UsersPage";
 import AdminUserDetailPage from "./pages/AdminUserDetailPage";
 import VerificationsPage from "./pages/VerificationsPage";
@@ -80,6 +81,11 @@ export default function App() {
           <Route
             path="/student/earnings"
             element={<StudentEarningsPage />}
+          />
+
+          <Route
+            path="/student/purchases"
+            element={<StudentPurchasesPage />}
           />
 
           <Route

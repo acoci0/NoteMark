@@ -869,6 +869,10 @@ public sealed class AppDbContext(
             .HasConversion<string>();
 
         complaint.Property(
+                x => x.IssueCode)
+            .HasMaxLength(80);
+
+        complaint.Property(
                 x => x.Subject)
             .HasMaxLength(180)
             .IsRequired();
