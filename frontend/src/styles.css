@@ -28938,3 +28938,232 @@ p {
       rgba(255, 107, 11, .20)
     );
 }
+
+/* =========================================================
+   NOTMARK "İTİRAZ" TEMPLATE - FINAL V4
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   LOGO: ÇERÇEVEYİ TAM DOLDUR
+   --------------------------------------------------------- */
+
+.student-complaint-dialog__icon {
+  width: 44px !important;
+  height: 44px !important;
+
+  flex: 0 0 44px !important;
+
+  padding: 0 !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    rgba(255, 107, 11, .34) !important;
+
+  border-radius:
+    13px !important;
+
+  background:
+    #151d27 !important;
+
+  box-shadow:
+    0 8px 22px
+    rgba(255, 107, 11, .13) !important;
+}
+
+.student-complaint-dialog__logo {
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  object-fit: cover !important;
+
+  border-radius:
+    12px !important;
+
+  filter:
+    drop-shadow(
+      0 3px 8px
+      rgba(255, 107, 11, .16)
+    ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   KONU + AÇIKLAMA AYNI GÖRSEL DİL
+   --------------------------------------------------------- */
+
+.student-complaint-dialog__form input,
+.student-complaint-dialog__form textarea {
+  border:
+    1px solid
+    rgba(255, 107, 11, .72) !important;
+
+  background:
+    var(--appeal-bg-soft) !important;
+
+  color:
+    var(--appeal-text) !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(255, 107, 11, .045),
+    0 0 13px
+      rgba(255, 107, 11, .09),
+    inset 0 1px 2px
+      rgba(0, 0, 0, .16) !important;
+
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease !important;
+}
+
+/* Konu alanı focus */
+.student-complaint-dialog__form input:focus {
+  border-color:
+    #ff6b0b !important;
+
+  background:
+    #2a3544 !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(255, 107, 11, .08),
+    0 0 17px
+      rgba(255, 107, 11, .17),
+    inset 0 1px 2px
+      rgba(0, 0, 0, .18) !important;
+}
+
+/* Açıklama boşta ve yazılmıyorken turuncu */
+.student-complaint-dialog__form
+textarea:not(
+  [data-typing-active="true"]
+) {
+  border-color:
+    #ff6b0b !important;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(255, 107, 11, .06),
+    0 0 15px
+      rgba(255, 107, 11, .12),
+    inset 0 1px 2px
+      rgba(0, 0, 0, .18) !important;
+}
+
+
+/* ---------------------------------------------------------
+   BUTONLAR - CANLI HOVER
+   --------------------------------------------------------- */
+
+.student-complaint-dialog__actions
+.primary-button,
+.student-complaint-dialog__actions
+.secondary-button {
+  transform:
+    translateY(0)
+    scale(1);
+
+  transform-origin:
+    center;
+
+  transition:
+    transform 170ms ease,
+    box-shadow 170ms ease,
+    border-color 170ms ease,
+    background 170ms ease,
+    color 170ms ease !important;
+}
+
+
+/* VAZGEÇ */
+
+.student-complaint-dialog__actions
+.secondary-button:hover:not(:disabled) {
+  transform:
+    translateY(-2px)
+    scale(1.035);
+
+  border-color:
+    rgba(255, 107, 11, .48) !important;
+
+  background:
+    rgba(255, 107, 11, .075) !important;
+
+  color:
+    #ffffff !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(255, 107, 11, .08),
+    0 0 16px
+      rgba(255, 107, 11, .14),
+    0 8px 20px
+      rgba(0, 0, 0, .14) !important;
+}
+
+
+/* İTİRAZI GÖNDER */
+
+.student-complaint-dialog__actions
+.primary-button:hover:not(:disabled) {
+  transform:
+    translateY(-2px)
+    scale(1.04);
+
+  border-color:
+    #ff8a35 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff8731,
+      #ff6505
+    ) !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(255, 107, 11, .15),
+    0 0 19px
+      rgba(255, 107, 11, .31),
+    0 10px 25px
+      rgba(255, 107, 11, .17) !important;
+}
+
+
+/* Tıklama hissi */
+
+.student-complaint-dialog__actions
+.primary-button:active:not(:disabled),
+.student-complaint-dialog__actions
+.secondary-button:active:not(:disabled) {
+  transform:
+    translateY(0)
+    scale(.985);
+}
+
+
+/* Erişilebilir hareket tercihi */
+
+@media (prefers-reduced-motion: reduce) {
+  .student-complaint-dialog__actions
+  .primary-button,
+  .student-complaint-dialog__actions
+  .secondary-button {
+    transition: none !important;
+  }
+
+  .student-complaint-dialog__actions
+  .primary-button:hover,
+  .student-complaint-dialog__actions
+  .secondary-button:hover {
+    transform: none !important;
+  }
+}
