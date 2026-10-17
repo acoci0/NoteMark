@@ -27836,3 +27836,566 @@ span {
 
   font-variant-numeric: tabular-nums;
 }
+
+/* =========================================================
+   NOTMARK - NOTE APPEAL DIALOG V2
+   Theme-aware / responsive / stable
+   ========================================================= */
+
+.student-complaint-dialog-backdrop {
+  z-index: 2500 !important;
+
+  padding: 24px !important;
+
+  background:
+    rgba(3, 8, 15, .72) !important;
+
+  backdrop-filter:
+    blur(10px) !important;
+
+  overflow-y: auto;
+}
+
+/* TEMEL MODAL */
+
+.student-complaint-dialog {
+  width:
+    min(660px, 100%) !important;
+
+  max-height:
+    calc(100vh - 48px) !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .20
+    ) !important;
+
+  border-radius:
+    22px !important;
+
+  background:
+    var(--student-surface) !important;
+
+  color:
+    var(--student-text) !important;
+
+  box-shadow:
+    0 30px 90px
+      rgba(0, 0, 0, .35),
+    0 0 0 1px
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      ) !important;
+}
+
+/* HEADER */
+
+.student-complaint-dialog__header {
+  position: relative;
+
+  padding:
+    24px 25px 21px !important;
+
+  gap: 18px;
+
+  border-bottom:
+    1px solid
+    var(--student-border) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        var(--student-accent-rgb),
+        .095
+      ),
+      transparent 58%
+    );
+}
+
+.student-complaint-dialog__header::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 24px;
+  right: 24px;
+
+  height: 2px;
+
+  border-radius:
+    0 0 999px 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--student-accent),
+      transparent
+    );
+
+  opacity: .85;
+}
+
+.student-complaint-dialog__title {
+  min-width: 0;
+}
+
+.student-complaint-dialog__title > div:last-child {
+  min-width: 0;
+}
+
+.student-complaint-dialog__icon {
+  width: 44px !important;
+  height: 44px !important;
+
+  flex:
+    0 0 44px !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .24
+    );
+
+  border-radius:
+    13px !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    ) !important;
+
+  color:
+    var(--student-accent) !important;
+}
+
+.student-complaint-dialog__title span {
+  color:
+    var(--student-accent-strong) !important;
+
+  font-size:
+    10px !important;
+
+  letter-spacing:
+    .11em !important;
+}
+
+.student-complaint-dialog__title h2 {
+  margin:
+    2px 0 0 !important;
+
+  color:
+    var(--student-text) !important;
+
+  font-size:
+    23px !important;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.18;
+
+  letter-spacing:
+    -.025em;
+
+  overflow-wrap:
+    anywhere;
+}
+
+.student-complaint-dialog__title p {
+  max-width:
+    510px;
+
+  margin:
+    8px 0 0 !important;
+
+  color:
+    var(--student-muted) !important;
+
+  font-size:
+    12px !important;
+
+  line-height:
+    1.6 !important;
+
+  overflow-wrap:
+    anywhere;
+}
+
+/* CLOSE */
+
+.student-complaint-dialog__close {
+  width: 38px !important;
+  height: 38px !important;
+
+  flex:
+    0 0 38px !important;
+
+  border:
+    1px solid
+    var(--student-border) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    var(--student-surface-soft) !important;
+
+  color:
+    var(--student-muted) !important;
+
+  transition:
+    color .16s ease,
+    border-color .16s ease,
+    background .16s ease;
+}
+
+.student-complaint-dialog__close:hover:not(:disabled) {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .30
+    ) !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .08
+    ) !important;
+
+  color:
+    var(--student-accent) !important;
+}
+
+/* FORM */
+
+.student-complaint-dialog__form {
+  padding:
+    23px 25px 25px !important;
+}
+
+.student-complaint-dialog__form label {
+  min-width: 0;
+
+  margin-bottom:
+    18px !important;
+}
+
+.student-complaint-dialog__form label > span {
+  margin-bottom:
+    8px !important;
+
+  color:
+    var(--student-text) !important;
+
+  font-size:
+    11px !important;
+
+  font-weight:
+    750 !important;
+}
+
+.student-complaint-dialog__form input,
+.student-complaint-dialog__form textarea {
+  box-sizing:
+    border-box;
+
+  width:
+    100% !important;
+
+  border:
+    1px solid
+    var(--student-border) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    var(--student-surface-soft) !important;
+
+  color:
+    var(--student-text) !important;
+
+  caret-color:
+    var(--student-accent);
+
+  font-size:
+    13px !important;
+
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease,
+    background .16s ease;
+}
+
+.student-complaint-dialog__form input {
+  min-height:
+    46px;
+
+  padding:
+    0 13px !important;
+}
+
+.student-complaint-dialog__form textarea {
+  min-height:
+    160px !important;
+
+  max-height:
+    330px;
+
+  padding:
+    12px 13px !important;
+
+  line-height:
+    1.55;
+
+  resize:
+    vertical;
+}
+
+.student-complaint-dialog__form input:focus,
+.student-complaint-dialog__form textarea:focus {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .72
+    ) !important;
+
+  background:
+    var(--student-surface) !important;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      ) !important;
+}
+
+.student-complaint-dialog__form
+input::placeholder,
+.student-complaint-dialog__form
+textarea::placeholder {
+  color:
+    var(--student-muted);
+
+  opacity:
+    .62;
+}
+
+.student-complaint-dialog__form
+label > small {
+  margin-top:
+    6px !important;
+
+  color:
+    var(--student-muted) !important;
+
+  font-size:
+    9px !important;
+}
+
+/* ERROR */
+
+.student-complaint-dialog__error {
+  margin:
+    2px 0 17px !important;
+
+  padding:
+    11px 13px !important;
+
+  border:
+    1px solid
+    rgba(241, 92, 105, .24) !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    rgba(241, 92, 105, .08) !important;
+
+  color:
+    #e85f6c !important;
+
+  font-size:
+    11px !important;
+}
+
+/* ACTIONS */
+
+.student-complaint-dialog__actions {
+  margin-top:
+    4px;
+
+  padding-top:
+    17px !important;
+
+  border-top:
+    1px solid
+    var(--student-border);
+
+  align-items:
+    center;
+}
+
+.student-complaint-dialog__actions
+.primary-button {
+  min-height:
+    42px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    7px;
+
+  border-color:
+    var(--student-accent) !important;
+
+  background:
+    var(--student-accent) !important;
+
+  color:
+    var(--student-accent-text) !important;
+}
+
+.student-complaint-dialog__actions
+.secondary-button {
+  min-height:
+    42px;
+
+  border-color:
+    var(--student-border) !important;
+
+  background:
+    var(--student-surface-soft) !important;
+
+  color:
+    var(--student-text) !important;
+}
+
+/* SUCCESS */
+
+.student-complaint-dialog__success {
+  padding:
+    36px 25px !important;
+
+  color:
+    var(--student-text);
+}
+
+.student-complaint-dialog__success strong {
+  color:
+    var(--student-text);
+
+  font-size:
+    18px !important;
+}
+
+.student-complaint-dialog__success p {
+  color:
+    var(--student-muted) !important;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.65;
+}
+
+/* AÇIK TEMA BACKDROP */
+
+.student-app-shell[data-theme="light"]
+.student-complaint-dialog-backdrop {
+  background:
+    rgba(20, 30, 45, .48) !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .student-complaint-dialog-backdrop {
+    padding:
+      8px !important;
+
+    align-items:
+      flex-end !important;
+  }
+
+  .student-complaint-dialog {
+    width:
+      100% !important;
+
+    max-height:
+      92vh !important;
+
+    border-radius:
+      20px 20px 12px 12px !important;
+  }
+
+  .student-complaint-dialog__header {
+    padding:
+      20px 18px 17px !important;
+  }
+
+  .student-complaint-dialog__title {
+    gap:
+      10px;
+  }
+
+  .student-complaint-dialog__icon {
+    width:
+      39px !important;
+
+    height:
+      39px !important;
+
+    flex-basis:
+      39px !important;
+  }
+
+  .student-complaint-dialog__title h2 {
+    font-size:
+      19px !important;
+  }
+
+  .student-complaint-dialog__form {
+    padding:
+      19px 18px !important;
+  }
+
+  .student-complaint-dialog__form textarea {
+    min-height:
+      135px !important;
+  }
+
+  .student-complaint-dialog__actions {
+    flex-direction:
+      column-reverse;
+
+    gap:
+      8px;
+  }
+
+  .student-complaint-dialog__actions button {
+    width:
+      100% !important;
+  }
+}
