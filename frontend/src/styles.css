@@ -27788,3 +27788,51 @@ span {
 .student-profile-live-users__content strong {
   font-size: 18px !important;
 }
+
+/* =========================================================
+   NOTMARK ONLINE COUNT SPACING V10
+   ========================================================= */
+
+.student-profile-live-users {
+  width: max-content !important;
+  min-width: 0 !important;
+
+  gap: 9px !important;
+
+  white-space: nowrap;
+}
+
+.student-profile-live-users__content {
+  width: auto !important;
+
+  display: inline-flex !important;
+  flex-direction: row !important;
+
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  gap: 9px !important;
+
+  min-width: 0;
+}
+
+.student-profile-live-users__content span {
+  flex: 0 0 auto;
+
+  margin: 0 !important;
+
+  white-space: nowrap !important;
+}
+
+.student-profile-live-users__content strong {
+  flex: 0 0 auto;
+
+  min-width: 1ch;
+
+  margin: 0 !important;
+
+  text-align: left !important;
+  white-space: nowrap !important;
+
+  font-variant-numeric: tabular-nums;
+}
