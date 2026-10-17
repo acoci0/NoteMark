@@ -14,6 +14,15 @@ public sealed class Complaint
 
     public ComplaintCategory Category { get; set; }
 
+    /*
+     * Sipariş kaynaklı teknik sorunlarda
+     * sistem tarafından tanımlanan sabit kod.
+     *
+     * Verification / Note itirazlarında null kalır.
+     */
+    [MaxLength(80)]
+    public string? IssueCode { get; set; }
+
     [MaxLength(180)]
     public required string Subject { get; set; }
 

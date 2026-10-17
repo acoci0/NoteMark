@@ -351,6 +351,10 @@ namespace NotMarket.Api.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<string>("IssueCode")
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
                     b.Property<string>("RelatedEntityId")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");

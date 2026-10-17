@@ -17,6 +17,62 @@ public sealed class StudentComplaintsController(
     IAuditService auditService)
     : ControllerBase
 {
+    /*
+     * Öğrencinin satın aldığı belirli bir sipariş için
+     * bildirebileceği kontrollü sistem sorunlarını döndürür.
+     *
+     * GET /api/student/complaints/order-options/{orderId}
+     */
+    [HttpGet("order-options/{orderId:guid}")]
+    public async Task<
+        ActionResult<StudentOrderComplaintOptionsResponse>>
+        GetOrderComplaintOptions(
+            Guid orderId,
+            CancellationToken cancellationToken = default)
+    {
+        var userId =
+            GetUserId();
+
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
+
+        var order =
+            await db.Orders
+                .AsNoTracking()
+                .Include(
+                    x => x.Payment)
+                .Include(
+                    x => x.NoteSubmission)
+                .SingleOrDefaultAsync(
+                    x =>
+                        x.Id == orderId &&
+                        x.BuyerId ==
+                            userId.Value,
+                    cancellationToken);
+
+        if (order is null)
+        {
+            return NotFound(new
+            {
+                message =
+                    "Sipariş bulunamadı veya size ait değil."
+            });
+        }
+
+        var issues =
+            BuildOrderIssueOptions(
+                order);
+
+        return Ok(
+            new StudentOrderComplaintOptionsResponse(
+                order.Id,
+                order.NoteTitleSnapshot,
+                order.Status.ToString(),
+                issues));
+    }
+
     [HttpPost]
     public async Task<ActionResult<StudentComplaintItemResponse>>
         Create(
@@ -57,11 +113,20 @@ public sealed class StudentComplaintsController(
         var description =
             request.Description?.Trim();
 
+        var issueCode =
+            request.IssueCode?
+                .Trim()
+                .ToUpperInvariant();
+
         if (
-            string.IsNullOrWhiteSpace(
-                subject) ||
-            subject.Length < 5 ||
-            subject.Length > 180)
+            category !=
+                ComplaintCategory.Order &&
+            (
+                string.IsNullOrWhiteSpace(
+                    subject) ||
+                subject.Length < 5 ||
+                subject.Length > 180
+            ))
         {
             return BadRequest(new
             {
@@ -94,6 +159,17 @@ public sealed class StudentComplaintsController(
             case ComplaintCategory.Verification:
             {
                 if (
+                    !string.IsNullOrWhiteSpace(
+                        issueCode))
+                {
+                    return BadRequest(new
+                    {
+                        message =
+                            "Doğrulama itirazlarında teknik sorun kodu gönderilemez."
+                    });
+                }
+
+                if (
                     request.RelatedEntityId is null)
                 {
                     return BadRequest(new
@@ -111,7 +187,9 @@ public sealed class StudentComplaintsController(
                                 x.Id ==
                                     request.RelatedEntityId.Value &&
                                 x.UserId ==
-                                    userId.Value,
+                                    userId.Value &&
+                                x.Status ==
+                                    VerificationStatus.Rejected,
                             cancellationToken);
 
                 if (!exists)
@@ -119,7 +197,7 @@ public sealed class StudentComplaintsController(
                     return NotFound(new
                     {
                         message =
-                            "Bu doğrulama kaydı bulunamadı veya size ait değil."
+                            "Yalnızca size ait reddedilmiş bir doğrulama için itiraz oluşturabilirsiniz."
                     });
                 }
 
@@ -136,6 +214,17 @@ public sealed class StudentComplaintsController(
 
             case ComplaintCategory.Note:
             {
+                if (
+                    !string.IsNullOrWhiteSpace(
+                        issueCode))
+                {
+                    return BadRequest(new
+                    {
+                        message =
+                            "Not itirazlarında teknik sorun kodu gönderilemez."
+                    });
+                }
+
                 if (
                     request.RelatedEntityId is null)
                 {
@@ -154,7 +243,9 @@ public sealed class StudentComplaintsController(
                                 x.Id ==
                                     request.RelatedEntityId.Value &&
                                 x.SellerId ==
-                                    userId.Value,
+                                    userId.Value &&
+                                x.Status ==
+                                    NoteSubmissionStatus.Rejected,
                             cancellationToken);
 
                 if (!exists)
@@ -162,7 +253,7 @@ public sealed class StudentComplaintsController(
                     return NotFound(new
                     {
                         message =
-                            "Bu not gönderimi bulunamadı veya size ait değil."
+                            "Yalnızca size ait reddedilmiş bir not gönderimi için itiraz oluşturabilirsiniz."
                     });
                 }
 
@@ -185,81 +276,94 @@ public sealed class StudentComplaintsController(
                     return BadRequest(new
                     {
                         message =
-                            "Sipariş şikâyeti için sipariş seçilmelidir."
+                            "Sorun bildirilecek sipariş seçilmelidir."
                     });
                 }
 
-                var exists =
+                var order =
                     await db.Orders
                         .AsNoTracking()
-                        .AnyAsync(
+                        .Include(
+                            x => x.Payment)
+                        .Include(
+                            x => x.NoteSubmission)
+                        .SingleOrDefaultAsync(
                             x =>
                                 x.Id ==
                                     request.RelatedEntityId.Value &&
-                                (
-                                    x.BuyerId ==
-                                        userId.Value ||
-                                    x.SellerId ==
-                                        userId.Value
-                                ),
+                                x.BuyerId ==
+                                    userId.Value,
                             cancellationToken);
 
-                if (!exists)
+                if (order is null)
                 {
                     return NotFound(new
                     {
                         message =
-                            "Bu sipariş bulunamadı veya sizinle ilişkili değil."
+                            "Bu sipariş bulunamadı veya size ait değil."
                     });
                 }
+
+                if (
+                    string.IsNullOrWhiteSpace(
+                        issueCode))
+                {
+                    return BadRequest(new
+                    {
+                        message =
+                            "Geçerli bir sistem sorunu seçilmelidir."
+                    });
+                }
+
+                var availableIssues =
+                    BuildOrderIssueOptions(
+                        order);
+
+                var selectedIssue =
+                    availableIssues
+                        .SingleOrDefault(
+                            x =>
+                                string.Equals(
+                                    x.Code,
+                                    issueCode,
+                                    StringComparison.OrdinalIgnoreCase));
+
+                if (selectedIssue is null)
+                {
+                    return BadRequest(new
+                    {
+                        message =
+                            "Seçilen sorun bu sipariş için geçerli değil."
+                    });
+                }
+
+                issueCode =
+                    selectedIssue.Code;
+
+                /*
+                 * Sipariş sorunlarında başlığı
+                 * kullanıcı belirlemez.
+                 */
+                subject =
+                    selectedIssue.Label;
 
                 relatedEntityType =
                     "Order";
 
                 relatedEntityId =
-                    request.RelatedEntityId
-                        .Value
-                        .ToString();
+                    order.Id.ToString();
 
                 break;
             }
 
             case ComplaintCategory.Account:
-            {
-                if (
-                    request.RelatedEntityId is not null &&
-                    request.RelatedEntityId.Value !=
-                        userId.Value)
-                {
-                    return BadRequest(new
-                    {
-                        message =
-                            "Başka bir kullanıcı hesabı adına itiraz oluşturamazsınız."
-                    });
-                }
-
-                relatedEntityType =
-                    "ApplicationUser";
-
-                relatedEntityId =
-                    userId.Value.ToString();
-
-                break;
-            }
-
             case ComplaintCategory.Other:
             {
-                if (
-                    request.RelatedEntityId is not null)
+                return BadRequest(new
                 {
-                    return BadRequest(new
-                    {
-                        message =
-                            "Diğer kategorisinde ilişkili kayıt gönderilmemelidir."
-                    });
-                }
-
-                break;
+                    message =
+                        "Serbest şikâyet oluşturma desteklenmiyor. Başvurunuzu ilgili işlem üzerinden oluşturun."
+                });
             }
 
             default:
@@ -322,8 +426,11 @@ public sealed class StudentComplaintsController(
                 Category =
                     category,
 
+                IssueCode =
+                    issueCode,
+
                 Subject =
-                    subject,
+                    subject!,
 
                 Description =
                     description,
@@ -361,6 +468,8 @@ public sealed class StudentComplaintsController(
                     complaint.Category.ToString(),
 
                 complaint.Subject,
+
+                complaint.IssueCode,
 
                 complaint.RelatedEntityType,
 
@@ -409,6 +518,142 @@ public sealed class StudentComplaintsController(
                 .ToList());
     }
 
+    private static IReadOnlyList<
+        StudentOrderIssueOptionResponse>
+        BuildOrderIssueOptions(
+            Order order)
+    {
+        var issues =
+            new List<
+                StudentOrderIssueOptionResponse>();
+
+        var paymentSucceeded =
+            order.Payment?.Status ==
+                PaymentStatus.Succeeded;
+
+        /*
+         * Ödeme başarılı olduğu hâlde sipariş
+         * Paid durumuna geçmemişse erişim
+         * yetkisi açılmamış demektir.
+         */
+        if (
+            paymentSucceeded &&
+            order.Status !=
+                OrderStatus.Paid)
+        {
+            issues.Add(
+                GetOrderIssue(
+                    "PAYMENT_ACCESS_NOT_GRANTED"));
+        }
+
+        /*
+         * PDF ile ilgili sorunlar yalnızca
+         * başarılı ödeme yapılmış ve sipariş
+         * Paid durumundaysa bildirilebilir.
+         */
+        if (
+            paymentSucceeded &&
+            order.Status ==
+                OrderStatus.Paid)
+        {
+            issues.Add(
+                GetOrderIssue(
+                    "DOWNLOAD_FAILED"));
+
+            if (
+                !string.IsNullOrWhiteSpace(
+                    order.NoteSubmission
+                        .GeneratedPdfBlobPath))
+            {
+                issues.Add(
+                    GetOrderIssue(
+                        "PDF_CORRUPTED"));
+
+                issues.Add(
+                    GetOrderIssue(
+                        "PDF_INCOMPLETE"));
+
+                issues.Add(
+                    GetOrderIssue(
+                        "WRONG_DOCUMENT_DELIVERED"));
+            }
+        }
+
+        /*
+         * Başarılı tahsilattaki tutar veya
+         * para birimi sipariş snapshot'ıyla
+         * uyuşmuyorsa bu seçenek açılır.
+         */
+        if (
+            paymentSucceeded &&
+            order.Payment is not null &&
+            (
+                order.Payment.Amount !=
+                    order.GrossAmount ||
+                !string.Equals(
+                    order.Payment.Currency,
+                    order.Currency,
+                    StringComparison.OrdinalIgnoreCase)
+            ))
+        {
+            issues.Add(
+                GetOrderIssue(
+                    "PAYMENT_AMOUNT_MISMATCH"));
+        }
+
+        return issues;
+    }
+
+    private static StudentOrderIssueOptionResponse
+        GetOrderIssue(
+            string code)
+    {
+        return code switch
+        {
+            "PAYMENT_ACCESS_NOT_GRANTED" =>
+                new(
+                    code,
+                    "Ödeme yaptım fakat nota erişemiyorum",
+                    "Ödeme başarılı olmasına rağmen satın alınan nota erişim yetkisi açılmadı."),
+
+            "DOWNLOAD_FAILED" =>
+                new(
+                    code,
+                    "PDF indirilemiyor",
+                    "Satın alınan PDF indirme işlemi teknik bir nedenle tamamlanamıyor."),
+
+            "PDF_CORRUPTED" =>
+                new(
+                    code,
+                    "PDF açılmıyor veya dosya bozuk",
+                    "İndirilen PDF dosyası açılmıyor ya da geçerli bir PDF olarak görüntülenemiyor."),
+
+            "PDF_INCOMPLETE" =>
+                new(
+                    code,
+                    "PDF'de sayfalar eksik veya boş",
+                    "Teslim edilen PDF'de teknik üretim sürecinden kaynaklanan eksik veya boş sayfalar bulunuyor."),
+
+            "WRONG_DOCUMENT_DELIVERED" =>
+                new(
+                    code,
+                    "Satın aldığım not yerine farklı bir not teslim edildi",
+                    "Teslim edilen PDF, satın alınan not kaydıyla eşleşmiyor."),
+
+            "PAYMENT_AMOUNT_MISMATCH" =>
+                new(
+                    code,
+                    "Tahsil edilen tutar sipariş tutarıyla uyuşmuyor",
+                    "Başarılı ödeme kaydındaki tutar veya para birimi sipariş tutarıyla eşleşmiyor."),
+
+            _ =>
+                throw new ArgumentOutOfRangeException(
+                    nameof(code),
+                    code,
+                    "Bilinmeyen sipariş sorun kodu.")
+        };
+    }
+
     private static StudentComplaintItemResponse
         ToResponse(
             Complaint complaint)
@@ -425,7 +670,8 @@ public sealed class StudentComplaintsController(
                 complaint.AdminResponse,
                 complaint.ReviewedAt,
                 complaint.CreatedAt,
-                complaint.UpdatedAt);
+                complaint.UpdatedAt,
+                complaint.IssueCode);
     }
 
     private Guid? GetUserId()
