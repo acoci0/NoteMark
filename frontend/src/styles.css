@@ -27504,3 +27504,164 @@ span {
     min-width: 0;
   }
 }
+
+/* =========================================================
+   NOTMARK PROFILE LAYOUT V7
+   Online indicator + stat spacing
+   ========================================================= */
+
+/* Çevrimiçi kullanıcı göstergesi:
+   geniş, kısa, tek satır ve sabit yeşil */
+.student-profile-live-users {
+  top: 22px !important;
+  right: 26px !important;
+
+  width: auto !important;
+  min-width: 245px !important;
+  min-height: 42px !important;
+  height: 42px !important;
+
+  padding: 0 14px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  gap: 9px !important;
+
+  border-radius: 11px !important;
+
+  border:
+    1px solid
+    rgba(34, 197, 94, .30) !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(34, 197, 94, .105),
+      rgba(34, 197, 94, .035)
+    ) !important;
+
+  box-shadow:
+    0 8px 24px
+      rgba(0, 0, 0, .10),
+    inset 0 1px 0
+      rgba(255, 255, 255, .04) !important;
+}
+
+/* Yeşil ışık sabit */
+.student-profile-live-users__dot {
+  width: 8px !important;
+  height: 8px !important;
+
+  flex:
+    0 0 8px !important;
+
+  background:
+    #22c55e !important;
+
+  box-shadow:
+    0 0 0 4px
+      rgba(34, 197, 94, .10),
+    0 0 12px
+      rgba(34, 197, 94, .72) !important;
+}
+
+.student-profile-live-users__dot::after {
+  display: none !important;
+}
+
+/* Metin ve sayı aynı satır */
+.student-profile-live-users__content {
+  width: 100%;
+
+  display: flex !important;
+  flex-direction: row !important;
+
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  gap: 12px !important;
+}
+
+.student-profile-live-users__content span {
+  margin: 0 !important;
+
+  color:
+    var(--profile-hero-muted) !important;
+
+  font-size: 9px !important;
+  font-weight: 750 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: .015em;
+
+  white-space: nowrap !important;
+}
+
+.student-profile-live-users__content strong {
+  margin: 0 !important;
+
+  color:
+    #22c55e !important;
+
+  font-size: 17px !important;
+  font-weight: 900 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: -.02em;
+}
+
+/* Üç istatistik kartını çevrimiçi göstergesinden uzaklaştır */
+.student-profile-stats {
+  margin-top: 42px !important;
+}
+
+/* Kartların kendi oranını koru */
+.student-profile-stat-card {
+  height: 178px !important;
+  min-height: 178px !important;
+}
+
+/* Açık temada da yeşil sabit */
+.student-app-shell[data-theme="light"]
+.student-profile-live-users {
+  border-color:
+    rgba(22, 163, 74, .24) !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(34, 197, 94, .11),
+      rgba(255, 255, 255, .76)
+    ) !important;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .student-profile-live-users {
+    width: fit-content !important;
+    min-width: 230px !important;
+
+    margin-bottom: 10px !important;
+  }
+
+  .student-profile-stats {
+    margin-top: 0 !important;
+  }
+}
+
+/* Mobil */
+@media (max-width: 650px) {
+  .student-profile-live-users {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .student-profile-stat-card {
+    height: auto !important;
+    min-height: 116px !important;
+  }
+}
