@@ -10,6 +10,7 @@ public static class DbSeeder
     public static async Task SeedAsync(
         AppDbContext db,
         IConfiguration configuration,
+        IHostEnvironment environment,
         CancellationToken cancellationToken = default)
     {
         /*
@@ -29,27 +30,44 @@ public static class DbSeeder
          */
 
         /*
-         * Admin kullanıcısı oluşturulur.
+         * Development ortamında admin otomatik oluşturulur.
+         * Production ortamında yalnızca açıkça izin verilirse çalışır.
          */
-        await SeedAdminAsync(
-            db,
-            configuration,
-            cancellationToken);
+        var seedAdmin =
+            environment.IsDevelopment() ||
+            configuration.GetValue<bool>(
+                "DatabaseInitialization:SeedAdminOnStartup");
+
+        if (seedAdmin)
+        {
+            await SeedAdminAsync(
+                db,
+                configuration,
+                cancellationToken);
+        }
 
         /*
-         * Sistemde hiç öğrenci yoksa demo
-         * kullanıcılar ve demo kayıtlar eklenir.
+         * Demo veriler yalnızca development ortamında
+         * veya açıkça etkinleştirildiğinde oluşturulur.
          */
-        var studentExists =
-            await db.Users.AnyAsync(
-                x => x.Role == UserRole.Student,
-                cancellationToken);
+        var seedDemoData =
+            environment.IsDevelopment() ||
+            configuration.GetValue<bool>(
+                "DatabaseInitialization:SeedDemoDataOnStartup");
 
-        if (!studentExists)
+        if (seedDemoData)
         {
-            await SeedDemoDataAsync(
-                db,
-                cancellationToken);
+            var studentExists =
+                await db.Users.AnyAsync(
+                    x => x.Role == UserRole.Student,
+                    cancellationToken);
+
+            if (!studentExists)
+            {
+                await SeedDemoDataAsync(
+                    db,
+                    cancellationToken);
+            }
         }
 
         /*
@@ -71,20 +89,40 @@ public static class DbSeeder
         CancellationToken cancellationToken)
     {
         var adminEmail =
-            (
-                configuration["SeedAdmin:Email"] ??
-                "admin@notmarket.local"
-            )
-            .Trim()
-            .ToLowerInvariant();
+            configuration["SeedAdmin:Email"]
+                ?.Trim()
+                .ToLowerInvariant();
 
         var adminPassword =
-            configuration["SeedAdmin:Password"] ??
-            "ChangeMe123!";
+            configuration["SeedAdmin:Password"];
 
         var adminDisplayName =
-            configuration["SeedAdmin:DisplayName"] ??
-            "NotMarket Admin";
+            configuration["SeedAdmin:DisplayName"]
+                ?.Trim();
+
+        if (string.IsNullOrWhiteSpace(adminEmail))
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:Email tanımlı olmalıdır.");
+        }
+
+        if (string.IsNullOrWhiteSpace(adminPassword))
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:Password tanımlı olmalıdır.");
+        }
+
+        if (adminPassword.Length < 12)
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:Password en az 12 karakter olmalıdır.");
+        }
+
+        if (string.IsNullOrWhiteSpace(adminDisplayName))
+        {
+            throw new InvalidOperationException(
+                "SeedAdmin:DisplayName tanımlı olmalıdır.");
+        }
 
         var admin =
             await db.Users.SingleOrDefaultAsync(
