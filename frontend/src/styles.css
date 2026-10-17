@@ -30214,3 +30214,230 @@ textarea:not(
       9px !important;
   }
 }
+
+/* =========================================================
+   NOTMARK ACADEMIC STATUS - PREMIUM V2
+   ========================================================= */
+
+.student-profile-hero-status {
+  width: max-content !important;
+  min-height: 40px;
+
+  margin-top: 22px !important;
+  padding: 0 12px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+
+  gap: 8px !important;
+
+  border:
+    1px solid
+    rgba(34, 197, 94, .18) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(17, 29, 42, .82),
+      rgba(22, 36, 50, .72)
+    ) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(115%);
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, .035),
+    0 8px 24px
+      rgba(0, 0, 0, .12) !important;
+
+  color: inherit !important;
+
+  transition:
+    transform 170ms ease,
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    background 170ms ease !important;
+}
+
+
+/* ---------------------------------------------------------
+   HOVER
+   --------------------------------------------------------- */
+
+.student-profile-hero-status:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(34, 197, 94, .30) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, .045),
+    0 11px 27px
+      rgba(0, 0, 0, .16),
+    0 0 16px
+      rgba(34, 197, 94, .045) !important;
+}
+
+
+/* ---------------------------------------------------------
+   CHECK ICON
+   --------------------------------------------------------- */
+
+.student-profile-hero-status__icon {
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(34, 197, 94, .24);
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(34, 197, 94, .075);
+
+  color:
+    #40d878;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(34, 197, 94, .035);
+}
+
+
+/* ---------------------------------------------------------
+   DOĞRULANDI BADGE
+   --------------------------------------------------------- */
+
+.student-profile-hero-status__badge {
+  padding:
+    3px 6px;
+
+  border:
+    1px solid
+    rgba(34, 197, 94, .15);
+
+  border-radius:
+    6px;
+
+  background:
+    rgba(34, 197, 94, .06);
+
+  color:
+    #58d985 !important;
+
+  font-size:
+    8px !important;
+
+  font-weight:
+    850 !important;
+
+  line-height:
+    1 !important;
+
+  letter-spacing:
+    .065em;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   ANA METİN
+   --------------------------------------------------------- */
+
+.student-profile-hero-status__label {
+  color:
+    #b9c4d0 !important;
+
+  font-size:
+    10px !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    1 !important;
+
+  letter-spacing:
+    .005em !important;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   LIGHT THEME
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme="light"]
+.student-profile-hero-status {
+  border-color:
+    rgba(22, 163, 74, .16) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .86),
+      rgba(247, 250, 252, .76)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, .92),
+    0 8px 22px
+      rgba(28, 42, 60, .075) !important;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-hero-status__label {
+  color:
+    #5d6b7c !important;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-hero-status__badge {
+  color:
+    #168a46 !important;
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 650px) {
+  .student-profile-hero-status {
+    max-width:
+      100%;
+
+    min-height:
+      38px;
+
+    padding:
+      0 10px !important;
+
+    gap:
+      7px !important;
+  }
+
+  .student-profile-hero-status__label {
+    font-size:
+      9px !important;
+  }
+}

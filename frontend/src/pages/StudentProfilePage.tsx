@@ -1486,8 +1486,17 @@ export default function StudentProfilePage() {
           </p>
 
           <div className="student-profile-hero-status">
-            <CheckCircle2 size={15} />
-            NotMark akademik profiliniz aktif
+            <span className="student-profile-hero-status__icon">
+              <CheckCircle2 size={14} />
+            </span>
+
+            <span className="student-profile-hero-status__badge">
+              DOĞRULANDI
+            </span>
+
+            <span className="student-profile-hero-status__label">
+              NotMark akademik profiliniz aktif
+            </span>
           </div>
         </div>
 
