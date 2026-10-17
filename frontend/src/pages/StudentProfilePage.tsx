@@ -1271,51 +1271,77 @@ export default function StudentProfilePage() {
       <header className="student-profile-header">
         <div className="student-profile-header__content">
           <span className="student-profile-eyebrow">
+            <span className="student-profile-eyebrow__dot" />
             ÖĞRENCİ HESABI
           </span>
 
           <h1>
             Hoş geldin,{" "}
-            {student?.displayName}
+            <span>
+              {student?.displayName}
+            </span>
           </h1>
 
           <p>
-            Akademik doğrulamalarınızı,
-            üniversitelerinizi ve bölüm
-            yetkilerinizi tek noktadan
-            yönetin.
+            Akademik kimliğinizi,
+            doğrulamalarınızı ve NotMark
+            içerisindeki yetkilerinizi tek
+            merkezden yönetin.
           </p>
+
+          <div className="student-profile-hero-status">
+            <CheckCircle2 size={15} />
+            NotMark akademik profiliniz aktif
+          </div>
         </div>
 
         <div className="student-profile-stats">
-          <div>
-            <strong>
-              {approvedCount}
-            </strong>
+          <div className="student-profile-stat-card">
+            <div className="student-profile-stat-card__icon">
+              <CheckCircle2 size={19} />
+            </div>
 
-            <span>
-              Doğrulanmış bölüm
-            </span>
+            <div>
+              <strong>
+                {approvedCount}
+              </strong>
+
+              <span>
+                Doğrulanmış bölüm
+              </span>
+            </div>
           </div>
 
-          <div>
-            <strong>
-              {activeUniversityCount}
-            </strong>
+          <div className="student-profile-stat-card">
+            <div className="student-profile-stat-card__icon">
+              <GraduationCap size={19} />
+            </div>
 
-            <span>
-              Aktif üniversite
-            </span>
+            <div>
+              <strong>
+                {activeUniversityCount}
+              </strong>
+
+              <span>
+                Aktif üniversite
+              </span>
+            </div>
           </div>
 
-          <div>
-            <strong>
-              {pendingCount}
-            </strong>
+          <div className="student-profile-stat-card">
+            <div className="student-profile-stat-card__icon">
+              <Clock3 size={19} />
+            </div>
 
-            <span>
-              Bekleyen başvuru
-            </span>
+            <div>
+              <strong>
+                {pendingCount}
+              </strong>
+
+              <span>
+                Bekleyen başvuru
+              </span>
+            </div>
           </div>
         </div>
       </header>

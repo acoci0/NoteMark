@@ -26132,3 +26132,523 @@ body {
     transition: none;
   }
 }
+
+/* =========================================================
+   NOTMARK - NAV PROPORTIONS + PROFILE HERO V3
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   NAVBAR BUTON ORANLARI
+   --------------------------------------------------------- */
+
+.student-appbar .student-main-nav {
+  min-width: 0;
+
+  padding-top: 7px;
+  padding-bottom: 7px;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  overflow: visible !important;
+}
+
+.student-appbar .student-nav-link,
+.student-appbar .student-nav-menu__trigger {
+  height: 42px;
+  min-height: 42px;
+
+  padding:
+    0 14px;
+
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-width: 1px;
+  border-radius: 11px;
+
+  line-height: 1;
+
+  transform: none !important;
+}
+
+/*
+ * Aktif durumda buton büyümez.
+ * Yalnızca ışık ve renk değişir.
+ */
+.student-appbar
+.student-nav-link--active,
+.student-appbar
+.student-nav-link--active:hover {
+  height: 42px;
+  min-height: 42px;
+
+  transform: none !important;
+}
+
+.student-appbar
+.student-nav-link:hover {
+  transform: none !important;
+}
+
+/* ---------------------------------------------------------
+   PREMIUM PROFILE HERO
+   --------------------------------------------------------- */
+
+.student-profile-header {
+  position: relative;
+
+  width: min(1100px, 100%);
+  max-width: 1100px;
+  min-height: 265px;
+
+  margin:
+    0 auto
+    30px;
+
+  padding:
+    36px 38px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(430px, .85fr);
+
+  align-items: center;
+
+  gap: 42px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .25
+    );
+
+  border-radius: 24px;
+
+  color: #ffffff;
+
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(
+        var(--student-accent-rgb),
+        .26
+      ),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 58% 120%,
+      rgba(
+        var(--student-accent-rgb),
+        .12
+      ),
+      transparent 43%
+    ),
+    linear-gradient(
+      125deg,
+      #0b192b 0%,
+      #102137 52%,
+      #121d31 100%
+    );
+
+  box-shadow:
+    0 24px 65px
+    rgba(2, 10, 20, .22),
+    inset 0 1px 0
+    rgba(255,255,255,.035);
+}
+
+/* İnce üst tema çizgisi */
+.student-profile-header::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--student-accent),
+      rgba(
+        var(--student-accent-rgb),
+        .28
+      ) 52%,
+      transparent
+    );
+
+  box-shadow:
+    0 0 18px
+    rgba(
+      var(--student-accent-rgb),
+      .35
+    );
+}
+
+/* Dekoratif ışık */
+.student-profile-header::after {
+  content: "";
+
+  position: absolute;
+
+  width: 310px;
+  height: 310px;
+
+  top: -165px;
+  right: -75px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    );
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 55px
+      rgba(
+        var(--student-accent-rgb),
+        .025
+      ),
+    0 0 0 110px
+      rgba(
+        var(--student-accent-rgb),
+        .015
+      );
+
+  pointer-events: none;
+}
+
+.student-profile-header__content,
+.student-profile-stats {
+  position: relative;
+  z-index: 2;
+}
+
+.student-profile-header__content {
+  max-width: 650px;
+}
+
+.student-profile-eyebrow {
+  width: fit-content;
+
+  margin-bottom: 20px;
+
+  padding:
+    7px 11px;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .30
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .08
+    );
+
+  color:
+    var(--student-accent);
+
+  font-size: 10px;
+  font-weight: 850;
+
+  letter-spacing: .14em;
+}
+
+.student-profile-eyebrow__dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background:
+    var(--student-accent);
+
+  box-shadow:
+    0 0 10px
+    rgba(
+      var(--student-accent-rgb),
+      .65
+    );
+}
+
+.student-profile-header h1 {
+  margin:
+    0 0
+    13px;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      35px,
+      4vw,
+      50px
+    );
+
+  line-height: 1.03;
+
+  letter-spacing: -.045em;
+}
+
+.student-profile-header h1 > span {
+  color:
+    #ffffff;
+
+  text-shadow:
+    0 0 28px
+    rgba(
+      var(--student-accent-rgb),
+      .17
+    );
+}
+
+.student-profile-header p {
+  max-width: 630px;
+
+  margin: 0;
+
+  color: #aab8c8;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.student-profile-hero-status {
+  width: fit-content;
+
+  margin-top: 22px;
+
+  padding:
+    8px 11px;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    rgba(53, 201, 138, .16);
+
+  border-radius: 9px;
+
+  background:
+    rgba(53, 201, 138, .055);
+
+  color: #6adbaa;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------
+   HERO İSTATİSTİKLER
+   --------------------------------------------------------- */
+
+.student-profile-stats {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 11px;
+}
+
+.student-profile-stat-card {
+  min-width: 0;
+  min-height: 132px;
+
+  padding:
+    17px 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  border:
+    1px solid
+    rgba(255,255,255,.075);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(255,255,255,.025)
+    );
+
+  backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.035);
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease;
+}
+
+.student-profile-stat-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .35
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        var(--student-accent-rgb),
+        .11
+      ),
+      rgba(255,255,255,.028)
+    );
+
+  box-shadow:
+    0 15px 32px
+    rgba(0,0,0,.13);
+}
+
+.student-profile-stat-card__icon {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .20
+    );
+
+  border-radius: 10px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .11
+    );
+
+  color:
+    var(--student-accent);
+}
+
+.student-profile-stat-card strong {
+  display: block;
+
+  margin:
+    14px 0
+    4px;
+
+  color: #ffffff;
+
+  font-size: 27px;
+  line-height: 1;
+
+  letter-spacing: -.035em;
+}
+
+.student-profile-stat-card span {
+  display: block;
+
+  color: #9eacbd;
+
+  font-size: 10px;
+  line-height: 1.35;
+
+  white-space: normal;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 980px) {
+  .student-profile-header {
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+  }
+
+  .student-profile-stats {
+    max-width: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .student-profile-header {
+    padding:
+      27px 22px;
+
+    border-radius: 20px;
+  }
+
+  .student-profile-header h1 {
+    font-size: 34px;
+  }
+
+  .student-profile-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .student-profile-stat-card {
+    min-height: 90px;
+
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 14px;
+  }
+
+  .student-profile-stat-card strong {
+    margin:
+      0 0
+      4px;
+  }
+}
