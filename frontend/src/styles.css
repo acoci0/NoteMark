@@ -24652,3 +24652,41 @@ textarea:focus[
     width: 100%;
   }
 }
+
+/* =========================================================
+   NOTMARK - PREVENT HORIZONTAL WHITE OVERSCROLL
+   ========================================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+.student-app-shell {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+/* Safari / macOS yatay çekme sırasında beyaz zemin göstermesin */
+body:has(.student-app-shell[data-theme="dark"]) {
+  background: #0c1420;
+}
+
+body:has(.student-app-shell[data-theme="light"]) {
+  background: #f4f6fa;
+}
+
+.student-app-shell[data-theme="dark"] {
+  background-color: #0c1420;
+}
+
+.student-app-shell[data-theme="light"] {
+  background-color: #f4f6fa;
+}
