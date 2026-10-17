@@ -41,8 +41,12 @@ export default function StudentLayout() {
   } = useStudentAppearance();
 
   const panoActive =
-    location.pathname ===
-      "/student/note-requests" ||
+    location.pathname.startsWith(
+      "/student/marketplace"
+    ) ||
+    location.pathname.startsWith(
+      "/student/note-requests"
+    ) ||
     location.pathname.startsWith(
       "/student/note-submissions"
     ) ||
@@ -107,18 +111,6 @@ export default function StudentLayout() {
               Hesabım
             </NavLink>
 
-            <NavLink
-              to="/student/marketplace"
-              end
-              className={
-                getNavClassName
-              }
-            >
-              <LayoutGrid size={17} />
-
-              Talep Panosu
-            </NavLink>
-
             <div
               className={
                 panoActive
@@ -135,7 +127,7 @@ export default function StudentLayout() {
                 }
                 aria-haspopup="true"
               >
-                <BookOpen size={17} />
+                <LayoutGrid size={17} />
 
                 Pano
 
@@ -147,6 +139,19 @@ export default function StudentLayout() {
 
               <div className="student-nav-menu__dropdown">
                 <NavLink
+                  to="/student/marketplace"
+                  end
+                  className={({ isActive }) =>
+                    isActive
+                      ? "student-nav-menu__item student-nav-menu__item--active"
+                      : "student-nav-menu__item"
+                  }
+                >
+                  <LayoutGrid size={17} />
+                  <span>Talep Panosu</span>
+                </NavLink>
+
+                <NavLink
                   to="/student/note-requests"
                   end
                   className={({ isActive }) =>
@@ -156,10 +161,7 @@ export default function StudentLayout() {
                   }
                 >
                   <BookOpen size={17} />
-
-                  <span>
-                    Taleplerim
-                  </span>
+                  <span>Taleplerim</span>
                 </NavLink>
 
                 <NavLink
@@ -172,10 +174,7 @@ export default function StudentLayout() {
                   }
                 >
                   <FileText size={17} />
-
-                  <span>
-                    Gönderdiğim Notlar
-                  </span>
+                  <span>Gönderdiğim Notlar</span>
                 </NavLink>
 
                 <NavLink
@@ -188,10 +187,7 @@ export default function StudentLayout() {
                   }
                 >
                   <ShoppingBag size={17} />
-
-                  <span>
-                    Aldığım Notlar
-                  </span>
+                  <span>Aldığım Notlar</span>
                 </NavLink>
               </div>
             </div>

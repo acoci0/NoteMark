@@ -25160,3 +25160,142 @@ body {
       translate(0, 5px);
   }
 }
+
+/* =========================================================
+   NOTMARK - PANO DROPDOWN
+   ========================================================= */
+
+.student-appbar,
+.student-appbar__inner,
+.student-main-nav {
+  overflow: visible !important;
+}
+
+.student-appbar {
+  position: relative;
+  z-index: 1000;
+}
+
+.student-main-nav {
+  min-width: 0;
+  padding: 8px 4px;
+  margin: -8px -4px;
+}
+
+.student-nav-menu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.student-nav-menu__trigger {
+  appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.student-nav-menu__chevron {
+  transition: transform .16s ease;
+}
+
+.student-nav-menu:hover
+.student-nav-menu__chevron,
+.student-nav-menu:focus-within
+.student-nav-menu__chevron {
+  transform: rotate(180deg);
+}
+
+.student-nav-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+
+  width: 235px;
+  padding: 8px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translate(-50%, 6px);
+
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+
+  background: var(--student-surface);
+
+  box-shadow:
+    0 22px 55px rgba(0,0,0,.24);
+
+  transition:
+    opacity .15s ease,
+    transform .15s ease,
+    visibility .15s ease;
+
+  z-index: 2000;
+}
+
+.student-nav-menu__dropdown::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 11px;
+}
+
+.student-nav-menu:hover
+.student-nav-menu__dropdown,
+.student-nav-menu:focus-within
+.student-nav-menu__dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translate(-50%, 0);
+}
+
+.student-nav-menu__item {
+  min-height: 44px;
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+
+  color: var(--student-muted);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    background .14s ease,
+    color .14s ease,
+    border-color .14s ease;
+}
+
+.student-nav-menu__item:hover {
+  border-color:
+    rgba(var(--student-accent-rgb), .15);
+
+  background:
+    rgba(var(--student-accent-rgb), .07);
+
+  color:
+    var(--student-accent);
+}
+
+.student-nav-menu__item--active {
+  border-color:
+    rgba(var(--student-accent-rgb), .24);
+
+  background:
+    rgba(var(--student-accent-rgb), .12);
+
+  color:
+    var(--student-accent);
+
+  font-weight: 800;
+}
