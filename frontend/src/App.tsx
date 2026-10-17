@@ -9,16 +9,27 @@ import SiteVisitTracker from "./components/SiteVisitTracker";
 import StudentProtectedRoute from "./components/StudentProtectedRoute";
 
 import AdminLayout from "./layout/AdminLayout";
+import StudentLayout from "./layout/StudentLayout";
 
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NotesPage from "./pages/NotesPage";
-import PlaceholderPage from "./pages/PlaceholderPage";
+import AdminNoteDetailPage from "./pages/AdminNoteDetailPage";
 import ReportsPage from "./pages/ReportsPage";
+import AdminSettingsPage from "./pages/AdminSettingsPage";
+import AdminAuditLogsPage from "./pages/AdminAuditLogsPage";
 import StudentLoginPage from "./pages/StudentLoginPage";
+import StudentMarketplacePage from "./pages/StudentMarketplacePage";
+import StudentNoteRequestPage from "./pages/StudentNoteRequestPage";
+import StudentNoteRequestsPage from "./pages/StudentNoteRequestsPage";
+import StudentNoteSubmissionsPage from "./pages/StudentNoteSubmissionsPage";
 import StudentProfilePage from "./pages/StudentProfilePage";
+import StudentSettingsPage from "./pages/StudentSettingsPage";
+import StudentEarningsPage from "./pages/StudentEarningsPage";
 import UsersPage from "./pages/UsersPage";
+import AdminUserDetailPage from "./pages/AdminUserDetailPage";
 import VerificationsPage from "./pages/VerificationsPage";
+import AdminComplaintsPage from "./pages/AdminComplaintsPage";
 
 export default function App() {
   return (
@@ -38,9 +49,44 @@ export default function App() {
         element={<StudentProtectedRoute />}
       >
         <Route
-          path="/student/profile"
-          element={<StudentProfilePage />}
-        />
+          element={<StudentLayout />}
+        >
+          <Route
+            path="/student/profile"
+            element={<StudentProfilePage />}
+          />
+
+          <Route
+            path="/student/marketplace"
+            element={<StudentMarketplacePage />}
+          />
+
+          <Route
+            path="/student/note-requests"
+            element={<StudentNoteRequestsPage />}
+          />
+
+          <Route
+            path="/student/note-submissions"
+            element={<StudentNoteSubmissionsPage />}
+          />
+
+          <Route
+            path="/student/note-requests/new"
+            element={<StudentNoteRequestPage />}
+          />
+
+
+          <Route
+            path="/student/earnings"
+            element={<StudentEarningsPage />}
+          />
+
+          <Route
+            path="/student/settings"
+            element={<StudentSettingsPage />}
+          />
+        </Route>
       </Route>
 
       {/* ========================= */}
@@ -68,6 +114,12 @@ export default function App() {
             element={<UsersPage />}
           />
 
+
+          <Route
+            path="users/:id"
+            element={<AdminUserDetailPage />}
+          />
+
           <Route
             path="verifications"
             element={<VerificationsPage />}
@@ -79,18 +131,28 @@ export default function App() {
           />
 
           <Route
+            path="notes/:id"
+            element={<AdminNoteDetailPage />}
+          />
+
+          <Route
             path="reports"
             element={<ReportsPage />}
           />
 
           <Route
+            path="audit-logs"
+            element={<AdminAuditLogsPage />}
+          />
+
+          <Route
+            path="complaints"
+            element={<AdminComplaintsPage />}
+          />
+
+          <Route
             path="settings"
-            element={
-              <PlaceholderPage
-                title="Ayarlar"
-                description="Komisyon, fiyatlandırma ve sistem ayarları."
-              />
-            }
+            element={<AdminSettingsPage />}
           />
         </Route>
       </Route>

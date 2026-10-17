@@ -67,6 +67,9 @@ export type NoteSubmission = {
   matchScore: number;
   readabilityScore: number;
   originalityRiskScore: number;
+  suggestedMinPrice: number;
+  suggestedMaxPrice: number;
+  salePrice?: number | null;
   status: string;
   generatedPdfBlobPath?: string | null;
   createdAt: string;
@@ -116,6 +119,58 @@ export type AcademicProgram = {
   name: string;
 };
 
+export type NoteRequestContentType =
+  | "NoteOnly"
+  | "DetailedSummary"
+  | "StudyQuestions";
+
+export type StudentNoteRequest = {
+  id: string;
+  universityName: string;
+  departmentName: string;
+  courseName: string;
+  classLevel: number;
+  topic: string;
+  contentType: NoteRequestContentType | "Legacy";
+  questionCount?: number | null;
+  additionalNotes?: string | null;
+  suggestedMinPrice: number;
+  suggestedMaxPrice: number;
+  createdAt: string;
+};
+
+export type MarketplaceNoteRequest =
+  StudentNoteRequest & {
+    hasActiveSubmission: boolean;
+  };
+
+export type StudentNoteSubmissionCreated = {
+  id: string;
+  requestId: string;
+  title: string;
+  status: string;
+  createdAt: string;
+};
+
+export type StudentNoteSubmission = {
+  id: string;
+  requestId: string;
+  title: string;
+  universityName: string;
+  departmentName: string;
+  courseName: string;
+  status: string;
+  salePrice?: number | null;
+  overallScore?: number | null;
+  reviewDecision?: string | null;
+  generatedPdfAvailable: boolean;
+  pdfGenerationAttemptCount: number;
+  pdfGeneratedAt?: string | null;
+  pdfGenerationMessage?: string | null;
+  reviewedAt?: string | null;
+  createdAt: string;
+};
+
 export type ReportSummary = {
   totalUsers: number;
   verifiedStudents: number;
@@ -156,4 +211,52 @@ export type AdminReports = {
   facultyDistribution: ReportDistribution[];
   recentModeration: ReportModerationItem[];
   generatedAt: string;
+};
+
+export type AdminNoteAiReview = {
+  isTechnicallyValid: boolean;
+  readabilityScore: number;
+  courseMatchScore: number;
+  departmentMatchScore: number;
+  contentCompletenessScore: number;
+  originalityAndReliabilityScore: number;
+  originalityRiskScore: number;
+  overallScore: number;
+  confidenceScore: number;
+  decision: string;
+  summary: string;
+  findings: string[];
+  detectedCourse?: string | null;
+  detectedDepartment?: string | null;
+  modelName: string;
+  promptVersion: string;
+  reviewedAt: string;
+};
+
+export type AdminNoteDetail = {
+  id: string;
+  requestId: string;
+  title: string;
+  sellerName: string;
+  universityName: string;
+  departmentName: string;
+  courseName: string;
+  classLevel: number;
+  requestCriteriaJson: string;
+  suggestedMinPrice: number;
+  suggestedMaxPrice: number;
+  salePrice?: number | null;
+  status: string;
+  reviewNote?: string | null;
+  reviewedAt?: string | null;
+  generatedPdfAvailable: boolean;
+  pdfGenerationAttemptCount: number;
+  pdfGenerationError?: string | null;
+  pdfGeneratedAt?: string | null;
+  pdfGenerationModelName?: string | null;
+  pdfConversionPromptVersion?: string | null;
+  pdfTemplateVersion?: string | null;
+  pdfCompilerName?: string | null;
+  aiReview?: AdminNoteAiReview | null;
+  createdAt: string;
 };

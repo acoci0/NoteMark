@@ -4,7 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import { AuthProvider } from "./auth/AuthContext";
+
+import { AdminAppearanceProvider } from "./auth/AdminAppearanceContext";
 import { StudentAuthProvider } from "./auth/StudentAuthContext";
+import { StudentAppearanceProvider } from "./auth/StudentAppearanceContext";
 
 import "./styles.css";
 
@@ -13,11 +16,15 @@ createRoot(
 ).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
+      <AdminAppearanceProvider>
+        <AuthProvider>
         <StudentAuthProvider>
-          <App />
+          <StudentAppearanceProvider>
+            <App />
+          </StudentAppearanceProvider>
         </StudentAuthProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </AdminAppearanceProvider>
     </BrowserRouter>
   </StrictMode>
 );

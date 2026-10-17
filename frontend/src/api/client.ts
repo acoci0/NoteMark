@@ -18,47 +18,100 @@ const api = axios.create({
   timeout: 15000,
 });
 
+function isStudentArea() {
+  return window.location.pathname.startsWith(
+    "/student"
+  );
+}
+
 api.interceptors.request.use(
   (config) => {
+    /*
+     * Admin ve öğrenci panelleri aynı Axios
+     * instance'ını kullanıyor.
+     *
+     * Aktif panel hangi taraftaysa o role ait
+     * JWT gönderilir.
+     */
     const token =
-      localStorage.getItem(
-        "notmarket_admin_token"
-      );
+      isStudentArea()
+        ? localStorage.getItem(
+            "notmarket_student_token"
+          )
+        : localStorage.getItem(
+            "notmarket_admin_token"
+          );
 
     if (token) {
-      config.headers = config.headers ?? {};
-      (config.headers as Record<string, string>).Authorization = `Bearer ${token}`;
-    }
+      config.headers =
+        config.headers ?? {};
 
+      (
+        config.headers as
+          Record<string, string>
+      ).Authorization =
+        `Bearer ${token}`;
+    }
 
     return config;
   }
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) =>
+    response,
+
   (error) => {
     if (
-      error.response?.status === 401
+      error.response?.status ===
+      401
     ) {
-      localStorage.removeItem(
-        "notmarket_admin_token"
-      );
+      /*
+       * Öğrenci oturumu geçersizse yalnızca
+       * öğrenci oturumunu temizle.
+       */
+      if (isStudentArea()) {
+        localStorage.removeItem(
+          "notmarket_student_token"
+        );
 
-      localStorage.removeItem(
-        "notmarket_admin_profile"
-      );
+        localStorage.removeItem(
+          "notmarket_student_profile"
+        );
 
-      if (
-        window.location.pathname !==
-        "/login"
-      ) {
-        window.location.href =
-          "/login";
+        if (
+          window.location.pathname !==
+          "/student/login"
+        ) {
+          window.location.href =
+            "/student/login";
+        }
+      } else {
+        /*
+         * Admin oturumu geçersizse yalnızca
+         * admin oturumunu temizle.
+         */
+        localStorage.removeItem(
+          "notmarket_admin_token"
+        );
+
+        localStorage.removeItem(
+          "notmarket_admin_profile"
+        );
+
+        if (
+          window.location.pathname !==
+          "/login"
+        ) {
+          window.location.href =
+            "/login";
+        }
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(
+      error
+    );
   }
 );
 

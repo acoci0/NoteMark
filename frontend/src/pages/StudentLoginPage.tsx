@@ -83,7 +83,7 @@ import {
           </div>
   
           <span className="section-kicker">
-            NOTMARKET
+            NOTMARK
           </span>
   
           <h1>
@@ -92,7 +92,7 @@ import {
   
           <p>
             Üniversite doğrulamalarınızı
-            yönetin ve NotMarket hesabınıza
+            yönetin ve NotMark hesabınıza
             erişin.
           </p>
   

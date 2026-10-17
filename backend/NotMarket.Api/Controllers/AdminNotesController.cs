@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -88,6 +89,175 @@ public sealed class AdminNotesController(
     }
 
     /*
+     * Admin öğrencinin yüklediği orijinal PDF dosyasını
+     * güvenli şekilde görüntüler.
+     *
+     * GET:
+     * /api/admin/notes/{submissionId}/original-document
+     */
+    [HttpGet(
+        "{submissionId:guid}/original-document")]
+    public async Task<IActionResult>
+        GetOriginalDocument(
+            Guid submissionId,
+            CancellationToken cancellationToken)
+    {
+        var submission =
+            await db.NoteSubmissions
+                .AsNoTracking()
+                .Where(
+                    x =>
+                        x.Id ==
+                        submissionId)
+                .Select(
+                    x => new
+                    {
+                        x.Id,
+                        x.OriginalBlobPath
+                    })
+                .SingleOrDefaultAsync(
+                    cancellationToken);
+
+        if (submission is null)
+        {
+            return NotFound(new
+            {
+                message =
+                    "Not kaydı bulunamadı."
+            });
+        }
+
+        if (
+            string.IsNullOrWhiteSpace(
+                submission.OriginalBlobPath)
+        )
+        {
+            return Conflict(new
+            {
+                message =
+                    "Bu not için orijinal PDF dosyası bulunmuyor."
+            });
+        }
+
+        var stream =
+            await storage.OpenReadAsync(
+                submission.OriginalBlobPath,
+                cancellationToken);
+
+        if (stream is null)
+        {
+            return NotFound(new
+            {
+                message =
+                    "Orijinal PDF dosyası storage alanında bulunamadı."
+            });
+        }
+
+        return File(
+            stream,
+            "application/pdf",
+            $"notmark-original-{submission.Id:N}.pdf",
+            enableRangeProcessing:
+                true);
+    }
+
+
+    /*
+     * Admin tek bir not gönderiminin ayrıntılarını,
+     * talep bilgisini ve son AI incelemesini getirir.
+     *
+     * GET /api/admin/notes/{submissionId}
+     */
+    [HttpGet("{submissionId:guid}")]
+    public async Task<ActionResult<AdminNoteDetailDto>>
+        GetById(
+            Guid submissionId,
+            CancellationToken cancellationToken)
+    {
+        var submission =
+            await db.NoteSubmissions
+                .AsNoTracking()
+                .Include(x => x.Seller)
+                .Include(x => x.Request)
+                .Include(x => x.AiReviews)
+                .SingleOrDefaultAsync(
+                    x => x.Id == submissionId,
+                    cancellationToken);
+
+        if (submission is null)
+        {
+            return NotFound(new
+            {
+                message = "Not kaydı bulunamadı."
+            });
+        }
+
+        var latestReview =
+            submission.AiReviews
+                .OrderByDescending(
+                    x => x.ReviewedAt)
+                .FirstOrDefault();
+
+        AdminNoteAiReviewDto? aiReview =
+            null;
+
+        if (latestReview is not null)
+        {
+            aiReview =
+                new AdminNoteAiReviewDto(
+                    latestReview.IsTechnicallyValid,
+                    latestReview.ReadabilityScore,
+                    latestReview.CourseMatchScore,
+                    latestReview.DepartmentMatchScore,
+                    latestReview.ContentCompletenessScore,
+                    latestReview.OriginalityAndReliabilityScore,
+                    latestReview.OriginalityRiskScore,
+                    latestReview.OverallScore,
+                    latestReview.ConfidenceScore,
+                    latestReview.Decision.ToString(),
+                    latestReview.Summary,
+                    ParseFindings(
+                        latestReview.FindingsJson),
+                    latestReview.DetectedCourse,
+                    latestReview.DetectedDepartment,
+                    latestReview.ModelName,
+                    latestReview.PromptVersion,
+                    latestReview.ReviewedAt);
+        }
+
+        var response =
+            new AdminNoteDetailDto(
+                submission.Id,
+                submission.RequestId,
+                submission.Title,
+                submission.Seller.DisplayName,
+                submission.Request.UniversityName,
+                submission.Request.DepartmentName,
+                submission.Request.CourseName,
+                submission.Request.ClassLevel,
+                submission.Request.CriteriaJson,
+                submission.Request.SuggestedMinPrice,
+                submission.Request.SuggestedMaxPrice,
+                submission.SalePrice,
+                submission.Status.ToString(),
+                submission.ReviewNote,
+                submission.ReviewedAt,
+                !string.IsNullOrWhiteSpace(
+                    submission.GeneratedPdfBlobPath),
+                submission.PdfGenerationAttemptCount,
+                submission.PdfGenerationError,
+                submission.PdfGeneratedAt,
+                submission.PdfGenerationModelName,
+                submission.PdfConversionPromptVersion,
+                submission.PdfTemplateVersion,
+                submission.PdfCompilerName,
+                aiReview,
+                submission.CreatedAt);
+
+        return Ok(response);
+    }
+
+    /*
     * Admin oluşturulmuş PDF dosyasını indirir.
     *
     * GET:
@@ -155,7 +325,7 @@ public sealed class AdminNotesController(
         return File(
             stream,
             "application/pdf",
-            $"notmarket-{submission.Id:N}.pdf",
+            $"notmark-{submission.Id:N}.pdf",
             enableRangeProcessing:
                 true);
     }
@@ -546,6 +716,31 @@ public sealed class AdminNotesController(
                     : "Not yeniden PDF üretim kuyruğuna gönderildi."
         });
     }
+    private static IReadOnlyList<string>
+        ParseFindings(
+            string findingsJson)
+    {
+        if (
+            string.IsNullOrWhiteSpace(
+                findingsJson)
+        )
+        {
+            return [];
+        }
+
+        try
+        {
+            return
+                JsonSerializer.Deserialize<string[]>(
+                    findingsJson)
+                ?? [];
+        }
+        catch (JsonException)
+        {
+            return [];
+        }
+    }
+
         private Guid? GetAdminId()
     {
         var value =

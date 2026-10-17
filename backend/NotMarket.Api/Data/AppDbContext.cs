@@ -50,6 +50,10 @@ public sealed class AppDbContext(
     public DbSet<Payment> Payments =>
         Set<Payment>();
 
+
+    public DbSet<Complaint> Complaints =>
+        Set<Complaint>();
+
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
     {
@@ -61,11 +65,13 @@ public sealed class AppDbContext(
         ConfigureAcademicUnit(modelBuilder);
         ConfigureAcademicProgram(modelBuilder);
         ConfigureStudentVerification(modelBuilder);
+        ConfigureNoteRequest(modelBuilder);
         ConfigureNoteSubmission(modelBuilder);
         ConfigureNotePdfGenerationArtifact(modelBuilder);
         ConfigureNoteAiReview(modelBuilder);
         ConfigureOrder(modelBuilder);
         ConfigurePayment(modelBuilder);
+        ConfigureComplaint(modelBuilder);
         ConfigureAuditLog(modelBuilder);
         ConfigureSiteVisit(modelBuilder);
     }
@@ -390,6 +396,40 @@ public sealed class AppDbContext(
                 x.AcademicUnitId,
                 x.AcademicProgramId,
                 x.Status
+            });
+    }
+
+    private static void ConfigureNoteRequest(
+        ModelBuilder modelBuilder)
+    {
+        var noteRequest =
+            modelBuilder.Entity<NoteRequest>();
+
+        noteRequest.Property(
+                x => x.ContentType)
+            .HasConversion<string>();
+
+        noteRequest.ToTable(
+            "NoteRequests",
+            table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_NoteRequests_QuestionCount",
+                    "(" +
+                    "\"ContentType\" IS NULL AND " +
+                    "\"QuestionCount\" IS NULL" +
+                    ") OR (" +
+                    "\"ContentType\" = 'StudyQuestions' AND " +
+                    "\"QuestionCount\" IN (10, 15, 20, 25, 30)" +
+                    ") OR (" +
+                    "\"ContentType\" IN ('NoteOnly', 'DetailedSummary') AND " +
+                    "\"QuestionCount\" IS NULL" +
+                    ")");
+
+                table.HasCheckConstraint(
+                    "CK_NoteRequests_PriceRange",
+                    "\"SuggestedMinPrice\" > 0 AND " +
+                    "\"SuggestedMaxPrice\" >= \"SuggestedMinPrice\"");
             });
     }
 
@@ -794,6 +834,105 @@ public sealed class AppDbContext(
 
         payment.HasIndex(
             x => x.CreatedAt);
+    }
+
+    private static void ConfigureComplaint(
+        ModelBuilder modelBuilder)
+    {
+        var complaint =
+            modelBuilder.Entity<Complaint>();
+
+        complaint.ToTable(
+            "Complaints",
+            table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Complaints_RelatedEntity",
+                    "(" +
+                    "\"RelatedEntityType\" IS NULL AND " +
+                    "\"RelatedEntityId\" IS NULL" +
+                    ") OR (" +
+                    "\"RelatedEntityType\" IS NOT NULL AND " +
+                    "\"RelatedEntityId\" IS NOT NULL" +
+                    ")");
+            });
+
+        complaint.HasKey(
+            x => x.Id);
+
+        complaint.Property(
+                x => x.Category)
+            .HasConversion<string>();
+
+        complaint.Property(
+                x => x.Status)
+            .HasConversion<string>();
+
+        complaint.Property(
+                x => x.Subject)
+            .HasMaxLength(180)
+            .IsRequired();
+
+        complaint.Property(
+                x => x.Description)
+            .HasMaxLength(2000)
+            .IsRequired();
+
+        complaint.Property(
+                x => x.RelatedEntityType)
+            .HasMaxLength(100);
+
+        complaint.Property(
+                x => x.RelatedEntityId)
+            .HasMaxLength(100);
+
+        complaint.Property(
+                x => x.AdminResponse)
+            .HasMaxLength(2000);
+
+        complaint.HasOne(
+                x => x.User)
+            .WithMany()
+            .HasForeignKey(
+                x => x.UserId)
+            .OnDelete(
+                DeleteBehavior.Restrict);
+
+        complaint.HasOne(
+                x => x.ReviewedByUser)
+            .WithMany()
+            .HasForeignKey(
+                x => x.ReviewedByUserId)
+            .OnDelete(
+                DeleteBehavior.Restrict);
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.UserId,
+                x.CreatedAt
+            });
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.Status,
+                x.CreatedAt
+            });
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.Category,
+                x.CreatedAt
+            });
+
+        complaint.HasIndex(
+            x => new
+            {
+                x.RelatedEntityType,
+                x.RelatedEntityId
+            });
     }
 
     private static void ConfigureAuditLog(

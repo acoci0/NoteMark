@@ -329,6 +329,75 @@ namespace NotMarket.Api.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("NotMarket.Api.Domain.Complaint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AdminResponse")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("RelatedEntityId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("RelatedEntityType")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTimeOffset?>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReviewedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(180)
+                        .HasColumnType("character varying(180)");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewedByUserId");
+
+                    b.HasIndex("Category", "CreatedAt");
+
+                    b.HasIndex("RelatedEntityType", "RelatedEntityId");
+
+                    b.HasIndex("Status", "CreatedAt");
+
+                    b.HasIndex("UserId", "CreatedAt");
+
+                    b.ToTable("Complaints", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Complaints_RelatedEntity", "(\"RelatedEntityType\" IS NULL AND \"RelatedEntityId\" IS NULL) OR (\"RelatedEntityType\" IS NOT NULL AND \"RelatedEntityId\" IS NOT NULL)");
+                        });
+                });
+
             modelBuilder.Entity("NotMarket.Api.Domain.NoteAiReview", b =>
                 {
                     b.Property<Guid>("Id")
@@ -477,11 +546,18 @@ namespace NotMarket.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AdditionalNotes")
+                        .HasMaxLength(600)
+                        .HasColumnType("character varying(600)");
+
                     b.Property<Guid>("BuyerId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("ClassLevel")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
 
                     b.Property<string>("CourseName")
                         .IsRequired()
@@ -501,11 +577,18 @@ namespace NotMarket.Api.Migrations
                         .HasMaxLength(180)
                         .HasColumnType("character varying(180)");
 
+                    b.Property<int?>("QuestionCount")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("SuggestedMaxPrice")
                         .HasColumnType("numeric");
 
                     b.Property<decimal>("SuggestedMinPrice")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("Topic")
+                        .HasMaxLength(180)
+                        .HasColumnType("character varying(180)");
 
                     b.Property<string>("UniversityName")
                         .IsRequired()
@@ -514,7 +597,12 @@ namespace NotMarket.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NoteRequests");
+                    b.ToTable("NoteRequests", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_NoteRequests_PriceRange", "\"SuggestedMinPrice\" > 0 AND \"SuggestedMaxPrice\" >= \"SuggestedMinPrice\"");
+
+                            t.HasCheckConstraint("CK_NoteRequests_QuestionCount", "(\"ContentType\" IS NULL AND \"QuestionCount\" IS NULL) OR (\"ContentType\" = 'StudyQuestions' AND \"QuestionCount\" IN (10, 15, 20, 25, 30)) OR (\"ContentType\" IN ('NoteOnly', 'DetailedSummary') AND \"QuestionCount\" IS NULL)");
+                        });
                 });
 
             modelBuilder.Entity("NotMarket.Api.Domain.NoteSubmission", b =>
@@ -890,6 +978,24 @@ namespace NotMarket.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("University");
+                });
+
+            modelBuilder.Entity("NotMarket.Api.Domain.Complaint", b =>
+                {
+                    b.HasOne("NotMarket.Api.Domain.ApplicationUser", "ReviewedByUser")
+                        .WithMany()
+                        .HasForeignKey("ReviewedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("NotMarket.Api.Domain.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ReviewedByUser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NotMarket.Api.Domain.NoteAiReview", b =>

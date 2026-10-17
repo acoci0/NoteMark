@@ -1,4 +1,5 @@
 import {
+  AlertTriangle,
   CheckCircle2,
   Clock3,
   GraduationCap,
@@ -20,6 +21,8 @@ import { isAxiosError } from "axios";
 
 import studentApi from "../api/studentClient";
 
+import StudentComplaintDialog from "../components/StudentComplaintDialog";
+
 import { useStudentAuth } from "../auth/StudentAuthContext";
 
 import type {
@@ -39,7 +42,6 @@ const MAX_FILE_SIZE =
 export default function StudentProfilePage() {
   const {
     student,
-    logout,
   } = useStudentAuth();
 
   const [items, setItems] =
@@ -1239,11 +1241,36 @@ export default function StudentProfilePage() {
     setMessage("");
   };
 
+  const approvedCount =
+    items.filter(
+      (item) =>
+        item.status === "Approved"
+    ).length;
+
+  const pendingCount =
+    items.filter(
+      (item) =>
+        item.status === "Pending"
+    ).length;
+
+  const activeUniversityCount =
+    new Set(
+      items
+        .filter(
+          (item) =>
+            item.status === "Approved"
+        )
+        .map(
+          (item) =>
+            item.universityName
+        )
+    ).size;
+
   return (
     <div className="student-profile-page">
       <header className="student-profile-header">
-        <div>
-          <span className="section-kicker">
+        <div className="student-profile-header__content">
+          <span className="student-profile-eyebrow">
             ÖĞRENCİ HESABI
           </span>
 
@@ -1253,19 +1280,44 @@ export default function StudentProfilePage() {
           </h1>
 
           <p>
-            Üniversite ve bölüm
-            doğrulamalarınızı buradan
-            yönetebilirsiniz.
+            Akademik doğrulamalarınızı,
+            üniversitelerinizi ve bölüm
+            yetkilerinizi tek noktadan
+            yönetin.
           </p>
         </div>
 
-        <button
-          className="secondary-button"
-          type="button"
-          onClick={logout}
-        >
-          Çıkış yap
-        </button>
+        <div className="student-profile-stats">
+          <div>
+            <strong>
+              {approvedCount}
+            </strong>
+
+            <span>
+              Doğrulanmış bölüm
+            </span>
+          </div>
+
+          <div>
+            <strong>
+              {activeUniversityCount}
+            </strong>
+
+            <span>
+              Aktif üniversite
+            </span>
+          </div>
+
+          <div>
+            <strong>
+              {pendingCount}
+            </strong>
+
+            <span>
+              Bekleyen başvuru
+            </span>
+          </div>
+        </div>
       </header>
 
       {message && (
@@ -1287,7 +1339,7 @@ export default function StudentProfilePage() {
 
             <p>
               Onaylanan her bölüm
-              NotMarket içerisinde ayrı
+              NotMark içerisinde ayrı
               akademik yetki sağlar.
             </p>
           </div>
@@ -2126,6 +2178,11 @@ function VerificationCard({
     item: StudentVerificationItem
   ) => Promise<void>;
 }) {
+  const [
+    appealOpen,
+    setAppealOpen,
+  ] = useState(false);
+
   return (
     <article className="student-verification-card">
       <div className="student-verification-icon">
@@ -2204,6 +2261,33 @@ function VerificationCard({
               </p>
             </div>
           )}
+
+        {item.status === "Rejected" && (
+          <div className="student-verification-card__actions">
+            <button
+              type="button"
+              className="student-appeal-button"
+              onClick={() =>
+                setAppealOpen(true)
+              }
+            >
+              <AlertTriangle size={16} />
+              Karara İtiraz Et
+            </button>
+          </div>
+        )}
+
+        <StudentComplaintDialog
+          open={appealOpen}
+          category="Verification"
+          relatedEntityId={item.id}
+          title="Doğrulama Kararına İtiraz"
+          description={`${item.universityName} doğrulaması için verilen ret kararının yeniden incelenmesini talep edebilirsiniz.`}
+          defaultSubject={`${item.universityName} doğrulama ret kararına itiraz`}
+          onClose={() =>
+            setAppealOpen(false)
+          }
+        />
       </div>
     </article>
   );

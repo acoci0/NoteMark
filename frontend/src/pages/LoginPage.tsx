@@ -41,7 +41,7 @@ export default function LoginPage() {
               <ShieldCheck size={23} />
             </div>
             <div>
-              <strong>NotMarket</strong>
+              <strong>NotMark</strong>
               <span>Admin Paneli</span>
             </div>
           </div>
