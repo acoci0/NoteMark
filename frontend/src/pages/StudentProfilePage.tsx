@@ -1444,17 +1444,25 @@ export default function StudentProfilePage() {
           title="Son 90 saniyede aktif öğrenci oturumları"
           aria-live="polite"
         >
-          <span className="student-profile-live-users__dot" />
+          <span
+            className="student-profile-live-users__dot"
+            aria-hidden="true"
+          />
 
-          <div className="student-profile-live-users__content">
-            <span>
-              Çevrimiçi kullanıcı sayısı
-            </span>
+          <span className="student-profile-live-users__live">
+            CANLI
+          </span>
 
-            <strong>
-              {activeStudentCount}
-            </strong>
-          </div>
+          <span className="student-profile-live-users__label">
+            Çevrimiçi Kullanıcı:
+          </span>
+
+          <strong
+            key={activeStudentCount}
+            className="student-profile-live-users__count"
+          >
+            {activeStudentCount}
+          </strong>
         </div>
 
         <div className="student-profile-header__content">
