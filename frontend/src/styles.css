@@ -4485,9 +4485,11 @@ td {
   transform:
     translateY(-1px);
 
-  border-color: #cbc4f6;
+  border-color:
+    rgba(var(--student-accent-rgb), 0.50);
 
-  color: #5d4dd0;
+  color:
+    var(--student-text);
 
   box-shadow:
     0 6px 17px
@@ -4961,18 +4963,25 @@ td {
     color 170ms ease;
 }
 
-/* Normal menü butonları: mor border glow */
+/* =========================================================
+   NOTMARK NAVBAR ACCENT HOVER V25
+
+   Navbar hover ve glow renkleri kullanıcının
+   seçtiği vurgu rengini kullanır.
+
+   Sarı / Mor / Mavi / Yeşil
+   ========================================================= */
 .student-nav-link:not(.student-nav-link--active):hover {
   transform: translateY(-2px);
 
   border-color:
-    rgba(108, 92, 231, 0.72);
+    rgba(var(--student-accent-rgb), 0.68);
 
   box-shadow:
     0 0 0 1px
-      rgba(108, 92, 231, 0.18),
+      rgba(var(--student-accent-rgb), 0.18),
     0 0 12px
-      rgba(108, 92, 231, 0.20),
+      rgba(var(--student-accent-rgb), 0.20),
     0 8px 20px
       rgba(22, 34, 55, 0.08);
 }
@@ -5015,7 +5024,7 @@ td {
   filter:
     drop-shadow(
       0 0 4px
-      rgba(108, 92, 231, 0.30)
+      rgba(var(--student-accent-rgb), 0.30)
     );
 }
 
@@ -5023,7 +5032,7 @@ td {
   filter:
     drop-shadow(
       0 0 4px
-      rgba(130, 92, 0, 0.28)
+      rgba(var(--student-accent-rgb), 0.28)
     );
 }
 
@@ -5045,6 +5054,20 @@ td {
   .student-nav-link:active {
     transform: none;
   }
+}
+
+
+
+/* Klavye odağı da seçili tema rengini kullanır. */
+
+.student-app-shell
+.student-appbar
+.student-nav-link:focus-visible {
+  outline:
+    2px solid var(--student-accent);
+
+  outline-offset:
+    3px;
 }
 
 /* =========================================================
