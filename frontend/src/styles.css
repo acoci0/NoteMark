@@ -31880,3 +31880,84 @@ input[type="file"]::file-selector-button {
       none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK NOTE REQUEST - UNIFIED CORNER RADIUS V2
+   ========================================================= */
+
+.note-request-panel {
+  --note-request-box-radius: 14px;
+}
+
+/*
+ * Üniversite / bölüm
+ * Sınıf
+ * Ders
+ * Dersin hangi konusu?
+ */
+.note-request-panel
+.note-request-field input,
+.note-request-panel
+.note-request-field select,
+.note-request-panel
+.note-request-field textarea {
+  border-radius:
+    var(--note-request-box-radius) !important;
+
+  overflow:
+    hidden;
+}
+
+
+/*
+ * Üniversite
+ * Fakülte / akademik birim
+ * Bölüm
+ */
+.note-request-panel
+.note-request-verification > div {
+  border-radius:
+    var(--note-request-box-radius) !important;
+}
+
+
+/*
+ * Safari'de select'in kendi native köşe
+ * geometrisinin farklı görünmesini engeller.
+ * Native ok işareti korunur.
+ */
+.note-request-panel
+.note-request-field select {
+  border-radius:
+    var(--note-request-box-radius) !important;
+
+  clip-path:
+    inset(
+      0 round
+      var(--note-request-box-radius)
+    );
+}
+
+
+/*
+ * Focus sırasında radius değişmesin.
+ */
+.note-request-panel
+.note-request-field input:focus,
+.note-request-panel
+.note-request-field select:focus,
+.note-request-panel
+.note-request-field textarea:focus {
+  border-radius:
+    var(--note-request-box-radius) !important;
+}
+
+
+/*
+ * Kart hover sırasında da geometri sabit.
+ */
+.note-request-panel
+.note-request-verification > div:hover {
+  border-radius:
+    var(--note-request-box-radius) !important;
+}
