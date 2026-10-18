@@ -32320,3 +32320,158 @@ input[type="file"]::file-selector-button {
       );
   }
 }
+
+/* =========================================================
+   NOTMARK PURCHASES - PROFILE CARD HOVER V2
+   Hesabım > Üniversite doğrulamaları ile aynı davranış
+   ========================================================= */
+
+/* Ana satın alma kartı */
+.student-purchase-card {
+  transition:
+    transform 170ms ease,
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    background 170ms ease !important;
+}
+
+/* Normal durumda sol tema ışığı geri planda */
+.student-purchase-card::before {
+  opacity: 0 !important;
+
+  transition:
+    opacity 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+/* Mouse hangi kartın üzerindeyse o kart öne çıksın */
+@media (hover: hover) and (pointer: fine) {
+
+  .student-purchase-card:hover {
+    transform:
+      translateY(-2px) !important;
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .48
+      ) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(
+          var(--student-accent-rgb),
+          .075
+        ),
+        rgba(
+          var(--student-accent-rgb),
+          .018
+        ) 48%,
+        transparent 76%
+      ),
+      var(--student-surface) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(
+          var(--student-accent-rgb),
+          .055
+        ),
+      0 0 16px
+        rgba(
+          var(--student-accent-rgb),
+          .08
+        ),
+      0 11px 28px
+        rgba(
+          18,
+          29,
+          48,
+          .08
+        ) !important;
+  }
+
+  /* Hesabım sayfasındaki gibi sol ışık sadece aktif hover kartında */
+  .student-purchase-card:hover::before {
+    opacity:
+      1 !important;
+
+    box-shadow:
+      0 0 15px
+      rgba(
+        var(--student-accent-rgb),
+        .34
+      ) !important;
+  }
+}
+
+
+/* =========================================================
+   İÇ KUTULAR AYRI AYRI HAREKET ETMESİN
+   Önceki V1 davranışını iptal eder.
+   ========================================================= */
+
+.student-purchase-card__meta > div {
+  transform:
+    none !important;
+
+  transition:
+    border-color 170ms ease,
+    background 170ms ease !important;
+}
+
+.student-purchase-card__meta > div:hover {
+  transform:
+    none !important;
+
+  border-color:
+    var(--student-border) !important;
+
+  background:
+    var(--student-surface-soft) !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* Kart hover olduğunda iç kutular çok hafif beraber canlanır */
+@media (hover: hover) and (pointer: fine) {
+
+  .student-purchase-card:hover
+  .student-purchase-card__meta > div {
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .22
+      ) !important;
+
+    background:
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      ) !important;
+  }
+}
+
+
+/* =========================================================
+   HAREKET TERCİHLERİ
+   ========================================================= */
+
+.student-app-shell[data-motion="reduced"]
+.student-purchase-card:hover,
+
+.student-app-shell[data-motion="off"]
+.student-purchase-card:hover {
+  transform:
+    none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-purchase-card:hover {
+    transform:
+      none !important;
+  }
+}
