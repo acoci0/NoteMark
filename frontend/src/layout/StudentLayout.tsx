@@ -270,7 +270,12 @@ export default function StudentLayout() {
       </header>
 
       <main className="student-app-content">
-        <Outlet />
+        <div
+          key={location.pathname}
+          className="student-route-transition"
+        >
+          <Outlet />
+        </div>
       </main>
     </div>
   );
