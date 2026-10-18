@@ -34006,3 +34006,186 @@ input[type="file"]::file-selector-button {
   filter:
     none !important;
 }
+
+
+/* =========================================================
+   NOTMARK PROFILE - SAFARI GLASS LAYER FIX V17
+   Hero içindeki backdrop-filter compositing katmanlarını kaldırır
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   ÜÇ İSTATİSTİK KARTI
+   --------------------------------------------------------- */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+.student-profile-stat-card {
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  filter:
+    none !important;
+
+  will-change:
+    auto !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(28, 39, 54, .82),
+      rgba(24, 34, 48, .68)
+    ) !important;
+}
+
+
+/* Hover görünümü korunur */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+.student-profile-stat-card:hover {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        var(--student-accent-rgb),
+        .14
+      ),
+      rgba(26, 37, 51, .78)
+    ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   ÇEVRİMİÇİ KULLANICI KUTUSU
+   --------------------------------------------------------- */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+.student-profile-live-users {
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  filter:
+    none !important;
+
+  will-change:
+    auto !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(17, 29, 42, .96),
+      rgba(22, 36, 50, .92)
+    ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   AKADEMİK ERİŞİM KUTUSU
+   --------------------------------------------------------- */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+.student-profile-hero-status {
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  filter:
+    none !important;
+
+  will-change:
+    auto !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(17, 29, 42, .95),
+      rgba(22, 36, 50, .90)
+    ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   HERO WRAPPER
+   Safari'nin ayrı bir cam yüzey üretmesini engelle
+   --------------------------------------------------------- */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header {
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  filter:
+    none !important;
+
+  mix-blend-mode:
+    normal !important;
+
+  transform-style:
+    flat !important;
+
+  perspective:
+    none !important;
+
+  will-change:
+    auto !important;
+}
+
+
+/* ---------------------------------------------------------
+   LIGHT THEME
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+.student-profile-header
+.student-profile-stat-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(247,250,253,.88)
+    ) !important;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+.student-profile-header
+.student-profile-live-users {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(245,253,248,.97),
+      rgba(255,255,255,.93)
+    ) !important;
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+.student-profile-header
+.student-profile-hero-status {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248,253,250,.97),
+      rgba(255,255,255,.93)
+    ) !important;
+}
