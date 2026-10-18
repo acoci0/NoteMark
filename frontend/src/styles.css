@@ -33018,3 +33018,353 @@ input[type="file"]::file-selector-button {
   }
 }
 
+/* =========================================================
+   NOTMARK STUDENT - UNIFIED BOX GLOW V1
+   Tüm öğrenci kartları / panelleri aynı hover konsepti
+   ========================================================= */
+
+.student-app-shell {
+  --notmark-box-border-alpha: .24;
+  --notmark-box-hover-border-alpha: .70;
+  --notmark-box-hover-glow-alpha: .15;
+  --notmark-box-hover-edge-alpha: .88;
+}
+
+.student-app-shell[data-theme="light"] {
+  --notmark-box-border-alpha: .18;
+  --notmark-box-hover-border-alpha: .54;
+  --notmark-box-hover-glow-alpha: .10;
+  --notmark-box-hover-edge-alpha: .70;
+}
+
+.student-app-shell[data-theme="dark"] {
+  --notmark-box-border-alpha: .26;
+  --notmark-box-hover-border-alpha: .72;
+  --notmark-box-hover-glow-alpha: .17;
+  --notmark-box-hover-edge-alpha: .92;
+}
+
+
+/* =========================================================
+   ORTAK KUTU AİLESİ
+   ========================================================= */
+
+.student-app-shell[data-theme]
+:is(
+  .student-profile-header,
+  .student-profile-stat-card,
+  .student-profile-section,
+  .student-verification-form,
+  .student-verification-card,
+
+  .marketplace-card,
+  .marketplace-empty,
+
+  .student-request-card,
+  .student-requests-empty,
+
+  .student-purchase-card,
+  .student-purchases-empty,
+
+  .student-earning-card,
+  .student-earnings-panel,
+  .student-transaction-summary > div,
+
+  .note-request-panel,
+  .note-request-price-card,
+  .note-request-verification > div,
+  .note-content-option,
+
+  .student-settings-panel,
+  .student-setting-option,
+  .student-accent-option,
+  .student-settings-status,
+  .student-settings-footer
+) {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      var(--notmark-box-border-alpha)
+    ) !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(
+        var(--student-accent-rgb),
+        .018
+      ),
+    0 10px 28px
+      rgba(
+        8,
+        15,
+        27,
+        .08
+      ) !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    background-color 170ms ease !important;
+}
+
+
+/* =========================================================
+   SEÇİLİ KARTLAR
+   Seçili durum bilgisi kaybolmaz.
+   ========================================================= */
+
+.student-app-shell[data-theme]
+:is(
+  .student-setting-option--active,
+  .student-accent-option--active,
+  .note-content-option--selected
+) {
+  border-color:
+    var(--student-accent) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(
+        var(--student-accent-rgb),
+        .30
+      ),
+    0 10px 28px
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      ) !important;
+}
+
+
+/* =========================================================
+   ESKİ SOL ÇİZGİLERİ KAPAT
+   Artık bütün kutular aynı hover ışığını kullanacak.
+   ========================================================= */
+
+.student-app-shell[data-theme]
+.student-verification-card::before,
+
+.student-app-shell[data-theme]
+.marketplace-card::before,
+
+.student-app-shell[data-theme]
+.note-request-panel::before,
+
+.student-app-shell[data-theme]
+.student-purchase-card::before,
+
+.student-app-shell[data-theme]
+.note-submissions-page
+.student-request-card::before {
+  opacity:
+    0 !important;
+}
+
+.student-app-shell[data-theme]
+.student-request-card__accent {
+  opacity:
+    0 !important;
+}
+
+
+/* =========================================================
+   HOVER
+   Kutu hareket etmez.
+   Sadece kenar + sol ışık + yumuşak glow oluşur.
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .student-app-shell[data-theme]
+  :is(
+    .student-profile-header,
+    .student-profile-stat-card,
+    .student-profile-section,
+    .student-verification-form,
+    .student-verification-card,
+
+    .marketplace-card,
+    .marketplace-empty,
+
+    .student-request-card,
+    .student-requests-empty,
+
+    .student-purchase-card,
+    .student-purchases-empty,
+
+    .student-earning-card,
+    .student-earnings-panel,
+    .student-transaction-summary > div,
+
+    .note-request-panel,
+    .note-request-price-card,
+    .note-request-verification > div,
+    .note-content-option,
+
+    .student-settings-panel,
+    .student-setting-option,
+    .student-accent-option,
+    .student-settings-status,
+    .student-settings-footer
+  ):hover {
+    transform:
+      none !important;
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        var(--notmark-box-hover-border-alpha)
+      ) !important;
+
+    box-shadow:
+      inset 3px 0 0
+        rgba(
+          var(--student-accent-rgb),
+          var(--notmark-box-hover-edge-alpha)
+        ),
+
+      0 0 0 1px
+        rgba(
+          var(--student-accent-rgb),
+          .13
+        ),
+
+      0 0 20px
+        rgba(
+          var(--student-accent-rgb),
+          var(--notmark-box-hover-glow-alpha)
+        ),
+
+      0 14px 34px
+        rgba(
+          7,
+          14,
+          25,
+          .13
+        ) !important;
+  }
+
+
+  /*
+   * İç içe kutularda yalnızca mouse'un gerçekten
+   * üzerinde olduğu kutu parlar.
+   */
+
+  .student-app-shell[data-theme]
+  .student-profile-header:
+  has(.student-profile-stat-card:hover),
+
+  .student-app-shell[data-theme]
+  .student-profile-section:
+  has(
+    .student-verification-form:hover,
+    .student-verification-card:hover
+  ),
+
+  .student-app-shell[data-theme]
+  .student-earnings-panel:
+  has(.student-transaction-summary > div:hover),
+
+  .student-app-shell[data-theme]
+  .note-request-panel:
+  has(
+    .note-content-option:hover,
+    .note-request-verification > div:hover
+  ),
+
+  .student-app-shell[data-theme]
+  .student-settings-panel:
+  has(
+    .student-setting-option:hover,
+    .student-accent-option:hover
+  ) {
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        var(--notmark-box-border-alpha)
+      ) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(
+          var(--student-accent-rgb),
+          .018
+        ),
+      0 10px 28px
+        rgba(
+          8,
+          15,
+          27,
+          .08
+        ) !important;
+  }
+}
+
+
+/* =========================================================
+   HAREKET AYARLARI
+   Glow kalabilir fakat animasyon kapatılır.
+   ========================================================= */
+
+.student-app-shell[data-motion="off"]
+:is(
+  .student-profile-header,
+  .student-profile-stat-card,
+  .student-profile-section,
+  .student-verification-form,
+  .student-verification-card,
+  .marketplace-card,
+  .marketplace-empty,
+  .student-request-card,
+  .student-requests-empty,
+  .student-purchase-card,
+  .student-purchases-empty,
+  .student-earning-card,
+  .student-earnings-panel,
+  .student-transaction-summary > div,
+  .note-request-panel,
+  .note-request-price-card,
+  .note-request-verification > div,
+  .note-content-option,
+  .student-settings-panel,
+  .student-setting-option,
+  .student-accent-option,
+  .student-settings-status,
+  .student-settings-footer
+) {
+  transition:
+    none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell
+  :is(
+    .student-profile-header,
+    .student-profile-stat-card,
+    .student-profile-section,
+    .student-verification-form,
+    .student-verification-card,
+    .marketplace-card,
+    .marketplace-empty,
+    .student-request-card,
+    .student-requests-empty,
+    .student-purchase-card,
+    .student-purchases-empty,
+    .student-earning-card,
+    .student-earnings-panel,
+    .student-transaction-summary > div,
+    .note-request-panel,
+    .note-request-price-card,
+    .note-request-verification > div,
+    .note-content-option,
+    .student-settings-panel,
+    .student-setting-option,
+    .student-accent-option,
+    .student-settings-status,
+    .student-settings-footer
+  ) {
+    transition:
+      none !important;
+  }
+}
+
