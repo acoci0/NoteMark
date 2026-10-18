@@ -31961,3 +31961,106 @@ input[type="file"]::file-selector-button {
   border-radius:
     var(--note-request-box-radius) !important;
 }
+
+/* =========================================================
+   NOTMARK NOTE REQUEST - CORNER GLOW FIX V3
+   ========================================================= */
+
+/*
+ * Radius aynı kalır fakat focus / glow artık
+ * köşelerde kesilmez.
+ */
+
+.note-request-panel
+.note-request-field {
+  overflow:
+    visible !important;
+}
+
+.note-request-panel
+.note-request-field input,
+.note-request-panel
+.note-request-field select,
+.note-request-panel
+.note-request-field textarea {
+  border-radius:
+    var(--note-request-box-radius) !important;
+
+  overflow:
+    visible !important;
+
+  clip-path:
+    none !important;
+
+  -webkit-clip-path:
+    none !important;
+
+  background-clip:
+    padding-box !important;
+}
+
+
+/*
+ * Safari select:
+ * Native ok korunur, fakat dış glow kesilmez.
+ */
+
+.note-request-panel
+.note-request-field select {
+  border-radius:
+    var(--note-request-box-radius) !important;
+
+  clip-path:
+    none !important;
+
+  -webkit-clip-path:
+    none !important;
+}
+
+
+/*
+ * Focus ışığı bütün köşelerde kesintisiz.
+ */
+
+.note-request-panel
+.note-request-field input:focus,
+.note-request-panel
+.note-request-field select:focus,
+.note-request-panel
+.note-request-field textarea:focus {
+  border-color:
+    var(--student-accent) !important;
+
+  border-radius:
+    var(--note-request-box-radius) !important;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      ),
+    0 0 16px
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      ),
+    inset 0 1px 0
+      rgba(255, 255, 255, .035)
+      !important;
+}
+
+
+/*
+ * Üniversite / Fakülte / Bölüm kartlarında
+ * da aynı köşe geometrisi korunur.
+ */
+
+.note-request-panel
+.note-request-verification > div {
+  border-radius:
+    var(--note-request-box-radius) !important;
+
+  overflow:
+    visible !important;
+}
