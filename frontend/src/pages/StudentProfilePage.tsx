@@ -55,6 +55,13 @@ export default function StudentProfilePage() {
   const [loading, setLoading] =
     useState(true);
 
+
+  const profilePageRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const verificationSectionRef =
+    useRef<HTMLElement | null>(null);
+
   const [showForm, setShowForm] =
     useState(false);
 
@@ -1305,6 +1312,74 @@ export default function StudentProfilePage() {
     setMessage("");
   };
 
+
+  // NOTMARK AURORA BOUNDARY V21
+  useEffect(() => {
+    if (loading) return;
+
+    const page = profilePageRef.current;
+    const section = verificationSectionRef.current;
+
+    if (!page || !section) return;
+
+    const updateBoundary = () => {
+      const pageRect =
+        page.getBoundingClientRect();
+
+      const sectionRect =
+        section.getBoundingClientRect();
+
+      /*
+       * Aurora doğrulama bölümünden
+       * 16 piksel önce sonlanır.
+       */
+      const height = Math.max(
+        0,
+        Math.round(
+          sectionRect.top -
+          pageRect.top -
+          16
+        )
+      );
+
+      page.style.setProperty(
+        "--notmark-aurora-height",
+        `${height}px`
+      );
+    };
+
+    const observer =
+      new ResizeObserver(updateBoundary);
+
+    observer.observe(page);
+    observer.observe(section);
+
+    const header =
+      page.querySelector(
+        ".student-profile-header"
+      );
+
+    if (header) {
+      observer.observe(header);
+    }
+
+    window.addEventListener(
+      "resize",
+      updateBoundary
+    );
+
+    updateBoundary();
+
+    return () => {
+      observer.disconnect();
+
+      window.removeEventListener(
+        "resize",
+        updateBoundary
+      );
+    };
+  }, [loading]);
+
   if (loading) {
     return null;
   }
@@ -1337,6 +1412,7 @@ export default function StudentProfilePage() {
   return (
     <div
       className="student-profile-page"
+      ref={profilePageRef}
         onPointerMove={(event) => {
           if (
             event.pointerType !== "mouse"
@@ -1344,9 +1420,22 @@ export default function StudentProfilePage() {
             return;
           }
 
-          const rect =
+          const aurora =
             event.currentTarget
-              .getBoundingClientRect();
+              .querySelector<HTMLElement>(
+                ":scope > .student-profile-aurora"
+              );
+
+          const rect =
+            aurora?.getBoundingClientRect()
+            ?? event.currentTarget.getBoundingClientRect();
+
+          if (
+            event.clientY < rect.top ||
+            event.clientY > rect.bottom
+          ) {
+            return;
+          }
 
           const x =
             Math.max(
@@ -1565,7 +1654,10 @@ export default function StudentProfilePage() {
         </div>
       )}
 
-      <section className="student-profile-section">
+      <section
+        ref={verificationSectionRef}
+        className="student-profile-section"
+      >
         <div className="student-section-heading">
           <div>
             <h2>

@@ -34965,3 +34965,405 @@ input[type="file"]::file-selector-button {
   filter:
     none !important;
 }
+
+
+
+/* =========================================================
+   NOTMARK PROFILE - AURORA BOUNDARY V21
+
+   Profesyonel ve kontrollü Aurora sistemi.
+
+   1. Üst bölüm düşük yoğunluk.
+   2. Hero boyunca kademeli ışık artışı.
+   3. Üniversite doğrulamaları öncesi yumuşak bitiş.
+   4. Responsive yükseklik hesaplaması.
+   5. Mevcut kart ve hover tasarımları korunur.
+   ========================================================= */
+
+
+/* =========================================================
+   PROFILE AURORA CONTAINER
+   ========================================================= */
+
+.student-profile-page {
+  --notmark-aurora-height: 360px;
+}
+
+.student-app-shell
+.student-profile-page
+> .student-profile-aurora {
+
+  position:
+    absolute !important;
+
+  inset:
+    0 0 auto 0 !important;
+
+  top:
+    0 !important;
+
+  bottom:
+    auto !important;
+
+  width:
+    100% !important;
+
+  height:
+    var(--notmark-aurora-height) !important;
+
+  min-height:
+    0 !important;
+
+  max-height:
+    none !important;
+
+  z-index:
+    0 !important;
+
+  overflow:
+    hidden !important;
+
+  pointer-events:
+    none !important;
+
+  transform:
+    none !important;
+
+  transition:
+    none !important;
+
+  filter:
+    none !important;
+
+  -webkit-filter:
+    none !important;
+
+  /*
+   * Üst bölüm sakin.
+   * Orta ve alt hero alanında ışık belirginleşir.
+   * Aurora renkleri aktif tema rengine bağlıdır.
+   */
+
+  background:
+
+    radial-gradient(
+      ellipse 42% 38%
+      at
+      var(--hero-mouse-x)
+      var(--hero-mouse-y),
+
+      rgba(
+        var(--student-accent-rgb),
+        .18
+      ) 0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .085
+      ) 36%,
+
+      transparent 76%
+    ),
+
+    radial-gradient(
+      ellipse 70% 45%
+      at 15% 74%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .18
+      ) 0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      ) 48%,
+
+      transparent 82%
+    ),
+
+    radial-gradient(
+      ellipse 66% 44%
+      at 85% 76%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .15
+      ) 0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ) 50%,
+
+      transparent 82%
+    ),
+
+    linear-gradient(
+      to bottom,
+
+      rgba(
+        var(--student-accent-rgb),
+        .006
+      ) 0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .018
+      ) 25%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .065
+      ) 62%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .105
+      ) 80%,
+
+      transparent 100%
+    ) !important;
+
+
+  /* =====================================================
+     AURORA FADE MASK
+
+     Üstte düşük görünürlük.
+     Ortada belirginleşme.
+     Doğrulama bölümünden önce tamamen kaybolma.
+     ===================================================== */
+
+  -webkit-mask-image:
+    linear-gradient(
+      to bottom,
+
+      rgba(0, 0, 0, .20) 0%,
+
+      rgba(0, 0, 0, .38) 18%,
+
+      rgba(0, 0, 0, .74) 40%,
+
+      #000 65%,
+
+      #000 77%,
+
+      rgba(0, 0, 0, .48) 91%,
+
+      transparent 100%
+    ) !important;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+
+      rgba(0, 0, 0, .20) 0%,
+
+      rgba(0, 0, 0, .38) 18%,
+
+      rgba(0, 0, 0, .74) 40%,
+
+      #000 65%,
+
+      #000 77%,
+
+      rgba(0, 0, 0, .48) 91%,
+
+      transparent 100%
+    ) !important;
+}
+
+
+/* =========================================================
+   AURORA ANIMATED BLOBS
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob {
+
+  display:
+    block !important;
+
+  position:
+    absolute !important;
+
+  filter:
+    none !important;
+
+  -webkit-filter:
+    none !important;
+
+  pointer-events:
+    none !important;
+}
+
+
+/* SOL IŞIK */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--one {
+
+  width:
+    clamp(280px, 52%, 700px) !important;
+
+  top:
+    25% !important;
+
+  left:
+    -14% !important;
+
+  bottom:
+    auto !important;
+}
+
+
+/* SAĞ IŞIK */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--two {
+
+  width:
+    clamp(280px, 49%, 660px) !important;
+
+  top:
+    34% !important;
+
+  right:
+    -12% !important;
+
+  left:
+    auto !important;
+}
+
+
+/* MERKEZ IŞIK */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--three {
+
+  width:
+    clamp(260px, 42%, 560px) !important;
+
+  top:
+    42% !important;
+
+  left:
+    29% !important;
+}
+
+
+/* =========================================================
+   PROFILE CONTENT LAYERS
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-header {
+
+  position:
+    relative !important;
+
+  z-index:
+    2 !important;
+}
+
+
+/* =========================================================
+   UNIVERSITY VERIFICATION SECTION
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-section {
+
+  position:
+    relative !important;
+
+  z-index:
+    3 !important;
+
+  background:
+    var(--student-surface) !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+> .student-profile-aurora {
+
+  opacity:
+    .72 !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .student-app-shell
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob--one {
+
+    top:
+      32% !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob--two {
+
+    top:
+      43% !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .student-app-shell
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob--one {
+
+    top:
+      36% !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob--two {
+
+    top:
+      48% !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob--three {
+
+    top:
+      52% !important;
+  }
+}
