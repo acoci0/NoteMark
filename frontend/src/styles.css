@@ -32064,3 +32064,209 @@ input[type="file"]::file-selector-button {
   overflow:
     visible !important;
 }
+
+/* =========================================================
+   NOTMARK NOTE REQUEST - EXACT CONTROL GEOMETRY V4
+   ========================================================= */
+
+.note-request-panel {
+  --note-request-control-radius: 14px;
+}
+
+
+/* =========================================================
+   TÜM FORM KUTULARI
+   ========================================================= */
+
+.note-request-panel
+.note-request-field input,
+
+.note-request-panel
+.note-request-field select,
+
+.note-request-panel
+.note-request-field textarea {
+  box-sizing:
+    border-box !important;
+
+  border-radius:
+    var(--note-request-control-radius) !important;
+
+  clip-path:
+    none !important;
+
+  -webkit-clip-path:
+    none !important;
+
+  overflow:
+    visible !important;
+
+  background-clip:
+    padding-box !important;
+}
+
+
+/* =========================================================
+   INPUT + SELECT AYNI YÜKSEKLİK
+   ========================================================= */
+
+.note-request-panel
+.note-request-field input,
+
+.note-request-panel
+.note-request-field select {
+  height:
+    52px !important;
+
+  min-height:
+    52px !important;
+
+  max-height:
+    52px !important;
+
+  padding:
+    0 15px !important;
+}
+
+
+/* =========================================================
+   SAFARI SELECT DÜZELTMESİ
+   Native geometriyi tamamen kaldırıyoruz.
+   ========================================================= */
+
+.note-request-panel
+.note-request-field select {
+  appearance:
+    none !important;
+
+  -webkit-appearance:
+    none !important;
+
+  -moz-appearance:
+    none !important;
+
+  padding-right:
+    44px !important;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--student-muted) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--student-muted) 50%,
+      transparent 50%
+    ) !important;
+
+  background-position:
+    calc(100% - 19px) 22px,
+    calc(100% - 14px) 22px !important;
+
+  background-size:
+    5px 5px,
+    5px 5px !important;
+
+  background-repeat:
+    no-repeat !important;
+}
+
+
+/* =========================================================
+   ÜNİVERSİTE / FAKÜLTE / BÖLÜM KARTLARI
+   ========================================================= */
+
+.note-request-panel
+.note-request-verification > div {
+  box-sizing:
+    border-box !important;
+
+  border-radius:
+    var(--note-request-control-radius) !important;
+
+  overflow:
+    visible !important;
+
+  background-clip:
+    padding-box !important;
+}
+
+
+/* =========================================================
+   FOCUS
+   Köşeler ve ışık birebir aynı kalır.
+   ========================================================= */
+
+.note-request-panel
+.note-request-field input:focus,
+
+.note-request-panel
+.note-request-field select:focus,
+
+.note-request-panel
+.note-request-field textarea:focus {
+  border-radius:
+    var(--note-request-control-radius) !important;
+
+  border-color:
+    var(--student-accent) !important;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      ),
+    0 0 16px
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      ),
+    inset 0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        .035
+      ) !important;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.note-request-panel
+.note-request-verification > div:hover {
+  border-radius:
+    var(--note-request-control-radius) !important;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   Radius aynı, yalnızca yüksekliği farklı olabilir.
+   ========================================================= */
+
+.note-request-panel
+.note-request-field textarea {
+  border-radius:
+    var(--note-request-control-radius) !important;
+}
+
+
+/* =========================================================
+   SAFARI / WEBKIT EK GARANTİ
+   ========================================================= */
+
+@supports (-webkit-touch-callout: none) {
+  .note-request-panel
+  .note-request-field select {
+    border-radius:
+      var(--note-request-control-radius) !important;
+
+    -webkit-border-radius:
+      var(--note-request-control-radius) !important;
+  }
+}
