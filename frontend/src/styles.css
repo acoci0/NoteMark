@@ -32960,8 +32960,8 @@ input[type="file"]::file-selector-button {
 }
 
 /* =========================================================
-   NOTMARK STUDENT - UNIFIED FADE TRANSITION V2
-   Not İste sayfasındaki belirme efekti tüm sayfalarda
+   NOTMARK STUDENT - UNIFIED READY FADE V4
+   Tüm öğrenci sayfaları aynı geçiş standardını kullanır
    ========================================================= */
 
 .student-route-transition {
@@ -32969,14 +32969,9 @@ input[type="file"]::file-selector-button {
   min-width: 0;
 }
 
-
-/*
- * Her route'un gerçek sayfa içeriği
- * Not İste sayfasındaki gibi yalnızca belirir.
- */
 .student-route-transition > * {
   animation:
-    notmark-student-page-fade-in
+    notmark-student-page-ready
     160ms
     ease-out
     both;
@@ -32985,10 +32980,7 @@ input[type="file"]::file-selector-button {
     opacity;
 }
 
-
-/* Ortak NotMark sayfa geçişi */
-
-@keyframes notmark-student-page-fade-in {
+@keyframes notmark-student-page-ready {
   from {
     opacity: 0;
   }
@@ -32998,24 +32990,14 @@ input[type="file"]::file-selector-button {
   }
 }
 
-
-/* =========================================================
-   AZALTILMIŞ HAREKET
-   ========================================================= */
-
 .student-app-shell[data-motion="reduced"]
 .student-route-transition > * {
   animation:
-    notmark-student-page-fade-in
+    notmark-student-page-ready
     110ms
     ease-out
     both;
 }
-
-
-/* =========================================================
-   HAREKET KAPALI
-   ========================================================= */
 
 .student-app-shell[data-motion="off"]
 .student-route-transition > * {
@@ -33026,15 +33008,10 @@ input[type="file"]::file-selector-button {
     1 !important;
 }
 
-
-/* =========================================================
-   SİSTEM ERİŞİLEBİLİRLİK TERCİHİ
-   ========================================================= */
-
 @media (prefers-reduced-motion: reduce) {
   .student-route-transition > * {
     animation:
-      notmark-student-page-fade-in
+      notmark-student-page-ready
       110ms
       ease-out
       both;

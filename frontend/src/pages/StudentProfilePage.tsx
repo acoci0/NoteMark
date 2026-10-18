@@ -1305,6 +1305,10 @@ export default function StudentProfilePage() {
     setMessage("");
   };
 
+  if (loading) {
+    return null;
+  }
+
   const approvedCount =
     items.filter(
       (item) =>
@@ -2365,22 +2369,14 @@ export default function StudentProfilePage() {
         )}
 
         <div className="student-verification-list">
-          {loading && (
-            <div className="empty-state">
-              Doğrulamalar yükleniyor...
-            </div>
-          )}
-
-          {!loading &&
-            items.length === 0 && (
+          {items.length === 0 && (
               <div className="empty-state">
                 Henüz öğrenci
                 doğrulamanız yok.
               </div>
             )}
 
-          {!loading &&
-            items.map((item) => (
+          {items.map((item) => (
               <VerificationCard
                 key={item.id}
                 item={item}

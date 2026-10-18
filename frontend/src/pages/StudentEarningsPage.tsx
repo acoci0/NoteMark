@@ -667,11 +667,7 @@ export default function StudentEarningsPage() {
   }, [range]);
 
   if (loading) {
-    return (
-      <div className="student-earnings-state">
-        Kazanç bilgileri yükleniyor...
-      </div>
-    );
+    return null;
   }
 
   if (
