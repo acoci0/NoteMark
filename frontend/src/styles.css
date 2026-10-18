@@ -34293,3 +34293,480 @@ input[type="file"]::file-selector-button {
   filter:
     none !important;
 }
+
+/* =========================================================
+   NOTMARK PROFILE - PERFORMANCE AURORA V19
+   Daha akıcı / daha aktif / alt bölgede daha yoğun
+   ========================================================= */
+
+.student-profile-page
+> .student-profile-aurora {
+  inset:
+    0 !important;
+
+  transform:
+    none !important;
+
+  transition:
+    none !important;
+
+  filter:
+    none !important;
+
+  -webkit-filter:
+    none !important;
+
+  will-change:
+    auto !important;
+
+  /*
+   * Üst bölüm bilinçli olarak hafif.
+   * Alt bölümde tema rengi giderek yoğunlaşır.
+   */
+  background:
+    radial-gradient(
+      ellipse 42% 28%
+      at
+      var(--hero-mouse-x)
+      var(--hero-mouse-y),
+
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .045
+      )
+      42%,
+
+      transparent
+      76%
+    ),
+
+    radial-gradient(
+      ellipse 78% 45%
+      at 16% 92%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .20
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .085
+      )
+      46%,
+
+      transparent
+      78%
+    ),
+
+    radial-gradient(
+      ellipse 72% 42%
+      at 84% 88%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .16
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .065
+      )
+      48%,
+
+      transparent
+      80%
+    ),
+
+    linear-gradient(
+      to bottom,
+
+      rgba(
+        var(--student-accent-rgb),
+        .012
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .025
+      )
+      32%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      )
+      72%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .12
+      )
+      100%
+    ) !important;
+}
+
+
+/* =========================================================
+   AURORA HAREKETLİ KÜRELER
+   Blur yok; radial-gradient zaten yumuşak.
+   ========================================================= */
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob {
+  display:
+    block !important;
+
+  position:
+    absolute !important;
+
+  border-radius:
+    50% !important;
+
+  filter:
+    none !important;
+
+  -webkit-filter:
+    none !important;
+
+  mix-blend-mode:
+    normal !important;
+
+  pointer-events:
+    none !important;
+
+  will-change:
+    transform,
+    opacity !important;
+}
+
+
+/* SOL ALT */
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--one {
+  width:
+    58% !important;
+
+  aspect-ratio:
+    1 !important;
+
+  left:
+    -18% !important;
+
+  top:
+    52% !important;
+
+  bottom:
+    auto !important;
+
+  background:
+    radial-gradient(
+      circle,
+
+      rgba(
+        var(--student-accent-rgb),
+        .21
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .105
+      )
+      34%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      )
+      58%,
+
+      transparent
+      76%
+    ) !important;
+
+  animation:
+    notmark-aurora-v19-left
+    8.5s
+    cubic-bezier(.45, .05, .55, .95)
+    infinite
+    alternate !important;
+}
+
+
+/* SAĞ ALT */
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--two {
+  width:
+    53% !important;
+
+  aspect-ratio:
+    1 !important;
+
+  right:
+    -15% !important;
+
+  left:
+    auto !important;
+
+  top:
+    61% !important;
+
+  background:
+    radial-gradient(
+      circle,
+
+      rgba(
+        var(--student-accent-rgb),
+        .18
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .085
+      )
+      36%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .028
+      )
+      59%,
+
+      transparent
+      77%
+    ) !important;
+
+  animation:
+    notmark-aurora-v19-right
+    10.5s
+    cubic-bezier(.45, .05, .55, .95)
+    infinite
+    alternate !important;
+}
+
+
+/* ALT ORTA - DAHA AKTİF */
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--three {
+  width:
+    46% !important;
+
+  aspect-ratio:
+    1 !important;
+
+  left:
+    28% !important;
+
+  top:
+    58% !important;
+
+  background:
+    radial-gradient(
+      circle,
+
+      rgba(
+        var(--student-accent-rgb),
+        .16
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      )
+      38%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .022
+      )
+      60%,
+
+      transparent
+      78%
+    ) !important;
+
+  animation:
+    notmark-aurora-v19-center
+    7.2s
+    cubic-bezier(.45, .05, .55, .95)
+    infinite
+    alternate !important;
+}
+
+
+/* =========================================================
+   GPU DOSTU HAREKETLER
+   Sadece transform + opacity
+   ========================================================= */
+
+@keyframes notmark-aurora-v19-left {
+  0% {
+    transform:
+      translate3d(-8%, 7%, 0)
+      scale(.94);
+
+    opacity:
+      .58;
+  }
+
+  50% {
+    transform:
+      translate3d(17%, -12%, 0)
+      scale(1.08);
+
+    opacity:
+      .92;
+  }
+
+  100% {
+    transform:
+      translate3d(32%, 5%, 0)
+      scale(1.02);
+
+    opacity:
+      .70;
+  }
+}
+
+
+@keyframes notmark-aurora-v19-right {
+  0% {
+    transform:
+      translate3d(9%, 5%, 0)
+      scale(.96);
+
+    opacity:
+      .56;
+  }
+
+  50% {
+    transform:
+      translate3d(-18%, -13%, 0)
+      scale(1.10);
+
+    opacity:
+      .88;
+  }
+
+  100% {
+    transform:
+      translate3d(-29%, 7%, 0)
+      scale(1.03);
+
+    opacity:
+      .68;
+  }
+}
+
+
+@keyframes notmark-aurora-v19-center {
+  0% {
+    transform:
+      translate3d(-17%, 10%, 0)
+      scale(.92);
+
+    opacity:
+      .42;
+  }
+
+  50% {
+    transform:
+      translate3d(13%, -17%, 0)
+      scale(1.12);
+
+    opacity:
+      .82;
+  }
+
+  100% {
+    transform:
+      translate3d(25%, 8%, 0)
+      scale(.98);
+
+    opacity:
+      .52;
+  }
+}
+
+
+/* =========================================================
+   HAREKET TERCİHLERİ
+   ========================================================= */
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--one {
+  animation-duration:
+    18s !important;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--two {
+  animation-duration:
+    22s !important;
+}
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--three {
+  animation-duration:
+    16s !important;
+}
+
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob {
+  animation:
+    none !important;
+
+  transform:
+    none !important;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob {
+    animation:
+      none !important;
+
+    transform:
+      none !important;
+  }
+}
+
+
+/* Açık temada yoğunluğu biraz azalt */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+> .student-profile-aurora {
+  opacity:
+    .78;
+}
