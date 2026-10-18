@@ -35783,3 +35783,282 @@ input[type="file"]::file-selector-button {
   }
 
 }
+
+/* =========================================================
+   NOTMARK PROFILE SURFACE AND ALIGNMENT V26
+
+   1. Doğrulamalar paneli diğer kartlarla aynı yüzeyde.
+   2. Sol içerikler panelin sol kenarıyla hizalı.
+   3. Sağ istatistikler panelin sağ kenarıyla hizalı.
+   4. Çevrimiçi kullanıcı göstergesi sağ kenarla hizalı.
+   5. Aurora ve diğer tasarım bileşenleri korunur.
+   ========================================================= */
+
+
+/* =========================================================
+   ORTAK GENİŞLİK
+
+   Hero ve Üniversite Doğrulamalarım aynı genişlikte.
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-header,
+
+.student-app-shell
+.student-profile-page
+> .student-profile-section {
+
+  width:
+    min(
+      var(--student-content-width, 1100px),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width, 1100px) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+
+  box-sizing:
+    border-box !important;
+}
+
+
+/* =========================================================
+   HERO HİZALAMA
+
+   Eski 38px yatay iç boşluk kaldırılır.
+   Dikey boşluk ve mevcut yükseklik korunur.
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-header {
+
+  padding-left:
+    0 !important;
+
+  padding-right:
+    0 !important;
+
+  padding-inline:
+    0 !important;
+}
+
+
+/* =========================================================
+   SOL İÇERİK
+
+   Öğrenci Hesabı
+   Hoş geldin
+   Açıklama
+   Doğrulandı
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+.student-profile-header__content {
+
+  margin-left:
+    0 !important;
+
+  padding-left:
+    0 !important;
+
+  justify-self:
+    start;
+
+  min-width:
+    0;
+}
+
+
+/* =========================================================
+   SAĞ İSTATİSTİK KARTLARI
+
+   Üç kartın en sağ kenarı doğrulama paneliyle
+   aynı dikey çizgide biter.
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+> .student-profile-stats {
+
+  width:
+    100% !important;
+
+  max-width:
+    none !important;
+
+  margin-left:
+    0 !important;
+
+  margin-right:
+    0 !important;
+
+  padding-right:
+    0 !important;
+
+  justify-self:
+    end !important;
+}
+
+
+/* =========================================================
+   ÇEVRİMİÇİ KULLANICI
+
+   Hero'nun sağ iç boşluğu kaldırıldığı için
+   göstergenin sağ konumu da sıfırlanır.
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header
+> .student-profile-live-users {
+
+  right:
+    0 !important;
+}
+
+
+/* =========================================================
+   ÜNİVERSİTE DOĞRULAMALARIM - DARK THEME
+
+   Referans:
+   Taleplerim sayfasındaki student-request-card.
+
+   Diğer düzenlediğimiz kartlarla aynı gradient.
+   ========================================================= */
+
+.student-app-shell[data-theme="dark"]
+.student-profile-page
+> .student-profile-section,
+
+.student-app-shell[data-theme="dark"]
+.student-profile-page
+> .student-profile-section:hover {
+
+  background:
+    linear-gradient(
+      145deg,
+
+      var(--student-surface),
+
+      rgba(
+        var(--student-accent-rgb),
+        0.025
+      )
+    ) !important;
+}
+
+
+/* =========================================================
+   ÜNİVERSİTE DOĞRULAMALARIM - LIGHT THEME
+
+   Diğer kartlarla aynı açık tema yüzeyi.
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+> .student-profile-section,
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+> .student-profile-section:hover {
+
+  background:
+    var(--student-surface) !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+
+   Tek kolon yerleşim korunur.
+   Çevrimiçi gösterge sağa yaslanır.
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .student-app-shell
+  .student-profile-page
+  .student-profile-header
+  > .student-profile-live-users {
+
+    position:
+      static !important;
+
+    right:
+      auto !important;
+
+    margin-left:
+      auto !important;
+
+    margin-right:
+      0 !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  .student-profile-header
+  > .student-profile-stats {
+
+    width:
+      100% !important;
+
+    justify-self:
+      stretch !important;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+
+   Sayfa genişliğini aşmadan hizalama korunur.
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .student-app-shell
+  .student-profile-page
+  > .student-profile-header {
+
+    padding-left:
+      0 !important;
+
+    padding-right:
+      0 !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  .student-profile-header
+  > .student-profile-live-users {
+
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  .student-profile-header
+  > .student-profile-stats {
+
+    width:
+      100% !important;
+
+    min-width:
+      0 !important;
+  }
+}
