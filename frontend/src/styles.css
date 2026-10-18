@@ -33840,3 +33840,63 @@ input[type="file"]::file-selector-button {
   box-shadow:
     none !important;
 }
+
+/* =========================================================
+   NOTMARK PROFILE - AURORA EDGE FIX V15
+   Full-page Aurora katmanı fiziksel olarak kaydırılmaz.
+   Mouse ışığı koordinat üzerinden hareket eder.
+   ========================================================= */
+
+.student-profile-page
+> .student-profile-aurora {
+  inset:
+    -2px !important;
+
+  transform:
+    none !important;
+
+  transition:
+    none !important;
+
+  width:
+    auto !important;
+
+  height:
+    auto !important;
+}
+
+
+/*
+ * Aurora'nın kendisi sabit kalır.
+ * Mouse etkileşimi --hero-mouse-x / --hero-mouse-y
+ * üzerinden devam eder.
+ *
+ * Böylece sol/sağ kenarda boş şerit oluşmaz.
+ */
+
+.student-profile-page {
+  overflow:
+    hidden !important;
+}
+
+
+/* Hareket seçeneklerinde de aynı geometrik yapı korunur */
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-page
+> .student-profile-aurora,
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+> .student-profile-aurora {
+  transform:
+    none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-page
+  > .student-profile-aurora {
+    transform:
+      none !important;
+  }
+}
