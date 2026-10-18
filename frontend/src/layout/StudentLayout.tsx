@@ -12,6 +12,11 @@ import {
 } from "lucide-react";
 
 import {
+  useEffect,
+  useRef,
+} from "react";
+
+import {
   NavLink,
   Outlet,
   useLocation,
@@ -29,6 +34,9 @@ import {
 export default function StudentLayout() {
   const location = useLocation();
 
+  const pointerGlowRef =
+    useRef<HTMLDivElement | null>(null);
+
   const {
     student,
     logout,
@@ -39,6 +47,188 @@ export default function StudentLayout() {
     accent,
     motion,
   } = useStudentAppearance();
+
+
+  /*
+   * NOTMARK GLOBAL POINTER GLOW V23
+   *
+   * Tek event listener sistemi.
+   * React state güncellemesi yok.
+   * GPU transform kullanılır.
+   * Kare başına en fazla bir DOM güncellemesi.
+   */
+
+  useEffect(() => {
+    const glow = pointerGlowRef.current;
+    const main = glow?.parentElement;
+
+    if (!glow || !main || motion === "off") {
+      return;
+    }
+
+    const finePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    );
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    if (!finePointer.matches) {
+      return;
+    }
+
+    let frame: number | null = null;
+
+    let targetX = 0;
+    let targetY = 0;
+
+    let currentX = 0;
+    let currentY = 0;
+
+    let hasPosition = false;
+    let visible = false;
+
+    /*
+     * Sadece transform değiştirilir.
+     * top, left ve background güncellenmez.
+     */
+
+    const render = () => {
+      frame = null;
+
+      const factor =
+        motion === "reduced" ||
+        reducedMotion.matches
+          ? 1
+          : 0.28;
+
+      const deltaX =
+        targetX - currentX;
+
+      const deltaY =
+        targetY - currentY;
+
+      currentX += deltaX * factor;
+      currentY += deltaY * factor;
+
+      glow.style.transform =
+        `translate3d(${currentX}px, ${currentY}px, 0) ` +
+        "translate3d(-50%, -50%, 0)";
+
+      /*
+       * Hedefe ulaşınca RAF durur.
+       * Gereksiz sürekli animasyon yoktur.
+       */
+
+      if (
+        Math.abs(targetX - currentX) > 0.4 ||
+        Math.abs(targetY - currentY) > 0.4
+      ) {
+        frame = window.requestAnimationFrame(
+          render
+        );
+      }
+    };
+
+    const handlePointerMove = (
+      event: PointerEvent
+    ) => {
+      if (
+        event.pointerType !== "mouse" ||
+        !finePointer.matches
+      ) {
+        return;
+      }
+
+      targetX = event.clientX;
+      targetY = event.clientY;
+
+      /*
+       * İlk hareket sırasında ışık doğrudan
+       * imleç konumunda oluşturulur.
+       */
+
+      if (!hasPosition) {
+        currentX = targetX;
+        currentY = targetY;
+
+        hasPosition = true;
+      }
+
+      if (!visible) {
+        visible = true;
+        glow.style.opacity = "1";
+      }
+
+      /*
+       * Aynı karede ikinci RAF oluşturulmaz.
+       */
+
+      if (frame === null) {
+        frame = window.requestAnimationFrame(
+          render
+        );
+      }
+    };
+
+    const stopGlow = () => {
+      visible = false;
+      hasPosition = false;
+
+      glow.style.opacity = "0";
+
+      if (frame !== null) {
+        window.cancelAnimationFrame(frame);
+        frame = null;
+      }
+    };
+
+    main.addEventListener(
+      "pointermove",
+      handlePointerMove,
+      { passive: true }
+    );
+
+    main.addEventListener(
+      "pointerleave",
+      stopGlow
+    );
+
+    main.addEventListener(
+      "pointercancel",
+      stopGlow
+    );
+
+    window.addEventListener(
+      "blur",
+      stopGlow
+    );
+
+    return () => {
+      stopGlow();
+
+      main.removeEventListener(
+        "pointermove",
+        handlePointerMove
+      );
+
+      main.removeEventListener(
+        "pointerleave",
+        stopGlow
+      );
+
+      main.removeEventListener(
+        "pointercancel",
+        stopGlow
+      );
+
+      window.removeEventListener(
+        "blur",
+        stopGlow
+      );
+    };
+  }, [motion]);
 
   const panoActive =
     location.pathname.startsWith(
@@ -270,6 +460,12 @@ export default function StudentLayout() {
       </header>
 
       <main className="student-app-content">
+        <div
+          ref={pointerGlowRef}
+          className="notmark-global-pointer-glow"
+          aria-hidden="true"
+        />
+
         <div
           key={location.pathname}
           className="student-route-transition"

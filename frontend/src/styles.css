@@ -35394,3 +35394,241 @@ input[type="file"]::file-selector-button {
     transition: none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK GLOBAL POINTER GLOW V23
+
+   GPU accelerated shared cursor illumination.
+   Single overlay.
+   Transform-only mouse tracking.
+   No top/left animation.
+   No backdrop blur.
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL CONTENT LAYER
+   ========================================================= */
+
+.student-app-shell
+.student-app-content {
+
+  position:
+    relative;
+
+  min-width:
+    0;
+}
+
+
+/* =========================================================
+   SINGLE GLOBAL GLOW ELEMENT
+   ========================================================= */
+
+.student-app-shell
+.student-app-content
+> .notmark-global-pointer-glow {
+
+  position:
+    fixed;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  z-index:
+    0;
+
+  width:
+    clamp(260px, 32vw, 420px);
+
+  aspect-ratio:
+    1;
+
+  border-radius:
+    50%;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0;
+
+  background:
+    radial-gradient(
+      circle at center,
+
+      rgba(
+        var(--student-accent-rgb),
+        .23
+      ) 0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .13
+      ) 24%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ) 47%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .015
+      ) 63%,
+
+      transparent 76%
+    );
+
+  transform:
+    translate3d(-50%, -50%, 0);
+
+  transition:
+    opacity 160ms ease-out;
+
+  will-change:
+    transform, opacity;
+
+  backface-visibility:
+    hidden;
+
+  contain:
+    paint;
+}
+
+
+/* =========================================================
+   CONTENT REMAINS ABOVE THE GLOW
+   ========================================================= */
+
+.student-app-shell
+.student-app-content
+> .student-route-transition {
+
+  position:
+    relative;
+}
+
+
+/* =========================================================
+   PAGE BACKGROUND TRANSPARENCY
+
+   Finans sayfasıyla aynı shell arka planını kullanır.
+   Glow kartların arkasından görünür.
+   ========================================================= */
+
+.student-app-shell
+.student-route-transition
+> :is(
+  .student-profile-page,
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+) {
+
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+}
+
+
+/* =========================================================
+   REMOVE OLD PROFILE CURSOR GLOW
+
+   V22 ortam aydınlatması korunur.
+   Yalnızca eski performans maliyetli
+   mouse pseudo-element devre dışı bırakılır.
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .student-profile-aurora::after,
+
+.student-app-shell
+.student-profile-page:hover
+> .student-profile-aurora::after {
+
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+.notmark-global-pointer-glow {
+
+  background:
+    radial-gradient(
+      circle,
+
+      rgba(
+        var(--student-accent-rgb),
+        .17
+      ) 0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .085
+      ) 28%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .03
+      ) 50%,
+
+      transparent 76%
+    );
+}
+
+
+/* =========================================================
+   MOTION OFF / TOUCH DEVICES
+   ========================================================= */
+
+.student-app-shell[data-motion="off"]
+.notmark-global-pointer-glow {
+
+  display:
+    none !important;
+}
+
+
+@media (hover: none), (pointer: coarse) {
+
+  .student-app-shell
+  .notmark-global-pointer-glow {
+
+    display:
+      none !important;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .student-app-shell
+  .notmark-global-pointer-glow {
+
+    transition:
+      none !important;
+  }
+}
