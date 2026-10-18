@@ -705,22 +705,22 @@ export default function StudentEarningsPage() {
       <header className="student-earnings-heading">
         <div>
           <span>
-            FİNANS MERKEZİ
+            NOTMARK
           </span>
 
           <h1>
-            Kazançlarım
+            Finansal Panel
           </h1>
 
           <p>
-            Satış gelirlerini, alış giderlerini
-            ve NotMark içindeki net kazancını takip et.
+            Satış gelirlerinizi, alış giderlerinizi
+            ve finansal hareketlerinizi tek merkezden takip edin.
           </p>
         </div>
 
         <div className="student-earnings-heading__badge">
           <WalletCards size={18} />
-          Finans özeti
+          Genel Özet
         </div>
       </header>
 

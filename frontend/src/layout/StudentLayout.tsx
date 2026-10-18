@@ -206,7 +206,7 @@ export default function StudentLayout() {
             >
               <WalletCards size={17} />
 
-              Kazançlarım
+              Finans
             </NavLink>
 
             <NavLink
