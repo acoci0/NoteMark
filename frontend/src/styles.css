@@ -33251,30 +33251,25 @@ input[type="file"]::file-selector-button {
    */
 
   .student-app-shell[data-theme]
-  .student-profile-header:
-  has(.student-profile-stat-card:hover),
+  .student-profile-header:has(.student-profile-stat-card:hover),
 
   .student-app-shell[data-theme]
-  .student-profile-section:
-  has(
+  .student-profile-section:has(
     .student-verification-form:hover,
     .student-verification-card:hover
   ),
 
   .student-app-shell[data-theme]
-  .student-earnings-panel:
-  has(.student-transaction-summary > div:hover),
+  .student-earnings-panel:has(.student-transaction-summary > div:hover),
 
   .student-app-shell[data-theme]
-  .note-request-panel:
-  has(
+  .note-request-panel:has(
     .note-content-option:hover,
     .note-request-verification > div:hover
   ),
 
   .student-app-shell[data-theme]
-  .student-settings-panel:
-  has(
+  .student-settings-panel:has(
     .student-setting-option:hover,
     .student-accent-option:hover
   ) {
