@@ -44,8 +44,13 @@ export default function StudentLayout() {
     location.pathname.startsWith(
       "/student/marketplace"
     ) ||
-    location.pathname.startsWith(
-      "/student/note-requests"
+    (
+      location.pathname.startsWith(
+        "/student/note-requests"
+      ) &&
+      !location.pathname.startsWith(
+        "/student/note-requests/new"
+      )
     ) ||
     location.pathname.startsWith(
       "/student/note-submissions"
