@@ -33211,7 +33211,6 @@ input[type="file"]::file-selector-button {
 
   .student-app-shell[data-theme]
   :is(
-    .student-profile-header,
     .student-profile-stat-card,
     .student-verification-form,
     .student-verification-card,
@@ -33282,9 +33281,6 @@ input[type="file"]::file-selector-button {
    * İç içe kutularda yalnızca mouse'un gerçekten
    * üzerinde olduğu kutu parlar.
    */
-
-  .student-app-shell[data-theme]
-  .student-profile-header:has(.student-profile-stat-card:hover),
 
   .student-app-shell[data-theme]
   .student-profile-section:has(
@@ -33367,7 +33363,6 @@ input[type="file"]::file-selector-button {
 @media (prefers-reduced-motion: reduce) {
   .student-app-shell
   :is(
-    .student-profile-header,
     .student-profile-stat-card,
     .student-profile-section,
     .student-verification-form,
@@ -33774,3 +33769,74 @@ input[type="file"]::file-selector-button {
   }
 }
 
+
+
+/* =========================================================
+   NOTMARK PROFILE HERO - ABSOLUTE NO BORDER V14
+   Hoş geldin alanı hiçbir durumda kart/glow değildir
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:hover,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:focus-within,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:has(
+  .student-profile-stat-card:hover
+) {
+  border:
+    0 !important;
+
+  border-width:
+    0 !important;
+
+  border-style:
+    none !important;
+
+  border-color:
+    transparent !important;
+
+  outline:
+    0 !important;
+
+  border-radius:
+    0 !important;
+
+  box-shadow:
+    none !important;
+
+  background:
+    transparent !important;
+
+  transform:
+    none !important;
+}
+
+.student-app-shell
+.student-profile-page
+.student-profile-header::before,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+
+  border:
+    0 !important;
+
+  box-shadow:
+    none !important;
+}
