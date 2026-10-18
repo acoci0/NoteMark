@@ -32758,3 +32758,203 @@ input[type="file"]::file-selector-button {
       none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK STUDENT CONTENT GRID - 1100PX STANDARD V1
+   Finans sayfası hariç tüm öğrenci sayfaları
+   ========================================================= */
+
+.student-app-shell {
+  --student-content-width:
+    1100px;
+}
+
+
+/* =========================================================
+   HESABIM
+   ========================================================= */
+
+.student-profile-header,
+.student-profile-section {
+  width:
+    min(
+      var(--student-content-width),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+}
+
+
+/* =========================================================
+   TALEP PANOSU
+   ========================================================= */
+
+.marketplace-header,
+.marketplace-grid,
+.marketplace-empty,
+.marketplace-success {
+  width:
+    min(
+      var(--student-content-width),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+}
+
+
+/* =========================================================
+   TALEPLERİM + GÖNDERDİĞİM NOTLAR
+   ========================================================= */
+
+.student-requests-header,
+.student-request-list,
+.student-requests-empty,
+.note-submissions-header,
+.note-submissions-empty {
+  width:
+    min(
+      var(--student-content-width),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+}
+
+
+/* =========================================================
+   NOT İSTE
+   ========================================================= */
+
+.note-request-header,
+.note-request-form,
+.note-request-message,
+.note-request-success {
+  width:
+    min(
+      var(--student-content-width),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+}
+
+
+/* =========================================================
+   SATIN ALDIKLARIM
+   ========================================================= */
+
+.student-purchases-header,
+.student-purchases-list,
+.student-purchases-empty,
+.student-purchases-loading {
+  width:
+    min(
+      var(--student-content-width),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+}
+
+
+/* =========================================================
+   AYARLAR
+   ========================================================= */
+
+.student-settings-header,
+.student-settings-grid,
+.student-settings-footer {
+  width:
+    min(
+      var(--student-content-width),
+      100%
+    ) !important;
+
+  max-width:
+    var(--student-content-width) !important;
+
+  margin-left:
+    auto !important;
+
+  margin-right:
+    auto !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   1100px altındaki ekranlarda taşma oluşmaz.
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .student-profile-header,
+  .student-profile-section,
+
+  .marketplace-header,
+  .marketplace-grid,
+  .marketplace-empty,
+  .marketplace-success,
+
+  .student-requests-header,
+  .student-request-list,
+  .student-requests-empty,
+  .note-submissions-header,
+  .note-submissions-empty,
+
+  .note-request-header,
+  .note-request-form,
+  .note-request-message,
+  .note-request-success,
+
+  .student-purchases-header,
+  .student-purchases-list,
+  .student-purchases-empty,
+  .student-purchases-loading,
+
+  .student-settings-header,
+  .student-settings-grid,
+  .student-settings-footer {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+  }
+}
