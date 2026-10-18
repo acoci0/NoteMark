@@ -367,9 +367,154 @@ export default function StudentNoteRequestPage() {
 
   if (loading) {
     return (
-      <div className="note-request-page">
-        <div className="note-request-loading">
-          Talep formu hazırlanıyor...
+      <div
+        className="note-request-page"
+        aria-busy="true"
+        aria-label="Talep formu hazırlanıyor"
+      >
+        <header className="note-request-header">
+          <div>
+            <span className="section-kicker">
+              NOTMARK
+            </span>
+
+            <h1>
+              Not İste
+            </h1>
+
+            <p>
+              İhtiyacınız olan ders,
+              konu ve içerik türünü
+              belirleyerek talebinizi
+              yayınlayın.
+            </p>
+          </div>
+        </header>
+
+        <div className="note-request-form note-request-skeleton">
+          <section className="note-request-panel">
+            <div className="note-request-panel__heading">
+              <div
+                className="note-request-step"
+                aria-hidden="true"
+              >
+                <Library size={20} />
+              </div>
+
+              <div>
+                <h2>
+                  Akademik bilgiler
+                </h2>
+
+                <p>
+                  Talep yalnızca
+                  doğrulanmış üniversite
+                  ve bölümünüz için
+                  oluşturulabilir.
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="note-request-skeleton__stack"
+              aria-hidden="true"
+            >
+              <div className="note-request-skeleton__field">
+                <div className="note-request-skeleton__line note-request-skeleton__line--label" />
+                <div className="note-request-skeleton__control" />
+              </div>
+
+              <div className="note-request-skeleton__verification">
+                <div className="note-request-skeleton__verification-card">
+                  <div className="note-request-skeleton__line note-request-skeleton__line--short" />
+                  <div className="note-request-skeleton__line note-request-skeleton__line--medium" />
+                </div>
+
+                <div className="note-request-skeleton__verification-card">
+                  <div className="note-request-skeleton__line note-request-skeleton__line--short" />
+                  <div className="note-request-skeleton__line note-request-skeleton__line--long" />
+                </div>
+
+                <div className="note-request-skeleton__verification-card">
+                  <div className="note-request-skeleton__line note-request-skeleton__line--short" />
+                  <div className="note-request-skeleton__line note-request-skeleton__line--medium" />
+                </div>
+              </div>
+
+              <div className="note-request-skeleton__row">
+                <div className="note-request-skeleton__field">
+                  <div className="note-request-skeleton__line note-request-skeleton__line--label" />
+                  <div className="note-request-skeleton__control" />
+                </div>
+
+                <div className="note-request-skeleton__field">
+                  <div className="note-request-skeleton__line note-request-skeleton__line--label" />
+                  <div className="note-request-skeleton__control" />
+                </div>
+              </div>
+
+              <div className="note-request-skeleton__field">
+                <div className="note-request-skeleton__line note-request-skeleton__line--label" />
+                <div className="note-request-skeleton__control" />
+              </div>
+            </div>
+          </section>
+
+          <section className="note-request-panel">
+            <div className="note-request-panel__heading">
+              <div
+                className="note-request-step"
+                aria-hidden="true"
+              >
+                <FileText size={20} />
+              </div>
+
+              <div>
+                <h2>
+                  İstediğiniz içerik
+                </h2>
+
+                <p>
+                  Bu konu için hangi
+                  türde materyale
+                  ihtiyacınız olduğunu
+                  seçin.
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="note-request-skeleton__stack"
+              aria-hidden="true"
+            >
+              <div className="note-request-skeleton__options">
+                <div className="note-request-skeleton__option" />
+                <div className="note-request-skeleton__option" />
+                <div className="note-request-skeleton__option" />
+              </div>
+
+              <div className="note-request-skeleton__field">
+                <div className="note-request-skeleton__line note-request-skeleton__line--label" />
+                <div className="note-request-skeleton__textarea" />
+              </div>
+            </div>
+          </section>
+
+          <aside
+            className="note-request-price-card note-request-skeleton__price"
+            aria-hidden="true"
+          >
+            <div className="note-request-skeleton__line note-request-skeleton__line--medium" />
+            <div className="note-request-skeleton__price-value" />
+
+            <div className="note-request-skeleton__paragraph">
+              <div className="note-request-skeleton__line note-request-skeleton__line--long" />
+              <div className="note-request-skeleton__line note-request-skeleton__line--long" />
+              <div className="note-request-skeleton__line note-request-skeleton__line--medium" />
+            </div>
+
+            <div className="note-request-skeleton__button" />
+          </aside>
         </div>
       </div>
     );
