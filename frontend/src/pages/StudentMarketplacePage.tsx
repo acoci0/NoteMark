@@ -235,6 +235,10 @@ export default function StudentMarketplacePage() {
     }
   };
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <div className="marketplace-page">
       <header className="marketplace-header">
@@ -287,11 +291,7 @@ export default function StudentMarketplacePage() {
         </div>
       )}
 
-      {loading ? (
-        <div className="note-request-loading">
-          Talep panosu yükleniyor...
-        </div>
-      ) : requests.length === 0 ? (
+      {requests.length === 0 ? (
         <section className="marketplace-empty">
           <BookOpen size={30} />
 

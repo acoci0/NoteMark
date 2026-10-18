@@ -78,6 +78,10 @@ export default function StudentNoteRequestsPage() {
     void load();
   }, []);
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <div className="student-requests-page">
       <header className="student-requests-header">
@@ -120,11 +124,7 @@ export default function StudentNoteRequestsPage() {
         </div>
       )}
 
-      {loading ? (
-        <div className="note-request-loading">
-          Talepler yükleniyor...
-        </div>
-      ) : requests.length === 0 ? (
+      {requests.length === 0 ? (
         <section className="student-requests-empty">
           <div className="student-requests-empty__icon">
             <BookOpen size={28} />

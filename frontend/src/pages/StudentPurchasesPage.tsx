@@ -2,7 +2,6 @@ import {
   AlertTriangle,
   Download,
   FileText,
-  LoaderCircle,
   ReceiptText,
 } from "lucide-react";
 
@@ -155,6 +154,10 @@ export default function StudentPurchasesPage() {
     }
   };
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <div className="student-purchases-page">
       <header className="student-purchases-header">
@@ -191,16 +194,7 @@ export default function StudentPurchasesPage() {
         </div>
       )}
 
-      {loading ? (
-        <div className="student-purchases-loading">
-          <LoaderCircle
-            size={24}
-            className="student-order-issue-spinner"
-          />
-
-          Satın almalar yükleniyor...
-        </div>
-      ) : orders.length === 0 ? (
+      {orders.length === 0 ? (
         <section className="student-purchases-empty">
           <FileText size={30} />
 

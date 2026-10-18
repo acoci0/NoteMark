@@ -134,6 +134,10 @@ export default function StudentNoteSubmissionsPage() {
     }
   };
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <div className="student-requests-page note-submissions-page">
       <header className="student-requests-header note-submissions-header">
@@ -175,11 +179,7 @@ export default function StudentNoteSubmissionsPage() {
         </div>
       )}
 
-      {loading ? (
-        <div className="note-request-loading">
-          Gönderilen notlar yükleniyor...
-        </div>
-      ) : submissions.length === 0 ? (
+      {submissions.length === 0 ? (
         <section className="student-requests-empty note-submissions-empty">
           <div className="student-requests-empty__icon">
             <FileText size={28} />
