@@ -35000,17 +35000,37 @@ input[type="file"]::file-selector-button {
 
 
 /* =========================================================
-   FULL PAGE AURORA
+   NOTMARK PROFILE - ORGANIC AURORA V27
+
+   Asymmetric atmospheric lighting.
+   Soft scattered light fields.
+   Seamless organic drift.
+   Transform-only animation.
+   ========================================================= */
+
+
+/* =========================================================
+   PROFILE BACKGROUND
    ========================================================= */
 
 .student-app-shell
 .student-profile-page {
   position: relative !important;
   isolation: isolate;
+
   overflow: hidden !important;
-  background: var(--student-bg) !important;
+
+  background:
+    var(--student-bg) !important;
 }
 
+
+/* =========================================================
+   AMBIENT ATMOSPHERE
+
+   Dairesel ışık merkezi yerine geniş,
+   asimetrik aydınlatma katmanları.
+   ========================================================= */
 
 .student-app-shell
 .student-profile-page
@@ -35019,11 +35039,6 @@ input[type="file"]::file-selector-button {
   position: absolute !important;
 
   inset: 0 !important;
-
-  top: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
 
   width: auto !important;
   height: auto !important;
@@ -35038,60 +35053,77 @@ input[type="file"]::file-selector-button {
   pointer-events: none !important;
 
   transform: none !important;
-  transition: none !important;
 
   filter: none !important;
+
   -webkit-filter: none !important;
 
   -webkit-mask-image: none !important;
   mask-image: none !important;
 
   /*
-   * Üstte oldukça hafif.
-   * Ortada dengeli.
-   * Altta biraz daha belirgin.
+   * Üstte düşük yoğunluk.
+   * Aşağıda geniş ve belirsiz ışık geçişleri.
    */
 
   background:
 
     radial-gradient(
-      ellipse 65% 35%
-      at 15% 18%,
-      rgba(var(--student-accent-rgb), .025),
-      transparent 78%
+      ellipse 110% 27%
+      at 8% 19%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .018
+      ) 0%,
+
+      transparent 86%
     ),
 
     radial-gradient(
-      ellipse 70% 44%
-      at 83% 58%,
-      rgba(var(--student-accent-rgb), .075),
-      transparent 79%
+      ellipse 115% 32%
+      at 93% 54%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      ) 0%,
+
+      transparent 86%
     ),
 
     radial-gradient(
-      ellipse 75% 37%
-      at 24% 90%,
-      rgba(var(--student-accent-rgb), .115),
-      transparent 80%
+      ellipse 120% 29%
+      at 17% 87%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ) 0%,
+
+      transparent 87%
     ),
 
     linear-gradient(
-      to bottom,
+      112deg,
 
-      rgba(var(--student-accent-rgb), .004) 0%,
+      transparent 5%,
 
-      rgba(var(--student-accent-rgb), .018) 30%,
+      rgba(
+        var(--student-accent-rgb),
+        .014
+      ) 48%,
 
-      rgba(var(--student-accent-rgb), .045) 65%,
-
-      rgba(var(--student-accent-rgb), .085) 100%
-
+      transparent 91%
     ) !important;
 }
 
 
 /* =========================================================
-   ANIMATED LIGHT BLOBS
+   SHARED ORGANIC LIGHT FIELD
+
+   Yuvarlak kutu geometrisi kaldırılır.
+   Her katman birden fazla ışık alanı taşır.
    ========================================================= */
 
 .student-app-shell
@@ -35103,23 +35135,40 @@ input[type="file"]::file-selector-button {
 
   display: block !important;
 
-  aspect-ratio: 1 !important;
+  width:
+    clamp(650px, 110%, 1500px) !important;
 
-  border-radius: 50% !important;
+  height:
+    clamp(340px, 38vw, 620px) !important;
 
-  filter: none !important;
-  -webkit-filter: none !important;
+  aspect-ratio:
+    auto !important;
 
-  mix-blend-mode: normal !important;
+  border-radius:
+    0 !important;
 
-  pointer-events: none !important;
+  filter:
+    none !important;
 
-  will-change: transform !important;
+  -webkit-filter:
+    none !important;
+
+  mix-blend-mode:
+    normal !important;
+
+  pointer-events:
+    none !important;
+
+  will-change:
+    transform;
 }
 
 
 /* =========================================================
-   LEFT LIGHT
+   ORGANIC FIELD 1
+
+   Üst bölge.
+   Hafif, yatay ve parçalı aydınlatma.
    ========================================================= */
 
 .student-app-shell
@@ -35127,35 +35176,74 @@ input[type="file"]::file-selector-button {
 > .student-profile-aurora
 .student-profile-aurora__blob--one {
 
-  width: clamp(300px, 56%, 850px) !important;
+  top:
+    6% !important;
 
-  top: 18% !important;
+  left:
+    -22% !important;
 
-  left: -18% !important;
+  right:
+    auto !important;
 
-  right: auto !important;
-  bottom: auto !important;
+  bottom:
+    auto !important;
 
   background:
+
     radial-gradient(
-      circle,
+      ellipse 72% 29%
+      at 17% 46%,
 
-      rgba(var(--student-accent-rgb), .13) 0%,
+      rgba(
+        var(--student-accent-rgb),
+        .060
+      ) 0%,
 
-      rgba(var(--student-accent-rgb), .065) 35%,
+      rgba(
+        var(--student-accent-rgb),
+        .021
+      ) 49%,
 
-      transparent 76%
+      transparent 88%
+    ),
 
+    radial-gradient(
+      ellipse 43% 22%
+      at 71% 27%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .038
+      ) 0%,
+
+      transparent 84%
+    ),
+
+    radial-gradient(
+      ellipse 37% 34%
+      at 76% 80%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .030
+      ) 0%,
+
+      transparent 88%
     ) !important;
 
   animation:
-    notmark-v22-drift-left
-    38s ease-in-out infinite !important;
+    notmark-v27-drift-one
+    43s
+    ease-in-out
+    infinite !important;
 }
 
 
 /* =========================================================
-   RIGHT LIGHT
+   ORGANIC FIELD 2
+
+   Orta bölge.
+   Farklı noktalardan yayılan düzensiz ışık.
    ========================================================= */
 
 .student-app-shell
@@ -35163,35 +35251,74 @@ input[type="file"]::file-selector-button {
 > .student-profile-aurora
 .student-profile-aurora__blob--two {
 
-  width: clamp(320px, 54%, 820px) !important;
+  top:
+    38% !important;
 
-  top: 46% !important;
+  right:
+    -17% !important;
 
-  right: -18% !important;
+  left:
+    auto !important;
 
-  left: auto !important;
-  bottom: auto !important;
+  bottom:
+    auto !important;
 
   background:
+
     radial-gradient(
-      circle,
+      ellipse 64% 33%
+      at 78% 34%,
 
-      rgba(var(--student-accent-rgb), .18) 0%,
+      rgba(
+        var(--student-accent-rgb),
+        .105
+      ) 0%,
 
-      rgba(var(--student-accent-rgb), .085) 36%,
+      rgba(
+        var(--student-accent-rgb),
+        .040
+      ) 46%,
 
-      transparent 78%
+      transparent 88%
+    ),
 
+    radial-gradient(
+      ellipse 51% 23%
+      at 30% 68%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .075
+      ) 0%,
+
+      transparent 85%
+    ),
+
+    radial-gradient(
+      ellipse 36% 41%
+      at 56% 48%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .045
+      ) 0%,
+
+      transparent 84%
     ) !important;
 
   animation:
-    notmark-v22-drift-right
-    46s ease-in-out infinite !important;
+    notmark-v27-drift-two
+    57s
+    ease-in-out
+    infinite !important;
 }
 
 
 /* =========================================================
-   LOWER LIGHT
+   ORGANIC FIELD 3
+
+   Alt bölge.
+   Geniş, yayılmış ve yumuşak geçişler.
    ========================================================= */
 
 .student-app-shell
@@ -35199,120 +35326,192 @@ input[type="file"]::file-selector-button {
 > .student-profile-aurora
 .student-profile-aurora__blob--three {
 
-  width: clamp(340px, 60%, 900px) !important;
+  top:
+    72% !important;
 
-  top: 76% !important;
+  left:
+    -6% !important;
 
-  left: 16% !important;
+  right:
+    auto !important;
 
-  right: auto !important;
-  bottom: auto !important;
+  bottom:
+    auto !important;
 
   background:
+
     radial-gradient(
-      circle,
+      ellipse 69% 31%
+      at 23% 63%,
 
-      rgba(var(--student-accent-rgb), .21) 0%,
+      rgba(
+        var(--student-accent-rgb),
+        .125
+      ) 0%,
 
-      rgba(var(--student-accent-rgb), .105) 35%,
+      rgba(
+        var(--student-accent-rgb),
+        .047
+      ) 48%,
 
-      transparent 79%
+      transparent 88%
+    ),
 
+    radial-gradient(
+      ellipse 48% 22%
+      at 78% 27%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .085
+      ) 0%,
+
+      transparent 86%
+    ),
+
+    radial-gradient(
+      ellipse 38% 38%
+      at 68% 82%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ) 0%,
+
+      transparent 86%
     ) !important;
 
   animation:
-    notmark-v22-drift-center
-    44s ease-in-out infinite !important;
+    notmark-v27-drift-three
+    49s
+    ease-in-out
+    infinite !important;
 }
 
 
 /* =========================================================
-   SLOW SEAMLESS ANIMATIONS
+   ORGANIC ANIMATION
+
+   Katmanlar farklı güzergâhlarda hareket eder.
+   Başlangıç ve bitiş konumu aynıdır.
+
+   Yalnızca transform animasyonu kullanılır.
    ========================================================= */
 
-@keyframes notmark-v22-drift-left {
+@keyframes notmark-v27-drift-one {
 
   0%, 100% {
     transform:
       translate3d(0, 0, 0)
+      rotate(-2deg)
       scale(1);
   }
 
-  25% {
+  24% {
     transform:
       translate3d(5%, -3%, 0)
+      rotate(1deg)
       scale(1.025);
   }
 
-  50% {
+  53% {
     transform:
-      translate3d(8%, 3%, 0)
+      translate3d(-3%, 4%, 0)
+      rotate(-3deg)
       scale(1.04);
   }
 
-  75% {
+  78% {
     transform:
-      translate3d(2%, 5%, 0)
+      translate3d(3%, 2%, 0)
+      rotate(2deg)
       scale(1.015);
   }
 }
 
 
-@keyframes notmark-v22-drift-right {
+@keyframes notmark-v27-drift-two {
 
   0%, 100% {
     transform:
       translate3d(0, 0, 0)
+      rotate(2deg)
       scale(1);
   }
 
-  25% {
+  23% {
     transform:
       translate3d(-5%, 3%, 0)
-      scale(1.02);
+      rotate(-2deg)
+      scale(1.035);
   }
 
-  50% {
+  52% {
     transform:
-      translate3d(-8%, -4%, 0)
-      scale(1.04);
-  }
-
-  75% {
-    transform:
-      translate3d(-2%, -6%, 0)
+      translate3d(3%, -5%, 0)
+      rotate(3deg)
       scale(1.015);
+  }
+
+  77% {
+    transform:
+      translate3d(-3%, -2%, 0)
+      rotate(-1deg)
+      scale(1.045);
   }
 }
 
 
-@keyframes notmark-v22-drift-center {
+@keyframes notmark-v27-drift-three {
 
   0%, 100% {
     transform:
       translate3d(0, 0, 0)
+      rotate(-1deg)
       scale(1);
   }
 
-  25% {
+  26% {
     transform:
       translate3d(4%, -4%, 0)
-      scale(1.025);
+      rotate(2deg)
+      scale(1.035);
   }
 
-  50% {
+  51% {
     transform:
-      translate3d(-3%, -7%, 0)
-      scale(1.045);
-  }
-
-  75% {
-    transform:
-      translate3d(-5%, 2%, 0)
+      translate3d(-4%, 2%, 0)
+      rotate(-3deg)
       scale(1.015);
+  }
+
+  79% {
+    transform:
+      translate3d(2%, 5%, 0)
+      rotate(1deg)
+      scale(1.04);
   }
 }
 
+
+/* =========================================================
+   LIGHT THEME
+
+   Açık temada yoğunluk kontrollü tutulur.
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+> .student-profile-aurora {
+
+  opacity:
+    .75 !important;
+}
+
+
+/* =========================================================
+   END - ORGANIC AURORA V27
+   ========================================================= */
 
 /* =========================================================
    CIRCULAR MOUSE GLOW
