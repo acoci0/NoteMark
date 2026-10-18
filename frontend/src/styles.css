@@ -32475,3 +32475,286 @@ input[type="file"]::file-selector-button {
       none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK MARKETPLACE - THEME AWARE EMPTY STATE V2
+   ========================================================= */
+
+.marketplace-empty {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .28
+    ) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ),
+      rgba(
+        var(--student-accent-rgb),
+        .018
+      ) 42%,
+      transparent 72%
+    ),
+    var(--student-surface) !important;
+
+  color:
+    var(--student-text) !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(
+        var(--student-accent-rgb),
+        .025
+      ),
+    0 14px 34px
+      rgba(
+        10,
+        18,
+        30,
+        .08
+      );
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+
+/* Çok hafif tema ışığı */
+
+.marketplace-empty::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    240px;
+
+  height:
+    240px;
+
+  top:
+    -120px;
+
+  right:
+    -90px;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        var(--student-accent-rgb),
+        .13
+      ),
+      transparent 68%
+    );
+
+  pointer-events:
+    none;
+}
+
+
+/* Kitap ikonu */
+
+.marketplace-empty > svg {
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  margin-bottom:
+    17px;
+
+  color:
+    var(--student-accent) !important;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(
+        var(--student-accent-rgb),
+        .18
+      )
+    );
+
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+
+/* Başlık */
+
+.marketplace-empty h2 {
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  margin:
+    0 0 7px;
+
+  color:
+    var(--student-text) !important;
+}
+
+
+/* Açıklama */
+
+.marketplace-empty p {
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  color:
+    var(--student-muted) !important;
+}
+
+
+/* Talep sayacı */
+
+.marketplace-request-count {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .36
+    ) !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    ) !important;
+
+  color:
+    var(--student-accent-strong) !important;
+}
+
+
+/* NOTMARK kicker */
+
+.marketplace-header
+.section-kicker {
+  color:
+    var(--student-accent-strong) !important;
+}
+
+
+/* Hover */
+
+@media (hover: hover) and (pointer: fine) {
+  .marketplace-empty:hover {
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .48
+      ) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(
+          var(--student-accent-rgb),
+          .055
+        ),
+      0 0 18px
+        rgba(
+          var(--student-accent-rgb),
+          .07
+        ),
+      0 16px 38px
+        rgba(
+          10,
+          18,
+          30,
+          .09
+        );
+  }
+
+  .marketplace-empty:hover > svg {
+    transform:
+      translateY(-2px)
+      scale(1.04);
+
+    filter:
+      drop-shadow(
+        0 0 11px
+        rgba(
+          var(--student-accent-rgb),
+          .28
+        )
+      );
+  }
+}
+
+
+/* Açık tema */
+
+.student-app-shell[data-theme="light"]
+.marketplace-empty {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ),
+      rgba(
+        var(--student-accent-rgb),
+        .015
+      ) 46%,
+      transparent 76%
+    ),
+    var(--student-surface) !important;
+}
+
+
+/* Hareket kapalıysa */
+
+.student-app-shell[data-motion="off"]
+.marketplace-empty,
+.student-app-shell[data-motion="off"]
+.marketplace-empty > svg {
+  transition:
+    none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketplace-empty,
+  .marketplace-empty > svg {
+    transition:
+      none !important;
+  }
+
+  .marketplace-empty:hover > svg {
+    transform:
+      none !important;
+  }
+}
