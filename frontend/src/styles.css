@@ -33051,7 +33051,6 @@ input[type="file"]::file-selector-button {
 
 .student-app-shell[data-theme]
 :is(
-  .student-profile-header,
   .student-profile-stat-card,
   .student-profile-section,
   .student-verification-form,
@@ -33332,7 +33331,6 @@ input[type="file"]::file-selector-button {
 
 .student-app-shell[data-motion="off"]
 :is(
-  .student-profile-header,
   .student-profile-stat-card,
   .student-profile-section,
   .student-verification-form,
@@ -34188,4 +34186,110 @@ input[type="file"]::file-selector-button {
       rgba(248,253,250,.97),
       rgba(255,255,255,.93)
     ) !important;
+}
+
+
+/* =========================================================
+   NOTMARK PROFILE - HERO NEUTRAL V18
+   Eski Hoş geldin kutusu artık tamamen arka planla bütünleşik
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:hover,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:focus,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:focus-within,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header:has(.student-profile-stat-card:hover) {
+  background:
+    transparent !important;
+
+  background-image:
+    none !important;
+
+  background-color:
+    transparent !important;
+
+  border:
+    0 !important;
+
+  border-width:
+    0 !important;
+
+  border-style:
+    none !important;
+
+  border-color:
+    transparent !important;
+
+  outline:
+    0 !important;
+
+  box-shadow:
+    none !important;
+
+  filter:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  border-radius:
+    0 !important;
+
+  transform:
+    none !important;
+
+  transition:
+    none !important;
+
+  animation:
+    none !important;
+}
+
+
+/* Eski hero dekorasyonları tamamen kapalı */
+
+.student-app-shell
+.student-profile-page
+.student-profile-header::before,
+
+.student-app-shell
+.student-profile-page
+.student-profile-header::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+
+  opacity:
+    0 !important;
+
+  background:
+    none !important;
+
+  border:
+    0 !important;
+
+  box-shadow:
+    none !important;
+
+  filter:
+    none !important;
 }
