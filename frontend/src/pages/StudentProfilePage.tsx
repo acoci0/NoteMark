@@ -1335,9 +1335,8 @@ export default function StudentProfilePage() {
     ).size;
 
   return (
-    <div className="student-profile-page">
-      <header
-        className="student-profile-header"
+    <div
+      className="student-profile-page"
         onPointerMove={(event) => {
           if (
             event.pointerType !== "mouse"
@@ -1443,6 +1442,7 @@ export default function StudentProfilePage() {
           <span className="student-profile-aurora__blob student-profile-aurora__blob--two" />
           <span className="student-profile-aurora__blob student-profile-aurora__blob--three" />
         </div>
+      <header className="student-profile-header">
         <div
           className="student-profile-live-users"
           title="Son 90 saniyede aktif öğrenci oturumları"
@@ -1569,7 +1569,7 @@ export default function StudentProfilePage() {
         <div className="student-section-heading">
           <div>
             <h2>
-              Üniversite doğrulamalarım
+              Üniversite Doğrulamalarım
             </h2>
 
             <p>

@@ -33396,3 +33396,381 @@ input[type="file"]::file-selector-button {
   }
 }
 
+/* =========================================================
+   NOTMARK PROFILE - FULL PAGE AURORA V13
+   Aurora artık hero kutusuna değil tüm Hesabım sayfasına ait
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   SAYFA ARKA PLAN KATMANI
+   --------------------------------------------------------- */
+
+.student-profile-page {
+  --hero-mouse-x: 50%;
+  --hero-mouse-y: 24%;
+  --hero-shift-x: 0px;
+  --hero-shift-y: 0px;
+
+  position:
+    relative !important;
+
+  isolation:
+    isolate;
+
+  overflow:
+    hidden;
+
+  min-height:
+    100vh;
+
+  background:
+    var(--student-bg) !important;
+}
+
+
+/* ---------------------------------------------------------
+   AURORA - TÜM SAYFA
+   --------------------------------------------------------- */
+
+.student-profile-page
+> .student-profile-aurora {
+  position:
+    absolute !important;
+
+  inset:
+    0 !important;
+
+  z-index:
+    0 !important;
+
+  overflow:
+    hidden !important;
+
+  border-radius:
+    0 !important;
+
+  pointer-events:
+    none !important;
+
+  background:
+    radial-gradient(
+      circle
+      at
+      var(--hero-mouse-x)
+      var(--hero-mouse-y),
+
+      rgba(
+        var(--student-accent-rgb),
+        .22
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .12
+      )
+      18%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .045
+      )
+      38%,
+
+      transparent
+      62%
+    ),
+
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(
+        var(--student-accent-rgb),
+        .13
+      ),
+      transparent 42%
+    ),
+
+    radial-gradient(
+      circle at 88% 58%,
+      rgba(
+        var(--student-accent-rgb),
+        .11
+      ),
+      transparent 44%
+    ) !important;
+
+  transform:
+    translate3d(
+      var(--hero-shift-x),
+      var(--hero-shift-y),
+      0
+    ) !important;
+
+  transition:
+    transform
+    240ms
+    cubic-bezier(.22, 1, .36, 1) !important;
+
+  will-change:
+    transform;
+}
+
+
+/* Aurora kürelerini tam sayfaya dağıt */
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--one {
+  width:
+    72% !important;
+
+  left:
+    -24% !important;
+
+  top:
+    4% !important;
+
+  bottom:
+    auto !important;
+
+  filter:
+    blur(58px) !important;
+}
+
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--two {
+  width:
+    64% !important;
+
+  right:
+    -20% !important;
+
+  top:
+    20% !important;
+
+  filter:
+    blur(66px) !important;
+}
+
+
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob--three {
+  width:
+    55% !important;
+
+  left:
+    24% !important;
+
+  top:
+    48% !important;
+
+  filter:
+    blur(74px) !important;
+}
+
+
+/* ---------------------------------------------------------
+   İÇERİK HER ZAMAN AURORA'NIN ÜSTÜNDE
+   --------------------------------------------------------- */
+
+.student-profile-header,
+.student-profile-page
+> .student-message,
+.student-profile-section {
+  position:
+    relative !important;
+
+  z-index:
+    2 !important;
+}
+
+
+/* ---------------------------------------------------------
+   HOŞ GELDİN ALANI
+   Artık kutu değil; sayfanın doğal bir parçası.
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme]
+.student-profile-header,
+.student-app-shell[data-theme]
+.student-profile-header:hover {
+  border:
+    0 !important;
+
+  border-color:
+    transparent !important;
+
+  border-radius:
+    0 !important;
+
+  background:
+    transparent !important;
+
+  box-shadow:
+    none !important;
+
+  transform:
+    none !important;
+
+  animation:
+    none !important;
+
+  transition:
+    none !important;
+}
+
+
+/* Eski sarı üst çizgi ve dekoratif halka tamamen kalkar */
+
+.student-profile-header::before,
+.student-profile-header::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+
+/* ---------------------------------------------------------
+   ÜNİVERSİTE DOĞRULAMALARIM
+   Aurora bu panelin ARKASINDA kalır.
+   Panel üzerine ışık kaymaz.
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme]
+.student-profile-section,
+.student-app-shell[data-theme]
+.student-profile-section:hover {
+  position:
+    relative !important;
+
+  z-index:
+    3 !important;
+
+  isolation:
+    isolate;
+
+  transform:
+    none !important;
+
+  background:
+    var(--student-surface) !important;
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      var(--notmark-box-border-alpha)
+    ) !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(
+        var(--student-accent-rgb),
+        .018
+      ),
+    0 10px 28px
+      rgba(
+        8,
+        15,
+        27,
+        .08
+      ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   LIGHT THEME
+   --------------------------------------------------------- */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+> .student-profile-aurora {
+  background:
+    radial-gradient(
+      circle
+      at
+      var(--hero-mouse-x)
+      var(--hero-mouse-y),
+
+      rgba(
+        var(--student-accent-rgb),
+        .15
+      )
+      0%,
+
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      )
+      22%,
+
+      transparent
+      58%
+    ),
+
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(
+        var(--student-accent-rgb),
+        .08
+      ),
+      transparent 43%
+    ),
+
+    radial-gradient(
+      circle at 88% 62%,
+      rgba(
+        var(--student-accent-rgb),
+        .065
+      ),
+      transparent 45%
+    ) !important;
+}
+
+
+/* ---------------------------------------------------------
+   HAREKET AYARLARI
+   --------------------------------------------------------- */
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+> .student-profile-aurora {
+  transform:
+    none !important;
+
+  transition:
+    none !important;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+> .student-profile-aurora
+.student-profile-aurora__blob {
+  animation:
+    none !important;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-page
+  > .student-profile-aurora {
+    transform:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+  .student-profile-page
+  > .student-profile-aurora
+  .student-profile-aurora__blob {
+    animation:
+      none !important;
+  }
+}
+
