@@ -3,6 +3,7 @@ import {
   GraduationCap,
   Library,
   ListChecks,
+  PencilLine,
   Send,
   Sparkles,
 } from "lucide-react";
@@ -729,7 +730,7 @@ export default function StudentNoteRequestPage() {
                     <div className="note-content-option__icon">
                       {option.value ===
                       "NoteOnly" ? (
-                        <FileText
+                        <PencilLine
                           size={20}
                         />
                       ) : option.value ===
