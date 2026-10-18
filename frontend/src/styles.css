@@ -35001,6 +35001,7 @@ input[type="file"]::file-selector-button {
 
 /* =========================================================
    NOTMARK PROFILE - ORGANIC AURORA V27
+   NOTMARK AURORA BRIGHTNESS V28
 
    Asymmetric atmospheric lighting.
    Soft scattered light fields.
@@ -35074,7 +35075,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .018
+        .024
       ) 0%,
 
       transparent 86%
@@ -35086,7 +35087,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .035
+        .047
       ) 0%,
 
       transparent 86%
@@ -35098,7 +35099,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .055
+        .074
       ) 0%,
 
       transparent 87%
@@ -35111,7 +35112,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .014
+        .019
       ) 48%,
 
       transparent 91%
@@ -35196,12 +35197,12 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .060
+        .081
       ) 0%,
 
       rgba(
         var(--student-accent-rgb),
-        .021
+        .028
       ) 49%,
 
       transparent 88%
@@ -35213,7 +35214,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .038
+        .051
       ) 0%,
 
       transparent 84%
@@ -35225,7 +35226,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .030
+        .041
       ) 0%,
 
       transparent 88%
@@ -35271,12 +35272,12 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .105
+        .142
       ) 0%,
 
       rgba(
         var(--student-accent-rgb),
-        .040
+        .054
       ) 46%,
 
       transparent 88%
@@ -35288,7 +35289,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .075
+        .101
       ) 0%,
 
       transparent 85%
@@ -35300,7 +35301,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .045
+        .061
       ) 0%,
 
       transparent 84%
@@ -35346,12 +35347,12 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .125
+        .169
       ) 0%,
 
       rgba(
         var(--student-accent-rgb),
-        .047
+        .063
       ) 48%,
 
       transparent 88%
@@ -35363,7 +35364,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .085
+        .115
       ) 0%,
 
       transparent 86%
@@ -35375,7 +35376,7 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .055
+        .074
       ) 0%,
 
       transparent 86%
@@ -35505,7 +35506,7 @@ input[type="file"]::file-selector-button {
 > .student-profile-aurora {
 
   opacity:
-    .75 !important;
+    .85 !important;
 }
 
 
@@ -35619,6 +35620,7 @@ input[type="file"]::file-selector-button {
 
 /* =========================================================
    NOTMARK GLOBAL POINTER GLOW V23
+   ENHANCED POINTER BRIGHTNESS V28
 
    GPU accelerated shared cursor illumination.
    Single overlay.
@@ -35684,22 +35686,22 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .23
+        .294
       ) 0%,
 
       rgba(
         var(--student-accent-rgb),
-        .13
+        .166
       ) 24%,
 
       rgba(
         var(--student-accent-rgb),
-        .055
+        .070
       ) 47%,
 
       rgba(
         var(--student-accent-rgb),
-        .015
+        .019
       ) 63%,
 
       transparent 76%
@@ -35800,17 +35802,17 @@ input[type="file"]::file-selector-button {
 
       rgba(
         var(--student-accent-rgb),
-        .17
+        .218
       ) 0%,
 
       rgba(
         var(--student-accent-rgb),
-        .085
+        .109
       ) 28%,
 
       rgba(
         var(--student-accent-rgb),
-        .03
+        .038
       ) 50%,
 
       transparent 76%
