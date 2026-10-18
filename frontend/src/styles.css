@@ -35632,3 +35632,131 @@ input[type="file"]::file-selector-button {
       none !important;
   }
 }
+
+/* =========================================================
+   NOTMARK CARD SURFACE MATCH - REQUESTS REFERENCE V24
+
+   Referans: Taleplerim / student-request-card
+
+   Hedefler:
+   - Talep Panosu boş durum kutusu
+   - Gönderdiğim Notlar boş durum kutusu
+   - Satın Aldıklarım ana kartları
+
+   Yalnızca ana kutu arka planları eşitlenir.
+   ========================================================= */
+
+
+/* =========================================================
+   DARK THEME
+
+   Taleplerim kartının orijinal gradient değeri.
+   ========================================================= */
+
+.student-app-shell[data-theme="dark"]
+:is(
+  .marketplace-page .marketplace-empty,
+  .note-submissions-page .note-submissions-empty,
+  .student-purchases-page .student-purchase-card
+) {
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--student-surface),
+      rgba(
+        var(--student-accent-rgb),
+        0.025
+      )
+    ) !important;
+
+}
+
+
+/* =========================================================
+   LIGHT THEME
+
+   Taleplerim kartının orijinal açık tema yüzeyi.
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+:is(
+  .marketplace-page .marketplace-empty,
+  .note-submissions-page .note-submissions-empty,
+  .student-purchases-page .student-purchase-card
+) {
+
+  background:
+    var(--student-surface) !important;
+
+}
+
+
+/* =========================================================
+   ARKA PLAN DEKORASYONLARI
+
+   Boş durum kutularının eski köşe aydınlatmaları
+   referans kartta bulunmuyor.
+
+   Yalnızca bu dekoratif arka plan ışıkları
+   kapatılır. Kenarlık, hover, ikon ve üst
+   vurgu çizgileri korunur.
+   ========================================================= */
+
+.student-app-shell
+.marketplace-page
+.marketplace-empty::before,
+
+.student-app-shell
+.note-submissions-page
+.note-submissions-empty::after {
+
+  background:
+    none !important;
+
+}
+
+
+/* =========================================================
+   HOVER BACKGROUND CONSISTENCY
+
+   Mouse ile üzerine gelindiğinde de kartın
+   ana arka plan rengi değişmez.
+
+   Mevcut kenarlık ve gölge animasyonları korunur.
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .student-app-shell[data-theme="dark"]
+  :is(
+    .marketplace-page .marketplace-empty,
+    .note-submissions-page .note-submissions-empty,
+    .student-purchases-page .student-purchase-card
+  ):hover {
+
+    background:
+      linear-gradient(
+        145deg,
+        var(--student-surface),
+        rgba(
+          var(--student-accent-rgb),
+          0.025
+        )
+      ) !important;
+
+  }
+
+  .student-app-shell[data-theme="light"]
+  :is(
+    .marketplace-page .marketplace-empty,
+    .note-submissions-page .note-submissions-empty,
+    .student-purchases-page .student-purchase-card
+  ):hover {
+
+    background:
+      var(--student-surface) !important;
+
+  }
+
+}
