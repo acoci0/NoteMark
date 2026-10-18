@@ -1,6 +1,7 @@
 import {
   FileText,
   GraduationCap,
+  Library,
   ListChecks,
   Send,
   Sparkles,
@@ -443,8 +444,11 @@ export default function StudentNoteRequestPage() {
       >
         <section className="note-request-panel">
           <div className="note-request-panel__heading">
-            <div className="note-request-step">
-              1
+            <div
+              className="note-request-step"
+              aria-hidden="true"
+            >
+              <Library size={20} />
             </div>
 
             <div>
@@ -674,8 +678,11 @@ export default function StudentNoteRequestPage() {
 
         <section className="note-request-panel">
           <div className="note-request-panel__heading">
-            <div className="note-request-step">
-              2
+            <div
+              className="note-request-step"
+              aria-hidden="true"
+            >
+              <FileText size={20} />
             </div>
 
             <div>

@@ -32270,3 +32270,53 @@ input[type="file"]::file-selector-button {
       var(--note-request-control-radius) !important;
   }
 }
+
+/* =========================================================
+   NOTMARK NOTE REQUEST - STEP ICONS V1
+   ========================================================= */
+
+.note-request-step {
+  display:
+    grid !important;
+
+  place-items:
+    center !important;
+
+  flex:
+    0 0 auto;
+
+  color:
+    var(--student-accent-strong) !important;
+}
+
+.note-request-step svg {
+  width:
+    20px;
+
+  height:
+    20px;
+
+  stroke-width:
+    2.15;
+
+  transition:
+    transform 170ms ease,
+    filter 170ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .note-request-panel:hover
+  .note-request-step svg {
+    transform:
+      scale(1.06);
+
+    filter:
+      drop-shadow(
+        0 0 6px
+        rgba(
+          var(--student-accent-rgb),
+          .18
+        )
+      );
+  }
+}
