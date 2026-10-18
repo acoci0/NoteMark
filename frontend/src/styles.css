@@ -31181,3 +31181,702 @@ textarea:not(
     inset 0 1px 0
       rgba(255, 255, 255, .92) !important;
 }
+
+/* =========================================================
+   NOTMARK ACADEMIC VERIFICATION CONTROLS - THEME V1
+   ========================================================= */
+
+
+/* =========================================================
+   AUTOCOMPLETE ANA ALANI
+   Üniversite / Fakülte / Bölüm
+   ========================================================= */
+
+.student-app-shell
+.university-autocomplete__editor {
+  min-height:
+    48px !important;
+
+  padding:
+    12px 86px
+    12px 14px !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .20
+    ) !important;
+
+  border-radius:
+    12px !important;
+
+  background:
+    var(--student-surface) !important;
+
+  color:
+    var(--student-text) !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, .025) !important;
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease !important;
+}
+
+
+/* Placeholder */
+
+.student-app-shell
+.university-autocomplete__editor:empty::before {
+  color:
+    var(--student-muted) !important;
+
+  opacity:
+    .68 !important;
+}
+
+
+/* Focus ve açık dropdown */
+
+.student-app-shell
+.university-autocomplete__editor:focus,
+
+.student-app-shell
+.university-autocomplete__editor[aria-expanded="true"] {
+  border-color:
+    var(--student-accent) !important;
+
+  background:
+    var(--student-surface-soft) !important;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      ),
+    0 0 16px
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      ) !important;
+}
+
+
+/* =========================================================
+   PASİF AKADEMİK ALANLAR
+   ========================================================= */
+
+.student-app-shell
+.university-autocomplete__editor[aria-disabled="true"] {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    ) !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .025
+    ) !important;
+
+  color:
+    var(--student-muted) !important;
+
+  box-shadow:
+    none !important;
+
+  opacity:
+    .70 !important;
+}
+
+.student-app-shell
+.university-autocomplete__editor[aria-disabled="true"]:empty::before {
+  color:
+    var(--student-muted) !important;
+
+  opacity:
+    .72 !important;
+}
+
+
+/* =========================================================
+   SEÇİLDİ ETİKETİ
+   ========================================================= */
+
+.student-app-shell
+.university-selected-indicator {
+  min-height:
+    24px !important;
+
+  padding:
+    3px 8px !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .24
+    ) !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    ) !important;
+
+  color:
+    var(--student-accent-strong) !important;
+
+  font-size:
+    10px !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .02em;
+}
+
+
+/* =========================================================
+   AUTOCOMPLETE DROPDOWN
+   ========================================================= */
+
+.student-app-shell
+.university-autocomplete__dropdown {
+  top:
+    73px !important;
+
+  padding:
+    7px !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .22
+    ) !important;
+
+  border-radius:
+    14px !important;
+
+  background:
+    var(--student-surface) !important;
+
+  color:
+    var(--student-text) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, .035),
+
+    0 18px 45px
+      rgba(0, 0, 0, .24),
+
+    0 0 0 1px
+      rgba(
+        var(--student-accent-rgb),
+        .035
+      ),
+
+    0 0 24px
+      rgba(
+        var(--student-accent-rgb),
+        .055
+      ) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(120%);
+
+  animation:
+    notmark-academic-dropdown-in
+    150ms
+    cubic-bezier(.2,.8,.2,1);
+}
+
+
+@keyframes notmark-academic-dropdown-in {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(-4px)
+      scale(.992);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   DROPDOWN SEÇENEKLERİ
+   ========================================================= */
+
+.student-app-shell
+.university-autocomplete__option {
+  min-height:
+    44px !important;
+
+  padding:
+    10px 13px !important;
+
+  border:
+    1px solid
+    transparent !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    transparent !important;
+
+  color:
+    var(--student-text) !important;
+
+  font-size:
+    13px !important;
+
+  font-weight:
+    650 !important;
+
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease !important;
+}
+
+
+/* Hover ve klavye seçimi */
+
+.student-app-shell
+.university-autocomplete__option:hover,
+
+.student-app-shell
+.university-autocomplete__option--active,
+
+.student-app-shell
+.university-autocomplete__option[aria-selected="true"] {
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .18
+    ) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        var(--student-accent-rgb),
+        .15
+      ),
+      rgba(
+        var(--student-accent-rgb),
+        .065
+      )
+    ) !important;
+
+  color:
+    var(--student-accent-strong) !important;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  .student-app-shell
+  .university-autocomplete__option:hover {
+    transform:
+      translateX(2px);
+  }
+}
+
+
+/* Focus */
+
+.student-app-shell
+.university-autocomplete__option:focus-visible {
+  outline:
+    2px solid
+    var(--student-accent) !important;
+
+  outline-offset:
+    -2px !important;
+}
+
+
+/* Aranıyor / sonuç yok */
+
+.student-app-shell
+.university-autocomplete__state {
+  padding:
+    13px !important;
+
+  color:
+    var(--student-muted) !important;
+
+  font-size:
+    12px !important;
+}
+
+
+/* =========================================================
+   DROPDOWN SCROLLBAR
+   ========================================================= */
+
+.student-app-shell
+.university-autocomplete__dropdown {
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(
+      var(--student-accent-rgb),
+      .32
+    )
+    transparent;
+}
+
+.student-app-shell
+.university-autocomplete__dropdown::-webkit-scrollbar {
+  width:
+    7px;
+}
+
+.student-app-shell
+.university-autocomplete__dropdown::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+.student-app-shell
+.university-autocomplete__dropdown::-webkit-scrollbar-thumb {
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .28
+    );
+}
+
+
+/* =========================================================
+   YARDIMCI METİNLER
+   ========================================================= */
+
+.student-app-shell
+.university-autocomplete > small,
+
+.student-app-shell
+.student-file-field small {
+  color:
+    var(--student-muted) !important;
+
+  opacity:
+    .76 !important;
+
+  font-size:
+    11px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+
+/* =========================================================
+   PDF DOSYA YÜKLEME ALANI
+   ========================================================= */
+
+.student-app-shell
+.student-file-field
+input[type="file"] {
+  box-sizing:
+    border-box;
+
+  width:
+    100% !important;
+
+  min-height:
+    52px !important;
+
+  padding:
+    6px 11px
+    6px 6px !important;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .20
+    ) !important;
+
+  border-radius:
+    12px !important;
+
+  outline:
+    none !important;
+
+  background:
+    var(--student-surface) !important;
+
+  color:
+    var(--student-muted) !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    600 !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, .025) !important;
+
+  cursor:
+    pointer;
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease !important;
+}
+
+
+/* =========================================================
+   DOSYA SEÇ BUTONU
+   ========================================================= */
+
+.student-app-shell
+.student-file-field
+input[type="file"]::file-selector-button {
+  height:
+    38px;
+
+  margin-right:
+    12px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .24
+    );
+
+  border-radius:
+    9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        var(--student-accent-rgb),
+        .16
+      ),
+      rgba(
+        var(--student-accent-rgb),
+        .08
+      )
+    );
+
+  color:
+    var(--student-accent-strong);
+
+  font:
+    inherit;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+
+/* Safari */
+
+.student-app-shell
+.student-file-field
+input[type="file"]::-webkit-file-upload-button {
+  height:
+    38px;
+
+  margin-right:
+    12px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid
+    rgba(
+      var(--student-accent-rgb),
+      .24
+    );
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .12
+    );
+
+  color:
+    var(--student-accent-strong);
+
+  font:
+    inherit;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+}
+
+
+/* Dosya alanı hover */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .student-app-shell
+  .student-file-field
+  input[type="file"]:hover {
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .42
+      ) !important;
+
+    box-shadow:
+      0 0 15px
+      rgba(
+        var(--student-accent-rgb),
+        .07
+      ) !important;
+  }
+
+  .student-app-shell
+  .student-file-field
+  input[type="file"]:hover::file-selector-button {
+    transform:
+      translateY(-1px);
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .40
+      );
+
+    background:
+      rgba(
+        var(--student-accent-rgb),
+        .19
+      );
+
+    box-shadow:
+      0 5px 14px
+      rgba(
+        var(--student-accent-rgb),
+        .10
+      );
+  }
+}
+
+
+/* Dosya alanı focus */
+
+.student-app-shell
+.student-file-field
+input[type="file"]:focus {
+  border-color:
+    var(--student-accent) !important;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      var(--student-accent-rgb),
+      .10
+    ) !important;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+.university-autocomplete__dropdown {
+  background:
+    rgba(255, 255, 255, .96) !important;
+
+  box-shadow:
+    0 18px 45px
+    rgba(24, 38, 61, .14) !important;
+}
+
+.student-app-shell[data-theme="light"]
+.student-file-field
+input[type="file"] {
+  background:
+    rgba(255, 255, 255, .82) !important;
+}
+
+
+/* =========================================================
+   MOTION
+   ========================================================= */
+
+.student-app-shell[data-motion="off"]
+.university-autocomplete__dropdown,
+
+.student-app-shell[data-motion="off"]
+.university-autocomplete__option,
+
+.student-app-shell[data-motion="off"]
+.student-file-field
+input[type="file"]::file-selector-button {
+  animation:
+    none !important;
+
+  transition:
+    none !important;
+
+  transform:
+    none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .university-autocomplete__dropdown {
+    animation:
+      none !important;
+  }
+}
