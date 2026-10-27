@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 
 import { isAxiosError } from "axios";
+import { createPortal } from "react-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
 
@@ -55,31 +56,219 @@ export default function StudentLoginPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
-  const [roleTransitioning, setRoleTransitioning] = useState(false);
-  const roleSwitchTimers = useRef<number[]>([]);
 
-  useEffect(() => () => {
-    roleSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+  const [roleTransitioning, setRoleTransitioning] = useState(false);
+  const [flightOrigin, setFlightOrigin] = useState<DOMRect | null>(null);
+
+  const leftLogoRef = useRef<HTMLDivElement>(null);
+  const cardLogoRef = useRef<HTMLDivElement>(null);
+  const flightRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  const switchingRef = useRef(false);
+  const mountedRef = useRef(true);
+  const animationsRef = useRef<Animation[]>([]);
+  const timersRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    const animations = animationsRef.current;
+    const timers = timersRef.current;
+
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+      animations.forEach(animation => animation.cancel());
+      timers.forEach(timer => window.clearTimeout(timer));
+    };
   }, []);
 
-  const chooseRole = (next: LoginRole) => {
-    if (next === role || loading || roleTransitioning) return;
-    setRoleTransitioning(true);
-    // Once the old copy is fully transparent, update route and form state.
-    const hideTimer = window.setTimeout(() => {
+  const delay = (ms: number) =>
+    new Promise<void>(resolve => {
+      timersRef.current.push(window.setTimeout(resolve, ms));
+    });
+
+  const nextFrame = () =>
+    new Promise<void>(resolve => {
+      window.requestAnimationFrame(() => resolve());
+    });
+
+  const play = async (
+    element: HTMLDivElement | null,
+    frames: Keyframe[],
+    duration: number,
+    easing: string
+  ) => {
+    if (!element || typeof element.animate !== "function") {
+      if (element) {
+        element.style.transform =
+          String(frames.at(-1)?.transform ?? "");
+      }
+
+      await delay(duration);
+      return;
+    }
+
+    const animation = element.animate(frames, {
+      duration,
+      easing,
+      fill: "forwards"
+    });
+
+    animationsRef.current.push(animation);
+
+    try {
+      await animation.finished;
+    } catch {
+      // Sayfadan çıkılırsa animasyon iptal edilir.
+    }
+  };
+
+  const getLogoRect = () => {
+    const left = leftLogoRef.current?.getBoundingClientRect();
+
+    if (left && left.width > 10 && left.height > 10) {
+      return left;
+    }
+
+    const mobile = cardLogoRef.current?.getBoundingClientRect();
+
+    return mobile && mobile.width > 10 ? mobile : null;
+  };
+
+  const chooseRole = async (next: LoginRole) => {
+    if (next === role || loading || switchingRef.current) return;
+
+    switchingRef.current = true;
+
+    const updateRole = () => {
       setSearchParams({ role: next }, { replace: true });
       setPassword("");
       setShowPassword(false);
       setError("");
       setNotice("");
       setEmailProvider(null);
-      // Separate frames ensure Safari paints the new text while hidden.
-      const revealTimer = window.setTimeout(() => {
+    };
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      updateRole();
+      switchingRef.current = false;
+      return;
+    }
+
+    const origin = getLogoRect();
+
+    if (!origin) {
+      updateRole();
+      switchingRef.current = false;
+      return;
+    }
+
+    setFlightOrigin(origin);
+    setRoleTransitioning(true);
+
+    try {
+      // 1. Ekrandaki içerikler tamamen kaybolur.
+      await delay(230);
+      await nextFrame();
+
+      if (!mountedRef.current) return;
+
+      // 2. Logonun ekran ortasındaki koordinatları.
+      const dx =
+        window.innerWidth / 2 -
+        (origin.left + origin.width / 2);
+
+      const dy =
+        window.innerHeight / 2 -
+        (origin.top + origin.height / 2);
+
+      const size = Math.min(
+        270,
+        Math.max(165, window.innerWidth * 0.32),
+        Math.max(165, window.innerHeight * 0.36)
+      );
+
+      const scale = size / origin.width;
+
+      const centered =
+        `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
+
+      // 3. Logo ortaya doğru büyüyerek hareket eder.
+      await play(
+        flightRef.current,
+        [
+          { transform: "translate3d(0, 0, 0) scale(1)" },
+          { transform: centered }
+        ],
+        560,
+        "cubic-bezier(.22, 1, .36, 1)"
+      );
+
+      if (!mountedRef.current) return;
+
+      // 4. Turuncu ışık logo etrafında tam bir tur döner.
+      await play(
+        ringRef.current,
+        [
+          { transform: "rotate(0deg)" },
+          { transform: "rotate(360deg)" }
+        ],
+        1100,
+        "linear"
+      );
+
+      if (!mountedRef.current) return;
+
+      // 5. Yeni ekran görünmezken hazırlanır.
+      updateRole();
+
+      await nextFrame();
+      await nextFrame();
+
+      if (!mountedRef.current) return;
+
+      // 6. Logonun yeni ekrandaki gerçek konumu.
+      const target = getLogoRect() ?? origin;
+
+      const returnX =
+        target.left + target.width / 2 -
+        origin.left - origin.width / 2;
+
+      const returnY =
+        target.top + target.height / 2 -
+        origin.top - origin.height / 2;
+
+      const returnScale = target.width / origin.width;
+
+      // 7. Logo eski boyutuna küçülerek yerine döner.
+      await play(
+        flightRef.current,
+        [
+          { transform: centered },
+          {
+            transform:
+              `translate3d(${returnX}px, ${returnY}px, 0) ` +
+              `scale(${returnScale})`
+          }
+        ],
+        560,
+        "cubic-bezier(.22, 1, .36, 1)"
+      );
+
+    } finally {
+      if (mountedRef.current) {
+        // 8. Yeni giriş ekranı yumuşakça görünür.
+        setFlightOrigin(null);
         setRoleTransitioning(false);
-      }, 40);
-      roleSwitchTimers.current.push(revealTimer);
-    }, 190);
-    roleSwitchTimers.current.push(hideTimer);
+
+        await delay(390);
+
+        switchingRef.current = false;
+      }
+    }
   };
 
   const chooseEmailProvider = (provider: "gmail" | "icloud") => {
@@ -127,7 +316,7 @@ export default function StudentLoginPage() {
 
   return (
     <div
-      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified${roleTransitioning ? " is-role-switching" : ""}`}
+      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic${roleTransitioning ? " is-role-switching" : ""}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
     >
@@ -136,7 +325,7 @@ export default function StudentLoginPage() {
       <section className="notmark-auth-visual">
         <div className="notmark-auth-visual__content">
           <div className="notmark-auth-brand">
-            <div className="notmark-auth-logo-frame">
+            <div className="notmark-auth-logo-frame" ref={leftLogoRef}>
               <div className="notmark-auth-logo-inner">
                 <img src="/brand/notmark-logo.png" alt="NotMark" />
               </div>
@@ -190,7 +379,7 @@ export default function StudentLoginPage() {
       <section className="notmark-auth-form-panel">
         <form className="notmark-auth-card" onSubmit={handleSubmit}>
           <div className="notmark-auth-card__top">
-            <div className="notmark-auth-card-logo">
+            <div className="notmark-auth-card-logo" ref={cardLogoRef}>
               <img src="/brand/notmark-logo.png" alt="" />
             </div>
             <div>
@@ -335,6 +524,30 @@ export default function StudentLoginPage() {
           </div>
         </form>
       </section>
+
+      {flightOrigin && createPortal(
+        <div
+          className="notmark-auth-cinematic-logo"
+          ref={flightRef}
+          aria-hidden="true"
+          style={{
+            left: flightOrigin.left,
+            top: flightOrigin.top,
+            width: flightOrigin.width,
+            height: flightOrigin.height
+          }}
+        >
+          <div
+            className="notmark-auth-cinematic-ring"
+            ref={ringRef}
+          />
+
+          <div className="notmark-auth-cinematic-inner">
+            <img src="/brand/notmark-logo.png" alt="" />
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
