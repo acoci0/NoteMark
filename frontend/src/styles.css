@@ -25355,10 +25355,12 @@ body {
 
   background:
     radial-gradient(
-      circle at var(--auth-mouse-x)
+      circle 110px at var(--auth-mouse-x)
         var(--auth-mouse-y),
-      rgba(255, 107, 11, .13),
-      transparent 23%
+      rgba(255, 128, 38, .40) 0%,
+      rgba(255, 107, 11, .24) 24%,
+      rgba(255, 107, 11, .09) 58%,
+      transparent 100%
     ),
     radial-gradient(
       circle at 70% 15%,
@@ -25381,16 +25383,8 @@ body {
 
   pointer-events: none;
 
-  background:
-    radial-gradient(
-      circle at var(--auth-mouse-x)
-        var(--auth-mouse-y),
-      rgba(255, 107, 11, .085),
-      transparent 16%
-    );
-
-  transition:
-    background-position .08s linear;
+  background: none;
+  transition: none;
 }
 
 .notmark-auth-grid {
@@ -25752,12 +25746,6 @@ body {
     38px;
 
   background:
-    radial-gradient(
-      circle at var(--auth-mouse-x)
-        var(--auth-mouse-y),
-      rgba(255,107,11,.055),
-      transparent 35%
-    ),
     linear-gradient(
       145deg,
       rgba(20,31,43,.98),
