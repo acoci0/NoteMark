@@ -15,7 +15,7 @@ import {
       ? <Outlet />
       : (
         <Navigate
-          to="/student/login"
+          to="/login?role=student"
           replace
         />
       );

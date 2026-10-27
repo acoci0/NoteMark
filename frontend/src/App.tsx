@@ -12,7 +12,6 @@ import AdminLayout from "./layout/AdminLayout";
 import StudentLayout from "./layout/StudentLayout";
 
 import DashboardPage from "./pages/DashboardPage";
-import LoginPage from "./pages/LoginPage";
 import NotesPage from "./pages/NotesPage";
 import AdminNoteDetailPage from "./pages/AdminNoteDetailPage";
 import ReportsPage from "./pages/ReportsPage";
@@ -43,7 +42,7 @@ export default function App() {
 
       <Route
         path="/student/login"
-        element={<StudentLoginPage />}
+        element={<Navigate to="/login?role=student" replace />}
       />
 
       <Route
@@ -101,7 +100,7 @@ export default function App() {
 
       <Route
         path="/login"
-        element={<LoginPage />}
+        element={<StudentLoginPage />}
       />
 
       <Route

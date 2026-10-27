@@ -50,8 +50,8 @@ studentApi.interceptors.response.use(
       );
 
       if (
-        window.location.pathname !==
-        "/student/login"
+        (window.location.pathname !== "/student/login" &&
+        window.location.pathname !== "/login")
       ) {
         window.location.href =
           "/student/login";
