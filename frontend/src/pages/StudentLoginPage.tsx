@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useRef,
   useState,
   type FormEvent,
@@ -54,15 +55,31 @@ export default function StudentLoginPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
+  const [roleTransitioning, setRoleTransitioning] = useState(false);
+  const roleSwitchTimers = useRef<number[]>([]);
+
+  useEffect(() => () => {
+    roleSwitchTimers.current.forEach((timer) => window.clearTimeout(timer));
+  }, []);
 
   const chooseRole = (next: LoginRole) => {
-    if (next === role || loading) return;
-    setSearchParams({ role: next }, { replace: true });
-    setPassword("");
-    setShowPassword(false);
-    setError("");
-    setNotice("");
-    setEmailProvider(null);
+    if (next === role || loading || roleTransitioning) return;
+    setRoleTransitioning(true);
+    // Once the old copy is fully transparent, update route and form state.
+    const hideTimer = window.setTimeout(() => {
+      setSearchParams({ role: next }, { replace: true });
+      setPassword("");
+      setShowPassword(false);
+      setError("");
+      setNotice("");
+      setEmailProvider(null);
+      // Separate frames ensure Safari paints the new text while hidden.
+      const revealTimer = window.setTimeout(() => {
+        setRoleTransitioning(false);
+      }, 40);
+      roleSwitchTimers.current.push(revealTimer);
+    }, 190);
+    roleSwitchTimers.current.push(hideTimer);
   };
 
   const chooseEmailProvider = (provider: "gmail" | "icloud") => {
@@ -82,7 +99,7 @@ export default function StudentLoginPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (loading) return;
+    if (loading || roleTransitioning) return;
 
     setError("");
     setNotice("");
@@ -110,7 +127,7 @@ export default function StudentLoginPage() {
 
   return (
     <div
-      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified`}
+      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified${roleTransitioning ? " is-role-switching" : ""}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
     >
@@ -126,33 +143,33 @@ export default function StudentLoginPage() {
             </div>
             <div>
               <strong>Not<span>Mark</span></strong>
-              <small key={role} className="notmark-auth-copy-motion">{studentMode ? "Öğrenci" : "Yönetim Merkezi"}</small>
+              <small>{studentMode ? "Öğrenci" : "Yönetim Merkezi"}</small>
             </div>
           </div>
 
-          <div className="notmark-auth-eyebrow notmark-auth-copy-motion" key={role}>
+          <div className="notmark-auth-eyebrow">
             {studentMode ? "NOTMARK / ÖĞRENCİ" : "NOTMARK / YÖNETİM"}
           </div>
 
           {studentMode ? (
             <>
-              <h1 key={role} className="notmark-auth-copy-motion">Notunu bul.<br />Bilgini paylaş.</h1>
-              <p key={role} className="notmark-auth-copy-motion">
+              <h1>Notunu bul.<br />Bilgini paylaş.</h1>
+              <p>
                 Üniversitenize özel notlara, taleplere ve öğrenci topluluğuna
                 tek bir güvenli hesap üzerinden erişin.
               </p>
             </>
           ) : (
             <>
-              <h1 key={role} className="notmark-auth-copy-motion">Bilgiyi değil,<br />güveni yönetin.</h1>
-              <p key={role} className="notmark-auth-copy-motion">
+              <h1>Bilgiyi değil,<br />güveni yönetin.</h1>
+              <p>
                 Öğrenci doğrulamalarından AI destekli not denetimine kadar
                 tüm NotMark operasyonlarını tek merkezden yönetin.
               </p>
             </>
           )}
 
-          <div key={role} className="notmark-auth-features notmark-auth-feature-motion">
+          <div className="notmark-auth-features">
             {studentMode ? (
               <>
                 <article><span>01</span><strong>Talep oluştur</strong><p>İhtiyacınız olan notu topluluktan isteyin.</p></article>
@@ -177,13 +194,13 @@ export default function StudentLoginPage() {
               <img src="/brand/notmark-logo.png" alt="" />
             </div>
             <div>
-              <span key={role} className="notmark-auth-copy-motion">{studentMode ? "ÖĞRENCİ GİRİŞİ" : "YETKİLİ GİRİŞ"}</span>
-              <small key={role} className="notmark-auth-copy-motion">{studentMode ? "NotMark hesabı" : "Admin Paneli"}</small>
+              <span>{studentMode ? "ÖĞRENCİ GİRİŞİ" : "YETKİLİ GİRİŞ"}</span>
+              <small>{studentMode ? "NotMark hesabı" : "Admin Paneli"}</small>
             </div>
           </div>
 
-          <h2 key={role} className="notmark-auth-copy-motion">{studentMode ? "NotMark'a hoş geldiniz." : "Tekrar hoş geldiniz."}</h2>
-          <p key={role} className="notmark-auth-card__description notmark-auth-copy-motion">
+          <h2>{studentMode ? "NotMark'a hoş geldiniz." : "Tekrar hoş geldiniz."}</h2>
+          <p className="notmark-auth-card__description">
             {studentMode
               ? "Öğrenci hesabınıza giriş yaparak NotMark deneyiminize devam edin."
               : "NotMark yönetim merkezine yetkili hesabınızla giriş yapın."}
@@ -195,14 +212,14 @@ export default function StudentLoginPage() {
               className={studentMode ? "is-active" : ""}
               aria-pressed={studentMode}
               onClick={() => chooseRole("student")}
-              disabled={loading}
+              disabled={loading || roleTransitioning}
             >Öğrenci Girişi</button>
             <button
               type="button"
               className={!studentMode ? "is-active" : ""}
               aria-pressed={!studentMode}
               onClick={() => chooseRole("admin")}
-              disabled={loading}
+              disabled={loading || roleTransitioning}
             >Yönetici Girişi</button>
           </div>
 

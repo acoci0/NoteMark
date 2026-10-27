@@ -36608,78 +36608,34 @@ input[type="file"]::file-selector-button {
   }
 }
 
-
 /* =========================================================
-   NOTMARK ROLE TRANSITION V39
-   Sadece sekme isaretcisi ve degisen metinler animasyonlu.
-   Kart, mouse glow, iki sutun ve form olculeri korunur.
+   NOTMARK AUTH V40 — Safari-safe sequential fade
+   No blur, filter, keyframe accumulation or duplicated text.
    ========================================================= */
+.notmark-auth-page--unified .notmark-auth-card {
+  transform-style: flat;
+}
+.notmark-auth-page--unified .notmark-auth-visual__content,
+.notmark-auth-page--unified .notmark-auth-card > :not(.notmark-auth-role-switch) {
+  opacity: 1;
+  transition: opacity 300ms cubic-bezier(.22, 1, .36, 1);
+}
+.notmark-auth-page--unified.is-role-switching .notmark-auth-visual__content,
+.notmark-auth-page--unified.is-role-switching .notmark-auth-card > :not(.notmark-auth-role-switch) {
+  opacity: 0;
+  transition-duration: 180ms;
+}
 .notmark-auth-page--unified .notmark-auth-role-switch {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-}
-
-/* Iki secenekte de ayni boyuttaki turuncu gostergemiz kayar. */
-.notmark-auth-page--unified .notmark-auth-role-switch::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 5px;
-  left: 5px;
-  width: calc((100% - 15px) / 2);
-  height: calc(100% - 10px);
-  box-sizing: border-box;
-  border: 1px solid rgba(255, 107, 11, .46);
-  border-radius: 9px;
-  background: linear-gradient(135deg, rgba(255, 107, 11, .19), rgba(255, 107, 11, .10));
-  box-shadow: 0 0 20px rgba(255, 107, 11, .07);
-  pointer-events: none;
-  transform: translateX(0);
-  transition: transform 420ms cubic-bezier(.22, 1, .36, 1);
-  will-change: transform;
-}
-.notmark-auth-page--unified.notmark-auth-page--admin .notmark-auth-role-switch::before {
-  transform: translateX(calc(100% + 5px));
 }
 .notmark-auth-page--unified .notmark-auth-role-switch button {
-  position: relative;
-  z-index: 1;
-  transition: color 280ms ease;
-}
-.notmark-auth-page--unified .notmark-auth-role-switch button.is-active {
-  background: transparent;
-  border-color: transparent;
-  color: #fff;
-}
-
-/* Role gore yeniden olusan metinler yavasca belirir.
-   Form elemanlari ve tum kart hicbir zaman yerinden oynamaz. */
-.notmark-auth-page--unified .notmark-auth-copy-motion {
-  animation: notmark-auth-role-reveal 340ms cubic-bezier(.22, 1, .36, 1) both;
-}
-.notmark-auth-page--unified .notmark-auth-feature-motion {
-  animation: notmark-auth-role-reveal 430ms cubic-bezier(.22, 1, .36, 1) both;
-}
-@keyframes notmark-auth-role-reveal {
-  from {
-    opacity: .1;
-    transform: translate3d(0, 8px, 0);
-    filter: blur(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    filter: blur(0);
-  }
+  transition: color 200ms ease, background 200ms ease, border-color 200ms ease;
 }
 @media (prefers-reduced-motion: reduce) {
-  .notmark-auth-page--unified .notmark-auth-role-switch::before {
-    transition: none;
-    will-change: auto;
-  }
-  .notmark-auth-page--unified .notmark-auth-copy-motion,
-  .notmark-auth-page--unified .notmark-auth-feature-motion {
-    animation: none;
+  .notmark-auth-page--unified .notmark-auth-visual__content,
+  .notmark-auth-page--unified .notmark-auth-card > :not(.notmark-auth-role-switch),
+  .notmark-auth-page--unified .notmark-auth-role-switch button {
+    transition: none !important;
   }
 }
