@@ -126,33 +126,33 @@ export default function StudentLoginPage() {
             </div>
             <div>
               <strong>Not<span>Mark</span></strong>
-              <small>{studentMode ? "Öğrenci" : "Yönetim Merkezi"}</small>
+              <small key={role} className="notmark-auth-copy-motion">{studentMode ? "Öğrenci" : "Yönetim Merkezi"}</small>
             </div>
           </div>
 
-          <div className="notmark-auth-eyebrow">
+          <div className="notmark-auth-eyebrow notmark-auth-copy-motion" key={role}>
             {studentMode ? "NOTMARK / ÖĞRENCİ" : "NOTMARK / YÖNETİM"}
           </div>
 
           {studentMode ? (
             <>
-              <h1>Notunu bul.<br />Bilgini paylaş.</h1>
-              <p>
+              <h1 key={role} className="notmark-auth-copy-motion">Notunu bul.<br />Bilgini paylaş.</h1>
+              <p key={role} className="notmark-auth-copy-motion">
                 Üniversitenize özel notlara, taleplere ve öğrenci topluluğuna
                 tek bir güvenli hesap üzerinden erişin.
               </p>
             </>
           ) : (
             <>
-              <h1>Bilgiyi değil,<br />güveni yönetin.</h1>
-              <p>
+              <h1 key={role} className="notmark-auth-copy-motion">Bilgiyi değil,<br />güveni yönetin.</h1>
+              <p key={role} className="notmark-auth-copy-motion">
                 Öğrenci doğrulamalarından AI destekli not denetimine kadar
                 tüm NotMark operasyonlarını tek merkezden yönetin.
               </p>
             </>
           )}
 
-          <div className="notmark-auth-features">
+          <div key={role} className="notmark-auth-features notmark-auth-feature-motion">
             {studentMode ? (
               <>
                 <article><span>01</span><strong>Talep oluştur</strong><p>İhtiyacınız olan notu topluluktan isteyin.</p></article>
@@ -177,13 +177,13 @@ export default function StudentLoginPage() {
               <img src="/brand/notmark-logo.png" alt="" />
             </div>
             <div>
-              <span>{studentMode ? "ÖĞRENCİ GİRİŞİ" : "YETKİLİ GİRİŞ"}</span>
-              <small>{studentMode ? "NotMark hesabı" : "Admin Paneli"}</small>
+              <span key={role} className="notmark-auth-copy-motion">{studentMode ? "ÖĞRENCİ GİRİŞİ" : "YETKİLİ GİRİŞ"}</span>
+              <small key={role} className="notmark-auth-copy-motion">{studentMode ? "NotMark hesabı" : "Admin Paneli"}</small>
             </div>
           </div>
 
-          <h2>{studentMode ? "NotMark'a hoş geldiniz." : "Tekrar hoş geldiniz."}</h2>
-          <p className="notmark-auth-card__description">
+          <h2 key={role} className="notmark-auth-copy-motion">{studentMode ? "NotMark'a hoş geldiniz." : "Tekrar hoş geldiniz."}</h2>
+          <p key={role} className="notmark-auth-card__description notmark-auth-copy-motion">
             {studentMode
               ? "Öğrenci hesabınıza giriş yaparak NotMark deneyiminize devam edin."
               : "NotMark yönetim merkezine yetkili hesabınızla giriş yapın."}
