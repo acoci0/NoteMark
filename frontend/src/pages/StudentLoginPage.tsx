@@ -16,7 +16,7 @@ import { isAxiosError } from "axios";
 import { createPortal } from "react-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
-import NotMarkOrbit from "../components/NotMarkOrbit";
+import NotMarkHologram from "../components/NotMarkHologram";
 
 type LoginRole = "student" | "admin";
 
@@ -347,7 +347,7 @@ export default function StudentLoginPage() {
 
   return (
     <div
-      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic notmark-auth-page--orbit${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
+      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic notmark-auth-page--hologram${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
     >
@@ -367,7 +367,7 @@ export default function StudentLoginPage() {
             </div>
           </div>
 
-          <NotMarkOrbit role={role} />
+          <NotMarkHologram role={role} />
         </div>
       </section>
 

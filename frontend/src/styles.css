@@ -37103,658 +37103,838 @@ input[type="file"]::file-selector-button {
 }
 
 
+
 /* =========================================================
-   NOTMARK V50 / INTERACTIVE ORBIT
-   Sol giris vitrini
-   GPU uyumlu, dusuk maliyetli CSS animasyonlari
+   NOTMARK V51 / HOLOGRAPHIC 3D SHOWCASE
    ========================================================= */
 
-.notmark-auth-page--orbit
+.notmark-auth-page--hologram
 .notmark-auth-visual__content {
-  width: min(660px, 100%);
+  width: min(680px, 100%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 
-.notmark-auth-page--orbit
+.notmark-auth-page--hologram
 .notmark-auth-brand {
   margin-bottom: 0;
 }
 
-/* Genel vitrin */
-
-.nm-orbit-showcase {
-  position: relative;
+.nm-holo {
+  width: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  width: 100%;
-
   isolation: isolate;
+
+  color: #f1f6ff;
 }
 
-/* Ust bilgi */
-
-.nm-orbit__eyebrow {
-  align-self: flex-start;
-
-  display: inline-flex;
+.nm-holo__eyebrow {
+  display: flex;
   align-items: center;
   gap: 10px;
 
-  margin-top: 24px;
+  width: 100%;
+  margin: 22px 0 0;
+
+  color: #ff9f5e;
 
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: .20em;
-
-  color: #F79C58;
+  letter-spacing: .17em;
 }
 
-.nm-orbit__live-dot {
-  width: 7px;
-  height: 7px;
+.nm-holo__signal {
+  width: 6px;
+  height: 6px;
 
-  flex: 0 0 7px;
+  flex: 0 0 6px;
 
   border-radius: 50%;
-
-  background: #FF872C;
+  background: #ff8b39;
 
   box-shadow:
-    0 0 10px rgba(255, 107, 11, .7);
+    0 0 12px rgba(255,123,44,.8);
 }
 
-/* Merkez sahnesi */
+.nm-holo__eyebrow-line {
+  height: 1px;
+  flex: 1;
 
-.nm-orbit__scene {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,135,56,.3),
+      transparent
+    );
+}
+
+/* =========================================================
+   3D SAHNE
+   ========================================================= */
+
+.nm-holo__stage {
+  --nm-holo-rx: 0deg;
+  --nm-holo-ry: 0deg;
+
   position: relative;
 
-  width: min(490px, 100%, 56vh);
-  aspect-ratio: 1;
-
-  flex: 0 0 auto;
+  width: min(510px, 100%, 55vh);
+  aspect-ratio: 1.16;
 
   margin: 0 auto;
 
-  isolation: isolate;
+  perspective: 950px;
+  perspective-origin: center 48%;
 
-  overflow: visible;
+  touch-action: pan-y;
 }
 
-.nm-orbit__ambient {
+.nm-holo__aura {
   position: absolute;
-
-  inset: 8%;
+  inset: 7%;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
-      circle at center,
-      rgba(255, 107, 11, .10) 0%,
-      rgba(255, 107, 11, .045) 28%,
-      rgba(28, 69, 119, .065) 54%,
-      transparent 72%
+      ellipse at center,
+      rgba(23,125,198,.15) 0%,
+      rgba(255,107,11,.07) 43%,
+      transparent 76%
     );
 
   pointer-events: none;
 }
 
-/* Sabit ince yorungeler */
+.nm-holo__world {
+  position: absolute;
+  inset: 0;
 
-.nm-orbit__ring {
+  transform-style: preserve-3d;
+
+  transform:
+    rotateX(calc(6deg + var(--nm-holo-rx)))
+    rotateY(calc(-12deg + var(--nm-holo-ry)));
+
+  transition:
+    transform .28s cubic-bezier(.19,.8,.3,1);
+}
+
+.nm-holo__float {
+  position: absolute;
+  inset: 0;
+
+  transform-style: preserve-3d;
+
+  animation:
+    nm-holo-float 8s ease-in-out infinite;
+}
+
+@keyframes nm-holo-float {
+  0%, 100% {
+    transform: translate3d(0,3px,0);
+  }
+
+  50% {
+    transform: translate3d(0,-7px,0);
+  }
+}
+
+/* Holografik alt platform */
+
+.nm-holo__floor {
   position: absolute;
 
-  top: 50%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  aspect-ratio: 1;
+  left: 17%;
+  right: 17%;
+  bottom: 5%;
+  height: 32%;
 
   border-radius: 50%;
 
-  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(28,150,214,.20),
+      rgba(255,112,29,.065) 44%,
+      transparent 73%
+    );
+
+  transform:
+    rotateX(73deg)
+    translateZ(-70px);
+
+  transform-style: preserve-3d;
 }
 
-.nm-orbit__ring--one {
-  width: 86%;
+.nm-holo__floor-ring {
+  position: absolute;
+  inset: 13%;
 
-  border: 1px solid
-    rgba(255, 149, 73, .20);
+  border-radius: 50%;
+
+  border:
+    1px solid rgba(83,188,237,.45);
 
   box-shadow:
-    inset 0 0 22px rgba(255, 107, 11, .018);
+    0 0 24px rgba(29,166,229,.20);
 }
 
-.nm-orbit__ring--two {
-  width: 68%;
+.nm-holo__floor-ring--two {
+  inset: -7%;
 
-  border: 1px dashed
-    rgba(131, 161, 192, .22);
+  border-color:
+    rgba(255,128,52,.20);
 }
 
-.nm-orbit__ring--three {
-  width: 50%;
+.nm-holo__floor-core {
+  position: absolute;
+  inset: 36%;
 
-  border: 1px solid
-    rgba(255, 169, 103, .16);
+  border-radius: 50%;
+
+  background: #49c9ff;
+
+  box-shadow:
+    0 0 28px 12px rgba(51,171,232,.28);
+
+  opacity: .55;
 }
 
-/* Dekoratif kilavuz cizgiler */
-
-.nm-orbit__crosshair {
+.nm-holo__light-column {
   position: absolute;
 
-  top: 50%;
-  left: 50%;
-
-  pointer-events: none;
-  opacity: .26;
-}
-
-.nm-orbit__crosshair--horizontal {
-  width: 94%;
-  height: 1px;
-
-  transform: translate(-50%, -50%);
+  left: 40%;
+  width: 20%;
+  top: 8%;
+  bottom: 19%;
 
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(97, 133, 173, .26),
+      rgba(48,163,241,.04) 28%,
+      rgba(65,197,255,.11) 50%,
       transparent
     );
-}
 
-.nm-orbit__crosshair--vertical {
-  height: 94%;
-  width: 1px;
+  clip-path:
+    polygon(35% 0,65% 0,100% 100%,0 100%);
 
-  transform: translate(-50%, -50%);
-
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(97, 133, 173, .21),
-      transparent
-    );
-}
-
-/* Uydu yolu */
-
-.nm-orbit__satellite-path {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  aspect-ratio: 1;
-
-  z-index: 7;
+  transform: translateZ(-50px);
 
   pointer-events: none;
-
-  animation:
-    nm-orbit-spin
-    var(--nm-orbit-period)
-    linear infinite;
-
-  animation-delay:
-    var(--nm-orbit-phase);
 }
 
-.nm-orbit__satellite-path--1 {
-  width: 86%;
+/* =========================================================
+   CAM PANELLER
+   ========================================================= */
 
-  --nm-orbit-period: 36s;
-  --nm-orbit-phase: -5s;
-}
-
-.nm-orbit__satellite-path--2 {
-  width: 68%;
-
-  --nm-orbit-period: 29s;
-  --nm-orbit-phase: -12s;
-}
-
-.nm-orbit__satellite-path--3 {
-  width: 50%;
-
-  --nm-orbit-period: 24s;
-  --nm-orbit-phase: -18s;
-}
-
-.nm-orbit__satellite {
+.nm-holo__glass {
   position: absolute;
 
-  top: 0;
-  left: 50%;
+  box-sizing: border-box;
 
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 9px 12px;
-
-  min-width: 116px;
-
-  border: 1px solid
-    rgba(125, 150, 180, .28);
-
-  border-radius: 13px;
-
-  background:
-    linear-gradient(
-      140deg,
-      rgba(31, 47, 65, .98),
-      rgba(17, 29, 44, .98)
-    );
-
-  box-shadow:
-    0 10px 25px rgba(0, 0, 0, .21),
-    0 0 15px rgba(255, 107, 11, .035);
-
-  backdrop-filter: blur(8px);
-
-  white-space: nowrap;
-
-  animation:
-    nm-orbit-counter-spin
-    var(--nm-orbit-period)
-    linear infinite;
-
-  animation-delay:
-    var(--nm-orbit-phase);
-}
-
-.nm-orbit__satellite-icon {
-  display: grid;
-  place-items: center;
-
-  flex: 0 0 32px;
-
-  width: 32px;
-  height: 32px;
-
-  border-radius: 9px;
-
-  background:
-    rgba(255, 107, 11, .12);
-
-  color: #FF9F53;
-}
-
-.nm-orbit__satellite-label {
-  color: #EAF0F7;
-
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: -.01em;
-}
-
-/* Kart kendisi donmez, yalnizca yoruengede ilerler */
-
-@keyframes nm-orbit-spin {
-  from {
-    transform:
-      translate(-50%, -50%)
-      rotate(0deg);
-  }
-
-  to {
-    transform:
-      translate(-50%, -50%)
-      rotate(360deg);
-  }
-}
-
-@keyframes nm-orbit-counter-spin {
-  from {
-    transform:
-      translate(-50%, -50%)
-      rotate(0deg);
-  }
-
-  to {
-    transform:
-      translate(-50%, -50%)
-      rotate(-360deg);
-  }
-}
-
-/* Ortadaki dijital not */
-
-.nm-orbit__document {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  z-index: 5;
-
-  display: flex;
-  flex-direction: column;
-
-  width: min(170px, 40%);
-  aspect-ratio: .79;
-
-  padding: 17px 15px;
-
-  border: 1px solid
-    rgba(255, 135, 54, .45);
+  border:
+    1px solid rgba(115,185,238,.38);
 
   border-radius: 17px;
 
   background:
     linear-gradient(
-      145deg,
-      rgba(35, 55, 78, .98),
-      rgba(14, 27, 44, .99) 78%
+      140deg,
+      rgba(38,69,101,.84),
+      rgba(14,31,52,.93) 72%
     );
 
   box-shadow:
-    0 20px 70px rgba(0, 0, 0, .30),
-    0 0 32px rgba(255, 107, 11, .10),
-    inset 0 1px 0 rgba(255, 255, 255, .06);
+    0 20px 45px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(214,245,255,.12),
+    0 0 24px rgba(38,161,233,.09);
 
-  transform: translate(-50%, -50%);
+  color: #f3f9ff;
+
+  backface-visibility: hidden;
 }
 
-.nm-orbit__document::before {
-  content: "";
+/* Arkadaki hologram katmanı */
 
+.nm-holo__glass--rear {
+  top: 13%;
+  left: 14%;
+
+  width: 51%;
+  height: 62%;
+
+  padding: 19px;
+
+  border-color:
+    rgba(65,153,227,.36);
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(27,76,118,.65),
+      rgba(8,34,59,.74)
+    );
+
+  transform:
+    translate3d(-18px,-14px,-90px)
+    rotateY(-13deg)
+    rotateZ(-7deg);
+
+  overflow: hidden;
+}
+
+.nm-holo__rear-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: rgba(154,220,255,.75);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .15em;
+}
+
+.nm-holo__rear-grid {
+  height: 48%;
+  margin-top: 18px;
+
+  background-image:
+    linear-gradient(
+      rgba(105,192,251,.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(105,192,251,.08) 1px,
+      transparent 1px
+    );
+
+  background-size: 19px 19px;
+
+  border-radius: 6px;
+}
+
+.nm-holo__rear-line {
+  margin-top: 13px;
+
+  height: 4px;
+  width: 74%;
+
+  border-radius: 3px;
+
+  background: rgba(110,191,242,.30);
+}
+
+.nm-holo__rear-line--short {
+  margin-top: 8px;
+  width: 47%;
+}
+
+.nm-holo__rear-chart {
+  position: absolute;
+
+  bottom: 28%;
+  left: 17%;
+  right: 17%;
+
+  height: 20%;
+
+  display: flex;
+  align-items: end;
+  gap: 9px;
+}
+
+.nm-holo__rear-chart i {
+  flex: 1;
+
+  height: 45%;
+
+  border-radius: 3px 3px 0 0;
+
+  background:
+    linear-gradient(
+      0deg,
+      rgba(28,145,225,.45),
+      rgba(78,207,252,.7)
+    );
+}
+
+.nm-holo__rear-chart i:nth-child(2) { height: 68%; }
+.nm-holo__rear-chart i:nth-child(3) { height: 39%; }
+.nm-holo__rear-chart i:nth-child(4) { height: 83%; }
+.nm-holo__rear-chart i:nth-child(5) { height: 56%; }
+
+/* =========================================================
+   ÖNDEKİ ANA HOLOGRAM
+   ========================================================= */
+
+.nm-holo__glass--main {
+  top: 15%;
+  left: 29%;
+
+  width: 53%;
+  height: 66%;
+
+  padding: 17px 18px;
+
+  border-color:
+    rgba(255,147,68,.58);
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(36,65,94,.96),
+      rgba(9,25,46,.98) 80%
+    );
+
+  transform:
+    translate3d(2px,-2px,80px)
+    rotateY(-7deg)
+    rotateX(3deg);
+
+  overflow: hidden;
+
+  box-shadow:
+    0 29px 66px rgba(0,0,0,.36),
+    inset 0 1px 0 rgba(255,219,171,.16),
+    0 0 28px rgba(255,114,27,.14);
+}
+
+.nm-holo__main-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #adcde3;
+}
+
+.nm-holo__main-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.nm-holo__main-badge svg {
+  color: #ffab64;
+}
+
+.nm-holo__main-scanicon {
+  color: #75d3ff;
+  opacity: .72;
+}
+
+.nm-holo__main-illustration {
+  width: 73px;
+  height: 73px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 14px auto 12px;
+
+  border-radius: 19px;
+
+  color: #ffc18c;
+
+  border:
+    1px solid rgba(255,151,77,.28);
+
+  background:
+    radial-gradient(
+      circle at 35% 28%,
+      rgba(255,144,52,.18),
+      rgba(31,73,111,.3)
+    );
+
+  box-shadow:
+    0 0 24px rgba(255,110,36,.09),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.nm-holo__main-overline {
+  display: block;
+
+  color: #ffac6b;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .15em;
+}
+
+.nm-holo__glass--main strong {
+  display: block;
+  margin-top: 7px;
+
+  font-size: clamp(15px,1.25vw,19px);
+  letter-spacing: -.035em;
+}
+
+.nm-holo__main-subtitle {
+  display: block;
+  margin-top: 5px;
+
+  color: #9bb6c9;
+  font-size: 10px;
+}
+
+.nm-holo__main-lines {
+  margin-top: 16px;
+
+  display: grid;
+  gap: 8px;
+}
+
+.nm-holo__main-lines span {
+  height: 4px;
+
+  border-radius: 3px;
+
+  background:
+    rgba(149,189,218,.20);
+}
+
+.nm-holo__main-lines span:nth-child(2) { width: 86%; }
+.nm-holo__main-lines span:nth-child(3) { width: 61%; }
+
+.nm-holo__main-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 18px;
+
+  color: #a2b5c9;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .09em;
+}
+
+.nm-holo__main-footer svg {
+  color: #8adfc6;
+}
+
+/* Hologram tarama ışığı */
+
+.nm-holo__scanline {
   position: absolute;
 
   top: 0;
-  left: 19px;
-  right: 19px;
+  left: 8%;
+  right: 8%;
 
-  height: 1px;
+  height: 2px;
 
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(255, 153, 84, .85),
+      rgba(117,224,255,.8),
       transparent
     );
-}
-
-.nm-orbit__document-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 15px;
-}
-
-.nm-orbit__document-icon {
-  display: grid;
-  place-items: center;
-
-  width: 37px;
-  height: 37px;
-
-  border-radius: 11px;
-
-  background: rgba(255, 107, 11, .13);
-  color: #FFA05C;
-}
-
-.nm-orbit__document-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-
-  color: #A7C9B7;
-
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .05em;
-}
-
-.nm-orbit__document-kicker {
-  color: #FF9D50;
-
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .13em;
-}
-
-.nm-orbit__document-title {
-  margin-top: 7px;
-
-  color: #F6F8FC;
-
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.nm-orbit__document-subtitle {
-  margin-top: 5px;
-
-  color: #9CAFC6;
-
-  font-size: 9px;
-  line-height: 1.4;
-}
-
-.nm-orbit__document-lines {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  margin-top: 20px;
-}
-
-.nm-orbit__document-lines span {
-  height: 4px;
-
-  border-radius: 5px;
-
-  background: rgba(154, 179, 205, .20);
-}
-
-.nm-orbit__document-lines span:nth-child(2) {
-  width: 83%;
-}
-
-.nm-orbit__document-lines span:nth-child(3) {
-  width: 94%;
-}
-
-.nm-orbit__document-lines span:nth-child(4) {
-  width: 59%;
-}
-
-.nm-orbit__document-footer {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  margin-top: auto;
-
-  color: #BECBDD;
-  font-size: 9px;
-  font-weight: 600;
-}
-
-.nm-orbit__document-footer-icon {
-  color: #FF9D50;
-}
-
-/* Kucuk isik noktaciklari */
-
-.nm-orbit__spark {
-  position: absolute;
-
-  width: 4px;
-  height: 4px;
-
-  border-radius: 50%;
-
-  background: #FF9C51;
 
   box-shadow:
-    0 0 9px rgba(255, 107, 11, .65);
+    0 0 16px rgba(42,196,255,.43);
 
-  pointer-events: none;
+  opacity: .55;
 
   animation:
-    nm-orbit-twinkle 4s ease-in-out infinite;
+    nm-holo-scan 7s ease-in-out infinite;
 }
 
-.nm-orbit__spark--one {
-  top: 13%;
-  left: 27%;
-}
-
-.nm-orbit__spark--two {
-  top: 75%;
-  left: 87%;
-  animation-delay: -1.5s;
-}
-
-.nm-orbit__spark--three {
-  top: 79%;
-  left: 15%;
-  animation-delay: -2.7s;
-}
-
-@keyframes nm-orbit-twinkle {
+@keyframes nm-holo-scan {
   0%, 100% {
-    opacity: .20;
-    transform: scale(.8);
+    transform: translateY(0);
+    opacity: .12;
   }
 
   50% {
-    opacity: .85;
-    transform: scale(1.15);
+    transform: translateY(260px);
+    opacity: .6;
   }
 }
 
-/* Orbit alti tek satirlik marka mesaji */
+/* =========================================================
+   ÖN PLAN KARTLARI
+   ========================================================= */
 
-.nm-orbit__footer {
+.nm-holo__glass--status,
+.nm-holo__glass--metric {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 10px 12px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(29,57,79,.98),
+      rgba(13,35,53,.96)
+    );
+
+  white-space: nowrap;
+}
+
+.nm-holo__glass--status {
+  top: 20%;
+  right: 0%;
+
+  min-width: 166px;
+
+  transform:
+    translate3d(6px,6px,150px)
+    rotateY(-16deg)
+    rotateZ(5deg);
+}
+
+.nm-holo__glass--metric {
+  left: 1%;
+  bottom: 19%;
+
+  min-width: 160px;
+
+  transform:
+    translate3d(-2px,9px,160px)
+    rotateY(10deg)
+    rotateZ(-5deg);
+}
+
+.nm-holo__tile-icon {
+  flex: 0 0 34px;
+
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #9adeff;
+
+  background:
+    rgba(48,179,248,.11);
+}
+
+.nm-holo__tile-icon--orange {
+  color: #ffab6b;
+
+  background:
+    rgba(255,136,53,.12);
+}
+
+.nm-holo__glass--status small,
+.nm-holo__glass--metric small {
+  display: block;
+
+  color: #93acc0;
+
+  font-size: 9px;
+}
+
+.nm-holo__glass--status strong,
+.nm-holo__glass--metric strong {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.nm-holo__status-indicator {
+  flex: 0 0 6px;
+
+  width: 6px;
+  height: 6px;
+
+  margin-left: auto;
+
+  border-radius: 50%;
+
+  background: #80e8b7;
+
+  box-shadow:
+    0 0 9px rgba(88,236,157,.5);
+}
+
+.nm-holo__glass--metric > svg {
+  flex: 0 0 auto;
+  color: #71cbf6;
+}
+
+.nm-holo__metric-wave {
+  display: flex;
+  align-items: end;
+  gap: 3px;
+
+  height: 22px;
+  margin-left: auto;
+}
+
+.nm-holo__metric-wave i {
+  display: block;
+
+  width: 3px;
+  height: 9px;
+
+  border-radius: 3px;
+
+  background: #57c3f5;
+
+  opacity: .7;
+}
+
+.nm-holo__metric-wave i:nth-child(2) { height: 17px; }
+.nm-holo__metric-wave i:nth-child(3) { height: 12px; }
+.nm-holo__metric-wave i:nth-child(4) { height: 20px; }
+
+/* Işık parçacıkları */
+
+.nm-holo__particle {
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: #74dfff;
+
+  box-shadow:
+    0 0 11px #3aaeff;
+
+  animation:
+    nm-holo-shimmer 5s ease-in-out infinite;
+}
+
+.nm-holo__particle--a {
+  left: 22%;
+  top: 24%;
+}
+
+.nm-holo__particle--b {
+  right: 15%;
+  top: 17%;
+  animation-delay: -2s;
+}
+
+.nm-holo__particle--c {
+  left: 15%;
+  bottom: 19%;
+  animation-delay: -3s;
+}
+
+@keyframes nm-holo-shimmer {
+  0%, 100% {
+    opacity: .15;
+    transform: scale(.7);
+  }
+
+  50% {
+    opacity: .9;
+    transform: scale(1.3);
+  }
+}
+
+/* =========================================================
+   ALT MARKA METNİ
+   ========================================================= */
+
+.nm-holo__bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
 
   gap: 7px;
+  margin-top: 0;
 
   text-align: center;
-
-  margin-top: 0;
 }
 
-.nm-orbit__footer-icon {
-  color: #FF9C51;
-  opacity: .88;
+.nm-holo__bottom strong {
+  color: #f2f7fd;
+
+  font-size: clamp(17px,1.5vw,22px);
+  font-weight: 780;
+
+  letter-spacing: -.035em;
 }
 
-.nm-orbit__footer strong {
-  color: #F1F5FA;
-
-  font-size: clamp(16px, 1.45vw, 21px);
-  font-weight: 750;
-  letter-spacing: -.03em;
-}
-
-.nm-orbit__footer p {
-  margin: 0;
-
-  color: #8798AD;
+.nm-holo__bottom span {
+  color: #91abc0;
 
   font-size: 11px;
-  letter-spacing: .09em;
+  letter-spacing: .07em;
 }
 
-/* Yönetici modunda biraz daha kurumsal ton */
+/* Küçük masaüstü ekranları */
 
-.nm-orbit-showcase--admin
-.nm-orbit__document {
-  border-color: rgba(255, 135, 54, .36);
-}
-
-.nm-orbit-showcase--admin
-.nm-orbit__ring--one {
-  border-color: rgba(142, 164, 197, .23);
-}
-
-/* Kucuk masaustu */
-
-@media (min-width: 1001px) and (max-width: 1250px) {
-  .notmark-auth-page--orbit
+@media (min-width: 1001px) and (max-width: 1260px) {
+  .notmark-auth-page--hologram
   .notmark-auth-visual {
     padding: 35px;
   }
 
-  .nm-orbit__scene {
-    width: min(420px, 100%, 53vh);
+  .nm-holo__stage {
+    width: min(430px,100%,52vh);
   }
 
-  .nm-orbit__satellite {
-    min-width: 100px;
-    padding: 7px 9px;
+  .nm-holo__glass--status,
+  .nm-holo__glass--metric {
+    min-width: 132px;
+    padding: 8px;
   }
 
-  .nm-orbit__satellite-icon {
-    width: 28px;
-    height: 28px;
-    flex-basis: 28px;
-  }
-}
-
-/* Dikey alani dar ekranlar */
-
-@media (min-width: 1001px) and (max-height: 760px) {
-  .nm-orbit__scene {
-    width: min(395px, 100%, 51vh);
-  }
-
-  .nm-orbit__eyebrow {
-    margin-top: 12px;
+  .nm-holo__tile-icon {
+    flex-basis: 29px;
+    width: 29px;
+    height: 29px;
   }
 }
 
-/* Erişilebilirlik: hareket azaltma */
+/* Dikey alanı dar ekranlar */
+
+@media (min-width: 1001px) and (max-height: 780px) {
+  .nm-holo__stage {
+    width: min(420px,100%,50vh);
+  }
+
+  .nm-holo__eyebrow {
+    margin-top: 13px;
+  }
+}
+
+/* Hareket azaltma tercihi */
 
 @media (prefers-reduced-motion: reduce) {
-  .nm-orbit__satellite-path,
-  .nm-orbit__satellite,
-  .nm-orbit__spark {
+  .nm-holo__world {
+    transform:
+      rotateX(6deg)
+      rotateY(-12deg) !important;
+
+    transition: none !important;
+  }
+
+  .nm-holo__float,
+  .nm-holo__scanline,
+  .nm-holo__particle {
     animation: none !important;
-  }
-
-  .nm-orbit__satellite-path--1 {
-    transform: translate(-50%, -50%) rotate(35deg);
-  }
-
-  .nm-orbit__satellite-path--2 {
-    transform: translate(-50%, -50%) rotate(155deg);
-  }
-
-  .nm-orbit__satellite-path--3 {
-    transform: translate(-50%, -50%) rotate(265deg);
-  }
-
-  .nm-orbit__satellite-path--1 .nm-orbit__satellite {
-    transform: translate(-50%, -50%) rotate(-35deg);
-  }
-
-  .nm-orbit__satellite-path--2 .nm-orbit__satellite {
-    transform: translate(-50%, -50%) rotate(-155deg);
-  }
-
-  .nm-orbit__satellite-path--3 .nm-orbit__satellite {
-    transform: translate(-50%, -50%) rotate(-265deg);
   }
 }
