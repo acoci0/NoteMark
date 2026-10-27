@@ -36373,3 +36373,14 @@ input[type="file"]::file-selector-button {
     padding-bottom: 180px;
   }
 }
+
+/* NOTMARK DYNAMIC DISTRIBUTION V36 — kenar dengesi / erişilebilirlik */
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell .student-profile-page .notmark-profile-math-particle {
+    transition: none !important;
+  }
+}
+.student-app-shell[data-motion="off"] .student-profile-page .notmark-profile-math-particle,
+.student-app-shell[data-motion="reduced"] .student-profile-page .notmark-profile-math-particle {
+  transition: none !important;
+}

@@ -1409,234 +1409,213 @@ export default function StudentProfilePage() {
       shell?.getAttribute("data-motion") !== "off" &&
       shell?.getAttribute("data-motion") !== "reduced";
 
-    // NOTMARK DYNAMIC DISTRIBUTION V35
-    // İçerik kutularının dışındaki boş alanlara dağıtım.
+    // NOTMARK DYNAMIC DISTRIBUTION V36
+    // Her bölge için dengeli kota ve minimum mesafeli nokta seçimi.
+    // V34 fizik/animasyon motoruna dokunulmaz.
     const measure = () => {
       const width = page.clientWidth;
       const height = page.clientHeight;
+      if (width < 80 || height < 120) return;
 
-      if (!width || !height) return;
+      const visible = particles.filter(
+        (p) => window.getComputedStyle(p.element).display !== "none"
+      );
+      if (!visible.length) return;
 
       const pageRect = page.getBoundingClientRect();
-
       const section = page.querySelector<HTMLElement>(
         ".student-profile-section"
       );
-
       const header = page.querySelector<HTMLElement>(
         ".student-profile-header"
       );
-
       const sectionRect = section?.getBoundingClientRect();
       const headerRect = header?.getBoundingClientRect();
 
-      const panel = sectionRect
-        ? {
-            left: sectionRect.left - pageRect.left,
-            right: sectionRect.right - pageRect.left,
-            top: sectionRect.top - pageRect.top,
-            bottom: sectionRect.bottom - pageRect.top,
-          }
-        : {
-            left: width * 0.17,
-            right: width * 0.83,
-            top: height * 0.45,
-            bottom: height * 0.75,
-          };
+      const panel = sectionRect ? {
+        left: sectionRect.left - pageRect.left,
+        right: sectionRect.right - pageRect.left,
+        top: sectionRect.top - pageRect.top,
+        bottom: sectionRect.bottom - pageRect.top,
+      } : {
+        left: width * 0.18,
+        right: width * 0.82,
+        top: height * 0.36,
+        bottom: height * 0.76,
+      };
 
       const heroBottom = headerRect
         ? headerRect.bottom - pageRect.top
-        : Math.min(300, height * 0.35);
-
-      const margin = 58;
-      const edge = 20;
+        : Math.min(370, height * 0.35);
+      const edge = Math.min(28, width * 0.045);
+      const gap = width < 760 ? 24 : 64;
+      const usableBottom = height - edge;
 
       type Zone = {
+        name: "upperLeft" | "upperRight" | "left" | "right" | "bottom" | "fallback";
         left: number;
-        top: number;
         right: number;
+        top: number;
         bottom: number;
         weight: number;
       };
-
       const zones: Zone[] = [];
-
       const addZone = (
+        name: Zone["name"],
         left: number,
         top: number,
         right: number,
         bottom: number,
         weight: number
       ) => {
-        const zone = {
+        const z: Zone = {
+          name,
           left: Math.max(edge, left),
-          top: Math.max(edge, top),
           right: Math.min(width - edge, right),
-          bottom: Math.min(height - edge, bottom),
+          top: Math.max(edge, top),
+          bottom: Math.min(usableBottom, bottom),
           weight,
         };
-
-        if (
-          zone.right - zone.left >= 35 &&
-          zone.bottom - zone.top >= 35
-        ) {
-          zones.push(zone);
+        if (z.right - z.left >= 32 && z.bottom - z.top >= 55) {
+          zones.push(z);
         }
       };
 
-      // Karşılama alanında yalnızca birkaç sembol.
-      addZone(
-        edge,
-        edge,
-        Math.max(edge + 35, panel.left - margin),
-        heroBottom,
-        0.35
-      );
-
-      addZone(
-        panel.right + margin,
-        edge,
-        width - edge,
-        heroBottom,
-        0.35
-      );
-
-      // Panelin iki yanında yoğun dağılım.
-      addZone(
-        edge,
-        heroBottom + 18,
-        panel.left - margin,
-        panel.bottom + 30,
-        1.4
-      );
-
-      addZone(
-        panel.right + margin,
-        heroBottom + 18,
-        width - edge,
-        panel.bottom + 30,
-        1.4
-      );
-
-      // Panelin altındaki boş alan.
-      addZone(
-        edge,
-        panel.bottom + margin,
-        width - edge,
-        height - edge,
-        1.25
-      );
-
-      // Panelin üstünde kalan boş alan.
-      addZone(
-        panel.left,
-        heroBottom + margin,
-        panel.right,
-        panel.top - margin,
-        0.45
-      );
-
-      // Dar ekranlar için güvenli dağılım.
+      // Üstteki karşılama metninin önüne sembol yerleştirmiyoruz.
+      addZone("upperLeft", edge, edge, panel.left - gap, heroBottom - 14, 0.2);
+      addZone("upperRight", panel.right + gap, edge, width - edge, heroBottom - 14, 0.2);
+      // Panelin iki yanındaki dikey şeritler.
+      addZone("left", edge, heroBottom + 14, panel.left - gap, panel.bottom + 20, 1.35);
+      addZone("right", panel.right + gap, heroBottom + 14, width - edge, panel.bottom + 20, 1.35);
+      // Panel uzadıkça alt şerit de beraber aşağı iner.
+      addZone("bottom", edge, panel.bottom + gap, width - edge, usableBottom, 1.0);
       if (!zones.length) {
-        addZone(
-          edge,
-          Math.max(heroBottom + 20, panel.bottom + 20),
-          width - edge,
-          height - edge,
-          1
-        );
+        addZone("fallback", edge, Math.min(heroBottom + 8, height * 0.55),
+          width - edge, usableBottom, 1);
       }
+      if (!zones.length) return;
 
-      if (!zones.length) {
-        for (const p of particles) {
-          p.homeX = p.element.offsetLeft;
-          p.homeY = p.element.offsetTop;
+      const find = (name: Zone["name"]) => zones.find((z) => z.name === name);
+      const quota = new Map<Zone, number>(zones.map((z) => [z, 0]));
+      let remaining = visible.length;
+
+      // Karşılama bandında toplam en fazla 2 sembol.
+      const upper = [find("upperLeft"), find("upperRight")].filter(
+        (z): z is Zone => Boolean(z)
+      );
+      if (width >= 1000) {
+        for (const z of upper) {
+          if (remaining <= 0) break;
+          quota.set(z, 1);
+          remaining--;
         }
-        return;
       }
 
-      // Deterministik dağılım:
-      // Her yeniden ölçümde semboller rastgele sıçramaz.
-      const random = (seed: number) => {
-        const value = Math.sin(seed * 127.1 + 78.233) * 43758.5453;
-        return value - Math.floor(value);
-      };
-
-      const weightedZones = zones.map((zone) => ({
-        zone,
-        capacity:
-          (zone.right - zone.left) *
-          (zone.bottom - zone.top) *
-          zone.weight,
-      }));
-
-      const totalCapacity = weightedZones.reduce(
-        (sum, item) => sum + item.capacity,
-        0
+      const mainZones = zones.filter((z) =>
+        z.name === "left" || z.name === "right" ||
+        z.name === "bottom" || z.name === "fallback"
       );
+      const active = mainZones.length ? mainZones : zones;
+      const area = (z: Zone) =>
+        Math.max(1, (z.right - z.left) * (z.bottom - z.top));
 
-      particles.forEach((p, index) => {
-        const ticket = (
-          (index + random(index + 91) * 0.65) /
-          particles.length
-        ) * totalCapacity;
+      // Alt alan boş kalmasın; panel altı varsa asgari pay ayır.
+      const bottom = find("bottom");
+      if (bottom && remaining > 0) {
+        const base = Math.min(remaining,
+          Math.min(12, Math.max(5, Math.round(visible.length * 0.26))));
+        quota.set(bottom, base);
+        remaining -= base;
+      }
 
-        let remaining = ticket;
-        let selected = weightedZones[weightedZones.length - 1].zone;
-
-        for (const item of weightedZones) {
-          if (remaining <= item.capacity) {
-            selected = item.zone;
-            break;
+      // Artan sembolleri alan ve ağırlıkla birlikte dengeli paylaştır.
+      // Her atamada mevcut kotaya göre en düşük doluluk seçilir.
+      for (let i = 0; i < remaining; i++) {
+        let winner = active[0];
+        let best = -Infinity;
+        for (const z of active) {
+          const capacity = Math.pow(area(z), 0.72) * z.weight;
+          const score = capacity / (quota.get(z)! + 1);
+          if (score > best) {
+            best = score;
+            winner = z;
           }
-
-          remaining -= item.capacity;
         }
+        quota.set(winner, quota.get(winner)! + 1);
+      }
 
-        const columns = Math.max(
-          1,
-          Math.ceil(
-            Math.sqrt(
-              particles.length *
-              (selected.right - selected.left) /
-              Math.max(1, selected.bottom - selected.top)
-            )
-          )
-        );
+      const fractional = (v: number) => v - Math.floor(v);
+      const halton = (n: number, base: number) => {
+        let result = 0;
+        let scale = 1 / base;
+        while (n > 0) {
+          result += (n % base) * scale;
+          n = Math.floor(n / base);
+          scale /= base;
+        }
+        return result;
+      };
 
-        const rows = Math.max(
-          1,
-          Math.ceil(particles.length / columns)
-        );
+      type Point = { x: number; y: number };
+      const placed: Point[] = [];
+      const destinations: Point[] = [];
+      const padded = (a: number, b: number, pad: number) =>
+        b - a > pad * 2 ? pad : Math.max(1, (b - a) * 0.12);
+      const pick = (z: Zone, ordinal: number): Point => {
+        const px = padded(z.left, z.right, 13);
+        const py = padded(z.top, z.bottom, 15);
+        const left = z.left + px;
+        const top = z.top + py;
+        const dx = Math.max(1, z.right - z.left - 2 * px);
+        const dy = Math.max(1, z.bottom - z.top - 2 * py);
+        let best: Point = { x: left + dx / 2, y: top + dy / 2 };
+        let bestDistance = -1;
 
-        const column = index % columns;
-        const row = Math.floor(index / columns) % rows;
+        // Blue-noise / best-candidate: adaylardan diğer sembollere
+        // en uzak olanı seç. Sabit tohum -> yeniden ölçümde sıçrama yok.
+        for (let candidate = 0; candidate < 96; candidate++) {
+          const seed = 1 + ordinal * 131 + candidate * 7 + zones.indexOf(z) * 401;
+          const x = left + fractional(halton(seed, 2) + 0.127) * dx;
+          const y = top + fractional(halton(seed, 3) + 0.319) * dy;
+          let closest = Infinity;
+          for (const p of placed) {
+            const distance = (x - p.x) ** 2 + (y - p.y) ** 2;
+            if (distance < closest) closest = distance;
+          }
+          if (closest > bestDistance) {
+            bestDistance = closest;
+            best = { x, y };
+          }
+        }
+        placed.push(best);
+        return best;
+      };
 
-        const jitterX = random(index + 7);
-        const jitterY = random(index + 19);
+      // Önce kenarlar arasında dönüşümlü ilerle; sonra alt boşluğu doldur.
+      const slots = zones.map((zone) => ({zone, remaining: quota.get(zone) ?? 0}));
+      let ordinal = 0;
+      while (destinations.length < visible.length) {
+        const item = slots
+          .filter((s) => s.remaining > 0)
+          .sort((a, b) => {
+            const usedA = (quota.get(a.zone) ?? 0) - a.remaining;
+            const usedB = (quota.get(b.zone) ?? 0) - b.remaining;
+            const fractionA = usedA / Math.max(1, quota.get(a.zone) ?? 1);
+            const fractionB = usedB / Math.max(1, quota.get(b.zone) ?? 1);
+            return fractionA - fractionB;
+          })[0];
+        if (!item) break;
+        destinations.push(pick(item.zone, ordinal++));
+        item.remaining--;
+      }
 
-        const x = selected.left +
-          ((column + 0.2 + jitterX * 0.6) / columns) *
-          (selected.right - selected.left);
-
-        const y = selected.top +
-          ((row + 0.2 + jitterY * 0.6) / rows) *
-          (selected.bottom - selected.top);
-
-        p.element.style.setProperty(
-          "left",
-          `${Math.max(edge, Math.min(width - edge, x))}px`,
-          "important"
-        );
-
-        p.element.style.setProperty(
-          "top",
-          `${Math.max(edge, Math.min(height - edge, y))}px`,
-          "important"
-        );
-
-        p.homeX = x;
-        p.homeY = y;
+      visible.forEach((p, index) => {
+        const point = destinations[index];
+        if (!point) return;
+        p.element.style.setProperty("left", `${point.x.toFixed(2)}px`, "important");
+        p.element.style.setProperty("top", `${point.y.toFixed(2)}px`, "important");
+        p.homeX = point.x + p.element.offsetWidth / 2;
+        p.homeY = point.y + p.element.offsetHeight / 2;
       });
     };
 
