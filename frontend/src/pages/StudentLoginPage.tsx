@@ -59,6 +59,7 @@ export default function StudentLoginPage() {
 
 
   const [roleTransitioning, setRoleTransitioning] = useState(false);
+  const [financeBackdrop, setFinanceBackdrop] = useState(false);
 
   const [flight, setFlight] = useState<{
     size: number;
@@ -232,6 +233,7 @@ export default function StudentLoginPage() {
     });
 
     setRoleTransitioning(true);
+    setFinanceBackdrop(true);
 
     try {
       // 1. Mevcut ekran yavasca kaybolur.
@@ -274,6 +276,8 @@ export default function StudentLoginPage() {
 
       const target = getLogoRect() ?? origin;
 
+      setFinanceBackdrop(false);
+
       await playFlight(
         center,
         rectTransform(target, size),
@@ -287,6 +291,7 @@ export default function StudentLoginPage() {
         // 6. Yeni ekran yavasca belirir.
 
         setFlight(null);
+        setFinanceBackdrop(false);
         setRoleTransitioning(false);
 
         await delay(900);
@@ -341,7 +346,7 @@ export default function StudentLoginPage() {
 
   return (
     <div
-      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic${roleTransitioning ? " is-role-switching" : ""}`}
+      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
     >

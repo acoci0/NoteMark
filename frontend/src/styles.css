@@ -36761,3 +36761,90 @@ input[type="file"]::file-selector-button {
     animation: none !important;
   }
 }
+
+
+/* =========================================================
+   NOTMARK AUTH V45 - FRAME + FINANCE BACKDROP
+   Finans koyu tema zemini: #0c1420
+   ========================================================= */
+
+/* Logo büyürken tam ekran finans zemini */
+
+.notmark-auth-page--cinematic::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+
+  background: #0c1420;
+  opacity: 0;
+
+  transition:
+    opacity 720ms cubic-bezier(.45, 0, .2, 1);
+}
+
+.notmark-auth-page--cinematic.is-finance-background::after {
+  opacity: 1;
+}
+
+/* Orijinal logo ile çerçeve köşelerini hizala */
+
+.notmark-auth-cinematic-ring {
+  inset: -1px;
+  border-radius: 19%;
+
+  background:
+    linear-gradient(
+      160deg,
+      #1a2d56 0%,
+      #09172f 100%
+    ) padding-box,
+
+    conic-gradient(
+      from var(--notmark-auth-angle),
+      transparent 0deg,
+      transparent 245deg,
+      rgba(255, 107, 11, .12) 270deg,
+      rgba(255, 107, 11, .65) 302deg,
+      #ff6b0b 322deg,
+      rgba(255, 107, 11, .65) 342deg,
+      transparent 360deg
+    ) border-box;
+}
+
+/* Köşelerde siyah boşluk kalmasını engelle */
+
+.notmark-auth-cinematic-inner {
+  inset: 0;
+  border-radius: 19%;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      160deg,
+      #1a2d56 0%,
+      #09172f 100%
+    );
+}
+
+/* Görsel kenarlarındaki fazlalığı kontrollü kırp */
+
+.notmark-auth-cinematic-inner img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transform: scale(1.085);
+  transform-origin: center;
+
+  image-rendering: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notmark-auth-page--cinematic::after {
+    transition: none !important;
+  }
+}
