@@ -44,7 +44,35 @@ type ActiveStudentResponse = {
 const MAX_FILE_SIZE =
   10 * 1024 * 1024;
 
+
+const profileMathSymbols = [
+  "∑",
+  "∫",
+  "π",
+  "√",
+  "Δ",
+  "λ",
+  "∞",
+  "θ",
+  "α",
+  "β",
+  "∂",
+  "≈",
+  "∇",
+  "μ",
+  "φ",
+  "×",
+  "σ",
+  "∈",
+  "∀",
+  "ℝ",
+] as const;
+
 export default function StudentProfilePage() {
+
+  const mathLayerRef =
+    useRef<HTMLDivElement | null>(null);
+
   const {
     student,
   } = useStudentAuth();
@@ -1307,6 +1335,104 @@ export default function StudentProfilePage() {
   };
 
 
+
+  // NOTMARK MATH POINTER ENGINE V30
+  useEffect(() => {
+    if (loading) return;
+
+    const layer = mathLayerRef.current;
+    const page = layer?.parentElement;
+
+    if (!layer || !page) return;
+
+    const finePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    );
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    if (!finePointer.matches || reducedMotion.matches) {
+      return;
+    }
+
+    let frame = 0;
+
+    let currentX = 0;
+    let currentY = 0;
+
+    let targetX = 0;
+    let targetY = 0;
+
+    const render = () => {
+      frame = 0;
+
+      currentX += (targetX - currentX) * 0.16;
+      currentY += (targetY - currentY) * 0.16;
+
+      layer.style.transform =
+        `translate3d(${currentX.toFixed(2)}px, ` +
+        `${currentY.toFixed(2)}px, 0)`;
+
+      if (
+        Math.abs(targetX - currentX) > 0.2 ||
+        Math.abs(targetY - currentY) > 0.2
+      ) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const schedule = () => {
+      if (!frame) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const onMove = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
+
+      const rect = page.getBoundingClientRect();
+
+      if (!rect.width || !rect.height) return;
+
+      const x =
+        (event.clientX - rect.left) / rect.width;
+
+      const y =
+        (event.clientY - rect.top) / rect.height;
+
+      targetX =
+        Math.max(-1, Math.min(1, (x - 0.5) * 2)) * -14;
+
+      targetY =
+        Math.max(-1, Math.min(1, (y - 0.5) * 2)) * -12;
+
+      schedule();
+    };
+
+    const onLeave = () => {
+      targetX = 0;
+      targetY = 0;
+      schedule();
+    };
+
+    page.addEventListener("pointermove", onMove, {
+      passive: true,
+    });
+
+    page.addEventListener("pointerleave", onLeave);
+
+    return () => {
+      page.removeEventListener("pointermove", onMove);
+      page.removeEventListener("pointerleave", onLeave);
+
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
+  }, [loading]);
+
   if (loading) {
     return null;
   }
@@ -1341,12 +1467,18 @@ export default function StudentProfilePage() {
       className="student-profile-page"
       >
         <div
-          className="student-profile-aurora"
+          ref={mathLayerRef}
+          className="notmark-profile-math-layer"
           aria-hidden="true"
         >
-          <span className="student-profile-aurora__blob student-profile-aurora__blob--one" />
-          <span className="student-profile-aurora__blob student-profile-aurora__blob--two" />
-          <span className="student-profile-aurora__blob student-profile-aurora__blob--three" />
+          {profileMathSymbols.map((symbol, index) => (
+            <span
+              key={`profile-math-${index}`}
+              className="notmark-profile-math-symbol"
+            >
+              {symbol}
+            </span>
+          ))}
         </div>
       <header className="student-profile-header">
         <div

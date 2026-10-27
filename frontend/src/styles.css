@@ -34998,620 +34998,6 @@ input[type="file"]::file-selector-button {
    Circular mouse glow.
    ========================================================= */
 
-
-/* =========================================================
-   NOTMARK PROFILE - SOFT CLOUD AURORA V29
-
-   Cloud-like atmospheric illumination.
-   Seamless overlapping light fields.
-   No visible rectangular boundaries.
-   Slow organic motion.
-   GPU-friendly transform animations.
-   ========================================================= */
-
-
-/* =========================================================
-   PROFILE BACKGROUND
-   ========================================================= */
-
-.student-app-shell
-.student-profile-page {
-
-  position:
-    relative !important;
-
-  isolation:
-    isolate;
-
-  overflow:
-    hidden !important;
-
-  background:
-    var(--student-bg) !important;
-}
-
-
-/* =========================================================
-   FULL PAGE ATMOSPHERE
-
-   Yatay şeritler yerine farklı noktalara
-   yayılan geniş ışık geçişleri kullanılır.
-   ========================================================= */
-
-.student-app-shell
-.student-profile-page
-> .student-profile-aurora {
-
-  position:
-    absolute !important;
-
-  inset:
-    0 !important;
-
-  width:
-    auto !important;
-
-  height:
-    auto !important;
-
-  min-height:
-    0 !important;
-
-  max-height:
-    none !important;
-
-  z-index:
-    0 !important;
-
-  overflow:
-    hidden !important;
-
-  pointer-events:
-    none !important;
-
-  transform:
-    none !important;
-
-  filter:
-    none !important;
-
-  -webkit-filter:
-    none !important;
-
-  -webkit-mask-image:
-    none !important;
-
-  mask-image:
-    none !important;
-
-  background:
-
-    radial-gradient(
-      ellipse 95% 62%
-      at 18% 13%,
-
-      rgba(var(--student-accent-rgb), .035) 0%,
-
-      rgba(var(--student-accent-rgb), .015) 43%,
-
-      transparent 90%
-    ),
-
-    radial-gradient(
-      ellipse 87% 70%
-      at 84% 36%,
-
-      rgba(var(--student-accent-rgb), .090) 0%,
-
-      rgba(var(--student-accent-rgb), .030) 48%,
-
-      transparent 91%
-    ),
-
-    radial-gradient(
-      ellipse 97% 77%
-      at 12% 61%,
-
-      rgba(var(--student-accent-rgb), .135) 0%,
-
-      rgba(var(--student-accent-rgb), .047) 45%,
-
-      transparent 90%
-    ),
-
-    radial-gradient(
-      ellipse 92% 69%
-      at 78% 84%,
-
-      rgba(var(--student-accent-rgb), .155) 0%,
-
-      rgba(var(--student-accent-rgb), .050) 47%,
-
-      transparent 91%
-    ),
-
-    radial-gradient(
-      ellipse 84% 73%
-      at 43% 98%,
-
-      rgba(var(--student-accent-rgb), .100) 0%,
-
-      transparent 90%
-    ) !important;
-}
-
-
-/* =========================================================
-   SHARED CLOUD LAYER
-
-   Önceki 620px yüksekliğindeki alanlar kaldırılır.
-
-   Daha büyük katmanlar birbirinin üzerine gelir.
-   Katmanların bütün kenarları yumuşak şekilde
-   saydamlaştırılır.
-
-   Böylece dikdörtgen kesilme görüntüsü oluşmaz.
-   ========================================================= */
-
-.student-app-shell
-.student-profile-page
-> .student-profile-aurora
-.student-profile-aurora__blob {
-
-  position:
-    absolute !important;
-
-  display:
-    block !important;
-
-  width:
-    min(148%, 1800px) !important;
-
-  height:
-    min(60%, 1180px) !important;
-
-  aspect-ratio:
-    auto !important;
-
-  border-radius:
-    0 !important;
-
-  overflow:
-    visible !important;
-
-  pointer-events:
-    none !important;
-
-  filter:
-    none !important;
-
-  -webkit-filter:
-    none !important;
-
-  mix-blend-mode:
-    normal !important;
-
-  /*
-   * Katmanın yalnızca merkezi görünür kalmaz.
-   * Bütün kenarları kademeli olarak kaybolur.
-   *
-   * Bu maske yatay ve dikey kesilme çizgilerini
-   * gizlemek için kullanılır.
-   */
-
-  -webkit-mask-image:
-    radial-gradient(
-      ellipse 55% 55%
-      at 50% 50%,
-
-      #000 0%,
-
-      #000 38%,
-
-      rgba(0, 0, 0, .78) 57%,
-
-      rgba(0, 0, 0, .30) 72%,
-
-      transparent 86%
-    ) !important;
-
-  mask-image:
-    radial-gradient(
-      ellipse 55% 55%
-      at 50% 50%,
-
-      #000 0%,
-
-      #000 38%,
-
-      rgba(0, 0, 0, .78) 57%,
-
-      rgba(0, 0, 0, .30) 72%,
-
-      transparent 86%
-    ) !important;
-
-  will-change:
-    transform;
-}
-
-
-/* =========================================================
-   CLOUD FIELD 1
-
-   Üst bölgede düşük yoğunluklu,
-   geniş ve dağınık ışık.
-   ========================================================= */
-
-.student-app-shell
-.student-profile-page
-> .student-profile-aurora
-.student-profile-aurora__blob--one {
-
-  top:
-    -2% !important;
-
-  left:
-    -19% !important;
-
-  right:
-    auto !important;
-
-  bottom:
-    auto !important;
-
-  background:
-
-    radial-gradient(
-      ellipse 62% 49%
-      at 24% 39%,
-
-      rgba(var(--student-accent-rgb), .110) 0%,
-
-      rgba(var(--student-accent-rgb), .050) 43%,
-
-      transparent 89%
-    ),
-
-    radial-gradient(
-      ellipse 46% 59%
-      at 68% 63%,
-
-      rgba(var(--student-accent-rgb), .085) 0%,
-
-      rgba(var(--student-accent-rgb), .032) 45%,
-
-      transparent 90%
-    ),
-
-    radial-gradient(
-      ellipse 49% 42%
-      at 81% 22%,
-
-      rgba(var(--student-accent-rgb), .075) 0%,
-
-      transparent 88%
-    ),
-
-    radial-gradient(
-      ellipse 58% 39%
-      at 39% 82%,
-
-      rgba(var(--student-accent-rgb), .065) 0%,
-
-      transparent 90%
-    ) !important;
-
-  transform-origin:
-    46% 58%;
-
-  animation:
-    notmark-cloud-v29-one
-    51s
-    ease-in-out
-    infinite !important;
-}
-
-
-/* =========================================================
-   CLOUD FIELD 2
-
-   Orta bölgeye geniş biçimde yayılan
-   birbirine karışmış ışık katmanları.
-   ========================================================= */
-
-.student-app-shell
-.student-profile-page
-> .student-profile-aurora
-.student-profile-aurora__blob--two {
-
-  top:
-    30% !important;
-
-  right:
-    -19% !important;
-
-  left:
-    auto !important;
-
-  bottom:
-    auto !important;
-
-  background:
-
-    radial-gradient(
-      ellipse 64% 54%
-      at 77% 34%,
-
-      rgba(var(--student-accent-rgb), .215) 0%,
-
-      rgba(var(--student-accent-rgb), .095) 41%,
-
-      rgba(var(--student-accent-rgb), .025) 69%,
-
-      transparent 91%
-    ),
-
-    radial-gradient(
-      ellipse 53% 46%
-      at 25% 67%,
-
-      rgba(var(--student-accent-rgb), .175) 0%,
-
-      rgba(var(--student-accent-rgb), .055) 48%,
-
-      transparent 90%
-    ),
-
-    radial-gradient(
-      ellipse 57% 63%
-      at 51% 46%,
-
-      rgba(var(--student-accent-rgb), .120) 0%,
-
-      transparent 90%
-    ),
-
-    radial-gradient(
-      ellipse 39% 57%
-      at 79% 83%,
-
-      rgba(var(--student-accent-rgb), .090) 0%,
-
-      transparent 88%
-    ) !important;
-
-  transform-origin:
-    58% 47%;
-
-  animation:
-    notmark-cloud-v29-two
-    64s
-    ease-in-out
-    infinite !important;
-}
-
-
-/* =========================================================
-   CLOUD FIELD 3
-
-   Alt bölgede daha güçlü fakat
-   belirgin daire oluşturmayan yayılmış ışık.
-   ========================================================= */
-
-.student-app-shell
-.student-profile-page
-> .student-profile-aurora
-.student-profile-aurora__blob--three {
-
-  top:
-    63% !important;
-
-  left:
-    -14% !important;
-
-  right:
-    auto !important;
-
-  bottom:
-    auto !important;
-
-  background:
-
-    radial-gradient(
-      ellipse 67% 53%
-      at 27% 62%,
-
-      rgba(var(--student-accent-rgb), .260) 0%,
-
-      rgba(var(--student-accent-rgb), .105) 43%,
-
-      rgba(var(--student-accent-rgb), .028) 70%,
-
-      transparent 91%
-    ),
-
-    radial-gradient(
-      ellipse 56% 47%
-      at 76% 25%,
-
-      rgba(var(--student-accent-rgb), .215) 0%,
-
-      rgba(var(--student-accent-rgb), .075) 46%,
-
-      transparent 90%
-    ),
-
-    radial-gradient(
-      ellipse 58% 61%
-      at 63% 81%,
-
-      rgba(var(--student-accent-rgb), .155) 0%,
-
-      transparent 91%
-    ),
-
-    radial-gradient(
-      ellipse 42% 58%
-      at 19% 22%,
-
-      rgba(var(--student-accent-rgb), .125) 0%,
-
-      transparent 89%
-    ) !important;
-
-  transform-origin:
-    53% 48%;
-
-  animation:
-    notmark-cloud-v29-three
-    57s
-    ease-in-out
-    infinite !important;
-}
-
-
-/* =========================================================
-   SLOW ORGANIC MOVEMENT
-
-   Her katman farklı hareket eder.
-   Hareket yalnızca transform ile gerçekleştirilir.
-   ========================================================= */
-
-@keyframes notmark-cloud-v29-one {
-
-  0%, 100% {
-    transform:
-      translate3d(0, 0, 0)
-      rotate(-1deg)
-      scale(1);
-  }
-
-  26% {
-    transform:
-      translate3d(5%, -4%, 0)
-      rotate(2deg)
-      scale(1.035);
-  }
-
-  54% {
-    transform:
-      translate3d(-3%, 4%, 0)
-      rotate(-2deg)
-      scale(1.055);
-  }
-
-  79% {
-    transform:
-      translate3d(4%, 2%, 0)
-      rotate(1deg)
-      scale(1.025);
-  }
-}
-
-
-@keyframes notmark-cloud-v29-two {
-
-  0%, 100% {
-    transform:
-      translate3d(0, 0, 0)
-      rotate(2deg)
-      scale(1);
-  }
-
-  23% {
-    transform:
-      translate3d(-6%, 3%, 0)
-      rotate(-2deg)
-      scale(1.045);
-  }
-
-  52% {
-    transform:
-      translate3d(4%, -5%, 0)
-      rotate(3deg)
-      scale(1.025);
-  }
-
-  78% {
-    transform:
-      translate3d(-3%, -2%, 0)
-      rotate(-1deg)
-      scale(1.06);
-  }
-}
-
-
-@keyframes notmark-cloud-v29-three {
-
-  0%, 100% {
-    transform:
-      translate3d(0, 0, 0)
-      rotate(-1deg)
-      scale(1);
-  }
-
-  25% {
-    transform:
-      translate3d(5%, -5%, 0)
-      rotate(2deg)
-      scale(1.045);
-  }
-
-  51% {
-    transform:
-      translate3d(-5%, 3%, 0)
-      rotate(-3deg)
-      scale(1.025);
-  }
-
-  77% {
-    transform:
-      translate3d(3%, 5%, 0)
-      rotate(1deg)
-      scale(1.055);
-  }
-}
-
-
-/* =========================================================
-   LIGHT THEME
-   ========================================================= */
-
-.student-app-shell[data-theme="light"]
-.student-profile-page
-> .student-profile-aurora {
-
-  opacity:
-    .87 !important;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 720px) {
-
-  .student-app-shell
-  .student-profile-page
-  > .student-profile-aurora
-  .student-profile-aurora__blob {
-
-    width:
-      150% !important;
-
-    height:
-      min(65%, 850px) !important;
-  }
-
-}
-
-
-/* =========================================================
-   END - SOFT CLOUD AURORA V29
-   ========================================================= */
-
 /* =========================================================
    CIRCULAR MOUSE GLOW
 
@@ -36360,4 +35746,679 @@ input[type="file"]::file-selector-button {
     min-width:
       0 !important;
   }
+}
+
+/* =========================================================
+   NOTMARK MATHEMATICAL BACKGROUND V30 FIX
+
+   Aurora yerine matematiksel semboller.
+   Bağımsız hareketler.
+   GPU dostu transform animasyonları.
+   İmlece duyarlı hafif parallax.
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .notmark-profile-math-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+  user-select: none;
+
+  background: transparent;
+
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol {
+  position: absolute;
+
+  display: block;
+
+  line-height: 1;
+  font-weight: 500;
+
+  color: rgb(var(--student-accent-rgb));
+
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes notmark-math-float-a {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  35% {
+    transform:
+      translate3d(var(--dx), var(--dy), 0)
+      rotate(var(--turn));
+  }
+
+  70% {
+    transform:
+      translate3d(var(--ndx), var(--ndy), 0)
+      rotate(var(--nturn));
+  }
+}
+
+@keyframes notmark-math-float-b {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  28% {
+    transform:
+      translate3d(var(--ndx), var(--dy), 0)
+      rotate(var(--nturn));
+  }
+
+  67% {
+    transform:
+      translate3d(var(--dx), var(--ndy), 0)
+      rotate(var(--turn));
+  }
+}
+
+@keyframes notmark-math-float-c {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  42% {
+    transform:
+      translate3d(var(--dx), var(--ndy), 0)
+      rotate(var(--turn));
+  }
+
+  75% {
+    transform:
+      translate3d(var(--ndx), var(--dy), 0)
+      rotate(var(--nturn));
+  }
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+.notmark-profile-math-symbol,
+
+.student-app-shell[data-motion="reduced"]
+.student-profile-page
+.notmark-profile-math-symbol {
+  animation: none !important;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+> .notmark-profile-math-layer {
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell
+  .student-profile-page
+  .notmark-profile-math-symbol {
+    animation: none !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  > .notmark-profile-math-layer {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .student-app-shell
+  .student-profile-page
+  .notmark-profile-math-symbol:nth-child(even) {
+    display: none;
+  }
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(1) {
+  left: 6%;
+  top: 10%;
+
+  font-size: 19px;
+  opacity: 0.23;
+
+  --dx: 34px;
+  --dy: -22px;
+
+  --ndx: -22px;
+  --ndy: 14px;
+
+  --turn: 9deg;
+  --nturn: -9deg;
+
+  animation:
+    notmark-math-float-a
+    34s
+    ease-in-out
+    -8s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(2) {
+  left: 21%;
+  top: 8%;
+
+  font-size: 27px;
+  opacity: 0.17;
+
+  --dx: -26px;
+  --dy: 38px;
+
+  --ndx: 17px;
+  --ndy: -25px;
+
+  --turn: -11deg;
+  --nturn: 11deg;
+
+  animation:
+    notmark-math-float-b
+    41s
+    ease-in-out
+    -12s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(3) {
+  left: 42%;
+  top: 15%;
+
+  font-size: 22px;
+  opacity: 0.24;
+
+  --dx: 41px;
+  --dy: 25px;
+
+  --ndx: -27px;
+  --ndy: -16px;
+
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-c
+    37s
+    ease-in-out
+    -17s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(4) {
+  left: 67%;
+  top: 6%;
+
+  font-size: 17px;
+  opacity: 0.19;
+
+  --dx: -32px;
+  --dy: -27px;
+
+  --ndx: 21px;
+  --ndy: 18px;
+
+  --turn: 8deg;
+  --nturn: -8deg;
+
+  animation:
+    notmark-math-float-a
+    48s
+    ease-in-out
+    -6s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(5) {
+  left: 89%;
+  top: 18%;
+
+  font-size: 24px;
+  opacity: 0.22;
+
+  --dx: 27px;
+  --dy: 33px;
+
+  --ndx: -18px;
+  --ndy: -21px;
+
+  --turn: -9deg;
+  --nturn: 9deg;
+
+  animation:
+    notmark-math-float-b
+    45s
+    ease-in-out
+    -15s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(6) {
+  left: 13%;
+  top: 30%;
+
+  font-size: 21px;
+  opacity: 0.2;
+
+  --dx: 36px;
+  --dy: -24px;
+
+  --ndx: -23px;
+  --ndy: 16px;
+
+  --turn: 10deg;
+  --nturn: -10deg;
+
+  animation:
+    notmark-math-float-c
+    38s
+    ease-in-out
+    -22s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(7) {
+  left: 37%;
+  top: 38%;
+
+  font-size: 29px;
+  opacity: 0.16;
+
+  --dx: -25px;
+  --dy: 31px;
+
+  --ndx: 16px;
+  --ndy: -20px;
+
+  --turn: -12deg;
+  --nturn: 12deg;
+
+  animation:
+    notmark-math-float-a
+    53s
+    ease-in-out
+    -9s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(8) {
+  left: 61%;
+  top: 34%;
+
+  font-size: 18px;
+  opacity: 0.25;
+
+  --dx: 29px;
+  --dy: -36px;
+
+  --ndx: -19px;
+  --ndy: 23px;
+
+  --turn: 9deg;
+  --nturn: -9deg;
+
+  animation:
+    notmark-math-float-b
+    43s
+    ease-in-out
+    -18s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(9) {
+  left: 84%;
+  top: 43%;
+
+  font-size: 26px;
+  opacity: 0.18;
+
+  --dx: -39px;
+  --dy: 20px;
+
+  --ndx: 25px;
+  --ndy: -13px;
+
+  --turn: -8deg;
+  --nturn: 8deg;
+
+  animation:
+    notmark-math-float-c
+    49s
+    ease-in-out
+    -13s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(10) {
+  left: 5%;
+  top: 54%;
+
+  font-size: 23px;
+  opacity: 0.22;
+
+  --dx: 28px;
+  --dy: 33px;
+
+  --ndx: -18px;
+  --ndy: -21px;
+
+  --turn: 11deg;
+  --nturn: -11deg;
+
+  animation:
+    notmark-math-float-a
+    40s
+    ease-in-out
+    -5s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(11) {
+  left: 28%;
+  top: 58%;
+
+  font-size: 18px;
+  opacity: 0.2;
+
+  --dx: -34px;
+  --dy: -24px;
+
+  --ndx: 22px;
+  --ndy: 16px;
+
+  --turn: -9deg;
+  --nturn: 9deg;
+
+  animation:
+    notmark-math-float-b
+    47s
+    ease-in-out
+    -20s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(12) {
+  left: 51%;
+  top: 51%;
+
+  font-size: 30px;
+  opacity: 0.17;
+
+  --dx: 33px;
+  --dy: 30px;
+
+  --ndx: -21px;
+  --ndy: -20px;
+
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-c
+    55s
+    ease-in-out
+    -11s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(13) {
+  left: 75%;
+  top: 62%;
+
+  font-size: 22px;
+  opacity: 0.24;
+
+  --dx: -29px;
+  --dy: 39px;
+
+  --ndx: 19px;
+  --ndy: -25px;
+
+  --turn: -10deg;
+  --nturn: 10deg;
+
+  animation:
+    notmark-math-float-a
+    42s
+    ease-in-out
+    -16s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(14) {
+  left: 93%;
+  top: 70%;
+
+  font-size: 20px;
+  opacity: 0.18;
+
+  --dx: 35px;
+  --dy: -28px;
+
+  --ndx: -23px;
+  --ndy: 18px;
+
+  --turn: 8deg;
+  --nturn: -8deg;
+
+  animation:
+    notmark-math-float-b
+    51s
+    ease-in-out
+    -24s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(15) {
+  left: 15%;
+  top: 76%;
+
+  font-size: 28px;
+  opacity: 0.2;
+
+  --dx: 28px;
+  --dy: -34px;
+
+  --ndx: -18px;
+  --ndy: 22px;
+
+  --turn: -11deg;
+  --nturn: 11deg;
+
+  animation:
+    notmark-math-float-c
+    46s
+    ease-in-out
+    -14s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(16) {
+  left: 43%;
+  top: 83%;
+
+  font-size: 19px;
+  opacity: 0.25;
+
+  --dx: -35px;
+  --dy: 25px;
+
+  --ndx: 23px;
+  --ndy: -16px;
+
+  --turn: 10deg;
+  --nturn: -10deg;
+
+  animation:
+    notmark-math-float-a
+    39s
+    ease-in-out
+    -19s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(17) {
+  left: 65%;
+  top: 77%;
+
+  font-size: 25px;
+  opacity: 0.19;
+
+  --dx: 39px;
+  --dy: 31px;
+
+  --ndx: -25px;
+  --ndy: -20px;
+
+  --turn: -9deg;
+  --nturn: 9deg;
+
+  animation:
+    notmark-math-float-b
+    50s
+    ease-in-out
+    -7s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(18) {
+  left: 87%;
+  top: 89%;
+
+  font-size: 18px;
+  opacity: 0.22;
+
+  --dx: -28px;
+  --dy: -25px;
+
+  --ndx: 18px;
+  --ndy: 16px;
+
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-c
+    44s
+    ease-in-out
+    -21s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(19) {
+  left: 31%;
+  top: 93%;
+
+  font-size: 24px;
+  opacity: 0.18;
+
+  --dx: 32px;
+  --dy: -29px;
+
+  --ndx: -21px;
+  --ndy: 19px;
+
+  --turn: -8deg;
+  --nturn: 8deg;
+
+  animation:
+    notmark-math-float-a
+    52s
+    ease-in-out
+    -10s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(20) {
+  left: 57%;
+  top: 96%;
+
+  font-size: 20px;
+  opacity: 0.23;
+
+  --dx: -24px;
+  --dy: 34px;
+
+  --ndx: 16px;
+  --ndy: -22px;
+
+  --turn: 10deg;
+  --nturn: -10deg;
+
+  animation:
+    notmark-math-float-b
+    36s
+    ease-in-out
+    -17s
+    infinite;
 }
