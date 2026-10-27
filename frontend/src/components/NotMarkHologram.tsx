@@ -2,6 +2,7 @@ import { useEffect, useRef, type PointerEvent } from "react";
 
 import {
   Activity,
+  CircleDollarSign,
   BadgeCheck,
   BookOpen,
   FileCheck2,
@@ -21,7 +22,25 @@ export default function NotMarkHologram({
   const isStudent = role === "student";
 
   const stageRef = useRef<HTMLDivElement>(null);
+
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const frameRef = useRef<number | null>(null);
+  const lastFrameRef = useRef(0);
+
+  const cursorRef = useRef({
+    x: 0,
+    y: 0,
+    active: false,
+  });
+
+  const springsRef = useRef(
+    Array.from({ length: 3 }, () => ({
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+    }))
+  );
 
   useEffect(() => () => {
     if (frameRef.current !== null) {
@@ -29,53 +48,149 @@ export default function NotMarkHologram({
     }
   }, []);
 
-  const move = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === "touch") return;
+  const tick = (time: number) => {
+    const dt = lastFrameRef.current
+      ? Math.min(2, (time - lastFrameRef.current) / 16.667)
+      : 1;
 
-    const target = event.currentTarget;
-    const rect = target.getBoundingClientRect();
+    lastFrameRef.current = time;
 
-    if (!rect.width || !rect.height) return;
+    let unsettled = false;
 
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    cardsRef.current.forEach((card, index) => {
+      if (!card) return;
 
-    if (frameRef.current !== null) {
-      cancelAnimationFrame(frameRef.current);
-    }
+      const spring = springsRef.current[index];
+      const bounds = card.getBoundingClientRect();
 
-    frameRef.current = requestAnimationFrame(() => {
-      target.style.setProperty(
-        "--nm-holo-ry",
-        `${(x * 11).toFixed(2)}deg`
+      const dx =
+        bounds.left + bounds.width / 2 - cursorRef.current.x;
+
+      const dy =
+        bounds.top + bounds.height / 2 - cursorRef.current.y;
+
+      const distance = Math.max(1, Math.hypot(dx, dy));
+
+      const influence =
+        cursorRef.current.active && distance < 165
+          ? Math.pow(1 - distance / 165, 2) * 1.25
+          : 0;
+
+      spring.vx = (
+        spring.vx -
+        spring.x * .030 +
+        dx / distance * influence * 2
+      ) * Math.pow(.89, dt);
+
+      spring.vy = (
+        spring.vy -
+        spring.y * .030 +
+        dy / distance * influence * 2
+      ) * Math.pow(.89, dt);
+
+      spring.x = Math.max(
+        -38,
+        Math.min(38, spring.x + spring.vx * dt)
       );
 
-      target.style.setProperty(
-        "--nm-holo-rx",
-        `${(-y * 9).toFixed(2)}deg`
+      spring.y = Math.max(
+        -38,
+        Math.min(38, spring.y + spring.vy * dt)
       );
 
-      frameRef.current = null;
+      card.parentElement?.style.setProperty(
+        "--nm-spring-x",
+        `${spring.x.toFixed(2)}px`
+      );
+
+      card.parentElement?.style.setProperty(
+        "--nm-spring-y",
+        `${spring.y.toFixed(2)}px`
+      );
+
+      unsettled ||= (
+        Math.abs(spring.x) +
+        Math.abs(spring.y) +
+        Math.abs(spring.vx) +
+        Math.abs(spring.vy)
+      ) > .12;
     });
+
+    if (cursorRef.current.active || unsettled) {
+      frameRef.current = requestAnimationFrame(tick);
+    } else {
+      frameRef.current = null;
+      lastFrameRef.current = 0;
+    }
+  };
+
+  const schedule = () => {
+    if (frameRef.current === null) {
+      frameRef.current = requestAnimationFrame(tick);
+    }
+  };
+
+  const move = (event: PointerEvent<HTMLDivElement>) => {
+    if (
+      event.pointerType === "touch" ||
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+    ) return;
+
+    cursorRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      active: true,
+    };
+
+    schedule();
   };
 
   const reset = () => {
-    if (frameRef.current !== null) {
-      cancelAnimationFrame(frameRef.current);
-    }
-
-    frameRef.current = null;
-
-    stageRef.current?.style.setProperty(
-      "--nm-holo-rx",
-      "0deg"
-    );
-
-    stageRef.current?.style.setProperty(
-      "--nm-holo-ry",
-      "0deg"
-    );
+    cursorRef.current.active = false;
+    schedule();
   };
+
+  const satellites = isStudent ? [
+    {
+      id: "approved",
+      overline: "İçerik",
+      title: "Onaylı Notlar",
+      Icon: FileCheck2,
+    },
+    {
+      id: "community",
+      overline: "Topluluk",
+      title: "Paylaşım Ağı",
+      Icon: Activity,
+    },
+    {
+      id: "earnings",
+      overline: "NotMark",
+      title: "Kazandıran Bilgi",
+      Icon: CircleDollarSign,
+    },
+  ] : [
+    {
+      id: "approved",
+      overline: "Güvenlik",
+      title: "Doğrulama",
+      Icon: ShieldCheck,
+    },
+    {
+      id: "community",
+      overline: "Operasyon",
+      title: "Denetim Akışı",
+      Icon: Activity,
+    },
+    {
+      id: "earnings",
+      overline: "NotMark",
+      title: "Kazandıran Bilgi",
+      Icon: CircleDollarSign,
+    },
+  ];
 
   return (
     <section
@@ -90,7 +205,7 @@ export default function NotMarkHologram({
         <span className="nm-holo__signal" />
 
         {isStudent
-          ? "ÖĞRENCİ DENEYİMİ"
+          ? "AKADEMİK ALIŞVERİŞ"
           : "YÖNETİM MERKEZİ"}
 
         <span className="nm-holo__eyebrow-line" />
@@ -116,7 +231,9 @@ export default function NotMarkHologram({
 
             <div className="nm-holo__light-column" />
 
-            <div className="nm-holo__glass nm-holo__glass--rear">
+            <div className="nm-holo__rotor-frame nm-holo__rotor-frame--rear">
+              <div className="nm-holo__rotor nm-holo__rotor--rear">
+                <div className="nm-holo__glass nm-holo__glass--rear nm-holo__face nm-holo__face--front">
               <div className="nm-holo__rear-heading">
                 <Layers size={16} />
                 NOTMARK
@@ -129,9 +246,22 @@ export default function NotMarkHologram({
               <div className="nm-holo__rear-chart">
                 <i /><i /><i /><i /><i />
               </div>
+                </div>
+
+                <div className="nm-holo__glass nm-holo__face nm-holo__face--back nm-holo__rear-back">
+                  <Layers size={36} strokeWidth={1.2} />
+                  <strong>NOTMARK</strong>
+                  <span>Akademik ağ</span>
+                  <div className="nm-holo__back-bars">
+                    <i /><i /><i />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="nm-holo__glass nm-holo__glass--main">
+            <div className="nm-holo__rotor-frame nm-holo__rotor-frame--main">
+              <div className="nm-holo__rotor nm-holo__rotor--main">
+                <div className="nm-holo__glass nm-holo__glass--main nm-holo__face nm-holo__face--front">
               <div className="nm-holo__main-top">
                 <span className="nm-holo__main-badge">
                   <FileText size={15} />
@@ -185,47 +315,55 @@ export default function NotMarkHologram({
               </div>
 
               <div className="nm-holo__scanline" />
-            </div>
+                </div>
 
-            <div className="nm-holo__glass nm-holo__glass--status">
-              <span className="nm-holo__tile-icon nm-holo__tile-icon--orange">
-                {isStudent ? (
-                  <FileCheck2 size={20} />
-                ) : (
-                  <ShieldCheck size={20} />
-                )}
-              </span>
-
-              <div>
-                <small>
-                  {isStudent ? "İçerik" : "Güvenlik"}
-                </small>
-                <strong>
-                  {isStudent ? "PDF notları" : "Doğrulama"}
-                </strong>
+                <div className="nm-holo__glass nm-holo__face nm-holo__face--back nm-holo__main-back">
+                  <BadgeCheck size={45} strokeWidth={1.15} />
+                  <span>NOTMARK</span>
+                  <strong>
+                    {isStudent
+                      ? "Akademik içerik"
+                      : "Kontrol merkezi"}
+                  </strong>
+                  <small>
+                    {isStudent
+                      ? "Güvenli not paylaşımı"
+                      : "Güvenli yönetim"}
+                  </small>
+                </div>
               </div>
-
-              <span className="nm-holo__status-indicator" />
             </div>
 
-            <div className="nm-holo__glass nm-holo__glass--metric">
-              <Activity size={18} />
+            {satellites.map(
+              ({ id, overline, title, Icon }, index) => (
+                <div
+                  className={`nm-holo__orbit-path nm-holo__orbit-path--${index + 1}`}
+                  key={id}
+                >
+                  <div className="nm-holo__orbit-counter">
+                    <div className="nm-holo__spring">
+                      <div
+                        className="nm-holo__satellite-card"
+                        ref={(element) => {
+                          cardsRef.current[index] = element;
+                        }}
+                      >
+                        <span className="nm-holo__satellite-icon">
+                          <Icon size={19} />
+                        </span>
 
-              <div>
-                <small>
-                  {isStudent ? "Topluluk" : "Operasyon"}
-                </small>
-                <strong>
-                  {isStudent
-                    ? "Paylaşım ağı"
-                    : "Denetim akışı"}
-                </strong>
-              </div>
+                        <span className="nm-holo__satellite-copy">
+                          <small>{overline}</small>
+                          <strong>{title}</strong>
+                        </span>
 
-              <span className="nm-holo__metric-wave">
-                <i /><i /><i /><i />
-              </span>
-            </div>
+                        <span className="nm-holo__satellite-led" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
 
             <span className="nm-holo__particle nm-holo__particle--a" />
             <span className="nm-holo__particle nm-holo__particle--b" />

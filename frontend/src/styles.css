@@ -37938,3 +37938,482 @@ input[type="file"]::file-selector-button {
     animation: none !important;
   }
 }
+
+
+/* =========================================================
+   NOTMARK V52 / HOLOGRAM ORBIT MOTION
+   ========================================================= */
+
+/* Sol logoyu hafif yukarı taşı */
+
+.notmark-auth-page--hologram .notmark-auth-brand {
+  position: relative;
+  top: -17px;
+}
+
+.nm-holo__eyebrow {
+  margin-top: 5px;
+}
+
+/* İmleç artık sahneyi döndürmez, kartları iter */
+
+.nm-holo__world {
+  transform: rotateX(6deg) rotateY(-12deg);
+  transition: none;
+}
+
+/* Alt platform: turuncu holografik ışık */
+
+.nm-holo__floor {
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,137,43,.33),
+      rgba(255,111,22,.10) 46%,
+      transparent 75%
+    );
+}
+
+.nm-holo__floor-ring {
+  border-color: rgba(255,161,78,.65);
+
+  box-shadow:
+    0 0 24px rgba(255,117,25,.28),
+    inset 0 0 10px rgba(255,107,11,.12);
+}
+
+.nm-holo__floor-ring--two {
+  border-color: rgba(255,125,40,.39);
+}
+
+.nm-holo__floor-core {
+  background: #ff942e;
+
+  box-shadow:
+    0 0 30px 14px rgba(255,111,17,.36);
+}
+
+.nm-holo__light-column {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,125,29,.05) 28%,
+      rgba(255,151,54,.13) 50%,
+      transparent
+    );
+}
+
+/* =========================================================
+   BÜYÜK HOLOGRAMLAR - KENDİ EKSENİNDE TAM TUR
+   ========================================================= */
+
+.nm-holo__rotor-frame {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.nm-holo__rotor-frame--rear {
+  top: 13%;
+  left: 14%;
+  width: 51%;
+  height: 62%;
+
+  transform:
+    translate3d(-18px,-14px,-90px)
+    rotateZ(-7deg);
+}
+
+.nm-holo__rotor-frame--main {
+  top: 15%;
+  left: 29%;
+  width: 53%;
+  height: 66%;
+
+  transform:
+    translate3d(2px,-2px,80px)
+    rotateZ(-1deg);
+}
+
+.nm-holo__rotor {
+  position: absolute;
+  inset: 0;
+
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  animation:
+    nm-holo-axis-turn 28s linear infinite;
+}
+
+.nm-holo__rotor--rear {
+  animation-duration: 36s;
+  animation-direction: reverse;
+  animation-delay: -3s;
+}
+
+.nm-holo__rotor--main {
+  animation-duration: 28s;
+  animation-delay: -1s;
+}
+
+@keyframes nm-holo-axis-turn {
+  from {
+    transform: rotateY(-12deg);
+  }
+
+  to {
+    transform: rotateY(348deg);
+  }
+}
+
+/* Ön ve arka yüz: ters yazı görünmez */
+
+.nm-holo__face {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.nm-holo__face.nm-holo__glass--rear,
+.nm-holo__face.nm-holo__glass--main {
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  transform: rotateY(0deg);
+}
+
+.nm-holo__face--back {
+  transform: rotateY(180deg);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  gap: 12px;
+
+  color: #eef6ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(28,60,89,.96),
+      rgba(10,25,45,.99)
+    );
+}
+
+.nm-holo__face--back svg {
+  color: #ffac66;
+
+  filter:
+    drop-shadow(0 0 12px rgba(255,130,38,.23));
+}
+
+.nm-holo__face--back strong {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.nm-holo__face--back span,
+.nm-holo__face--back small {
+  color: #a7bdcf;
+  font-size: 10px;
+}
+
+.nm-holo__back-bars {
+  display: flex;
+  gap: 7px;
+
+  width: 68%;
+  margin-top: 10px;
+}
+
+.nm-holo__back-bars i {
+  flex: 1;
+  height: 4px;
+
+  border-radius: 6px;
+  background: rgba(255,141,62,.38);
+}
+
+.nm-holo__back-bars i:nth-child(2) {
+  opacity: .6;
+}
+
+.nm-holo__back-bars i:nth-child(3) {
+  opacity: .35;
+}
+
+/* =========================================================
+   KÜÇÜK KARTLAR - BAĞIMSIZ YÖRÜNGELER
+   ========================================================= */
+
+.nm-holo__orbit-path {
+  position: absolute;
+
+  top: 48%;
+  left: 50%;
+
+  width: 78%;
+  aspect-ratio: 1;
+
+  z-index: 12;
+  pointer-events: none;
+
+  animation:
+    nm-holo-orbit 29s linear infinite;
+
+  animation-delay: var(--nm-phase);
+}
+
+.nm-holo__orbit-path--1 {
+  width: 77%;
+
+  --nm-period: 27s;
+  --nm-phase: -4s;
+
+  animation-duration: var(--nm-period);
+}
+
+.nm-holo__orbit-path--2 {
+  width: 85%;
+
+  --nm-period: 34s;
+  --nm-phase: -13s;
+
+  animation-duration: var(--nm-period);
+}
+
+.nm-holo__orbit-path--3 {
+  width: 68%;
+
+  --nm-period: 40s;
+  --nm-phase: -27s;
+
+  animation-duration: var(--nm-period);
+}
+
+@keyframes nm-holo-orbit {
+  from {
+    transform:
+      translate(-50%,-50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%,-50%)
+      rotate(360deg);
+  }
+}
+
+.nm-holo__orbit-counter {
+  position: absolute;
+
+  left: 100%;
+  top: 50%;
+
+  width: 0;
+  height: 0;
+
+  animation:
+    nm-holo-counter
+    var(--nm-period)
+    linear infinite;
+
+  animation-delay: var(--nm-phase);
+}
+
+@keyframes nm-holo-counter {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* İmleçle sapma ve yaylanarak geri dönüş */
+
+.nm-holo__spring {
+  transform:
+    translate3d(
+      var(--nm-spring-x,0px),
+      var(--nm-spring-y,0px),
+      0
+    );
+
+  will-change: transform;
+}
+
+.nm-holo__satellite-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  transform: translate(-50%,-50%);
+
+  width: 150px;
+  min-height: 56px;
+
+  padding: 9px 11px;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(104,175,228,.40);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(26,54,78,.98),
+      rgba(11,32,51,.98)
+    );
+
+  box-shadow:
+    0 14px 27px rgba(0,0,0,.24),
+    0 0 16px rgba(255,125,49,.07);
+
+  color: #ecf4fa;
+  white-space: nowrap;
+
+  backface-visibility: hidden;
+}
+
+.nm-holo__satellite-icon {
+  flex: 0 0 32px;
+
+  display: grid;
+  place-items: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 9px;
+
+  background: rgba(255,137,55,.13);
+  color: #ffa362;
+}
+
+.nm-holo__satellite-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.nm-holo__satellite-copy small {
+  color: #95b0c7;
+  font-size: 9px;
+}
+
+.nm-holo__satellite-copy strong {
+  color: #f3f7fc;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.nm-holo__satellite-led {
+  flex: 0 0 6px;
+
+  width: 6px;
+  height: 6px;
+
+  margin-left: auto;
+
+  border-radius: 50%;
+
+  background: #ff9342;
+
+  box-shadow:
+    0 0 9px rgba(255,128,40,.6);
+}
+
+/* Küçük masaüstü */
+
+@media (min-width:1001px) and (max-width:1260px) {
+  .nm-holo__satellite-card {
+    width: 132px;
+    min-height: 51px;
+
+    padding: 7px;
+    gap: 6px;
+  }
+
+  .nm-holo__satellite-icon {
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
+  }
+
+  .nm-holo__satellite-copy strong {
+    font-size: 10px;
+  }
+}
+
+/* Hareket azaltma tercihi */
+
+@media (prefers-reduced-motion: reduce) {
+  .nm-holo__rotor {
+    animation: none !important;
+    transform: rotateY(-12deg) !important;
+  }
+
+  .nm-holo__orbit-path,
+  .nm-holo__orbit-counter {
+    animation: none !important;
+  }
+
+  .nm-holo__orbit-path--1 {
+    transform:
+      translate(-50%,-50%)
+      rotate(35deg) !important;
+  }
+
+  .nm-holo__orbit-path--2 {
+    transform:
+      translate(-50%,-50%)
+      rotate(150deg) !important;
+  }
+
+  .nm-holo__orbit-path--3 {
+    transform:
+      translate(-50%,-50%)
+      rotate(265deg) !important;
+  }
+
+  .nm-holo__orbit-path--1
+  .nm-holo__orbit-counter {
+    transform: rotate(-35deg) !important;
+  }
+
+  .nm-holo__orbit-path--2
+  .nm-holo__orbit-counter {
+    transform: rotate(-150deg) !important;
+  }
+
+  .nm-holo__orbit-path--3
+  .nm-holo__orbit-counter {
+    transform: rotate(-265deg) !important;
+  }
+
+  .nm-holo__spring {
+    transform: none !important;
+  }
+}
