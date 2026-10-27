@@ -36957,3 +36957,95 @@ input[type="file"]::file-selector-button {
     transform: none !important;
   }
 }
+
+
+/* =========================================================
+   NOTMARK V48 - TOP LEFT CORNER REPAIR
+   Orijinal logo ve diger uc kose korunur.
+   ========================================================= */
+
+/*
+ * Kaynak PNG'nin sol ust kosede gorunen
+ * ikinci koyu kenarini yerel olarak kapatir.
+ *
+ * Kose duzeltmesinde ayni orijinal PNG kullanilir.
+ * Yeni logo uretilmez, N sembolu degistirilmez.
+ */
+
+.notmark-auth-cinematic-inner {
+  position: absolute;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 20%;
+}
+
+/* Orijinal gorsel aynen korunur. */
+
+.notmark-auth-cinematic-inner > img {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  border-radius: 20%;
+  transform: none;
+}
+
+/*
+ * Yalnizca sol ust koseye mudahale edilir.
+ * Diger koseler ve logo ici etkilenmez.
+ */
+
+.notmark-auth-cinematic-inner::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  background-image:
+    url("/brand/notmark-logo.png");
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 118% 118%;
+
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse 24% 34% at 0% 0%,
+      #000 0%,
+      #000 48%,
+      transparent 100%
+    );
+
+  mask-image:
+    radial-gradient(
+      ellipse 24% 34% at 0% 0%,
+      #000 0%,
+      #000 48%,
+      transparent 100%
+    );
+}
+
+/* Mevcut 2 saniyelik isik donusu korunur. */
+
+.notmark-auth-cinematic-ring {
+  animation-duration: 2s;
+}
+
+/* Hareket azaltma secenegi logoyu bozmasin. */
+
+@media (prefers-reduced-motion: reduce) {
+  .notmark-auth-cinematic-inner > img {
+    transform: none !important;
+  }
+}
