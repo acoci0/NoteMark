@@ -36613,13 +36613,15 @@ input[type="file"]::file-selector-button {
    Net SVG logo + tutarli isik + yumusak belirme
    ========================================================= */
 
-/* Kucuk ve buyuk logo ayni vektorel kaynagi kullanir. */
+/* Kucuk ve buyuk logo orijinal NotMark PNG kaynagini kullanir. */
 
-.notmark-auth-page--unified .notmark-auth-logo-inner svg,
-.notmark-auth-page--unified .notmark-auth-card-logo svg {
+.notmark-auth-page--unified .notmark-auth-logo-inner img,
+.notmark-auth-page--unified .notmark-auth-card-logo img {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
 }
 
 .notmark-auth-page--unified .notmark-auth-card {
@@ -36682,7 +36684,7 @@ input[type="file"]::file-selector-button {
   border-radius: 20%;
 }
 
-/* Kucuk logoyla ayni turuncu isik, ayni 3.3 saniye */
+/* Orijinal turuncu isik: tam tur 2 saniye */
 
 .notmark-auth-cinematic-ring {
   --notmark-auth-angle: 0deg;
@@ -36714,7 +36716,7 @@ input[type="file"]::file-selector-button {
     0 0 16px rgba(255,107,11,.12);
 
   animation:
-    notmark-auth-border-spin 3.3s linear 1 both;
+    notmark-auth-border-spin 2s linear 1 both;
 
   animation-play-state: paused;
 }
@@ -36733,13 +36735,14 @@ input[type="file"]::file-selector-button {
   background: #09141f;
 }
 
-.notmark-auth-cinematic-inner svg {
+.notmark-auth-cinematic-inner img {
+  display: block;
+
   width: 100%;
   height: 100%;
 
-  display: block;
-
-  shape-rendering: geometricPrecision;
+  object-fit: cover;
+  image-rendering: auto;
 }
 
 /* Hareket azaltma tercihi */

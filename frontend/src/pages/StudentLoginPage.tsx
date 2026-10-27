@@ -14,7 +14,6 @@ import {
 
 import { isAxiosError } from "axios";
 import { createPortal } from "react-dom";
-import NotMarkLogo from "../components/NotMarkLogo";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
 
@@ -259,7 +258,7 @@ export default function StudentLoginPage() {
           "running";
       }
 
-      await delay(3300);
+      await delay(2000);
 
       if (!mountedRef.current) return;
 
@@ -353,7 +352,7 @@ export default function StudentLoginPage() {
           <div className="notmark-auth-brand">
             <div className="notmark-auth-logo-frame" ref={leftLogoRef}>
               <div className="notmark-auth-logo-inner">
-                <NotMarkLogo size={68} />
+                <img src="/brand/notmark-logo.png" alt="NotMark" />
               </div>
             </div>
             <div>
@@ -406,7 +405,7 @@ export default function StudentLoginPage() {
         <form className="notmark-auth-card" onSubmit={handleSubmit}>
           <div className="notmark-auth-card__top">
             <div className="notmark-auth-card-logo" ref={cardLogoRef}>
-              <NotMarkLogo size={46} />
+              <img src="/brand/notmark-logo.png" alt="" />
             </div>
             <div>
               <span>{studentMode ? "ÖĞRENCİ GİRİŞİ" : "YETKİLİ GİRİŞ"}</span>
@@ -568,7 +567,7 @@ export default function StudentLoginPage() {
           />
 
           <div className="notmark-auth-cinematic-inner">
-            <NotMarkLogo size={flight.size} />
+            <img src="/brand/notmark-logo.png" alt="" />
           </div>
         </div>,
         document.body
