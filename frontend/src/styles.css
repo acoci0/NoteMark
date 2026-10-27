@@ -36547,3 +36547,63 @@ input[type="file"]::file-selector-button {
 @media (prefers-reduced-motion: reduce) {
   .notmark-auth-page--unified .notmark-auth-role-switch button { transition: none; }
 }
+
+
+/* =========================================================
+   NOTMARK EMAIL ENTRY + STABLE CARD V38
+   Orijinal iki kolon, kart gorseli ve hareketler korunur.
+   ========================================================= */
+.notmark-auth-page--unified .notmark-auth-card {
+  box-sizing: border-box;
+  width: min(470px, 100%);
+  min-height: 770px;
+  display: flex;
+  flex-direction: column;
+}
+.notmark-auth-page--unified .notmark-auth-card__description {
+  min-height: 42px;
+}
+.notmark-auth-page--unified .notmark-auth-security {
+  margin-top: auto;
+  padding-top: 19px;
+}
+.notmark-auth-page--unified .notmark-auth-provider-help {
+  min-height: 30px;
+  margin: 9px 0 0;
+  color: #95a8b9;
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+.notmark-auth-page--unified .notmark-auth-providers button {
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.notmark-auth-page--unified .notmark-auth-providers button:hover,
+.notmark-auth-page--unified .notmark-auth-providers button.is-selected {
+  background: rgba(255, 107, 11, .10);
+  border-color: rgba(255, 107, 11, .45);
+}
+.notmark-auth-page--unified .notmark-auth-providers button:focus-visible {
+  outline: 2px solid #ff883b;
+  outline-offset: 2px;
+}
+.notmark-auth-page--unified .notmark-auth-providers button:disabled {
+  cursor: wait;
+  opacity: .6;
+}
+@media (max-width: 1000px) {
+  .notmark-auth-page--unified .notmark-auth-card {
+    width: min(480px, 100%);
+  }
+}
+@media (max-width: 560px) {
+  .notmark-auth-page--unified .notmark-auth-card {
+    min-height: 740px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notmark-auth-page--unified .notmark-auth-providers button {
+    transition: none;
+  }
+}

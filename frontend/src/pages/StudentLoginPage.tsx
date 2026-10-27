@@ -1,4 +1,5 @@
 import {
+  useRef,
   useState,
   type FormEvent,
   type MouseEvent,
@@ -45,6 +46,8 @@ export default function StudentLoginPage() {
   const role: LoginRole = searchParams.get("role") === "admin" ? "admin" : "student";
   const studentMode = role === "student";
 
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const [emailProvider, setEmailProvider] = useState<"gmail" | "icloud" | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -59,6 +62,15 @@ export default function StudentLoginPage() {
     setShowPassword(false);
     setError("");
     setNotice("");
+    setEmailProvider(null);
+  };
+
+  const chooseEmailProvider = (provider: "gmail" | "icloud") => {
+    if (loading) return;
+    setEmailProvider(provider);
+    setError("");
+    setNotice("");
+    emailInputRef.current?.focus();
   };
 
   if (studentMode && isStudentAuthenticated) {
@@ -198,10 +210,17 @@ export default function StudentLoginPage() {
             <span>E-posta</span>
             <input
               type="email"
+              ref={emailInputRef}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="username"
-              placeholder={studentMode ? "ogrenci@example.com" : "admin@notmark.com"}
+              placeholder={studentMode
+                ? emailProvider === "gmail"
+                  ? "adiniz@gmail.com"
+                  : emailProvider === "icloud"
+                    ? "adiniz@icloud.com"
+                    : "ogrenci@example.com"
+                : "admin@notmark.com"}
               required
               maxLength={160}
               disabled={loading}
@@ -244,17 +263,36 @@ export default function StudentLoginPage() {
             <div className="notmark-auth-extras">
               <div className="notmark-auth-divider"><span>veya</span></div>
               <div className="notmark-auth-providers">
-                <button type="button" disabled title="Google girişi henüz etkin değil">
+                <button
+                  type="button"
+                  className={emailProvider === "gmail" ? "is-selected" : ""}
+                  aria-pressed={emailProvider === "gmail"}
+                  onClick={() => chooseEmailProvider("gmail")}
+                  disabled={loading}
+                  title="Gmail adresinizi NotMark hesabınız için kullanın"
+                >
                   <span className="notmark-auth-provider-icon" aria-hidden="true">G</span>
-                  <span>Google</span>
-                  <small>Yakında</small>
+                  <span>Gmail adresi</span>
                 </button>
-                <button type="button" disabled title="Apple girişi henüz etkin değil">
-                  <span className="notmark-auth-provider-icon" aria-hidden="true">A</span>
-                  <span>Apple</span>
-                  <small>Yakında</small>
+                <button
+                  type="button"
+                  className={emailProvider === "icloud" ? "is-selected" : ""}
+                  aria-pressed={emailProvider === "icloud"}
+                  onClick={() => chooseEmailProvider("icloud")}
+                  disabled={loading}
+                  title="iCloud e-posta adresinizi NotMark hesabınız için kullanın"
+                >
+                  <span className="notmark-auth-provider-icon" aria-hidden="true">@</span>
+                  <span>iCloud adresi</span>
                 </button>
               </div>
+              <p className="notmark-auth-provider-help" role="status">
+                {emailProvider === "gmail"
+                  ? "Gmail adresinizi yazın. Google parolanızı değil, NotMark şifrenizi kullanın."
+                  : emailProvider === "icloud"
+                    ? "iCloud adresinizi yazın. Apple parolanızı değil, NotMark şifrenizi kullanın."
+                    : "Gmail veya iCloud adresiyle kayıtlı NotMark hesabınızı kullanabilirsiniz."}
+              </p>
               <p className="notmark-auth-register">
                 Hesabınız yok mu?{" "}
                 <button
