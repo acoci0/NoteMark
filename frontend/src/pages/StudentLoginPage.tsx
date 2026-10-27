@@ -16,6 +16,7 @@ import { isAxiosError } from "axios";
 import { createPortal } from "react-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
+import NotMarkOrbit from "../components/NotMarkOrbit";
 
 type LoginRole = "student" | "admin";
 
@@ -346,7 +347,7 @@ export default function StudentLoginPage() {
 
   return (
     <div
-      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
+      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic notmark-auth-page--orbit${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
     >
@@ -366,43 +367,7 @@ export default function StudentLoginPage() {
             </div>
           </div>
 
-          <div className="notmark-auth-eyebrow">
-            {studentMode ? "NOTMARK / ÖĞRENCİ" : "NOTMARK / YÖNETİM"}
-          </div>
-
-          {studentMode ? (
-            <>
-              <h1>Notunu bul.<br />Bilgini paylaş.</h1>
-              <p>
-                Üniversitenize özel notlara, taleplere ve öğrenci topluluğuna
-                tek bir güvenli hesap üzerinden erişin.
-              </p>
-            </>
-          ) : (
-            <>
-              <h1>Bilgiyi değil,<br />güveni yönetin.</h1>
-              <p>
-                Öğrenci doğrulamalarından AI destekli not denetimine kadar
-                tüm NotMark operasyonlarını tek merkezden yönetin.
-              </p>
-            </>
-          )}
-
-          <div className="notmark-auth-features">
-            {studentMode ? (
-              <>
-                <article><span>01</span><strong>Talep oluştur</strong><p>İhtiyacınız olan notu topluluktan isteyin.</p></article>
-                <article><span>02</span><strong>Not paylaş</strong><p>Bilginizi güvenli şekilde diğer öğrencilerle paylaşın.</p></article>
-                <article><span>03</span><strong>Güvenli erişim</strong><p>Doğrulanmış öğrenci ekosisteminde ilerleyin.</p></article>
-              </>
-            ) : (
-              <>
-                <article><span>01</span><strong>Doğrulama</strong><p>Öğrenci ve akademik profilleri kontrollü yönetin.</p></article>
-                <article><span>02</span><strong>AI Moderasyon</strong><p>İçerik kalitesi ve risk süreçlerini izleyin.</p></article>
-                <article><span>03</span><strong>Denetlenebilirlik</strong><p>Yönetim kararlarını audit kayıtlarıyla takip edin.</p></article>
-              </>
-            )}
-          </div>
+          <NotMarkOrbit role={role} />
         </div>
       </section>
 
