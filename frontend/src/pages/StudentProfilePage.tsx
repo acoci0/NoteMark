@@ -1409,12 +1409,235 @@ export default function StudentProfilePage() {
       shell?.getAttribute("data-motion") !== "off" &&
       shell?.getAttribute("data-motion") !== "reduced";
 
-    // Konumlar yalnızca boyut değiştiğinde okunur.
+    // NOTMARK DYNAMIC DISTRIBUTION V35
+    // İçerik kutularının dışındaki boş alanlara dağıtım.
     const measure = () => {
-      for (const p of particles) {
-        p.homeX = p.element.offsetLeft + p.element.offsetWidth / 2;
-        p.homeY = p.element.offsetTop + p.element.offsetHeight / 2;
+      const width = page.clientWidth;
+      const height = page.clientHeight;
+
+      if (!width || !height) return;
+
+      const pageRect = page.getBoundingClientRect();
+
+      const section = page.querySelector<HTMLElement>(
+        ".student-profile-section"
+      );
+
+      const header = page.querySelector<HTMLElement>(
+        ".student-profile-header"
+      );
+
+      const sectionRect = section?.getBoundingClientRect();
+      const headerRect = header?.getBoundingClientRect();
+
+      const panel = sectionRect
+        ? {
+            left: sectionRect.left - pageRect.left,
+            right: sectionRect.right - pageRect.left,
+            top: sectionRect.top - pageRect.top,
+            bottom: sectionRect.bottom - pageRect.top,
+          }
+        : {
+            left: width * 0.17,
+            right: width * 0.83,
+            top: height * 0.45,
+            bottom: height * 0.75,
+          };
+
+      const heroBottom = headerRect
+        ? headerRect.bottom - pageRect.top
+        : Math.min(300, height * 0.35);
+
+      const margin = 58;
+      const edge = 20;
+
+      type Zone = {
+        left: number;
+        top: number;
+        right: number;
+        bottom: number;
+        weight: number;
+      };
+
+      const zones: Zone[] = [];
+
+      const addZone = (
+        left: number,
+        top: number,
+        right: number,
+        bottom: number,
+        weight: number
+      ) => {
+        const zone = {
+          left: Math.max(edge, left),
+          top: Math.max(edge, top),
+          right: Math.min(width - edge, right),
+          bottom: Math.min(height - edge, bottom),
+          weight,
+        };
+
+        if (
+          zone.right - zone.left >= 35 &&
+          zone.bottom - zone.top >= 35
+        ) {
+          zones.push(zone);
+        }
+      };
+
+      // Karşılama alanında yalnızca birkaç sembol.
+      addZone(
+        edge,
+        edge,
+        Math.max(edge + 35, panel.left - margin),
+        heroBottom,
+        0.35
+      );
+
+      addZone(
+        panel.right + margin,
+        edge,
+        width - edge,
+        heroBottom,
+        0.35
+      );
+
+      // Panelin iki yanında yoğun dağılım.
+      addZone(
+        edge,
+        heroBottom + 18,
+        panel.left - margin,
+        panel.bottom + 30,
+        1.4
+      );
+
+      addZone(
+        panel.right + margin,
+        heroBottom + 18,
+        width - edge,
+        panel.bottom + 30,
+        1.4
+      );
+
+      // Panelin altındaki boş alan.
+      addZone(
+        edge,
+        panel.bottom + margin,
+        width - edge,
+        height - edge,
+        1.25
+      );
+
+      // Panelin üstünde kalan boş alan.
+      addZone(
+        panel.left,
+        heroBottom + margin,
+        panel.right,
+        panel.top - margin,
+        0.45
+      );
+
+      // Dar ekranlar için güvenli dağılım.
+      if (!zones.length) {
+        addZone(
+          edge,
+          Math.max(heroBottom + 20, panel.bottom + 20),
+          width - edge,
+          height - edge,
+          1
+        );
       }
+
+      if (!zones.length) {
+        for (const p of particles) {
+          p.homeX = p.element.offsetLeft;
+          p.homeY = p.element.offsetTop;
+        }
+        return;
+      }
+
+      // Deterministik dağılım:
+      // Her yeniden ölçümde semboller rastgele sıçramaz.
+      const random = (seed: number) => {
+        const value = Math.sin(seed * 127.1 + 78.233) * 43758.5453;
+        return value - Math.floor(value);
+      };
+
+      const weightedZones = zones.map((zone) => ({
+        zone,
+        capacity:
+          (zone.right - zone.left) *
+          (zone.bottom - zone.top) *
+          zone.weight,
+      }));
+
+      const totalCapacity = weightedZones.reduce(
+        (sum, item) => sum + item.capacity,
+        0
+      );
+
+      particles.forEach((p, index) => {
+        const ticket = (
+          (index + random(index + 91) * 0.65) /
+          particles.length
+        ) * totalCapacity;
+
+        let remaining = ticket;
+        let selected = weightedZones[weightedZones.length - 1].zone;
+
+        for (const item of weightedZones) {
+          if (remaining <= item.capacity) {
+            selected = item.zone;
+            break;
+          }
+
+          remaining -= item.capacity;
+        }
+
+        const columns = Math.max(
+          1,
+          Math.ceil(
+            Math.sqrt(
+              particles.length *
+              (selected.right - selected.left) /
+              Math.max(1, selected.bottom - selected.top)
+            )
+          )
+        );
+
+        const rows = Math.max(
+          1,
+          Math.ceil(particles.length / columns)
+        );
+
+        const column = index % columns;
+        const row = Math.floor(index / columns) % rows;
+
+        const jitterX = random(index + 7);
+        const jitterY = random(index + 19);
+
+        const x = selected.left +
+          ((column + 0.2 + jitterX * 0.6) / columns) *
+          (selected.right - selected.left);
+
+        const y = selected.top +
+          ((row + 0.2 + jitterY * 0.6) / rows) *
+          (selected.bottom - selected.top);
+
+        p.element.style.setProperty(
+          "left",
+          `${Math.max(edge, Math.min(width - edge, x))}px`,
+          "important"
+        );
+
+        p.element.style.setProperty(
+          "top",
+          `${Math.max(edge, Math.min(height - edge, y))}px`,
+          "important"
+        );
+
+        p.homeX = x;
+        p.homeY = y;
+      });
     };
 
     const stopAndReset = () => {
@@ -1520,9 +1743,37 @@ export default function StudentProfilePage() {
       }
     };
 
-    const observer = new ResizeObserver(measure);
+    let layoutFrame = 0;
+
+    const scheduleMeasure = () => {
+      if (layoutFrame) {
+        window.cancelAnimationFrame(layoutFrame);
+      }
+
+      layoutFrame = window.requestAnimationFrame(() => {
+        layoutFrame = 0;
+        measure();
+      });
+    };
+
+    const observer = new ResizeObserver(scheduleMeasure);
+
     observer.observe(page);
-    measure();
+
+    const profileSection = page.querySelector(
+      ".student-profile-section"
+    );
+
+    const profileHeader = page.querySelector(
+      ".student-profile-header"
+    );
+
+    if (profileSection) observer.observe(profileSection);
+    if (profileHeader) observer.observe(profileHeader);
+
+    window.addEventListener("resize", scheduleMeasure);
+
+    scheduleMeasure();
 
     const appearanceObserver = shell
       ? new MutationObserver(onPreferenceChange)
@@ -1544,6 +1795,12 @@ export default function StudentProfilePage() {
     return () => {
       stopAndReset();
       observer.disconnect();
+      window.removeEventListener("resize", scheduleMeasure);
+
+      if (layoutFrame) {
+        window.cancelAnimationFrame(layoutFrame);
+      }
+
       appearanceObserver?.disconnect();
       page.removeEventListener("pointermove", onMove);
       page.removeEventListener("pointerleave", onLeave);
