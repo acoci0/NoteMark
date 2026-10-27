@@ -14,6 +14,7 @@ import {
 
 import { isAxiosError } from "axios";
 import { createPortal } from "react-dom";
+import NotMarkLogo from "../components/NotMarkLogo";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
 
@@ -57,8 +58,13 @@ export default function StudentLoginPage() {
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   const [roleTransitioning, setRoleTransitioning] = useState(false);
-  const [flightOrigin, setFlightOrigin] = useState<DOMRect | null>(null);
+
+  const [flight, setFlight] = useState<{
+    size: number;
+    start: string;
+  } | null>(null);
 
   const leftLogoRef = useRef<HTMLDivElement>(null);
   const cardLogoRef = useRef<HTMLDivElement>(null);
@@ -71,78 +77,108 @@ export default function StudentLoginPage() {
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
-    const animations = animationsRef.current;
-    const timers = timersRef.current;
-
     mountedRef.current = true;
+
+    const timers = timersRef.current;
+    const animations = animationsRef.current;
 
     return () => {
       mountedRef.current = false;
-      animations.forEach(animation => animation.cancel());
-      timers.forEach(timer => window.clearTimeout(timer));
+      timers.forEach(window.clearTimeout);
+      animations.forEach((animation) => animation.cancel());
     };
   }, []);
 
   const delay = (ms: number) =>
-    new Promise<void>(resolve => {
-      timersRef.current.push(window.setTimeout(resolve, ms));
+    new Promise<void>((resolve) => {
+      const timer = window.setTimeout(resolve, ms);
+      timersRef.current.push(timer);
     });
 
-  const nextFrame = () =>
-    new Promise<void>(resolve => {
-      window.requestAnimationFrame(() => resolve());
-    });
-
-  const play = async (
-    element: HTMLDivElement | null,
-    frames: Keyframe[],
-    duration: number,
-    easing: string
+  const playFlight = async (
+    from: string,
+    to: string,
+    duration: number
   ) => {
-    if (!element || typeof element.animate !== "function") {
-      if (element) {
-        element.style.transform =
-          String(frames.at(-1)?.transform ?? "");
-      }
+    const element = flightRef.current;
 
+    if (!element) return;
+
+    if (typeof element.animate !== "function") {
+      element.style.transform = to;
       await delay(duration);
       return;
     }
 
-    const animation = element.animate(frames, {
-      duration,
-      easing,
-      fill: "forwards"
-    });
+    const animation = element.animate(
+      [
+        { transform: from },
+        { transform: to }
+      ],
+      {
+        duration,
+        easing: "cubic-bezier(.45, 0, .20, 1)",
+        fill: "forwards"
+      }
+    );
 
     animationsRef.current.push(animation);
 
     try {
       await animation.finished;
     } catch {
-      // Sayfadan çıkılırsa animasyon iptal edilir.
+      // Sayfadan çıkılırsa animasyon iptal edilebilir.
+    } finally {
+      if (mountedRef.current) {
+        element.style.transform = to;
+      }
+
+      animation.cancel();
     }
   };
 
   const getLogoRect = () => {
-    const left = leftLogoRef.current?.getBoundingClientRect();
+    const left =
+      leftLogoRef.current?.getBoundingClientRect();
 
     if (left && left.width > 10 && left.height > 10) {
       return left;
     }
 
-    const mobile = cardLogoRef.current?.getBoundingClientRect();
+    const card =
+      cardLogoRef.current?.getBoundingClientRect();
 
-    return mobile && mobile.width > 10 ? mobile : null;
+    return card && card.width > 10 ? card : null;
+  };
+
+  const rectTransform = (
+    rect: DOMRect,
+    size: number
+  ) => {
+    const x = rect.left + rect.width / 2 - size / 2;
+    const y = rect.top + rect.height / 2 - size / 2;
+
+    return (
+      `translate3d(${x}px, ${y}px, 0) ` +
+      `scale(${rect.width / size})`
+    );
   };
 
   const chooseRole = async (next: LoginRole) => {
-    if (next === role || loading || switchingRef.current) return;
+    if (
+      next === role ||
+      loading ||
+      switchingRef.current
+    ) return;
 
     switchingRef.current = true;
 
     const updateRole = () => {
-      setSearchParams({ role: next }, { replace: true });
+      setSearchParams(
+        { role: next },
+        { replace: true }
+      );
+
       setPassword("");
       setShowPassword(false);
       setError("");
@@ -151,7 +187,9 @@ export default function StudentLoginPage() {
     };
 
     if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
     ) {
       updateRole();
       switchingRef.current = false;
@@ -166,105 +204,93 @@ export default function StudentLoginPage() {
       return;
     }
 
-    setFlightOrigin(origin);
+    // SVG buyuk boyutta render edilir.
+    // Baslangicta kucuk olmasi transform ile saglanir.
+    // Boylece kucuk bitmap buyutulmez.
+
+    const size = Math.round(
+      Math.min(
+        264,
+        Math.max(
+          176,
+          Math.min(
+            window.innerWidth * .55,
+            window.innerHeight * .42
+          )
+        )
+      )
+    );
+
+    const from = rectTransform(origin, size);
+
+    const center =
+      `translate3d(${(window.innerWidth - size) / 2}px, ` +
+      `${(window.innerHeight - size) / 2}px, 0) scale(1)`;
+
+    setFlight({
+      size,
+      start: from
+    });
+
     setRoleTransitioning(true);
 
     try {
-      // 1. Ekrandaki içerikler tamamen kaybolur.
-      await delay(230);
-      await nextFrame();
+      // 1. Mevcut ekran yavasca kaybolur.
+
+      await delay(340);
 
       if (!mountedRef.current) return;
 
-      // 2. Logonun ekran ortasındaki koordinatları.
-      const dx =
-        window.innerWidth / 2 -
-        (origin.left + origin.width / 2);
+      // 2. Logo merkeze buyuyerek ilerler.
 
-      const dy =
-        window.innerHeight / 2 -
-        (origin.top + origin.height / 2);
-
-      const size = Math.min(
-        270,
-        Math.max(165, window.innerWidth * 0.32),
-        Math.max(165, window.innerHeight * 0.36)
-      );
-
-      const scale = size / origin.width;
-
-      const centered =
-        `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
-
-      // 3. Logo ortaya doğru büyüyerek hareket eder.
-      await play(
-        flightRef.current,
-        [
-          { transform: "translate3d(0, 0, 0) scale(1)" },
-          { transform: centered }
-        ],
-        560,
-        "cubic-bezier(.22, 1, .36, 1)"
+      await playFlight(
+        from,
+        center,
+        720
       );
 
       if (!mountedRef.current) return;
 
-      // 4. Turuncu ışık logo etrafında tam bir tur döner.
-      await play(
-        ringRef.current,
-        [
-          { transform: "rotate(0deg)" },
-          { transform: "rotate(360deg)" }
-        ],
-        1100,
-        "linear"
-      );
+      // 3. Turuncu isik kucuk logoyla
+      // ayni hizda tam bir tur doner.
+
+      if (ringRef.current) {
+        ringRef.current.style.animationPlayState =
+          "running";
+      }
+
+      await delay(3300);
 
       if (!mountedRef.current) return;
 
-      // 5. Yeni ekran görünmezken hazırlanır.
+      // 4. Ekran gizliyken yeni rol yuklenir.
+
       updateRole();
 
-      await nextFrame();
-      await nextFrame();
+      await delay(55);
 
       if (!mountedRef.current) return;
 
-      // 6. Logonun yeni ekrandaki gerçek konumu.
+      // 5. Logo kendi konumuna geri doner.
+
       const target = getLogoRect() ?? origin;
 
-      const returnX =
-        target.left + target.width / 2 -
-        origin.left - origin.width / 2;
-
-      const returnY =
-        target.top + target.height / 2 -
-        origin.top - origin.height / 2;
-
-      const returnScale = target.width / origin.width;
-
-      // 7. Logo eski boyutuna küçülerek yerine döner.
-      await play(
-        flightRef.current,
-        [
-          { transform: centered },
-          {
-            transform:
-              `translate3d(${returnX}px, ${returnY}px, 0) ` +
-              `scale(${returnScale})`
-          }
-        ],
-        560,
-        "cubic-bezier(.22, 1, .36, 1)"
+      await playFlight(
+        center,
+        rectTransform(target, size),
+        720
       );
+
+      if (!mountedRef.current) return;
 
     } finally {
       if (mountedRef.current) {
-        // 8. Yeni giriş ekranı yumuşakça görünür.
-        setFlightOrigin(null);
+        // 6. Yeni ekran yavasca belirir.
+
+        setFlight(null);
         setRoleTransitioning(false);
 
-        await delay(390);
+        await delay(900);
 
         switchingRef.current = false;
       }
@@ -327,7 +353,7 @@ export default function StudentLoginPage() {
           <div className="notmark-auth-brand">
             <div className="notmark-auth-logo-frame" ref={leftLogoRef}>
               <div className="notmark-auth-logo-inner">
-                <img src="/brand/notmark-logo.png" alt="NotMark" />
+                <NotMarkLogo size={68} />
               </div>
             </div>
             <div>
@@ -380,7 +406,7 @@ export default function StudentLoginPage() {
         <form className="notmark-auth-card" onSubmit={handleSubmit}>
           <div className="notmark-auth-card__top">
             <div className="notmark-auth-card-logo" ref={cardLogoRef}>
-              <img src="/brand/notmark-logo.png" alt="" />
+              <NotMarkLogo size={46} />
             </div>
             <div>
               <span>{studentMode ? "ÖĞRENCİ GİRİŞİ" : "YETKİLİ GİRİŞ"}</span>
@@ -525,16 +551,15 @@ export default function StudentLoginPage() {
         </form>
       </section>
 
-      {flightOrigin && createPortal(
+      {flight && createPortal(
         <div
           className="notmark-auth-cinematic-logo"
           ref={flightRef}
           aria-hidden="true"
           style={{
-            left: flightOrigin.left,
-            top: flightOrigin.top,
-            width: flightOrigin.width,
-            height: flightOrigin.height
+            width: flight.size,
+            height: flight.size,
+            transform: flight.start
           }}
         >
           <div
@@ -543,7 +568,7 @@ export default function StudentLoginPage() {
           />
 
           <div className="notmark-auth-cinematic-inner">
-            <img src="/brand/notmark-logo.png" alt="" />
+            <NotMarkLogo size={flight.size} />
           </div>
         </div>,
         document.body

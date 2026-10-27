@@ -36609,161 +36609,140 @@ input[type="file"]::file-selector-button {
 }
 
 /* =========================================================
-   NOTMARK AUTH V40 — Safari-safe sequential fade
-   No blur, filter, keyframe accumulation or duplicated text.
+   NOTMARK V43 / VECTOR TRANSITION
+   Net SVG logo + tutarli isik + yumusak belirme
    ========================================================= */
+
+/* Kucuk ve buyuk logo ayni vektorel kaynagi kullanir. */
+
+.notmark-auth-page--unified .notmark-auth-logo-inner svg,
+.notmark-auth-page--unified .notmark-auth-card-logo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .notmark-auth-page--unified .notmark-auth-card {
   transform-style: flat;
 }
-.notmark-auth-page--unified .notmark-auth-visual__content,
-.notmark-auth-page--unified .notmark-auth-card > :not(.notmark-auth-role-switch) {
+
+/* Sayfanin belirme animasyonu */
+
+.notmark-auth-page--cinematic .notmark-auth-visual__content,
+.notmark-auth-page--cinematic .notmark-auth-card {
   opacity: 1;
-  transition: opacity 300ms cubic-bezier(.22, 1, .36, 1);
-}
-.notmark-auth-page--unified.is-role-switching .notmark-auth-visual__content,
-.notmark-auth-page--unified.is-role-switching .notmark-auth-card > :not(.notmark-auth-role-switch) {
-  opacity: 0;
-  transition-duration: 180ms;
-}
-.notmark-auth-page--unified .notmark-auth-role-switch {
-  position: relative;
-  isolation: isolate;
-}
-.notmark-auth-page--unified .notmark-auth-role-switch button {
-  transition: color 200ms ease, background 200ms ease, border-color 200ms ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  .notmark-auth-page--unified .notmark-auth-visual__content,
-  .notmark-auth-page--unified .notmark-auth-card > :not(.notmark-auth-role-switch),
-  .notmark-auth-page--unified .notmark-auth-role-switch button {
-    transition: none !important;
-  }
-}
-
-
-/* =========================================================
-   NOTMARK CINEMATIC AUTH V42
-   ========================================================= */
-
-.notmark-auth-page--cinematic
-.notmark-auth-visual__content,
-
-.notmark-auth-page--cinematic
-.notmark-auth-card {
-  opacity: 1;
+  translate: 0 0;
 
   transition:
-    opacity 390ms cubic-bezier(.22, 1, .36, 1),
+    opacity 850ms cubic-bezier(.22, 1, .36, 1),
+    translate 850ms cubic-bezier(.22, 1, .36, 1);
+}
+
+/* Mouse ile donme efekti aynen korunur. */
+
+.notmark-auth-page--cinematic .notmark-auth-card {
+  transition:
+    opacity 850ms cubic-bezier(.22, 1, .36, 1),
+    translate 850ms cubic-bezier(.22, 1, .36, 1),
     transform 120ms ease-out;
 }
 
-/* Geçiş sırasında tüm giriş içeriği kaybolur. */
+/* Once mevcut icerik kaybolur. */
 
 .notmark-auth-page--cinematic.is-role-switching
 .notmark-auth-visual__content,
 
 .notmark-auth-page--cinematic.is-role-switching
 .notmark-auth-card {
-  opacity: 0 !important;
-
+  opacity: 0;
+  translate: 0 10px;
   pointer-events: none;
-
-  transition-duration: 200ms, 120ms;
+  transition-duration: 300ms;
 }
 
 .notmark-auth-page--cinematic.is-role-switching {
   pointer-events: none;
 }
 
-/* Ekran üzerinde hareket eden bağımsız logo. */
+/* Ortada hareket eden bagimsiz logo */
 
 .notmark-auth-cinematic-logo {
   position: fixed;
-
   z-index: 2147483000;
 
-  margin: 0;
+  left: 0;
+  top: 0;
 
   isolation: isolate;
-
   pointer-events: none;
 
   transform-origin: center center;
-
   will-change: transform;
 
-  border-radius: 19px;
+  border-radius: 20%;
 }
 
-/* Turuncu ışıklı dönen çerçeve. */
+/* Kucuk logoyla ayni turuncu isik, ayni 3.3 saniye */
 
 .notmark-auth-cinematic-ring {
-  position: absolute;
+  --notmark-auth-angle: 0deg;
 
+  position: absolute;
   inset: -2px;
 
-  z-index: 0;
-
-  border-radius: 21px;
+  border: 2px solid transparent;
+  border-radius: 21%;
 
   background:
+    linear-gradient(
+      #09141f,
+      #09141f
+    ) padding-box,
+
     conic-gradient(
-      from 0deg,
-      rgba(255, 107, 11, .26),
-      rgba(255, 107, 11, .09) 145deg,
-      rgba(255, 107, 11, .15) 250deg,
-      #ff6b0b 298deg,
-      #ffd3a0 319deg,
-      #ff6b0b 338deg,
-      rgba(255, 107, 11, .26) 360deg
-    );
+      from var(--notmark-auth-angle),
+      transparent 0deg,
+      transparent 245deg,
+      rgba(255,107,11,.12) 270deg,
+      rgba(255,107,11,.65) 302deg,
+      #ff6b0b 322deg,
+      rgba(255,107,11,.65) 342deg,
+      transparent 360deg
+    ) border-box;
 
   box-shadow:
-    0 0 15px rgba(255, 107, 11, .40);
+    0 0 16px rgba(255,107,11,.12);
+
+  animation:
+    notmark-auth-border-spin 3.3s linear 1 both;
+
+  animation-play-state: paused;
 }
 
-/* Logo görseli. */
+/* Vektorel N logusu */
 
 .notmark-auth-cinematic-inner {
   position: absolute;
-
   z-index: 1;
 
   inset: 2px;
 
+  border-radius: 19%;
   overflow: hidden;
-
-  border-radius: 16px;
 
   background: #09141f;
 }
 
-.notmark-auth-cinematic-inner img {
-  display: block;
-
+.notmark-auth-cinematic-inner svg {
   width: 100%;
   height: 100%;
 
-  object-fit: cover;
+  display: block;
+
+  shape-rendering: geometricPrecision;
 }
 
-/* Mobil uyumluluk. */
-
-@media (max-width: 560px) {
-  .notmark-auth-cinematic-logo {
-    border-radius: 13px;
-  }
-
-  .notmark-auth-cinematic-ring {
-    border-radius: 15px;
-  }
-
-  .notmark-auth-cinematic-inner {
-    border-radius: 11px;
-  }
-}
-
-/* Hareket hassasiyeti olan kullanıcılar. */
+/* Hareket azaltma tercihi */
 
 @media (prefers-reduced-motion: reduce) {
   .notmark-auth-page--cinematic
@@ -36772,5 +36751,10 @@ input[type="file"]::file-selector-button {
   .notmark-auth-page--cinematic
   .notmark-auth-card {
     transition: none !important;
+    translate: 0 0 !important;
+  }
+
+  .notmark-auth-cinematic-ring {
+    animation: none !important;
   }
 }
