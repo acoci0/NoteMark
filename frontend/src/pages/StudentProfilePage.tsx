@@ -1350,234 +1350,207 @@ export default function StudentProfilePage() {
 
 
 
-  // NOTMARK MATH POINTER ENGINE V31
+  // NOTMARK MATH POINTER ENGINE V34
+  // Serbest süzülme: CSS iç katman / Savrulma: JS dış katman.
   useEffect(() => {
     if (loading) return;
 
-    const layer =
-      mathLayerRef.current;
+    const layer = mathLayerRef.current;
+    const page = layer?.parentElement;
+    if (!layer || !page) return;
 
-    const page =
-      layer?.parentElement;
-
-    if (!layer || !page) {
-      return;
-    }
-
-    const finePointer =
-      window.matchMedia(
-        "(hover: hover) and (pointer: fine)"
-      );
-
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
-
-    if (!finePointer.matches || reducedMotion.matches) {
-      return;
-    }
-
-    const symbols = Array.from(
-      layer.querySelectorAll<HTMLElement>(
-        ".notmark-profile-math-symbol"
-      )
+    const shell = page.closest<HTMLElement>(".student-app-shell");
+    const finePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    );
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
     );
 
-    if (!symbols.length) {
-      return;
-    }
+    type Particle = {
+      element: HTMLElement;
+      homeX: number;
+      homeY: number;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      angle: number;
+      va: number;
+    };
+
+    const particles: Particle[] = Array.from(
+      layer.querySelectorAll<HTMLElement>(
+        ".notmark-profile-math-particle"
+      )
+    ).map((element) => ({
+      element,
+      homeX: 0,
+      homeY: 0,
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      angle: 0,
+      va: 0,
+    }));
+
+    if (particles.length !== 33) return;
 
     let frame = 0;
-
-    let targetLayerX = 0;
-    let targetLayerY = 0;
-
-    let currentLayerX = 0;
-    let currentLayerY = 0;
-
+    let previousTime = 0;
+    let pointerInside = false;
     let pointerX = 0;
     let pointerY = 0;
 
-    let hasPointer = false;
+    const motionEnabled = () =>
+      finePointer.matches &&
+      !reduced.matches &&
+      shell?.getAttribute("data-motion") !== "off" &&
+      shell?.getAttribute("data-motion") !== "reduced";
 
-    const resetSymbols = () => {
-      for (const symbol of symbols) {
-        symbol.style.setProperty(
-          "--repel-x",
-          "0px"
-        );
-        symbol.style.setProperty(
-          "--repel-y",
-          "0px"
-        );
-        symbol.style.setProperty(
-          "--repel-rotate",
-          "0deg"
-        );
+    // Konumlar yalnızca boyut değiştiğinde okunur.
+    const measure = () => {
+      for (const p of particles) {
+        p.homeX = p.element.offsetLeft + p.element.offsetWidth / 2;
+        p.homeY = p.element.offsetTop + p.element.offsetHeight / 2;
       }
     };
 
-    const render = () => {
+    const stopAndReset = () => {
+      if (frame) window.cancelAnimationFrame(frame);
       frame = 0;
+      previousTime = 0;
+      pointerInside = false;
+      for (const p of particles) {
+        p.x = p.y = p.vx = p.vy = p.angle = p.va = 0;
+        p.element.style.transform = "";
+      }
+    };
 
-      currentLayerX +=
-        (targetLayerX - currentLayerX) * 0.14;
+    const render = (now: number) => {
+      frame = 0;
+      if (!motionEnabled() || window.document.hidden) {
+        stopAndReset();
+        return;
+      }
 
-      currentLayerY +=
-        (targetLayerY - currentLayerY) * 0.14;
+      const step = previousTime
+        ? Math.min(1.7, Math.max(0.5, (now - previousTime) / 16.667))
+        : 1;
+      previousTime = now;
+      let moving = false;
 
-      layer.style.transform =
-        `translate3d(${currentLayerX.toFixed(2)}px, ${currentLayerY.toFixed(2)}px, 0)`;
+      particles.forEach((p, index) => {
+        let targetX = 0;
+        let targetY = 0;
+        let targetAngle = 0;
 
-      if (hasPointer) {
-        const radius = 165;
-
-        for (const symbol of symbols) {
-          const symbolX =
-            symbol.offsetLeft +
-            symbol.offsetWidth / 2;
-
-          const symbolY =
-            symbol.offsetTop +
-            symbol.offsetHeight / 2;
-
-          const dx =
-            symbolX - pointerX;
-
-          const dy =
-            symbolY - pointerY;
-
-          const distance =
-            Math.hypot(dx, dy) || 0.0001;
-
-          let repelX = 0;
-          let repelY = 0;
-          let repelRotate = 0;
+        if (pointerInside) {
+          // Sembolün fiziksel merkezi; CSS'teki iç süzülme bağımsızdır.
+          const dx = p.homeX + p.x - pointerX;
+          const dy = p.homeY + p.y - pointerY;
+          const distance = Math.max(1, Math.hypot(dx, dy));
+          const radius = 205;
 
           if (distance < radius) {
-            const force =
-              Math.pow(
-                1 - distance / radius,
-                1.55
-              );
-
-            const push =
-              54 * force;
-
-            repelX =
-              (dx / distance) * push;
-
-            repelY =
-              (dy / distance) * push;
-
-            repelRotate =
-              (repelX / 54) * 12;
+            const t = 1 - distance / radius;
+            const falloff = t * t * (3 - 2 * t);
+            const strength = (70 / (1 + (index % 5) * 0.09)) * falloff;
+            targetX = (dx / distance) * strength;
+            targetY = (dy / distance) * strength;
+            targetAngle = (targetX / 70) * 11;
           }
-
-          symbol.style.setProperty(
-            "--repel-x",
-            `${repelX.toFixed(2)}px`
-          );
-
-          symbol.style.setProperty(
-            "--repel-y",
-            `${repelY.toFixed(2)}px`
-          );
-
-          symbol.style.setProperty(
-            "--repel-rotate",
-            `${repelRotate.toFixed(2)}deg`
-          );
         }
-      } else {
-        resetSymbols();
-      }
 
-      const stillMoving =
-        Math.abs(targetLayerX - currentLayerX) > 0.12 ||
-        Math.abs(targetLayerY - currentLayerY) > 0.12;
+        const damp = Math.pow(0.79, step);
+        p.vx = (p.vx + (targetX - p.x) * 0.105 * step) * damp;
+        p.vy = (p.vy + (targetY - p.y) * 0.105 * step) * damp;
+        p.va = (p.va + (targetAngle - p.angle) * 0.09 * step) * damp;
+        p.x += p.vx * step;
+        p.y += p.vy * step;
+        p.angle += p.va * step;
 
-      if (stillMoving) {
-        frame =
-          window.requestAnimationFrame(render);
-      }
+        if (
+          Math.abs(p.x - targetX) > 0.15 ||
+          Math.abs(p.y - targetY) > 0.15 ||
+          Math.abs(p.vx) > 0.08 ||
+          Math.abs(p.vy) > 0.08 ||
+          Math.abs(p.angle - targetAngle) > 0.12 ||
+          Math.abs(p.va) > 0.07
+        ) moving = true;
+
+        // Yalnızca transform güncellenir; top/left veya layout ölçümü yok.
+        if (moving || Math.abs(p.x) > 0.1 || Math.abs(p.y) > 0.1) {
+          p.element.style.transform =
+            `translate3d(${p.x.toFixed(2)}px, ${p.y.toFixed(2)}px, 0) ` +
+            `rotate(${p.angle.toFixed(2)}deg)`;
+        }
+      });
+
+      if (moving) frame = window.requestAnimationFrame(render);
+      else previousTime = 0;
     };
 
     const schedule = () => {
-      if (!frame) {
-        frame =
-          window.requestAnimationFrame(render);
+      if (!frame && motionEnabled() && !window.document.hidden) {
+        frame = window.requestAnimationFrame(render);
       }
     };
 
     const onMove = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") {
-        return;
-      }
-
-      const rect =
-        page.getBoundingClientRect();
-
-      if (!rect.width || !rect.height) {
-        return;
-      }
-
-      const normalizedX =
-        (event.clientX - rect.left) / rect.width;
-
-      const normalizedY =
-        (event.clientY - rect.top) / rect.height;
-
-      pointerX =
-        event.clientX - rect.left;
-
-      pointerY =
-        event.clientY - rect.top;
-
-      hasPointer = true;
-
-      targetLayerX =
-        Math.max(-1, Math.min(1, (normalizedX - 0.5) * 2)) * -10;
-
-      targetLayerY =
-        Math.max(-1, Math.min(1, (normalizedY - 0.5) * 2)) * -9;
-
+      if (event.pointerType !== "mouse" || !motionEnabled()) return;
+      const rect = page.getBoundingClientRect();
+      pointerX = event.clientX - rect.left;
+      pointerY = event.clientY - rect.top;
+      pointerInside = true;
       schedule();
     };
 
     const onLeave = () => {
-      hasPointer = false;
-      targetLayerX = 0;
-      targetLayerY = 0;
+      pointerInside = false;
       schedule();
     };
 
-    page.addEventListener(
-      "pointermove",
-      onMove,
-      { passive: true }
-    );
+    const onPreferenceChange = () => {
+      if (!motionEnabled()) stopAndReset();
+      else {
+        measure();
+        schedule();
+      }
+    };
 
-    page.addEventListener(
-      "pointerleave",
-      onLeave
-    );
+    const observer = new ResizeObserver(measure);
+    observer.observe(page);
+    measure();
+
+    const appearanceObserver = shell
+      ? new MutationObserver(onPreferenceChange)
+      : null;
+    if (shell && appearanceObserver) {
+      appearanceObserver.observe(shell, {
+        attributes: true,
+        attributeFilter: ["data-motion"],
+      });
+    }
+
+    page.addEventListener("pointermove", onMove, { passive: true });
+    page.addEventListener("pointerleave", onLeave);
+    window.addEventListener("blur", onLeave);
+    window.document.addEventListener("visibilitychange", onPreferenceChange);
+    finePointer.addEventListener("change", onPreferenceChange);
+    reduced.addEventListener("change", onPreferenceChange);
 
     return () => {
-      page.removeEventListener(
-        "pointermove",
-        onMove
-      );
-
-      page.removeEventListener(
-        "pointerleave",
-        onLeave
-      );
-
-      if (frame) {
-        window.cancelAnimationFrame(frame);
-      }
+      stopAndReset();
+      observer.disconnect();
+      appearanceObserver?.disconnect();
+      page.removeEventListener("pointermove", onMove);
+      page.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("blur", onLeave);
+      window.document.removeEventListener("visibilitychange", onPreferenceChange);
+      finePointer.removeEventListener("change", onPreferenceChange);
+      reduced.removeEventListener("change", onPreferenceChange);
     };
   }, [loading]);
 
@@ -1622,9 +1595,11 @@ export default function StudentProfilePage() {
           {profileMathSymbols.map((symbol, index) => (
             <span
               key={`profile-math-${index}`}
-              className="notmark-profile-math-symbol"
+              className="notmark-profile-math-particle"
             >
-              {symbol}
+              <span className="notmark-profile-math-symbol">
+                {symbol}
+              </span>
             </span>
           ))}
         </div>
