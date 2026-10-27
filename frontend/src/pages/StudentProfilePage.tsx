@@ -66,6 +66,19 @@ const profileMathSymbols = [
   "∈",
   "∀",
   "ℝ",
+  "⊂",
+  "⊆",
+  "≠",
+  "≡",
+  "∝",
+  "⊕",
+  "∴",
+  "∵",
+  "∪",
+  "∩",
+  "⊥",
+  "∮",
+  "∅",
 ] as const;
 
 export default function StudentProfilePage() {
@@ -1336,96 +1349,231 @@ export default function StudentProfilePage() {
 
 
 
-  // NOTMARK MATH POINTER ENGINE V30
+
+  // NOTMARK MATH POINTER ENGINE V31
   useEffect(() => {
     if (loading) return;
 
-    const layer = mathLayerRef.current;
-    const page = layer?.parentElement;
+    const layer =
+      mathLayerRef.current;
 
-    if (!layer || !page) return;
+    const page =
+      layer?.parentElement;
 
-    const finePointer = window.matchMedia(
-      "(hover: hover) and (pointer: fine)"
-    );
+    if (!layer || !page) {
+      return;
+    }
 
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    );
+    const finePointer =
+      window.matchMedia(
+        "(hover: hover) and (pointer: fine)"
+      );
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
 
     if (!finePointer.matches || reducedMotion.matches) {
       return;
     }
 
+    const symbols = Array.from(
+      layer.querySelectorAll<HTMLElement>(
+        ".notmark-profile-math-symbol"
+      )
+    );
+
+    if (!symbols.length) {
+      return;
+    }
+
     let frame = 0;
 
-    let currentX = 0;
-    let currentY = 0;
+    let targetLayerX = 0;
+    let targetLayerY = 0;
 
-    let targetX = 0;
-    let targetY = 0;
+    let currentLayerX = 0;
+    let currentLayerY = 0;
+
+    let pointerX = 0;
+    let pointerY = 0;
+
+    let hasPointer = false;
+
+    const resetSymbols = () => {
+      for (const symbol of symbols) {
+        symbol.style.setProperty(
+          "--repel-x",
+          "0px"
+        );
+        symbol.style.setProperty(
+          "--repel-y",
+          "0px"
+        );
+        symbol.style.setProperty(
+          "--repel-rotate",
+          "0deg"
+        );
+      }
+    };
 
     const render = () => {
       frame = 0;
 
-      currentX += (targetX - currentX) * 0.16;
-      currentY += (targetY - currentY) * 0.16;
+      currentLayerX +=
+        (targetLayerX - currentLayerX) * 0.14;
+
+      currentLayerY +=
+        (targetLayerY - currentLayerY) * 0.14;
 
       layer.style.transform =
-        `translate3d(${currentX.toFixed(2)}px, ` +
-        `${currentY.toFixed(2)}px, 0)`;
+        `translate3d(${currentLayerX.toFixed(2)}px, ${currentLayerY.toFixed(2)}px, 0)`;
 
-      if (
-        Math.abs(targetX - currentX) > 0.2 ||
-        Math.abs(targetY - currentY) > 0.2
-      ) {
-        frame = window.requestAnimationFrame(render);
+      if (hasPointer) {
+        const radius = 165;
+
+        for (const symbol of symbols) {
+          const symbolX =
+            symbol.offsetLeft +
+            symbol.offsetWidth / 2;
+
+          const symbolY =
+            symbol.offsetTop +
+            symbol.offsetHeight / 2;
+
+          const dx =
+            symbolX - pointerX;
+
+          const dy =
+            symbolY - pointerY;
+
+          const distance =
+            Math.hypot(dx, dy) || 0.0001;
+
+          let repelX = 0;
+          let repelY = 0;
+          let repelRotate = 0;
+
+          if (distance < radius) {
+            const force =
+              Math.pow(
+                1 - distance / radius,
+                1.55
+              );
+
+            const push =
+              54 * force;
+
+            repelX =
+              (dx / distance) * push;
+
+            repelY =
+              (dy / distance) * push;
+
+            repelRotate =
+              (repelX / 54) * 12;
+          }
+
+          symbol.style.setProperty(
+            "--repel-x",
+            `${repelX.toFixed(2)}px`
+          );
+
+          symbol.style.setProperty(
+            "--repel-y",
+            `${repelY.toFixed(2)}px`
+          );
+
+          symbol.style.setProperty(
+            "--repel-rotate",
+            `${repelRotate.toFixed(2)}deg`
+          );
+        }
+      } else {
+        resetSymbols();
+      }
+
+      const stillMoving =
+        Math.abs(targetLayerX - currentLayerX) > 0.12 ||
+        Math.abs(targetLayerY - currentLayerY) > 0.12;
+
+      if (stillMoving) {
+        frame =
+          window.requestAnimationFrame(render);
       }
     };
 
     const schedule = () => {
       if (!frame) {
-        frame = window.requestAnimationFrame(render);
+        frame =
+          window.requestAnimationFrame(render);
       }
     };
 
     const onMove = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") return;
+      if (event.pointerType !== "mouse") {
+        return;
+      }
 
-      const rect = page.getBoundingClientRect();
+      const rect =
+        page.getBoundingClientRect();
 
-      if (!rect.width || !rect.height) return;
+      if (!rect.width || !rect.height) {
+        return;
+      }
 
-      const x =
+      const normalizedX =
         (event.clientX - rect.left) / rect.width;
 
-      const y =
+      const normalizedY =
         (event.clientY - rect.top) / rect.height;
 
-      targetX =
-        Math.max(-1, Math.min(1, (x - 0.5) * 2)) * -14;
+      pointerX =
+        event.clientX - rect.left;
 
-      targetY =
-        Math.max(-1, Math.min(1, (y - 0.5) * 2)) * -12;
+      pointerY =
+        event.clientY - rect.top;
+
+      hasPointer = true;
+
+      targetLayerX =
+        Math.max(-1, Math.min(1, (normalizedX - 0.5) * 2)) * -10;
+
+      targetLayerY =
+        Math.max(-1, Math.min(1, (normalizedY - 0.5) * 2)) * -9;
 
       schedule();
     };
 
     const onLeave = () => {
-      targetX = 0;
-      targetY = 0;
+      hasPointer = false;
+      targetLayerX = 0;
+      targetLayerY = 0;
       schedule();
     };
 
-    page.addEventListener("pointermove", onMove, {
-      passive: true,
-    });
+    page.addEventListener(
+      "pointermove",
+      onMove,
+      { passive: true }
+    );
 
-    page.addEventListener("pointerleave", onLeave);
+    page.addEventListener(
+      "pointerleave",
+      onLeave
+    );
 
     return () => {
-      page.removeEventListener("pointermove", onMove);
-      page.removeEventListener("pointerleave", onLeave);
+      page.removeEventListener(
+        "pointermove",
+        onMove
+      );
+
+      page.removeEventListener(
+        "pointerleave",
+        onLeave
+      );
 
       if (frame) {
         window.cancelAnimationFrame(frame);

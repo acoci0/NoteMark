@@ -36422,3 +36422,1018 @@ input[type="file"]::file-selector-button {
     -17s
     infinite;
 }
+
+/* =========================================================
+   NOTMARK MATHEMATICAL BACKGROUND V31
+
+   - sembol sayısı artırıldı
+   - hareketler güçlendirildi
+   - kutuların arkasında görünmemesi hedeflendi
+   - imleç yakınında savrulma eklendi
+   ========================================================= */
+
+.student-app-shell
+.student-profile-page
+> .notmark-profile-math-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  background: transparent;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
+  font-weight: 600;
+
+  color: rgba(var(--student-accent-rgb), .22);
+  text-shadow:
+    0 0 10px rgba(var(--student-accent-rgb), .08),
+    0 0 22px rgba(var(--student-accent-rgb), .04);
+
+  filter:
+    drop-shadow(0 0 8px rgba(var(--student-accent-rgb), .05));
+
+  pointer-events: none;
+  user-select: none;
+
+  will-change: transform, opacity;
+}
+
+@keyframes notmark-math-float-a {
+  0%, 100% {
+    transform:
+      translate3d(
+        var(--repel-x, 0px),
+        var(--repel-y, 0px),
+        0
+      )
+      rotate(var(--repel-rotate, 0deg));
+  }
+
+  34% {
+    transform:
+      translate3d(
+        calc(var(--repel-x, 0px) + (var(--dx) * 1.18)),
+        calc(var(--repel-y, 0px) + (var(--dy) * 1.18)),
+        0
+      )
+      rotate(calc(var(--turn) + var(--repel-rotate, 0deg)));
+  }
+
+  69% {
+    transform:
+      translate3d(
+        calc(var(--repel-x, 0px) + (var(--ndx) * 1.08)),
+        calc(var(--repel-y, 0px) + (var(--ndy) * 1.08)),
+        0
+      )
+      rotate(calc(var(--nturn) + var(--repel-rotate, 0deg)));
+  }
+}
+
+@keyframes notmark-math-float-b {
+  0%, 100% {
+    transform:
+      translate3d(
+        var(--repel-x, 0px),
+        var(--repel-y, 0px),
+        0
+      )
+      rotate(var(--repel-rotate, 0deg));
+  }
+
+  31% {
+    transform:
+      translate3d(
+        calc(var(--repel-x, 0px) + (var(--ndx) * 1.12)),
+        calc(var(--repel-y, 0px) + (var(--dy) * 1.20)),
+        0
+      )
+      rotate(calc(var(--nturn) + var(--repel-rotate, 0deg)));
+  }
+
+  73% {
+    transform:
+      translate3d(
+        calc(var(--repel-x, 0px) + (var(--dx) * 1.16)),
+        calc(var(--repel-y, 0px) + (var(--ndy) * 1.16)),
+        0
+      )
+      rotate(calc(var(--turn) + var(--repel-rotate, 0deg)));
+  }
+}
+
+@keyframes notmark-math-float-c {
+  0%, 100% {
+    transform:
+      translate3d(
+        var(--repel-x, 0px),
+        var(--repel-y, 0px),
+        0
+      )
+      rotate(var(--repel-rotate, 0deg));
+  }
+
+  39% {
+    transform:
+      translate3d(
+        calc(var(--repel-x, 0px) + (var(--dx) * 1.24)),
+        calc(var(--repel-y, 0px) + (var(--ndy) * 1.14)),
+        0
+      )
+      rotate(calc(var(--turn) + var(--repel-rotate, 0deg)));
+  }
+
+  78% {
+    transform:
+      translate3d(
+        calc(var(--repel-x, 0px) + (var(--ndx) * 1.18)),
+        calc(var(--repel-y, 0px) + (var(--dy) * 1.18)),
+        0
+      )
+      rotate(calc(var(--nturn) + var(--repel-rotate, 0deg)));
+  }
+}
+
+/* kartların üzerinde semboller görünmesin */
+.student-app-shell
+.student-profile-page
+> .student-profile-header,
+.student-app-shell
+.student-profile-page
+> .student-profile-section,
+.student-app-shell
+.student-profile-page
+.student-profile-live-users,
+.student-app-shell
+.student-profile-page
+[class*="student-profile-stat"] {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+}
+
+.student-app-shell
+.student-profile-page
+> .student-profile-section::before,
+.student-app-shell
+.student-profile-page
+.student-profile-live-users::before,
+.student-app-shell
+.student-profile-page
+[class*="student-profile-stat"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--student-surface);
+  opacity: .98;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+.notmark-profile-math-symbol,
+.student-app-shell[data-motion="reduced"]
+.student-profile-page
+.notmark-profile-math-symbol {
+  animation: none !important;
+}
+
+.student-app-shell[data-motion="off"]
+.student-profile-page
+> .notmark-profile-math-layer {
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell
+  .student-profile-page
+  .notmark-profile-math-symbol {
+    animation: none !important;
+  }
+
+  .student-app-shell
+  .student-profile-page
+  > .notmark-profile-math-layer {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .student-app-shell
+  .student-profile-page
+  .notmark-profile-math-symbol:nth-child(3n) {
+    display: none;
+  }
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(1) {
+  left: 6%;
+  top: 8%;
+
+  font-size: 18px;
+  opacity: 0.2;
+
+  --dx: 44px;
+  --dy: -32px;
+  --ndx: -32px;
+  --ndy: 23px;
+  --turn: 13deg;
+  --nturn: -13deg;
+
+  animation:
+    notmark-math-float-a
+    24s
+    ease-in-out
+    -6s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(2) {
+  left: 16%;
+  top: 14%;
+
+  font-size: 28px;
+  opacity: 0.17;
+
+  --dx: -38px;
+  --dy: 36px;
+  --ndx: 27px;
+  --ndy: -26px;
+  --turn: -12deg;
+  --nturn: 12deg;
+
+  animation:
+    notmark-math-float-b
+    30s
+    ease-in-out
+    -12s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(3) {
+  left: 28%;
+  top: 7%;
+
+  font-size: 20px;
+  opacity: 0.22;
+
+  --dx: 46px;
+  --dy: 22px;
+  --ndx: -33px;
+  --ndy: -16px;
+  --turn: 11deg;
+  --nturn: -11deg;
+
+  animation:
+    notmark-math-float-c
+    26s
+    ease-in-out
+    -8s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(4) {
+  left: 41%;
+  top: 12%;
+
+  font-size: 16px;
+  opacity: 0.18;
+
+  --dx: -34px;
+  --dy: -28px;
+  --ndx: 24px;
+  --ndy: 20px;
+  --turn: 9deg;
+  --nturn: -9deg;
+
+  animation:
+    notmark-math-float-a
+    33s
+    ease-in-out
+    -15s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(5) {
+  left: 55%;
+  top: 9%;
+
+  font-size: 24px;
+  opacity: 0.2;
+
+  --dx: 32px;
+  --dy: 40px;
+  --ndx: -23px;
+  --ndy: -29px;
+  --turn: -14deg;
+  --nturn: 14deg;
+
+  animation:
+    notmark-math-float-b
+    27s
+    ease-in-out
+    -10s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(6) {
+  left: 70%;
+  top: 6%;
+
+  font-size: 18px;
+  opacity: 0.17;
+
+  --dx: -42px;
+  --dy: 24px;
+  --ndx: 30px;
+  --ndy: -17px;
+  --turn: 10deg;
+  --nturn: -10deg;
+
+  animation:
+    notmark-math-float-c
+    31s
+    ease-in-out
+    -14s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(7) {
+  left: 84%;
+  top: 11%;
+
+  font-size: 26px;
+  opacity: 0.19;
+
+  --dx: 36px;
+  --dy: -34px;
+  --ndx: -26px;
+  --ndy: 24px;
+  --turn: -11deg;
+  --nturn: 11deg;
+
+  animation:
+    notmark-math-float-a
+    28s
+    ease-in-out
+    -5s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(8) {
+  left: 10%;
+  top: 25%;
+
+  font-size: 22px;
+  opacity: 0.2;
+
+  --dx: 42px;
+  --dy: 30px;
+  --ndx: -30px;
+  --ndy: -22px;
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-b
+    29s
+    ease-in-out
+    -18s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(9) {
+  left: 23%;
+  top: 32%;
+
+  font-size: 18px;
+  opacity: 0.17;
+
+  --dx: -30px;
+  --dy: 44px;
+  --ndx: 22px;
+  --ndy: -32px;
+  --turn: -12deg;
+  --nturn: 12deg;
+
+  animation:
+    notmark-math-float-c
+    25s
+    ease-in-out
+    -7s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(10) {
+  left: 36%;
+  top: 27%;
+
+  font-size: 30px;
+  opacity: 0.16;
+
+  --dx: 48px;
+  --dy: -22px;
+  --ndx: -35px;
+  --ndy: 16px;
+  --turn: 13deg;
+  --nturn: -13deg;
+
+  animation:
+    notmark-math-float-a
+    34s
+    ease-in-out
+    -21s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(11) {
+  left: 49%;
+  top: 36%;
+
+  font-size: 20px;
+  opacity: 0.21;
+
+  --dx: -44px;
+  --dy: -26px;
+  --ndx: 32px;
+  --ndy: 19px;
+  --turn: -10deg;
+  --nturn: 10deg;
+
+  animation:
+    notmark-math-float-b
+    26s
+    ease-in-out
+    -9s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(12) {
+  left: 61%;
+  top: 29%;
+
+  font-size: 17px;
+  opacity: 0.18;
+
+  --dx: 34px;
+  --dy: 42px;
+  --ndx: -24px;
+  --ndy: -30px;
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-c
+    32s
+    ease-in-out
+    -11s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(13) {
+  left: 76%;
+  top: 35%;
+
+  font-size: 25px;
+  opacity: 0.19;
+
+  --dx: -40px;
+  --dy: 28px;
+  --ndx: 29px;
+  --ndy: -20px;
+  --turn: -13deg;
+  --nturn: 13deg;
+
+  animation:
+    notmark-math-float-a
+    28s
+    ease-in-out
+    -15s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(14) {
+  left: 90%;
+  top: 24%;
+
+  font-size: 19px;
+  opacity: 0.17;
+
+  --dx: 38px;
+  --dy: -38px;
+  --ndx: -27px;
+  --ndy: 27px;
+  --turn: 10deg;
+  --nturn: -10deg;
+
+  animation:
+    notmark-math-float-b
+    35s
+    ease-in-out
+    -19s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(15) {
+  left: 7%;
+  top: 49%;
+
+  font-size: 24px;
+  opacity: 0.19;
+
+  --dx: 36px;
+  --dy: 34px;
+  --ndx: -26px;
+  --ndy: -24px;
+  --turn: 11deg;
+  --nturn: -11deg;
+
+  animation:
+    notmark-math-float-c
+    27s
+    ease-in-out
+    -8s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(16) {
+  left: 18%;
+  top: 61%;
+
+  font-size: 16px;
+  opacity: 0.18;
+
+  --dx: -46px;
+  --dy: -20px;
+  --ndx: 33px;
+  --ndy: 14px;
+  --turn: -10deg;
+  --nturn: 10deg;
+
+  animation:
+    notmark-math-float-a
+    31s
+    ease-in-out
+    -14s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(17) {
+  left: 31%;
+  top: 53%;
+
+  font-size: 28px;
+  opacity: 0.16;
+
+  --dx: 48px;
+  --dy: 30px;
+  --ndx: -35px;
+  --ndy: -22px;
+  --turn: 14deg;
+  --nturn: -14deg;
+
+  animation:
+    notmark-math-float-b
+    36s
+    ease-in-out
+    -20s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(18) {
+  left: 45%;
+  top: 58%;
+
+  font-size: 19px;
+  opacity: 0.2;
+
+  --dx: -34px;
+  --dy: 46px;
+  --ndx: 24px;
+  --ndy: -33px;
+  --turn: -13deg;
+  --nturn: 13deg;
+
+  animation:
+    notmark-math-float-c
+    25s
+    ease-in-out
+    -7s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(19) {
+  left: 58%;
+  top: 49%;
+
+  font-size: 27px;
+  opacity: 0.18;
+
+  --dx: 44px;
+  --dy: -24px;
+  --ndx: -32px;
+  --ndy: 17px;
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-a
+    29s
+    ease-in-out
+    -12s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(20) {
+  left: 71%;
+  top: 60%;
+
+  font-size: 21px;
+  opacity: 0.21;
+
+  --dx: -42px;
+  --dy: 34px;
+  --ndx: 30px;
+  --ndy: -24px;
+  --turn: -12deg;
+  --nturn: 12deg;
+
+  animation:
+    notmark-math-float-b
+    26s
+    ease-in-out
+    -10s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(21) {
+  left: 85%;
+  top: 56%;
+
+  font-size: 17px;
+  opacity: 0.18;
+
+  --dx: 38px;
+  --dy: -44px;
+  --ndx: -27px;
+  --ndy: 32px;
+  --turn: 9deg;
+  --nturn: -9deg;
+
+  animation:
+    notmark-math-float-c
+    32s
+    ease-in-out
+    -16s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(22) {
+  left: 11%;
+  top: 75%;
+
+  font-size: 26px;
+  opacity: 0.2;
+
+  --dx: 40px;
+  --dy: 28px;
+  --ndx: -29px;
+  --ndy: -20px;
+  --turn: 13deg;
+  --nturn: -13deg;
+
+  animation:
+    notmark-math-float-a
+    30s
+    ease-in-out
+    -13s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(23) {
+  left: 24%;
+  top: 82%;
+
+  font-size: 19px;
+  opacity: 0.18;
+
+  --dx: -32px;
+  --dy: -40px;
+  --ndx: 23px;
+  --ndy: 29px;
+  --turn: -11deg;
+  --nturn: 11deg;
+
+  animation:
+    notmark-math-float-b
+    24s
+    ease-in-out
+    -9s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(24) {
+  left: 39%;
+  top: 88%;
+
+  font-size: 23px;
+  opacity: 0.19;
+
+  --dx: 46px;
+  --dy: 24px;
+  --ndx: -33px;
+  --ndy: -17px;
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-c
+    28s
+    ease-in-out
+    -15s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(25) {
+  left: 54%;
+  top: 80%;
+
+  font-size: 16px;
+  opacity: 0.17;
+
+  --dx: -36px;
+  --dy: 36px;
+  --ndx: 26px;
+  --ndy: -26px;
+  --turn: -9deg;
+  --nturn: 9deg;
+
+  animation:
+    notmark-math-float-a
+    33s
+    ease-in-out
+    -19s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(26) {
+  left: 68%;
+  top: 90%;
+
+  font-size: 27px;
+  opacity: 0.2;
+
+  --dx: 40px;
+  --dy: -30px;
+  --ndx: -29px;
+  --ndy: 22px;
+  --turn: 10deg;
+  --nturn: -10deg;
+
+  animation:
+    notmark-math-float-b
+    27s
+    ease-in-out
+    -11s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(27) {
+  left: 82%;
+  top: 84%;
+
+  font-size: 18px;
+  opacity: 0.18;
+
+  --dx: -44px;
+  --dy: 22px;
+  --ndx: 32px;
+  --ndy: -16px;
+  --turn: -13deg;
+  --nturn: 13deg;
+
+  animation:
+    notmark-math-float-c
+    31s
+    ease-in-out
+    -14s
+    infinite;
+}
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(28) {
+  left: 93%;
+  top: 94%;
+
+  font-size: 22px;
+  opacity: 0.16;
+
+  --dx: 34px;
+  --dy: -36px;
+  --ndx: -24px;
+  --ndy: 26px;
+  --turn: 11deg;
+  --nturn: -11deg;
+
+  animation:
+    notmark-math-float-a
+    35s
+    ease-in-out
+    -17s
+    infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(29) {
+  left: 9%;
+  top: 18%;
+
+  font-size: 21px;
+  opacity: 0.19;
+
+  --dx: 37px;
+  --dy: -28px;
+  --ndx: -27px;
+  --ndy: 20px;
+
+  --turn: 9deg;
+  --nturn: -9deg;
+
+  animation:
+    notmark-math-float-a
+    31s ease-in-out
+    -7s infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(30) {
+  left: 27%;
+  top: 43%;
+
+  font-size: 24px;
+  opacity: 0.2;
+
+  --dx: -42px;
+  --dy: 32px;
+  --ndx: 30px;
+  --ndy: -23px;
+
+  --turn: -11deg;
+  --nturn: 11deg;
+
+  animation:
+    notmark-math-float-b
+    36s ease-in-out
+    -12s infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(31) {
+  left: 49%;
+  top: 68%;
+
+  font-size: 18px;
+  opacity: 0.18;
+
+  --dx: 31px;
+  --dy: -39px;
+  --ndx: -22px;
+  --ndy: 28px;
+
+  --turn: 12deg;
+  --nturn: -12deg;
+
+  animation:
+    notmark-math-float-c
+    29s ease-in-out
+    -16s infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(32) {
+  left: 73%;
+  top: 23%;
+
+  font-size: 26px;
+  opacity: 0.21;
+
+  --dx: -35px;
+  --dy: 44px;
+  --ndx: 25px;
+  --ndy: -32px;
+
+  --turn: -9deg;
+  --nturn: 9deg;
+
+  animation:
+    notmark-math-float-a
+    34s ease-in-out
+    -10s infinite;
+}
+
+
+.student-app-shell
+.student-profile-page
+.notmark-profile-math-symbol:nth-child(33) {
+  left: 88%;
+  top: 76%;
+
+  font-size: 20px;
+  opacity: 0.19;
+
+  --dx: 43px;
+  --dy: -27px;
+  --ndx: -31px;
+  --ndy: 19px;
+
+  --turn: 11deg;
+  --nturn: -11deg;
+
+  animation:
+    notmark-math-float-b
+    38s ease-in-out
+    -19s infinite;
+}
+
+/* =========================================================
+   END - MATHEMATICAL BACKGROUND V31
+   ========================================================= */
