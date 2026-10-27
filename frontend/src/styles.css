@@ -37440,6 +37440,7 @@ input[type="file"]::file-selector-button {
 
 /* =========================================================
    NOTMARK MATHEMATICAL BACKGROUND V32
+   NOTMARK MATH VISIBILITY V33
    Daha belirgin semboller + kenar yoğunluğu
    ========================================================= */
 
@@ -37447,10 +37448,7 @@ input[type="file"]::file-selector-button {
 .student-profile-page
 .notmark-profile-math-symbol {
   color:
-    rgba(
-      var(--student-accent-rgb),
-      .36
-    ) !important;
+    rgb(var(--student-accent-rgb)) !important;
 
   opacity:
     var(--math-symbol-opacity, .28) !important;
@@ -37459,48 +37457,46 @@ input[type="file"]::file-selector-button {
     700 !important;
 
   text-shadow:
-    0 0 10px rgba(var(--student-accent-rgb), .14),
-    0 0 22px rgba(var(--student-accent-rgb), .10),
-    0 0 38px rgba(var(--student-accent-rgb), .06) !important;
+    0 0 8px rgba(var(--student-accent-rgb), .30),
+    0 0 20px rgba(var(--student-accent-rgb), .16)
+    !important;
 
-  filter:
-    drop-shadow(0 0 8px rgba(var(--student-accent-rgb), .12))
-    drop-shadow(0 0 18px rgba(var(--student-accent-rgb), .08)) !important;
+  filter: none !important;
 
   mix-blend-mode:
-    screen;
+    normal;
 
   will-change:
     transform,
     opacity;
 }
 
-/* merkezdeki görünürlüğü azaltıp
-   kenarlarda daha yoğun bir dağılım oluşturuyoruz */
+
+/* V33: Sembol konumları kenar ağırlıklı kalır.
+   Görünürlüğü azaltan maske kaldırıldı. */
+
 .student-app-shell
 .student-profile-page
 > .notmark-profile-math-layer {
-  mask-image:
-    radial-gradient(
-      ellipse 86% 84% at 50% 50%,
-      rgba(0, 0, 0, .10) 0%,
-      rgba(0, 0, 0, .18) 26%,
-      rgba(0, 0, 0, .34) 42%,
-      rgba(0, 0, 0, .72) 66%,
-      #000 100%
-    );
-
-  -webkit-mask-image:
-    radial-gradient(
-      ellipse 86% 84% at 50% 50%,
-      rgba(0, 0, 0, .10) 0%,
-      rgba(0, 0, 0, .18) 26%,
-      rgba(0, 0, 0, .34) 42%,
-      rgba(0, 0, 0, .72) 66%,
-      #000 100%
-    );
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
 }
 
+/* Açık temada vurgu rengi okunabilir kalır. */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page
+.notmark-profile-math-symbol {
+  color:
+    color-mix(
+      in srgb,
+      var(--student-accent) 48%,
+      var(--student-text) 52%
+    ) !important;
+
+  opacity:
+    calc(var(--math-symbol-opacity, .72) * .88) !important;
+}
 
 .student-app-shell
 .student-profile-page
@@ -37508,8 +37504,8 @@ input[type="file"]::file-selector-button {
   left: 3% !important;
   top: 22% !important;
 
-  font-size: 24px !important;
-  --math-symbol-opacity: 0.3;
+  font-size: max(21px, 24px) !important;
+  --math-symbol-opacity: 0.81;
 
   --dx: 38px;
   --dy: -22px;
@@ -37532,8 +37528,8 @@ input[type="file"]::file-selector-button {
   left: 6% !important;
   top: 34% !important;
 
-  font-size: 18px !important;
-  --math-symbol-opacity: 0.26;
+  font-size: max(21px, 18px) !important;
+  --math-symbol-opacity: 0.75;
 
   --dx: -34px;
   --dy: 26px;
@@ -37556,8 +37552,8 @@ input[type="file"]::file-selector-button {
   left: 4% !important;
   top: 48% !important;
 
-  font-size: 28px !important;
-  --math-symbol-opacity: 0.34;
+  font-size: max(21px, 28px) !important;
+  --math-symbol-opacity: 0.84;
 
   --dx: 41px;
   --dy: 20px;
@@ -37580,8 +37576,8 @@ input[type="file"]::file-selector-button {
   left: 7% !important;
   top: 61% !important;
 
-  font-size: 20px !important;
-  --math-symbol-opacity: 0.28;
+  font-size: max(21px, 20px) !important;
+  --math-symbol-opacity: 0.78;
 
   --dx: -31px;
   --dy: -24px;
@@ -37604,8 +37600,8 @@ input[type="file"]::file-selector-button {
   left: 5% !important;
   top: 74% !important;
 
-  font-size: 26px !important;
-  --math-symbol-opacity: 0.32;
+  font-size: max(21px, 26px) !important;
+  --math-symbol-opacity: 0.84;
 
   --dx: 36px;
   --dy: 18px;
@@ -37628,8 +37624,8 @@ input[type="file"]::file-selector-button {
   left: 96% !important;
   top: 18% !important;
 
-  font-size: 22px !important;
-  --math-symbol-opacity: 0.29;
+  font-size: max(21px, 22px) !important;
+  --math-symbol-opacity: 0.80;
 
   --dx: -37px;
   --dy: 24px;
@@ -37652,8 +37648,8 @@ input[type="file"]::file-selector-button {
   left: 92% !important;
   top: 31% !important;
 
-  font-size: 18px !important;
-  --math-symbol-opacity: 0.25;
+  font-size: max(21px, 18px) !important;
+  --math-symbol-opacity: 0.74;
 
   --dx: 30px;
   --dy: -26px;
@@ -37676,8 +37672,8 @@ input[type="file"]::file-selector-button {
   left: 95% !important;
   top: 45% !important;
 
-  font-size: 30px !important;
-  --math-symbol-opacity: 0.35;
+  font-size: max(21px, 30px) !important;
+  --math-symbol-opacity: 0.84;
 
   --dx: -43px;
   --dy: 21px;
@@ -37700,8 +37696,8 @@ input[type="file"]::file-selector-button {
   left: 91% !important;
   top: 60% !important;
 
-  font-size: 20px !important;
-  --math-symbol-opacity: 0.28;
+  font-size: max(21px, 20px) !important;
+  --math-symbol-opacity: 0.78;
 
   --dx: 34px;
   --dy: 22px;
@@ -37724,8 +37720,8 @@ input[type="file"]::file-selector-button {
   left: 94% !important;
   top: 77% !important;
 
-  font-size: 26px !important;
-  --math-symbol-opacity: 0.33;
+  font-size: max(21px, 26px) !important;
+  --math-symbol-opacity: 0.84;
 
   --dx: -39px;
   --dy: -19px;
@@ -37748,8 +37744,8 @@ input[type="file"]::file-selector-button {
   left: 16% !important;
   top: 9% !important;
 
-  font-size: 18px !important;
-  --math-symbol-opacity: 0.24;
+  font-size: max(21px, 18px) !important;
+  --math-symbol-opacity: 0.73;
 
   --dx: 24px;
   --dy: 28px;
@@ -37772,8 +37768,8 @@ input[type="file"]::file-selector-button {
   left: 28% !important;
   top: 7% !important;
 
-  font-size: 24px !important;
-  --math-symbol-opacity: 0.29;
+  font-size: max(21px, 24px) !important;
+  --math-symbol-opacity: 0.80;
 
   --dx: -30px;
   --dy: 22px;
@@ -37796,8 +37792,8 @@ input[type="file"]::file-selector-button {
   left: 42% !important;
   top: 10% !important;
 
-  font-size: 20px !important;
-  --math-symbol-opacity: 0.26;
+  font-size: max(21px, 20px) !important;
+  --math-symbol-opacity: 0.75;
 
   --dx: 34px;
   --dy: -18px;
@@ -37820,8 +37816,8 @@ input[type="file"]::file-selector-button {
   left: 58% !important;
   top: 8% !important;
 
-  font-size: 28px !important;
-  --math-symbol-opacity: 0.32;
+  font-size: max(21px, 28px) !important;
+  --math-symbol-opacity: 0.84;
 
   --dx: -36px;
   --dy: 24px;
@@ -37844,8 +37840,8 @@ input[type="file"]::file-selector-button {
   left: 72% !important;
   top: 9% !important;
 
-  font-size: 18px !important;
-  --math-symbol-opacity: 0.24;
+  font-size: max(21px, 18px) !important;
+  --math-symbol-opacity: 0.73;
 
   --dx: 27px;
   --dy: 20px;
@@ -37868,8 +37864,8 @@ input[type="file"]::file-selector-button {
   left: 84% !important;
   top: 7% !important;
 
-  font-size: 22px !important;
-  --math-symbol-opacity: 0.28;
+  font-size: max(21px, 22px) !important;
+  --math-symbol-opacity: 0.78;
 
   --dx: -28px;
   --dy: -16px;
@@ -37892,8 +37888,8 @@ input[type="file"]::file-selector-button {
   left: 14% !important;
   top: 92% !important;
 
-  font-size: 22px !important;
-  --math-symbol-opacity: 0.28;
+  font-size: max(21px, 22px) !important;
+  --math-symbol-opacity: 0.78;
 
   --dx: 26px;
   --dy: -25px;
@@ -37916,8 +37912,8 @@ input[type="file"]::file-selector-button {
   left: 27% !important;
   top: 95% !important;
 
-  font-size: 18px !important;
-  --math-symbol-opacity: 0.24;
+  font-size: max(21px, 18px) !important;
+  --math-symbol-opacity: 0.73;
 
   --dx: -24px;
   --dy: 22px;
@@ -37940,8 +37936,8 @@ input[type="file"]::file-selector-button {
   left: 40% !important;
   top: 91% !important;
 
-  font-size: 28px !important;
-  --math-symbol-opacity: 0.33;
+  font-size: max(21px, 28px) !important;
+  --math-symbol-opacity: 0.84;
 
   --dx: 38px;
   --dy: 18px;
@@ -37964,8 +37960,8 @@ input[type="file"]::file-selector-button {
   left: 54% !important;
   top: 94% !important;
 
-  font-size: 20px !important;
-  --math-symbol-opacity: 0.27;
+  font-size: max(21px, 20px) !important;
+  --math-symbol-opacity: 0.77;
 
   --dx: -29px;
   --dy: -21px;
@@ -37988,8 +37984,8 @@ input[type="file"]::file-selector-button {
   left: 69% !important;
   top: 92% !important;
 
-  font-size: 24px !important;
-  --math-symbol-opacity: 0.31;
+  font-size: max(21px, 24px) !important;
+  --math-symbol-opacity: 0.82;
 
   --dx: 32px;
   --dy: 24px;
@@ -38012,8 +38008,8 @@ input[type="file"]::file-selector-button {
   left: 82% !important;
   top: 95% !important;
 
-  font-size: 18px !important;
-  --math-symbol-opacity: 0.25;
+  font-size: max(21px, 18px) !important;
+  --math-symbol-opacity: 0.74;
 
   --dx: -26px;
   --dy: -18px;
@@ -38036,8 +38032,8 @@ input[type="file"]::file-selector-button {
   left: 13% !important;
   top: 18% !important;
 
-  font-size: 16px !important;
-  --math-symbol-opacity: 0.2;
+  font-size: max(21px, 16px) !important;
+  --math-symbol-opacity: 0.67;
 
   --dx: 20px;
   --dy: 18px;
@@ -38060,8 +38056,8 @@ input[type="file"]::file-selector-button {
   left: 87% !important;
   top: 26% !important;
 
-  font-size: 16px !important;
-  --math-symbol-opacity: 0.2;
+  font-size: max(21px, 16px) !important;
+  --math-symbol-opacity: 0.67;
 
   --dx: -18px;
   --dy: 24px;
@@ -38084,8 +38080,8 @@ input[type="file"]::file-selector-button {
   left: 11% !important;
   top: 82% !important;
 
-  font-size: 17px !important;
-  --math-symbol-opacity: 0.21;
+  font-size: max(21px, 17px) !important;
+  --math-symbol-opacity: 0.68;
 
   --dx: 22px;
   --dy: -20px;
@@ -38108,8 +38104,8 @@ input[type="file"]::file-selector-button {
   left: 89% !important;
   top: 71% !important;
 
-  font-size: 17px !important;
-  --math-symbol-opacity: 0.21;
+  font-size: max(21px, 17px) !important;
+  --math-symbol-opacity: 0.68;
 
   --dx: -24px;
   --dy: 18px;
@@ -38132,8 +38128,8 @@ input[type="file"]::file-selector-button {
   left: 9% !important;
   top: 12% !important;
 
-  font-size: 14px !important;
-  --math-symbol-opacity: 0.18;
+  font-size: max(21px, 14px) !important;
+  --math-symbol-opacity: 0.64;
 
   --dx: 18px;
   --dy: 16px;
@@ -38156,8 +38152,8 @@ input[type="file"]::file-selector-button {
   left: 93% !important;
   top: 12% !important;
 
-  font-size: 14px !important;
-  --math-symbol-opacity: 0.18;
+  font-size: max(21px, 14px) !important;
+  --math-symbol-opacity: 0.64;
 
   --dx: -16px;
   --dy: 19px;
@@ -38180,8 +38176,8 @@ input[type="file"]::file-selector-button {
   left: 8% !important;
   top: 88% !important;
 
-  font-size: 14px !important;
-  --math-symbol-opacity: 0.18;
+  font-size: max(21px, 14px) !important;
+  --math-symbol-opacity: 0.64;
 
   --dx: 17px;
   --dy: -18px;
@@ -38204,8 +38200,8 @@ input[type="file"]::file-selector-button {
   left: 94% !important;
   top: 89% !important;
 
-  font-size: 14px !important;
-  --math-symbol-opacity: 0.18;
+  font-size: max(21px, 14px) !important;
+  --math-symbol-opacity: 0.64;
 
   --dx: -19px;
   --dy: -17px;
@@ -38228,8 +38224,8 @@ input[type="file"]::file-selector-button {
   left: 18% !important;
   top: 50% !important;
 
-  font-size: 16px !important;
-  --math-symbol-opacity: 0.2;
+  font-size: max(21px, 16px) !important;
+  --math-symbol-opacity: 0.67;
 
   --dx: 22px;
   --dy: 14px;
@@ -38252,8 +38248,8 @@ input[type="file"]::file-selector-button {
   left: 82% !important;
   top: 52% !important;
 
-  font-size: 16px !important;
-  --math-symbol-opacity: 0.2;
+  font-size: max(21px, 16px) !important;
+  --math-symbol-opacity: 0.67;
 
   --dx: -22px;
   --dy: 16px;
@@ -38276,8 +38272,8 @@ input[type="file"]::file-selector-button {
   left: 50% !important;
   top: 5% !important;
 
-  font-size: 15px !important;
-  --math-symbol-opacity: 0.18;
+  font-size: max(21px, 15px) !important;
+  --math-symbol-opacity: 0.64;
 
   --dx: 16px;
   --dy: 18px;
