@@ -36825,7 +36825,7 @@ input[type="file"]::file-selector-button {
   object-fit: cover;
   object-position: center;
 
-  transform: scale(1.085);
+  transform: none;
   transform-origin: center;
 
   image-rendering: auto;
@@ -36834,5 +36834,126 @@ input[type="file"]::file-selector-button {
 @media (prefers-reduced-motion: reduce) {
   .notmark-auth-page--cinematic::after {
     transition: none !important;
+  }
+}
+
+
+/* =========================================================
+   NOTMARK V47 - LOGO CORNER AND FINANCE BACKGROUND
+   ========================================================= */
+
+/*
+ * Orijinal PNG herhangi bir ek büyütme veya
+ * kırpma yapılmadan gösterilir.
+ *
+ * Çerçeve, iç alan ve görsel aynı köşe
+ * geometrisini kullanır.
+ */
+
+.notmark-auth-cinematic-logo {
+  border-radius: 20%;
+}
+
+.notmark-auth-cinematic-ring {
+  inset: -1px;
+  border-radius: 20%;
+}
+
+.notmark-auth-cinematic-inner {
+  inset: 0;
+
+  border-radius: 20%;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      160deg,
+      #1a2d56 0%,
+      #09172f 100%
+    );
+}
+
+/* Tam oturan orijinal logo */
+
+.notmark-auth-cinematic-inner img {
+  display: block;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  border-radius: 20%;
+
+  transform: none;
+  image-rendering: auto;
+}
+
+/* =========================================================
+   SOL PANEL - FINANS SAYFASI İLE AYNI ARKA PLAN
+   ========================================================= */
+
+/*
+ * Finans koyu tema arka planı: #0c1420
+ *
+ * Masaüstünde sol sütun %54 genişlikte.
+ * Sağ panelin mevcut arka planı korunur.
+ *
+ * Turuncu imleç parıltısı üst katmanda kalır.
+ */
+
+@media (min-width: 1001px) {
+
+  .notmark-auth-page--unified.notmark-auth-page--cinematic {
+
+    background:
+
+      radial-gradient(
+        circle 110px at
+          var(--auth-mouse-x)
+          var(--auth-mouse-y),
+
+        rgba(255, 128, 38, .40) 0%,
+        rgba(255, 107, 11, .24) 24%,
+        rgba(255, 107, 11, .09) 58%,
+        transparent 100%
+      ),
+
+      linear-gradient(
+        to right,
+
+        #0c1420 0%,
+        #0c1420 54%,
+
+        transparent 54%,
+        transparent 100%
+      ),
+
+      radial-gradient(
+        circle at 70% 15%,
+
+        rgba(55, 88, 150, .16),
+        transparent 30%
+      ),
+
+      linear-gradient(
+        135deg,
+
+        #07131f,
+        #0b1724 48%,
+        #09131d
+      );
+  }
+}
+
+/* Mobilde mevcut tek sütunlu düzen korunur. */
+
+@media (prefers-reduced-motion: reduce) {
+  .notmark-auth-cinematic-inner img {
+    transform: none !important;
   }
 }
