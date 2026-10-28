@@ -37786,3 +37786,140 @@ input[type="file"]::file-selector-button {
   }
 }
 /* NOTMARK V68 / AUTH FORM PARITY END */
+
+
+/* NOTMARK V69 / DARK NAVY REGISTER + DATA ACKNOWLEDGEMENTS START */
+/* Giriş ekranının fotoğraftaki lacivert paleti; sabit turuncu aurora yok. */
+.notmark-register-page {
+  background:
+    radial-gradient(ellipse 92% 75% at 12% 0%, rgba(27, 43, 64, .76), transparent 72%),
+    linear-gradient(155deg, #111f30 0%, #0c1928 52%, #08131f 100%);
+}
+.notmark-register-page .notmark-register-card {
+  min-height: 0;
+  border-color: rgba(123, 151, 179, .22);
+  background: linear-gradient(145deg, #121e2b 0%, #0e1925 60%, #0a1622 100%);
+  box-shadow: 0 26px 64px rgba(0, 0, 0, .32),
+              0 0 0 1px rgba(255, 132, 42, .035);
+  transition: transform .12s ease-out, border-color .18s ease, box-shadow .18s ease;
+}
+.notmark-register-page .notmark-register-card:hover {
+  border-color: rgba(255, 145, 61, .32);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, .34),
+              0 0 18px rgba(255, 122, 39, .065);
+}
+.notmark-register-page .notmark-register-acknowledgements {
+  display: grid;
+  gap: 9px;
+  margin: 0 0 18px;
+}
+.notmark-register-page .notmark-register-acknowledgements .notmark-register-confirm {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  line-height: 1.45;
+  color: #b1c0d0;
+  font-size: 11px;
+}
+.notmark-register-page .notmark-register-acknowledgements .notmark-register-confirm input {
+  accent-color: #ff8330;
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  margin: 1px 0 0;
+}
+.notmark-register-page .notmark-register-data-info {
+  margin: 1px 0 0 26px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #9eb2c5;
+}
+.notmark-register-page .notmark-register-data-info summary {
+  display: inline-block;
+  cursor: pointer;
+  color: #ffae7a;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.notmark-register-page .notmark-register-data-info summary:focus-visible {
+  outline: 2px solid #ff974a;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.notmark-register-page .notmark-register-data-info p {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(127, 160, 195, .17);
+  border-radius: 9px;
+  background: rgba(4, 13, 22, .33);
+}
+/* Form kartının içinde açılan uyarı; tam ekranı kapatmaz. */
+.notmark-register-page .notmark-register-alert-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  border-radius: inherit;
+  background: rgba(6, 16, 28, .75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.notmark-register-page .notmark-register-alert {
+  width: min(365px, 100%);
+  padding: 23px 22px;
+  border: 1px solid rgba(255, 146, 64, .52);
+  border-radius: 15px;
+  background: linear-gradient(145deg, #1a2c3e, #101d2c);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, .45), 0 0 24px rgba(255, 123, 31, .12);
+  text-align: center;
+}
+.notmark-register-page .notmark-register-alert-icon {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  margin: 0 auto 12px;
+  border: 1px solid rgba(255, 143, 59, .55);
+  border-radius: 50%;
+  color: #ffad6f;
+  font-weight: 900;
+}
+.notmark-register-page .notmark-register-alert h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: #f1f5fa;
+}
+.notmark-register-page .notmark-register-alert p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #b6c6d5;
+  margin: 0 0 19px;
+}
+.notmark-register-page .notmark-register-alert button {
+  min-width: 140px;
+  min-height: 40px;
+  padding: 0 18px;
+  background: #ff7620;
+  color: #fff;
+  border: 1px solid #ff8f3d;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.notmark-register-page .notmark-register-alert button:focus-visible {
+  outline: 2px solid #ffb676;
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .notmark-register-page .notmark-register-acknowledgements {gap: 11px;}
+  .notmark-register-page .notmark-register-alert-backdrop {padding: 12px;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .notmark-register-page .notmark-register-card {transition: none; transform: none;}
+}
+/* NOTMARK V69 / DARK NAVY REGISTER + DATA ACKNOWLEDGEMENTS END */

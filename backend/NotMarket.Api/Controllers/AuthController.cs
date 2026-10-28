@@ -30,6 +30,9 @@ public sealed class AuthController(
         var confirmPassword = request.ConfirmPassword ?? string.Empty;
         var displayName = $"{firstName} {lastName}";
 
+        if (!request.InformationConfirmed || !request.PrivacyNoticeAcknowledged)
+            return BadRequest(new { message = "Kayıt için her iki bilgilendirme onayı zorunludur." });
+
         if (firstName.Length is < 2 or > 40 ||
             lastName.Length is < 2 or > 40 ||
             displayName.Length > 80)

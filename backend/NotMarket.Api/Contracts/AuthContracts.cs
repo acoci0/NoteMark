@@ -34,4 +34,6 @@ public sealed record StudentRegisterRequest(
     string? LastName,
     string? Email,
     string? Password,
-    string? ConfirmPassword);
+    string? ConfirmPassword,
+    bool InformationConfirmed,
+    bool PrivacyNoticeAcknowledged);

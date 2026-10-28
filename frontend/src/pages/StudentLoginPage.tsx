@@ -372,7 +372,7 @@ export default function StudentLoginPage() {
             </div>
           </div>
 
-          <h2>{studentMode ? "NotMark'a hoş geldiniz." : "Tekrar hoş geldiniz."}</h2>
+          <h2>{studentMode ? "NotMark'a Hoş Geldiniz." : "Tekrar hoş geldiniz."}</h2>
           <p className="notmark-auth-card__description">
             {studentMode
               ? "Öğrenci hesabınıza giriş yaparak NotMark deneyiminize devam edin."

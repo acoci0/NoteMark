@@ -54,6 +54,8 @@ export default function StudentRegisterPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
+  const [consentWarning, setConsentWarning] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -80,6 +82,10 @@ export default function StudentRegisterPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (submitting) return;
+    if (!confirmed || !privacyAcknowledged) {
+      setConsentWarning(true);
+      return;
+    }
     if (form.firstName.trim().length < 2 || form.lastName.trim().length < 2) {
       setError("Ad ve soyad en az 2 karakter olmalıdır."); return;
     }
@@ -89,9 +95,6 @@ export default function StudentRegisterPage() {
     }
     if (form.password !== form.confirmPassword) {
       setError("Şifreler eşleşmiyor."); return;
-    }
-    if (!confirmed) {
-      setError("Devam etmek için bilgilerinizi onaylayın."); return;
     }
 
     setSubmitting(true);
@@ -103,6 +106,8 @@ export default function StudentRegisterPage() {
         email: form.email.trim(),
         password: form.password,
         confirmPassword: form.confirmPassword,
+        informationConfirmed: confirmed,
+        privacyNoticeAcknowledged: privacyAcknowledged,
       });
       await navigateWithAuthFlight(
         navigate, "/login?role=student&registered=1", registerLogoRef.current,
@@ -187,15 +192,51 @@ export default function StudentRegisterPage() {
                 required minLength={10} maxLength={128} value={form.confirmPassword}
                 onChange={(e) => update("confirmPassword", e.target.value)} placeholder="Şifrenizi yeniden yazın" />
             </label>
-            <label className="notmark-register-confirm">
-              <input type="checkbox" required checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} />
-              <span>Hesap oluşturmak için verdiğim bilgilerin doğru olduğunu onaylıyorum.</span>
-            </label>
+            <div className="notmark-register-acknowledgements" aria-label="Kayıt onayları">
+              <label className="notmark-register-confirm">
+                <input type="checkbox" checked={confirmed}
+                  onChange={(e) => setConfirmed(e.target.checked)} />
+                <span>Hesap oluşturmak için verdiğim bilgilerin doğru olduğunu onaylıyorum.</span>
+              </label>
+              <label className="notmark-register-confirm">
+                <input type="checkbox" checked={privacyAcknowledged}
+                  onChange={(e) => setPrivacyAcknowledged(e.target.checked)} />
+                <span>Kişisel verilerin işlenmesi ve hesap güvenliği hakkındaki bilgilendirmeyi okudum.</span>
+              </label>
+              <details className="notmark-register-data-info">
+                <summary>Kişisel veri güvenliği bilgilendirmesi</summary>
+                <p>Hesap oluştururken adınız, soyadınız ve e-posta adresiniz kaydedilir.
+                  Şifreniz düz metin olarak değil, şifre doğrulamasında kullanılan
+                  parola özeti biçiminde saklanır. Bu veriler hesap oluşturma ve
+                  hesap erişimi işlemlerinde kullanılır. Akademik öğrenci doğrulaması
+                  ayrı bir işlemdir.</p>
+              </details>
+            </div>
             {error && <div className="notmark-register-error" role="alert">{error}</div>}
-            <button className="notmark-register-submit" type="submit" disabled={submitting}>
+            <button className="notmark-register-submit" type="submit" disabled={submitting}
+              onClick={() => { if (!confirmed || !privacyAcknowledged) setConsentWarning(true); }}>
               {submitting ? "Hesap oluşturuluyor..." : "Hesap Oluştur"}
             </button>
           </form>
+          {consentWarning && (
+            <div className="notmark-register-alert-backdrop" onKeyDown={(event) => {
+              if (event.key === "Escape") setConsentWarning(false);
+            }}>
+              <div className="notmark-register-alert" role="alertdialog" aria-modal="true"
+                aria-labelledby="register-consent-title" aria-describedby="register-consent-desc">
+                <span className="notmark-register-alert-icon" aria-hidden="true">!</span>
+                <h2 id="register-consent-title">Onay gerekiyor</h2>
+                <p id="register-consent-desc">
+                  {!confirmed && !privacyAcknowledged
+                    ? "Devam etmek için bilgilerin doğruluğu ve kişisel veri güvenliği bilgilendirmesi kutularını işaretleyin."
+                    : !confirmed
+                      ? "Bilgilerin doğruluğunu onaylamanız gerekiyor."
+                      : "Kişisel veri güvenliği bilgilendirmesini okuduğunuzu onaylamanız gerekiyor."}
+                </p>
+                <button type="button" autoFocus onClick={() => setConsentWarning(false)}>Anladım</button>
+              </div>
+            </div>
+          )}
           <p className="notmark-register-footnote">Zaten hesabınız var mı? <Link to="/login?role=student" onClick={goToLogin}>Giriş Yap</Link></p>
         </section>
       </div>
