@@ -22,11 +22,13 @@ function trackRegisterPointer(event: PointerEvent<HTMLElement>) {
   const y = Math.max(0, Math.min(100, (event.clientY - rect.top) / rect.height * 100));
   event.currentTarget.style.setProperty("--register-mouse-x", `${x.toFixed(2)}%`);
   event.currentTarget.style.setProperty("--register-mouse-y", `${y.toFixed(2)}%`);
+  event.currentTarget.style.setProperty("--register-glow-opacity", "1");
 }
 
 function resetRegisterPointer(event: PointerEvent<HTMLElement>) {
   event.currentTarget.style.setProperty("--register-mouse-x", "50%");
   event.currentTarget.style.setProperty("--register-mouse-y", "40%");
+  event.currentTarget.style.setProperty("--register-glow-opacity", "0");
 }
 
 export default function StudentRegisterPage() {
@@ -122,14 +124,15 @@ export default function StudentRegisterPage() {
                 <img src="/brand/notmark-auth-logo-v56.png" alt="" />
               </span>
             </span>
-            <span>Not<b>Mark</b></span>
+            <span className="notmark-register-brand-copy">
+              <span className="notmark-register-brand-name">Not<b>Mark</b></span>
+              <small className="notmark-register-brand-caption">ÖĞRENCİ ÜYELİĞİ</small>
+            </span>
           </Link>
           <Link className="notmark-register-back" to="/login?role=student" onClick={goToLogin}><span aria-hidden="true">←</span> Giriş sayfasına dön</Link>
         </header>
         <section className="notmark-register-card" aria-labelledby="notmark-register-title">
-          <span className="notmark-register-eyebrow">NOTMARK · ÖĞRENCİ ÜYELİĞİ</span>
           <h1 id="notmark-register-title">Hesap Oluştur</h1>
-          <p className="notmark-register-intro">NotMark topluluğuna katılmak için aşağıdaki bilgileri doldurun. Öğrenci doğrulaması hesabınızı oluşturduktan sonra yapılır.</p>
           <div className="notmark-register-notice">
             E-posta adresi doğrulaması henüz etkin değil. Hesap kaydı ve akademik öğrenci doğrulaması farklı işlemlerdir.
           </div>

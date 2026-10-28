@@ -37529,3 +37529,145 @@ input[type="file"]::file-selector-button {
   .notmark-auth-route-logo .notmark-auth-cinematic-ring { animation: none; }
 }
 /* NOTMARK V65 / CINEMATIC AUTH ROUTE TRANSITION END */
+
+/* NOTMARK V66 / REGISTER REFINEMENT START */
+/* Kayıt ekranına özel: sabit turuncu aurora yok, yalnızca aktif pointer glow. */
+.notmark-register-page {
+  --register-glow-opacity: 0;
+  background: #0c1420;
+}
+.notmark-register-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--register-glow-opacity);
+  background: radial-gradient(
+    circle 185px at var(--register-mouse-x) var(--register-mouse-y),
+    rgba(255, 128, 38, .29) 0%,
+    rgba(255, 107, 11, .14) 31%,
+    rgba(255, 107, 11, .045) 58%,
+    transparent 100%
+  );
+  transition: opacity .16s ease;
+}
+.notmark-register-page .notmark-register-shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* NotMark wordmark altındaki tekil öğrenci etiketi. */
+.notmark-register-page .notmark-register-brand-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+  line-height: 1.1;
+  gap: 6px;
+}
+.notmark-register-page .notmark-register-brand-name {
+  display: block;
+  font-size: 21px;
+  font-weight: 850;
+  letter-spacing: -.03em;
+  color: #f3f6fc;
+}
+.notmark-register-page .notmark-register-brand-caption {
+  display: block;
+  color: #ff9c55;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: .15em;
+}
+.notmark-register-page .notmark-register-card h1 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+/* Yalnızca kayıt formu girdilerinde yumuşak hover ve focus ışığı. */
+.notmark-register-page .notmark-register-field input {
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background-color .18s ease;
+}
+.notmark-register-page .notmark-register-field input:not(:disabled):hover {
+  border-color: rgba(255, 148, 68, .62);
+  background-color: #0c1a29;
+  box-shadow: 0 0 0 1px rgba(255, 133, 38, .08),
+              0 0 16px rgba(255, 115, 20, .09);
+}
+.notmark-register-page .notmark-register-field input:focus,
+.notmark-register-page .notmark-register-field input:focus-visible {
+  border-color: #ff9a51;
+  background-color: #0d1c2b;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 125, 40, .12),
+              0 0 19px rgba(255, 117, 24, .14);
+}
+.notmark-register-page .notmark-register-confirm input:hover,
+.notmark-register-page .notmark-register-confirm input:focus-visible {
+  outline: 2px solid rgba(255, 158, 74, .72);
+  outline-offset: 2px;
+}
+
+/* Giriş Yap butonuyla aynı eksende kayan parlak şerit. */
+.notmark-register-page .notmark-register-submit {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.notmark-register-page .notmark-register-submit::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  top: -80%;
+  left: -35%;
+  width: 35%;
+  height: 260%;
+  transform: rotate(20deg);
+  background: linear-gradient(to right,
+    transparent, rgba(255,255,255,.37), transparent);
+  transition: left .45s ease;
+}
+.notmark-register-page .notmark-register-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(255, 107, 11, .24);
+}
+.notmark-register-page .notmark-register-submit:hover:not(:disabled)::before {
+  left: 115%;
+}
+.notmark-register-page .notmark-register-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+.notmark-register-page .notmark-register-submit:focus-visible {
+  outline: 2px solid #ffb77e;
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .notmark-register-page .notmark-register-brand-name { font-size: 18px; }
+  .notmark-register-page .notmark-register-brand-caption {
+    font-size: 9px;
+    letter-spacing: .11em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notmark-register-page::before { transition: none; }
+  .notmark-register-page .notmark-register-field input { transition: none; }
+  .notmark-register-page .notmark-register-submit,
+  .notmark-register-page .notmark-register-submit::before {
+    transition: none;
+  }
+  .notmark-register-page .notmark-register-submit:hover:not(:disabled)::before {
+    left: -35%;
+  }
+  .notmark-register-page .notmark-register-submit:hover:not(:disabled) {
+    transform: none;
+  }
+}
+/* NOTMARK V66 / REGISTER REFINEMENT END */
