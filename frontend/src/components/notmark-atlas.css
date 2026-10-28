@@ -908,3 +908,62 @@
   }
 }
 /* NOTMARK ATLAS V58 ADMIN REFINEMENT END */
+
+/* NOTMARK ATLAS V59 SCIENCE + FOOTER START */
+
+/* Büyük sloganlar kaldırıldı; sonraki tasarıma ayrılmış sakin boşluk. */
+.notmark-auth-page--atlas .nm-atlas__footer {
+  min-height: 106px;
+  padding-top: 72px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+}
+.notmark-auth-page--atlas .nm-atlas__footer p {
+  margin: 0 auto;
+  width: 100%;
+  font-size: 9px;
+  line-height: 1.4;
+  letter-spacing: .17em;
+  font-weight: 650;
+  color: #819ab4;
+  text-align: center;
+}
+
+/* Yönetici düğümündeki yeni uzun başlık taşmadan iki satırda yerleşir. */
+.notmark-auth-page--atlas .nm-atlas--admin .nm-atlas__node--6 .nm-atlas__node-label strong {
+  font-size: 12px;
+  line-height: 1.18;
+}
+
+/* Sahnenin mevcut sönük tipografi dilinde bilim simgeleri. */
+.nm-atlas__math--five    { left: 29%; top: 7%;     font-size: 18px; opacity: .14; }
+.nm-atlas__math--six     { right: 24%; top: 8%;   font-size: 17px; opacity: .16; }
+.nm-atlas__math--seven   { left: 7%; top: 31%;    font-size: 15px; opacity: .13; }
+.nm-atlas__math--eight   { right: 10%; top: 30%;  font-size: 20px; opacity: .15; }
+.nm-atlas__math--nine    { left: 18%; bottom: 7%; font-size: 14px; opacity: .12; letter-spacing: .05em; }
+.nm-atlas__math--ten     { right: 8%; bottom: 30%;font-size: 15px; opacity: .13; }
+.nm-atlas__math--eleven  { left: 53%; top: 10%;    font-size: 16px; opacity: .12; }
+.nm-atlas__math--twelve  { right: 29%; bottom: 6%;font-size: 13px; opacity: .13; letter-spacing: .02em; }
+
+@media (min-width: 1001px) and (max-width: 1300px) {
+  .notmark-auth-page--atlas .nm-atlas__footer {
+    min-height: 86px;
+    padding-top: 55px;
+  }
+  .notmark-auth-page--atlas .nm-atlas--admin .nm-atlas__node--6 .nm-atlas__node-label strong {
+    font-size: 10.6px;
+  }
+}
+@media (min-width: 1001px) and (max-height: 780px) {
+  .notmark-auth-page--atlas .nm-atlas__footer {
+    min-height: 71px;
+    padding-top: 40px;
+  }
+  .notmark-auth-page--atlas .nm-atlas__footer p { font-size: 8px; }
+}
+/* NOTMARK ATLAS V59 SCIENCE + FOOTER END */

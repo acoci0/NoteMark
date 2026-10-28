@@ -113,7 +113,7 @@ const adminNodes: Node[] = [
     id: "pdf",
     x: 270,
     y: 575,
-    title: "PDF Denetimi",
+    title: "Kontrollü PDF",
     subtitle: "Belge Kontrolü",
     Icon: ScrollText,
   },
@@ -121,7 +121,7 @@ const adminNodes: Node[] = [
     id: "approved",
     x: 730,
     y: 575,
-    title: "Onay Süreci",
+    title: "Yapay Zeka Denetimi",
     subtitle: "Kalite ve Güven",
     Icon: ShieldCheck,
   },
@@ -523,6 +523,38 @@ export default function NotMarkAtlas({
           f(x)
         </span>
 
+        <span className="nm-atlas__math nm-atlas__math--five">
+          Δ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--six">
+          ℏ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--seven">
+          H₂O
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--eight">
+          λ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--nine">
+          DNA
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--ten">
+          E=mc²
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--eleven">
+          ψ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--twelve">
+          C₆H₁₂O₆
+        </span>
+
         <div className="nm-atlas__hub">
           <div className="nm-atlas__hub-halo" />
           <div className="nm-atlas__hub-ring nm-atlas__hub-ring--one" />
@@ -570,22 +602,6 @@ export default function NotMarkAtlas({
       </div>
 
       <div className="nm-atlas__footer">
-        <h2>
-          {student ? (
-            <>
-              Bilgi Güvenle <em>Paylaşılır.</em>
-              <br />
-              Değer Birlikte <em>Büyür.</em>
-            </>
-          ) : (
-            <>
-              Güvenle <em>Yönetilir.</em>
-              <br />
-              Kalite Birlikte <em>Korunur.</em>
-            </>
-          )}
-        </h2>
-
         <p>
           {student
             ? "KEŞFET  ·  PAYLAŞ  ·  KAZAN"
