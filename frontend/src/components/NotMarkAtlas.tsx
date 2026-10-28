@@ -507,54 +507,6 @@ export default function NotMarkAtlas({
           ))}
         </svg>
 
-        <span className="nm-atlas__math nm-atlas__math--one">
-          Σ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--two">
-          π
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--three">
-          ψ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--four">
-          λ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--five">
-          Ω
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--six">
-          Δ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--seven">
-          α
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--eight">
-          β
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--nine">
-          μ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--ten">
-          ∂
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--eleven">
-          f(x)
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--twelve">
-          ∇
-        </span>
-
         <div className="nm-atlas__hub">
           <div className="nm-atlas__hub-halo" />
           <div className="nm-atlas__hub-ring nm-atlas__hub-ring--one" />

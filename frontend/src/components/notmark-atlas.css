@@ -134,39 +134,6 @@
   filter: drop-shadow(0 0 6px #ff872d);
 }
 
-/* MATEMATİKSEL SEMBOLLER */
-
-.nm-atlas__math {
-  position: absolute;
-  pointer-events: none;
-  font-family: Georgia, serif;
-  color: #7998b9;
-  opacity: .26;
-  font-size: 23px;
-}
-
-.nm-atlas__math--one {
-  left: 9%;
-  top: 15%;
-}
-
-.nm-atlas__math--two {
-  right: 10%;
-  top: 7%;
-  color: #ff9951;
-}
-
-.nm-atlas__math--three {
-  left: 15%;
-  bottom: 16%;
-}
-
-.nm-atlas__math--four {
-  right: 12%;
-  bottom: 14%;
-  font-size: 16px;
-}
-
 /* MERKEZİ NOTMARK ÇEKİRDEĞİ */
 
 .nm-atlas__hub {
@@ -941,14 +908,6 @@
 }
 
 /* Sahnenin mevcut sönük tipografi dilinde bilim simgeleri. */
-.nm-atlas__math--five    { left: 29%; top: 7%;     font-size: 18px; opacity: .14; }
-.nm-atlas__math--six     { right: 24%; top: 8%;   font-size: 17px; opacity: .16; }
-.nm-atlas__math--seven   { left: 7%; top: 31%;    font-size: 15px; opacity: .13; }
-.nm-atlas__math--eight   { right: 10%; top: 30%;  font-size: 20px; opacity: .15; }
-.nm-atlas__math--nine    { left: 18%; bottom: 7%; font-size: 14px; opacity: .12; letter-spacing: .05em; }
-.nm-atlas__math--ten     { right: 8%; bottom: 30%;font-size: 15px; opacity: .13; }
-.nm-atlas__math--eleven  { left: 53%; top: 10%;    font-size: 16px; opacity: .12; }
-.nm-atlas__math--twelve  { right: 29%; bottom: 6%;font-size: 13px; opacity: .13; letter-spacing: .02em; }
 
 @media (min-width: 1001px) and (max-width: 1300px) {
   .notmark-auth-page--atlas .nm-atlas__footer {
@@ -968,170 +927,59 @@
 }
 /* NOTMARK ATLAS V59 SCIENCE + FOOTER END */
 
-/* NOTMARK ATLAS V60 SYMBOL SPREAD START */
 
-/* tüm arka plan sembolleri aynı ailede, sağ üstteki π hissine yakın,
-   sade ve hafif görünsün */
-.nm-atlas__math {
-  position: absolute;
-  pointer-events: none;
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-rendering: geometricPrecision;
-  user-select: none;
-  opacity: .18;
-  color: #7f97b6;
-  text-shadow: 0 0 10px rgba(13, 34, 58, .18);
+
+
+
+/* NOTMARK V62 REGISTER PANEL START */
+.notmark-auth-page--atlas.notmark-auth-page--student .notmark-auth-card {
+  min-height: 668px;
 }
-
-/* hafif turuncuya yaklaşan birkaç sembol, ama çok baskın değil */
-.nm-atlas__math--two,
-.nm-atlas__math--six {
-  color: rgba(214, 153, 97, .72);
-  opacity: .20;
+.notmark-auth-page--atlas .notmark-auth-extras {
+  margin-top: 22px;
 }
-
-/* ekran geneline yayılmış, fotoğraftaki dağılıma benzer alan kullanımı */
-.nm-atlas__math--one {
-  left: 8%;
-  top: 17%;
-  font-size: 28px;
+.notmark-auth-page--atlas .notmark-auth-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 20px 18px;
+  border: 1px solid rgba(255, 164, 81, .20);
+  border-radius: 15px;
+  background: linear-gradient(150deg, rgba(255, 134, 52, .07), rgba(20, 38, 61, .26));
+  text-align: center;
 }
-
-.nm-atlas__math--two {
-  right: 12%;
-  top: 9%;
-  font-size: 24px;
+.notmark-auth-page--atlas .notmark-auth-register strong {
+  color: #eef4fb;
+  font-size: 14px;
+  font-weight: 800;
 }
-
-.nm-atlas__math--three {
-  left: 49%;
-  top: 8%;
-  font-size: 20px;
+.notmark-auth-page--atlas .notmark-auth-register > span {
+  max-width: 280px;
+  color: #a6b7c9;
+  font-size: 11px;
+  line-height: 1.55;
 }
-
-.nm-atlas__math--four {
-  right: 11%;
-  top: 28%;
-  font-size: 23px;
+.notmark-auth-page--atlas .notmark-auth-register button {
+  min-height: 40px;
+  margin-top: 5px;
+  padding: 8px 22px;
+  border: 1px solid rgba(255, 152, 58, .55);
+  border-radius: 10px;
+  background: rgba(255, 121, 28, .13);
+  color: #ffb67a;
+  font-size: 12px;
+  font-weight: 800;
+  transition: background .2s ease, border-color .2s ease;
 }
-
-.nm-atlas__math--five {
-  left: 27%;
-  top: 5%;
-  font-size: 18px;
+.notmark-auth-page--atlas .notmark-auth-register button:hover {
+  background: rgba(255, 121, 28, .22);
+  border-color: rgba(255, 173, 95, .8);
 }
-
-.nm-atlas__math--six {
-  right: 25%;
-  top: 12%;
-  font-size: 18px;
-}
-
-.nm-atlas__math--seven {
-  left: 7%;
-  bottom: 35%;
-  font-size: 19px;
-}
-
-.nm-atlas__math--eight {
-  left: 15%;
-  bottom: 11%;
-  font-size: 18px;
-}
-
-.nm-atlas__math--nine {
-  right: 29%;
-  bottom: 10%;
-  font-size: 18px;
-}
-
-.nm-atlas__math--ten {
-  left: 18%;
-  bottom: 22%;
-  font-size: 19px;
-}
-
-.nm-atlas__math--eleven {
-  right: 9%;
-  bottom: 23%;
-  font-size: 19px;
-}
-
-.nm-atlas__math--twelve {
-  right: 11%;
-  bottom: 8%;
-  font-size: 20px;
-}
-
-/* dar ekran uyumu */
-@media (min-width: 1001px) and (max-width: 1300px) {
-  .nm-atlas__math--one   { left: 7%;  top: 18%; font-size: 24px; }
-  .nm-atlas__math--two   { right: 11%; top: 9%; font-size: 21px; }
-  .nm-atlas__math--three { left: 48%; top: 9%; font-size: 18px; }
-  .nm-atlas__math--four  { right: 10%; top: 29%; font-size: 20px; }
-  .nm-atlas__math--five  { left: 27%; top: 5%; font-size: 16px; }
-  .nm-atlas__math--six   { right: 24%; top: 13%; font-size: 16px; }
-  .nm-atlas__math--seven { left: 6%;  bottom: 35%; font-size: 17px; }
-  .nm-atlas__math--eight { left: 14%; bottom: 11%; font-size: 16px; }
-  .nm-atlas__math--nine  { right: 29%; bottom: 10%; font-size: 16px; }
-  .nm-atlas__math--ten   { left: 18%; bottom: 22%; font-size: 17px; }
-  .nm-atlas__math--eleven{ right: 9%; bottom: 23%; font-size: 17px; }
-  .nm-atlas__math--twelve{ right: 10%; bottom: 8%; font-size: 18px; }
-}
-
-@media (min-width: 1001px) and (max-height: 780px) {
-  .nm-atlas__math {
-    opacity: .15;
+@media (max-width: 560px) {
+  .notmark-auth-page--atlas.notmark-auth-page--student .notmark-auth-card {
+    min-height: 650px;
   }
 }
-
-/* NOTMARK ATLAS V60 SYMBOL SPREAD END */
-
-/* NOTMARK ATLAS V61 POSITION RESET START */
-/* Önceki V59/V60 top/bottom çakışmalarını gider; tüm sembolleri aynı
-   sahne üzerinde, sağ üstteki π görünümüne yakın, düzenli dağıt. */
-.nm-atlas {
-  --nm-atlas-symbols-build: 61;
-}
-.nm-atlas .nm-atlas__math {
-  position: absolute;
-  inset: auto;
-  font-family: Georgia, "Times New Roman", serif;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1;
-  color: #748da9;
-  opacity: .29;
-  letter-spacing: 0;
-  white-space: nowrap;
-  pointer-events: none;
-  text-shadow: none;
-  user-select: none;
-}
-/* Başlıklara/ikona temas etmeden tüm sahneye yayılan 12 sembol. */
-.nm-atlas .nm-atlas__math--one    { left: 6%;  top: 13%;    font-size: 31px; }
-.nm-atlas .nm-atlas__math--two    { right: 8%; top: 7%;     font-size: 29px; color: #c28a5e; opacity: .37; }
-.nm-atlas .nm-atlas__math--three  { left: 48%; top: 5%;     font-size: 23px; }
-.nm-atlas .nm-atlas__math--four   { right: 4%; top: 31%;    font-size: 25px; }
-.nm-atlas .nm-atlas__math--five   { left: 25%; top: 4%;     font-size: 22px; opacity: .24; }
-.nm-atlas .nm-atlas__math--six    { right: 24%; top: 10%;  font-size: 20px; color: #ae805b; opacity: .28; }
-.nm-atlas .nm-atlas__math--seven  { left: 4%; top: 47%;    font-size: 22px; }
-.nm-atlas .nm-atlas__math--eight  { left: 12%; bottom: 7%; font-size: 24px; }
-.nm-atlas .nm-atlas__math--nine   { right: 27%; bottom: 7%; font-size: 22px; }
-.nm-atlas .nm-atlas__math--ten    { left: 7%; bottom: 26%; font-size: 24px; }
-.nm-atlas .nm-atlas__math--eleven { right: 4%; bottom: 27%; font-size: 22px; }
-.nm-atlas .nm-atlas__math--twelve { right: 8%; bottom: 7%; font-size: 24px; }
-
-@media (min-width: 1001px) and (max-width: 1300px) {
-  .nm-atlas .nm-atlas__math { font-size: 19px; opacity: .26; }
-  .nm-atlas .nm-atlas__math--one { font-size: 26px; }
-  .nm-atlas .nm-atlas__math--two { font-size: 25px; opacity: .34; }
-}
-@media (min-width: 1001px) and (max-height: 780px) {
-  .nm-atlas .nm-atlas__math { opacity: .25; }
-  .nm-atlas .nm-atlas__math--two { opacity: .32; }
-}
-/* NOTMARK ATLAS V61 POSITION RESET END */
+/* NOTMARK V62 REGISTER PANEL END */
