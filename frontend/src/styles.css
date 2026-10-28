@@ -37671,3 +37671,118 @@ input[type="file"]::file-selector-button {
   }
 }
 /* NOTMARK V66 / REGISTER REFINEMENT END */
+
+/* NOTMARK V68 / AUTH FORM PARITY START */
+/* Sadece /register: öğrenci giriş kartının ölçüleri + ölçülü 3B hover. */
+.notmark-register-page {
+  --register-card-rotate-x: 0deg;
+  --register-card-rotate-y: 0deg;
+}
+
+.notmark-register-page .notmark-register-card {
+  border: 1px solid rgba(255, 143, 59, .34);
+  background: linear-gradient(145deg, #152437, #101c2b 65%, #0c1927);
+  box-shadow:
+    0 22px 56px rgba(0, 0, 0, .28),
+    0 0 24px rgba(255, 119, 28, .065);
+  transform: perspective(1100px)
+    rotateX(var(--register-card-rotate-x))
+    rotateY(var(--register-card-rotate-y));
+  transform-style: flat;
+  transition:
+    transform 120ms ease-out,
+    border-color .18s ease-out,
+    box-shadow .18s ease-out;
+}
+
+.notmark-register-page .notmark-register-card:hover {
+  border-color: rgba(255, 148, 64, .46);
+  box-shadow:
+    0 24px 58px rgba(0, 0, 0, .30),
+    0 0 27px rgba(255, 120, 30, .11);
+}
+
+/* Giriş paneli: 48px yükseklik, 11px köşe, 13px içerik, 11px etiket. */
+.notmark-register-page .notmark-register-field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #cbd4dd;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.notmark-register-page .notmark-register-field input {
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.085);
+  border-radius: 11px;
+  background: rgba(3, 10, 17, .38);
+  box-shadow: none;
+  color: #f5f7fa;
+  font-size: 13px;
+  font-weight: 500;
+}
+.notmark-register-page .notmark-register-field input::placeholder {
+  color: #738397;
+  font-weight: 450;
+}
+.notmark-register-page .notmark-register-field input:not(:disabled):hover {
+  border-color: rgba(255,255,255,.17);
+  background: rgba(3,10,17,.44);
+  box-shadow: 0 0 12px rgba(255, 122, 32, .055);
+}
+.notmark-register-page .notmark-register-field input:focus,
+.notmark-register-page .notmark-register-field input:focus-visible {
+  outline: none;
+  border-color: rgba(255,107,11,.80);
+  background: rgba(3,10,17,.55);
+  box-shadow:
+    0 0 0 3px rgba(255,107,11,.07),
+    0 0 20px rgba(255,107,11,.10);
+}
+.notmark-register-page .notmark-register-password button {
+  right: 7px;
+  top: 7px;
+  min-height: 34px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.notmark-register-page .notmark-register-help {
+  font-size: 10.5px;
+  font-weight: 450;
+  line-height: 1.4;
+  color: #91a4b8;
+}
+
+/* Giriş Yap / Hesap Oluştur butonları aynı boyutta ve yazı stilinde. */
+.notmark-register-page .notmark-register-submit {
+  min-height: 48px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+/* Ekran yüksekliği dar olduğunda form taşmadan doğal olarak uzasın. */
+@media (min-width: 561px) and (max-height: 790px) {
+  .notmark-register-page .notmark-register-field { margin-bottom: 10px; gap: 6px; }
+  .notmark-register-page .notmark-register-field input { min-height: 45px; height: 45px; }
+}
+@media (max-width: 560px) {
+  .notmark-register-page .notmark-register-field { margin-bottom: 12px; }
+  .notmark-register-page .notmark-register-field input { min-height: 48px; height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notmark-register-page .notmark-register-card {
+    transform: none !important;
+    transition: none !important;
+  }
+  .notmark-register-page .notmark-register-card:hover {
+    box-shadow: 0 22px 56px rgba(0,0,0,.28);
+  }
+}
+/* NOTMARK V68 / AUTH FORM PARITY END */

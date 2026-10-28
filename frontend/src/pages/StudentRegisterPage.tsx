@@ -23,12 +23,26 @@ function trackRegisterPointer(event: PointerEvent<HTMLElement>) {
   event.currentTarget.style.setProperty("--register-mouse-x", `${x.toFixed(2)}%`);
   event.currentTarget.style.setProperty("--register-mouse-y", `${y.toFixed(2)}%`);
   event.currentTarget.style.setProperty("--register-glow-opacity", "1");
+
+  // Giriş panelindeki aynı kontrollü 3B eğimi yalnızca kartın üzerinde uygula.
+  // Sadece CSS değişkenleri güncellenir; React render tetiklenmez.
+  const card = event.currentTarget.querySelector<HTMLElement>(".notmark-register-card");
+  if (!card || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const bounds = card.getBoundingClientRect();
+  const inside = event.clientX >= bounds.left && event.clientX <= bounds.right &&
+    event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+  const relX = inside ? Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width)) : 0.5;
+  const relY = inside ? Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height)) : 0.5;
+  event.currentTarget.style.setProperty("--register-card-rotate-x", `${((0.5 - relY) * 3.2).toFixed(3)}deg`);
+  event.currentTarget.style.setProperty("--register-card-rotate-y", `${((relX - 0.5) * 4).toFixed(3)}deg`);
 }
 
 function resetRegisterPointer(event: PointerEvent<HTMLElement>) {
   event.currentTarget.style.setProperty("--register-mouse-x", "50%");
   event.currentTarget.style.setProperty("--register-mouse-y", "40%");
   event.currentTarget.style.setProperty("--register-glow-opacity", "0");
+  event.currentTarget.style.setProperty("--register-card-rotate-x", "0deg");
+  event.currentTarget.style.setProperty("--register-card-rotate-y", "0deg");
 }
 
 export default function StudentRegisterPage() {
