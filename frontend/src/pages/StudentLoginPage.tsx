@@ -16,7 +16,7 @@ import { isAxiosError } from "axios";
 import { createPortal } from "react-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
-import KnowledgeCore from "../components/knowledge-core/KnowledgeCore";
+import NotMarkAtlas from "../components/NotMarkAtlas";
 
 type LoginRole = "student" | "admin";
 
@@ -347,7 +347,7 @@ export default function StudentLoginPage() {
 
   return (
     <div
-      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic notmark-auth-page--knowledge${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
+      className={`notmark-auth-page notmark-auth-page--${role} notmark-auth-page--unified notmark-auth-page--cinematic notmark-auth-page--atlas${roleTransitioning ? " is-role-switching" : ""}${financeBackdrop ? " is-finance-background" : ""}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={resetPointer}
     >
@@ -367,7 +367,7 @@ export default function StudentLoginPage() {
             </div>
           </div>
 
-          <KnowledgeCore role={role} paused={roleTransitioning} />
+          <NotMarkAtlas role={role} paused={roleTransitioning} />
         </div>
       </section>
 
