@@ -508,7 +508,7 @@ export default function NotMarkAtlas({
         </svg>
 
         <span className="nm-atlas__math nm-atlas__math--one">
-          ∑
+          Σ
         </span>
 
         <span className="nm-atlas__math nm-atlas__math--two">
@@ -516,43 +516,43 @@ export default function NotMarkAtlas({
         </span>
 
         <span className="nm-atlas__math nm-atlas__math--three">
-          ∫
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--four">
-          f(x)
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--five">
-          Δ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--six">
-          ℏ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--seven">
-          H₂O
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--eight">
-          λ
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--nine">
-          DNA
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--ten">
-          E=mc²
-        </span>
-
-        <span className="nm-atlas__math nm-atlas__math--eleven">
           ψ
         </span>
 
+        <span className="nm-atlas__math nm-atlas__math--four">
+          λ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--five">
+          Ω
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--six">
+          Δ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--seven">
+          α
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--eight">
+          β
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--nine">
+          μ
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--ten">
+          ∂
+        </span>
+
+        <span className="nm-atlas__math nm-atlas__math--eleven">
+          f(x)
+        </span>
+
         <span className="nm-atlas__math nm-atlas__math--twelve">
-          C₆H₁₂O₆
+          ∇
         </span>
 
         <div className="nm-atlas__hub">
