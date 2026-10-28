@@ -17,6 +17,7 @@ import { createPortal } from "react-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
 import NotMarkAtlas from "../components/NotMarkAtlas";
+import { navigateWithAuthFlight } from "../auth/authRouteFlight";
 
 type LoginRole = "student" | "admin";
 
@@ -453,7 +454,13 @@ export default function StudentLoginPage() {
                 type="button"
                 className="notmark-auth-register-action"
                 disabled={loading || roleTransitioning}
-                onClick={() => navigate("/register")}
+                onClick={() => {
+                  void navigateWithAuthFlight(
+                    navigate, "/register",
+                    leftLogoRef.current ?? cardLogoRef.current,
+                    ".notmark-register-brand-frame"
+                  );
+                }}
               >Hesap Oluştur</button>
             </div>
           ) : (

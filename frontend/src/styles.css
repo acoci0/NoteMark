@@ -37412,3 +37412,120 @@ input[type="file"]::file-selector-button {
   }
 }
 /* NOTMARK V64 / REGISTRATION POLISH END */
+
+
+/* NOTMARK V65 / CINEMATIC AUTH ROUTE TRANSITION START */
+/* Kayit formu yatayda dar, yukseklikte dengeli; toplam header+form ortalanir. */
+.notmark-register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(16px, 3vh, 30px) 18px;
+}
+.notmark-register-page .notmark-register-shell {
+  width: min(548px, 100%);
+  max-width: 548px;
+  margin: 0 auto;
+}
+.notmark-register-page .notmark-register-header {
+  margin-bottom: 14px;
+}
+.notmark-register-page .notmark-register-card {
+  box-sizing: border-box;
+  min-height: 668px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+}
+.notmark-register-page .notmark-register-card form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+.notmark-register-page .notmark-register-card .notmark-register-submit {
+  margin-top: auto;
+}
+.notmark-register-page .notmark-register-field { margin-bottom: 13px; }
+.notmark-register-page .notmark-register-intro { margin-bottom: 13px; }
+.notmark-register-page .notmark-register-notice { margin-bottom: 14px; }
+.notmark-register-page .notmark-register-confirm { margin-bottom: 14px; }
+.notmark-register-page .notmark-register-footnote { margin-top: 12px; }
+
+/* Giriş sayfasındaki logo birebir aynı çerçeve geometrisini kullanır. */
+.notmark-register-page .notmark-register-brand-frame {
+  --notmark-auth-angle: 0deg;
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+  box-sizing: border-box;
+  padding: 2px;
+  display: block;
+  border: 1px solid transparent;
+  border-radius: 19px;
+  background:
+    linear-gradient(#09141f,#09141f) padding-box,
+    conic-gradient(from var(--notmark-auth-angle), transparent 0deg,
+      transparent 245deg,rgba(255,107,11,.12) 270deg,
+      rgba(255,107,11,.65) 302deg,#ff6b0b 322deg,
+      rgba(255,107,11,.65) 342deg,transparent 360deg) border-box;
+  animation: notmark-auth-border-spin 3.3s linear infinite;
+}
+.notmark-register-page .notmark-register-brand-frame .notmark-auth-logo-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b1724;
+}
+.notmark-register-page .notmark-register-brand-frame .notmark-auth-logo-inner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+/* Aynı büyük logo, aynı dönme halkası; route değişse bile DOM'da kalır. */
+.notmark-auth-route-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  background: linear-gradient(135deg,#07131f,#0b1724 48%,#09131d);
+  opacity: 0;
+  pointer-events: auto;
+}
+.notmark-auth-route-logo {
+  position: fixed;
+  z-index: 2147483001;
+  pointer-events: none;
+  will-change: transform;
+}
+.notmark-auth-route-logo .notmark-auth-cinematic-ring {
+  animation: notmark-auth-border-spin 2s linear 1 both;
+  animation-play-state: paused;
+}
+@media (max-width: 560px) {
+  .notmark-register-page { padding: 18px 12px 28px; align-items: flex-start; }
+  .notmark-register-page .notmark-register-shell { width: 100%; }
+  .notmark-register-page .notmark-register-card { min-height: 0; padding: 20px 17px; }
+  .notmark-register-page .notmark-register-brand-frame {
+    width: 51px; height: 51px; flex-basis: 51px; border-radius: 16px;
+  }
+  .notmark-register-page .notmark-register-brand-frame .notmark-auth-logo-inner { border-radius: 13px; }
+}
+@media (min-width: 561px) and (max-height: 790px) {
+  .notmark-register-page { padding: 12px 18px; }
+  .notmark-register-page .notmark-register-card { min-height: 0; padding: 19px 25px; }
+  .notmark-register-page .notmark-register-field { margin-bottom: 9px; }
+  .notmark-register-page .notmark-register-intro { margin-bottom: 9px; }
+  .notmark-register-page .notmark-register-notice { margin-bottom: 10px; }
+  .notmark-register-page .notmark-register-confirm { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .notmark-register-page .notmark-register-brand-frame { animation: none; }
+  .notmark-auth-route-logo .notmark-auth-cinematic-ring { animation: none; }
+}
+/* NOTMARK V65 / CINEMATIC AUTH ROUTE TRANSITION END */

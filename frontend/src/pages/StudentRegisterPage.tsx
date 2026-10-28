@@ -1,8 +1,9 @@
-import { useState, type FormEvent, type PointerEvent } from "react";
+import { useRef, useState, type FormEvent, type PointerEvent, type MouseEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import studentApi from "../api/studentClient";
 import { useStudentAuth } from "../auth/StudentAuthContext";
+import { navigateWithAuthFlight } from "../auth/authRouteFlight";
 
 type RegistrationForm = {
   firstName: string;
@@ -30,6 +31,7 @@ function resetRegisterPointer(event: PointerEvent<HTMLElement>) {
 
 export default function StudentRegisterPage() {
   const navigate = useNavigate();
+  const registerLogoRef = useRef<HTMLSpanElement>(null);
   const { isStudentAuthenticated } = useStudentAuth();
   const [form, setForm] = useState<RegistrationForm>({
     firstName: "", lastName: "", email: "", password: "", confirmPassword: "",
@@ -42,6 +44,17 @@ export default function StudentRegisterPage() {
   if (isStudentAuthenticated) {
     return <Navigate to="/student/profile" replace />;
   }
+
+  const goToLogin = (event: MouseEvent<HTMLAnchorElement>) => {
+    // Cmd/Ctrl ve orta tus ile yeni sekme acma davranisini bozma.
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey ||
+        event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    void navigateWithAuthFlight(
+      navigate, "/login?role=student", registerLogoRef.current,
+      ".notmark-auth-logo-frame"
+    );
+  };
 
   const update = (field: keyof RegistrationForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -75,7 +88,10 @@ export default function StudentRegisterPage() {
         password: form.password,
         confirmPassword: form.confirmPassword,
       });
-      navigate("/login?role=student&registered=1", { replace: true });
+      await navigateWithAuthFlight(
+        navigate, "/login?role=student&registered=1", registerLogoRef.current,
+        ".notmark-auth-logo-frame", true
+      );
     } catch (cause) {
       if (isAxiosError(cause)) {
         if (cause.response?.status === 409) {
@@ -100,13 +116,15 @@ export default function StudentRegisterPage() {
     <main className="notmark-register-page" onPointerMove={trackRegisterPointer} onPointerLeave={resetRegisterPointer}>
       <div className="notmark-register-shell">
         <header className="notmark-register-header">
-          <Link className="notmark-register-brand" to="/login?role=student">
-            <span className="notmark-register-brand-frame" aria-hidden="true">
-              <img src="/brand/notmark-auth-logo-v56.png" alt="" />
+          <Link className="notmark-register-brand" to="/login?role=student" onClick={goToLogin}>
+            <span className="notmark-auth-logo-frame notmark-register-brand-frame" ref={registerLogoRef} aria-hidden="true">
+              <span className="notmark-auth-logo-inner">
+                <img src="/brand/notmark-auth-logo-v56.png" alt="" />
+              </span>
             </span>
             <span>Not<b>Mark</b></span>
           </Link>
-          <Link className="notmark-register-back" to="/login?role=student"><span aria-hidden="true">←</span> Giriş sayfasına dön</Link>
+          <Link className="notmark-register-back" to="/login?role=student" onClick={goToLogin}><span aria-hidden="true">←</span> Giriş sayfasına dön</Link>
         </header>
         <section className="notmark-register-card" aria-labelledby="notmark-register-title">
           <span className="notmark-register-eyebrow">NOTMARK · ÖĞRENCİ ÜYELİĞİ</span>
@@ -161,7 +179,7 @@ export default function StudentRegisterPage() {
               {submitting ? "Hesap oluşturuluyor..." : "Hesap Oluştur"}
             </button>
           </form>
-          <p className="notmark-register-footnote">Zaten hesabınız var mı? <Link to="/login?role=student">Giriş Yap</Link></p>
+          <p className="notmark-register-footnote">Zaten hesabınız var mı? <Link to="/login?role=student" onClick={goToLogin}>Giriş Yap</Link></p>
         </section>
       </div>
     </main>
