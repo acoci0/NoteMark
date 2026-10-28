@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type PointerEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import studentApi from "../api/studentClient";
@@ -11,6 +11,22 @@ type RegistrationForm = {
   password: string;
   confirmPassword: string;
 };
+
+// CSS degiskenlerini React state'e yazmadan guncelle; her mouse hareketinde render yok.
+function trackRegisterPointer(event: PointerEvent<HTMLElement>) {
+  if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const x = Math.max(0, Math.min(100, (event.clientX - rect.left) / rect.width * 100));
+  const y = Math.max(0, Math.min(100, (event.clientY - rect.top) / rect.height * 100));
+  event.currentTarget.style.setProperty("--register-mouse-x", `${x.toFixed(2)}%`);
+  event.currentTarget.style.setProperty("--register-mouse-y", `${y.toFixed(2)}%`);
+}
+
+function resetRegisterPointer(event: PointerEvent<HTMLElement>) {
+  event.currentTarget.style.setProperty("--register-mouse-x", "50%");
+  event.currentTarget.style.setProperty("--register-mouse-y", "40%");
+}
 
 export default function StudentRegisterPage() {
   const navigate = useNavigate();
@@ -81,14 +97,16 @@ export default function StudentRegisterPage() {
   };
 
   return (
-    <main className="notmark-register-page">
+    <main className="notmark-register-page" onPointerMove={trackRegisterPointer} onPointerLeave={resetRegisterPointer}>
       <div className="notmark-register-shell">
         <header className="notmark-register-header">
           <Link className="notmark-register-brand" to="/login?role=student">
-            <img src="/brand/notmark-auth-logo-v56.png" alt="" />
+            <span className="notmark-register-brand-frame" aria-hidden="true">
+              <img src="/brand/notmark-auth-logo-v56.png" alt="" />
+            </span>
             <span>Not<b>Mark</b></span>
           </Link>
-          <Link className="notmark-register-back" to="/login?role=student">Giriş sayfasına dön</Link>
+          <Link className="notmark-register-back" to="/login?role=student"><span aria-hidden="true">←</span> Giriş sayfasına dön</Link>
         </header>
         <section className="notmark-register-card" aria-labelledby="notmark-register-title">
           <span className="notmark-register-eyebrow">NOTMARK · ÖĞRENCİ ÜYELİĞİ</span>
