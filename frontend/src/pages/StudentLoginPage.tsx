@@ -358,7 +358,7 @@ export default function StudentLoginPage() {
           <div className="notmark-auth-brand">
             <div className="notmark-auth-logo-frame" ref={leftLogoRef}>
               <div className="notmark-auth-logo-inner">
-                <img src="/brand/notmark-logo.png" alt="NotMark" />
+                <img src="/brand/notmark-auth-logo-v56.png" alt="NotMark" />
               </div>
             </div>
             <div>
@@ -537,7 +537,7 @@ export default function StudentLoginPage() {
           />
 
           <div className="notmark-auth-cinematic-inner">
-            <img src="/brand/notmark-logo.png" alt="" />
+            <img src="/brand/notmark-auth-logo-v56.png" alt="" />
           </div>
         </div>,
         document.body
