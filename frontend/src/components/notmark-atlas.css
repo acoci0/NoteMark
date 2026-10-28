@@ -563,3 +563,142 @@
     opacity: .65;
   }
 }
+
+
+/* NOTMARK V55.1 / FINAL ATLAS REFINEMENT */
+
+/* Merkezdeki logonun dışındaki siyah köşe ve kenar boşluğu */
+
+.notmark-auth-page--atlas .nm-atlas__hub-inner {
+  position: relative;
+  isolation: isolate;
+
+  border-radius: 23%;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #193b73 0%,
+      #102953 48%,
+      #0a1b3c 100%
+    );
+
+  border: 1px solid rgba(255, 148, 62, .70);
+
+  box-shadow:
+    0 12px 38px rgba(0, 0, 0, .30),
+    0 0 29px rgba(255, 116, 28, .21),
+    inset 0 0 0 1px rgba(104, 155, 224, .30);
+}
+
+/* Görselin dıştaki gereksiz boşluğu kırpılır.
+   Logo harflerinin şekli değiştirilmez. */
+
+.notmark-auth-page--atlas .nm-atlas__hub-inner > img {
+  position: absolute;
+
+  left: -6%;
+  top: -6%;
+
+  display: block;
+
+  width: 112%;
+  height: 112%;
+
+  max-width: none;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+
+  object-fit: cover;
+  object-position: center;
+
+  image-rendering: auto;
+}
+
+/* Ek yapay köşe maskesi kullanılmaz. */
+
+.notmark-auth-page--atlas .nm-atlas__hub-inner::after {
+  content: none;
+  display: none;
+}
+
+/* Aktif Öğrenci Kitlesi: metin kesilmeden gösterilir. */
+
+.notmark-auth-page--atlas
+.nm-atlas--student
+.nm-atlas__node--2 {
+  width: 190px;
+}
+
+.notmark-auth-page--atlas
+.nm-atlas--student
+.nm-atlas__node--2
+.nm-atlas__node-label {
+  width: 184px;
+  min-height: 50px;
+  padding: 9px 7px;
+}
+
+.notmark-auth-page--atlas
+.nm-atlas--student
+.nm-atlas__node--2
+.nm-atlas__node-label strong {
+  font-size: 10.5px;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+
+/* Profesyonel iki satırlı slogan */
+
+.notmark-auth-page--atlas .nm-atlas__footer h2 {
+  margin: 0;
+
+  font-size: clamp(24px, 2.3vw, 35px);
+  font-weight: 800;
+
+  line-height: 1.18;
+  letter-spacing: -.042em;
+
+  color: #f4f7fd;
+  text-align: center;
+}
+
+.notmark-auth-page--atlas .nm-atlas__footer h2 em {
+  font-style: normal;
+  font-weight: 850;
+  color: #ff8935;
+}
+
+/* Daha dar masaüstü ekranlarında uyum */
+
+@media (min-width: 1001px) and (max-width: 1300px) {
+  .notmark-auth-page--atlas
+  .nm-atlas--student
+  .nm-atlas__node--2 {
+    width: 165px;
+  }
+
+  .notmark-auth-page--atlas
+  .nm-atlas--student
+  .nm-atlas__node--2
+  .nm-atlas__node-label {
+    width: 161px;
+  }
+
+  .notmark-auth-page--atlas
+  .nm-atlas--student
+  .nm-atlas__node--2
+  .nm-atlas__node-label strong {
+    font-size: 9.5px;
+  }
+}
+
+@media (min-width: 1001px) and (max-height: 780px) {
+  .notmark-auth-page--atlas .nm-atlas__footer h2 {
+    font-size: 25px;
+  }
+}

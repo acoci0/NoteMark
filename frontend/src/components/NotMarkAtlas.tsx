@@ -38,7 +38,7 @@ const studentNodes: Node[] = [
     id: "students",
     x: 710,
     y: 155,
-    title: "Öğrenciler",
+    title: "Aktif Öğrenci Kitlesi",
     subtitle: "Bilgi Topluluğu",
     Icon: UsersRound,
   },
@@ -571,17 +571,19 @@ export default function NotMarkAtlas({
 
       <div className="nm-atlas__footer">
         <h2>
-          {student
-            ? "Bilgi paylaşılır."
-            : "Güvenle yönetilir."}
-
-          <br />
-
-          <em>
-            {student
-              ? "Değer kazanır."
-              : "Kalite korunur."}
-          </em>
+          {student ? (
+            <>
+              Bilgi Güvenle <em>Paylaşılır.</em>
+              <br />
+              Değer Birlikte <em>Büyür.</em>
+            </>
+          ) : (
+            <>
+              Güvenle <em>Yönetilir.</em>
+              <br />
+              Kalite Birlikte <em>Korunur.</em>
+            </>
+          )}
         </h2>
 
         <p>
