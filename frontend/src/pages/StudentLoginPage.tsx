@@ -54,8 +54,8 @@ export default function StudentLoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
+  const registered = searchParams.get("registered") === "1";
 
 
   const [roleTransitioning, setRoleTransitioning] = useState(false);
@@ -182,7 +182,6 @@ export default function StudentLoginPage() {
       setPassword("");
       setShowPassword(false);
       setError("");
-      setNotice("");
     };
 
     if (
@@ -312,7 +311,6 @@ export default function StudentLoginPage() {
     if (loading || roleTransitioning) return;
 
     setError("");
-    setNotice("");
     setLoading(true);
     try {
       if (studentMode) {
@@ -434,6 +432,11 @@ export default function StudentLoginPage() {
             </div>
           </div>
 
+          {registered && studentMode && (
+            <div className="notmark-auth-success" role="status">
+              Hesabınız oluşturuldu. E-posta adresiniz ve şifrenizle giriş yapabilirsiniz.
+            </div>
+          )}
           {error && <div className="notmark-auth-error" role="alert">{error}</div>}
 
           <button
@@ -441,23 +444,17 @@ export default function StudentLoginPage() {
             type="submit"
             disabled={loading}
           >
-            <span>{loading ? "Giriş yapılıyor..." : "Giriş yap"}</span>
+            <span>{loading ? "Giriş yapılıyor..." : "Giriş Yap"}</span>
           </button>
 
           {studentMode ? (
             <div className="notmark-auth-extras">
-              <div className="notmark-auth-register">
-                <strong>NotMark'a katılın</strong>
-                <span>Yeni öğrenci kaydı henüz açık değil; doğrulama altyapısı hazırlanıyor.</span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setError("");
-                    setNotice("Yeni hesap oluşturma henüz açık değil. E-posta doğrulama altyapısı hazırlanıyor.");
-                  }}
-                >Hesap oluştur</button>
-              </div>
-              {notice && <p className="notmark-auth-notice" role="status">{notice}</p>}
+              <button
+                type="button"
+                className="notmark-auth-register-action"
+                disabled={loading || roleTransitioning}
+                onClick={() => navigate("/register")}
+              >Hesap Oluştur</button>
             </div>
           ) : (
             <p className="notmark-auth-admin-hint">

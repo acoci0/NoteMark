@@ -28,3 +28,10 @@ public sealed record StudentProfileDto(
     string DisplayName,
     string Role);
 
+// Öğrenci kaydı: rol ve hesap durumu istemciden kabul edilmez.
+public sealed record StudentRegisterRequest(
+    string? FirstName,
+    string? LastName,
+    string? Email,
+    string? Password,
+    string? ConfirmPassword);

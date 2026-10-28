@@ -1,3 +1,6 @@
+using Npgsql;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Net.Mail;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +17,69 @@ public sealed class AuthController(
     AppDbContext db,
     ITokenService tokenService) : ControllerBase
 {
+    [HttpPost("student/register")]
+    [EnableRateLimiting("StudentRegistration")]
+    public async Task<IActionResult> StudentRegister(
+        [FromBody] StudentRegisterRequest request,
+        CancellationToken cancellationToken)
+    {
+        var firstName = request.FirstName?.Trim() ?? string.Empty;
+        var lastName = request.LastName?.Trim() ?? string.Empty;
+        var email = request.Email?.Trim().ToLowerInvariant() ?? string.Empty;
+        var password = request.Password ?? string.Empty;
+        var confirmPassword = request.ConfirmPassword ?? string.Empty;
+        var displayName = $"{firstName} {lastName}";
+
+        if (firstName.Length is < 2 or > 40 ||
+            lastName.Length is < 2 or > 40 ||
+            displayName.Length > 80)
+            return BadRequest(new { message = "Ad ve soyad 2-40 karakter olmalıdır." });
+
+        if (email.Length is < 5 or > 160 ||
+            !MailAddress.TryCreate(email, out var parsed) ||
+            !string.Equals(parsed.Address, email, StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { message = "Geçerli bir e-posta adresi girin." });
+
+        if (password.Length is < 10 or > 128 ||
+            !password.Any(char.IsUpper) ||
+            !password.Any(char.IsLower) ||
+            !password.Any(char.IsDigit))
+            return BadRequest(new { message = "Şifre 10-128 karakter ve büyük harf, küçük harf, rakam içermelidir." });
+
+        if (password != confirmPassword)
+            return BadRequest(new { message = "Şifreler eşleşmiyor." });
+
+        if (await db.Users.AnyAsync(x => x.Email == email, cancellationToken))
+            return Conflict(new { message = "Bu e-posta adresiyle kayıtlı bir hesap var." });
+
+        var student = new ApplicationUser
+        {
+            Email = email,
+            DisplayName = displayName,
+            PasswordHash = string.Empty,
+            Role = UserRole.Student,
+            Status = AccountStatus.Active
+        };
+        student.PasswordHash = new PasswordHasher<ApplicationUser>()
+            .HashPassword(student, password);
+
+        db.Users.Add(student);
+        try
+        {
+            await db.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException exception) when (
+            exception.InnerException is PostgresException { SqlState: "23505" })
+        {
+            return Conflict(new { message = "Bu e-posta adresiyle kayıtlı bir hesap var." });
+        }
+
+        return StatusCode(StatusCodes.Status201Created, new
+        {
+            message = "Hesap oluşturuldu. Giriş yapabilirsiniz."
+        });
+    }
+
     [HttpPost("admin/login")]
     public async Task<ActionResult<AdminLoginResponse>> AdminLogin(
         AdminLoginRequest request,

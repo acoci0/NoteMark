@@ -428,6 +428,20 @@ builder.Services.AddRateLimiter(options =>
                                 true
                         });
         });
+
+    // Kayıt formuna yönelik IP bazlı koruma.
+    options.AddPolicy(
+        "StudentRegistration",
+        httpContext => RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 6,
+                Window = TimeSpan.FromMinutes(10),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+
 });
 
 /*

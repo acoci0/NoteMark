@@ -37101,3 +37101,123 @@ input[type="file"]::file-selector-button {
     animation: none !important;
   }
 }
+
+
+/* NOTMARK V63 / FULL-WIDTH REGISTER BUTTON */
+.notmark-auth-page--atlas.notmark-auth-page--student .notmark-auth-extras {
+  width: 100%;
+  margin-top: 13px;
+}
+.notmark-auth-page--atlas .notmark-auth-register-action {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  margin: 5px 0 0;
+  padding: 10px 16px;
+  border: 1.5px solid #ff8636;
+  border-radius: 11px;
+  background: rgba(37, 47, 61, .78);
+  color: #ff9b4f;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  cursor: pointer;
+  transition: background .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.notmark-auth-page--atlas .notmark-auth-register-action:hover {
+  background: rgba(52, 61, 73, .94);
+  box-shadow: 0 0 20px rgba(255, 123, 34, .18);
+  transform: translateY(-1px);
+}
+.notmark-auth-page--atlas .notmark-auth-register-action:focus-visible {
+  outline: 2px solid #ff9b4f;
+  outline-offset: 3px;
+}
+.notmark-auth-page--atlas .notmark-auth-register-action:disabled {
+  opacity: .5;
+  cursor: wait;
+}
+.notmark-auth-success {
+  margin: 10px 0;
+  padding: 11px 12px;
+  border: 1px solid rgba(102, 196, 148, .45);
+  border-radius: 10px;
+  background: rgba(63, 136, 100, .12);
+  color: #b9f1d4;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* NOTMARK V63 / STUDENT REGISTRATION PAGE */
+.notmark-register-page {
+  min-height: 100vh;
+  padding: 34px 18px 65px;
+  box-sizing: border-box;
+  color: #f3f6fc;
+  background:
+    radial-gradient(circle at 20% 6%, rgba(255, 112, 20, .10), transparent 31%),
+    radial-gradient(circle at 90% 100%, rgba(47, 96, 160, .13), transparent 40%),
+    #0c1420;
+}
+.notmark-register-shell {max-width: 610px; margin: 0 auto;}
+.notmark-register-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 25px;
+}
+.notmark-register-brand { display:flex; align-items:center; gap: 12px; text-decoration: none; color: #f3f6fc; font-size: 20px; font-weight: 850; }
+.notmark-register-brand img {width: 45px; height: 45px; border-radius: 12px; object-fit: cover; }
+.notmark-register-brand b { color: #ff8e3d; }
+.notmark-register-back { color: #b6c6d8; text-decoration: none; font-size: 12px; font-weight: 700; }
+.notmark-register-back:hover {color: #ff9d54;}
+.notmark-register-card {
+  padding: clamp(22px, 4vw, 38px);
+  border-radius: 21px;
+  border: 1px solid rgba(120, 155, 188, .24);
+  background: linear-gradient(150deg, #17283b, #101c2c 65%, #0b1928);
+  box-shadow: 0 24px 62px rgba(0,0,0,.24), 0 0 28px rgba(255,112,20,.035);
+}
+.notmark-register-eyebrow {font-size: 11px; color: #ff9d55; font-weight: 800; letter-spacing: .16em;}
+.notmark-register-card h1 {margin: 9px 0; font-size: clamp(25px,4vw,32px); line-height: 1.15; letter-spacing: -.035em;}
+.notmark-register-intro {margin: 0 0 24px; font-size: 13px; line-height: 1.7; color: #a7bbcf;}
+.notmark-register-grid {display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px;}
+.notmark-register-field {display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; color: #e1e8f3; font-size: 12px; font-weight: 750; min-width: 0;}
+.notmark-register-field input {
+  box-sizing: border-box; width: 100%; min-height: 47px; padding: 0 13px;
+  border: 1px solid rgba(172, 194, 221, .18); border-radius: 11px;
+  background: #0a1725; color: #f4f7fc; font: inherit; font-size: 13px; outline: none;
+}
+.notmark-register-field input::placeholder {color: #75889f;}
+.notmark-register-field input:focus { border-color: #ff883c; box-shadow: 0 0 0 3px rgba(255,125,40,.11); }
+.notmark-register-help {font-size: 11px; font-weight: 450; line-height: 1.5; color: #91a7be;}
+.notmark-register-password { position: relative; }
+.notmark-register-password input { padding-right: 75px; }
+.notmark-register-password button {
+  position: absolute; right: 6px; top: 7px; min-height: 33px;
+  padding: 0 12px; border: 0; border-radius: 8px; background: rgba(255,145,60,.11);
+  color: #ffad72; cursor: pointer; font-size: 11px; font-weight: 800;
+}
+.notmark-register-confirm {display:flex; align-items:flex-start; gap:10px; margin: 5px 0 20px; font-size: 12px; line-height: 1.55; color: #acbfd2; cursor:pointer;}
+.notmark-register-confirm input {accent-color: #ff7f2b; margin-top: 3px; flex: 0 0 auto;}
+.notmark-register-submit {
+  display: block; width: 100%; min-height: 50px; border: 1px solid #ff751c;
+  border-radius: 11px; background: linear-gradient(120deg,#ff812e,#ff6100);
+  color: white; font: inherit; font-size: 14px; font-weight: 850; cursor: pointer;
+}
+.notmark-register-submit:hover:not(:disabled) {filter: brightness(1.08);}
+.notmark-register-submit:disabled {opacity: .55; cursor: wait;}
+.notmark-register-footnote { margin: 17px 0 0; text-align:center; font-size: 11px; line-height: 1.65; color: #8da4ba; }
+.notmark-register-footnote a {color: #ffa35e; text-decoration: none; font-weight: 800;}
+.notmark-register-notice { margin: -1px 0 20px; padding: 12px 14px; border: 1px solid rgba(255,139,53,.22); border-radius: 10px; background: rgba(255,128,29,.07); color: #c5b4a5; font-size: 11px; line-height: 1.6; }
+.notmark-register-error {padding: 12px 14px; margin-bottom: 16px; border-radius: 10px; border: 1px solid rgba(253,107,99,.45); background: rgba(150,33,25,.17); color: #ffd1ca; font-size: 12px; line-height: 1.5;}
+@media (max-width: 560px) {
+  .notmark-register-page { padding: 18px 12px 40px; }
+  .notmark-register-card {padding: 21px 17px; border-radius: 15px;}
+  .notmark-register-grid {grid-template-columns: minmax(0,1fr); gap: 0;}
+  .notmark-register-header {margin-bottom: 15px;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .notmark-auth-page--atlas .notmark-auth-register-action {transition: none;}
+}

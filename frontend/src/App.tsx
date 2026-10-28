@@ -18,6 +18,7 @@ import ReportsPage from "./pages/ReportsPage";
 import AdminSettingsPage from "./pages/AdminSettingsPage";
 import AdminAuditLogsPage from "./pages/AdminAuditLogsPage";
 import StudentLoginPage from "./pages/StudentLoginPage";
+import StudentRegisterPage from "./pages/StudentRegisterPage";
 import StudentMarketplacePage from "./pages/StudentMarketplacePage";
 import StudentNoteRequestPage from "./pages/StudentNoteRequestPage";
 import StudentNoteRequestsPage from "./pages/StudentNoteRequestsPage";
@@ -101,6 +102,10 @@ export default function App() {
       <Route
         path="/login"
         element={<StudentLoginPage />}
+      />
+      <Route
+        path="/register"
+        element={<StudentRegisterPage />}
       />
 
       <Route
