@@ -52,54 +52,7 @@ export default function StudentLoginPage() {
 
   const emailInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const input = emailInputRef.current;
-    if (!input) return;
 
-    let userInteracted = false;
-    let active = true;
-
-    const markInteraction = () => {
-      userInteracted = true;
-    };
-
-    const clearUnrequestedFocus = () => {
-      if (!active || userInteracted) return;
-
-      if (document.activeElement === input) {
-        input.blur();
-      }
-    };
-
-    // Gerçek kullanıcı etkileşimini engelleme.
-    window.addEventListener("pointerdown", markInteraction, {
-      capture: true,
-      once: true,
-    });
-
-    window.addEventListener("keydown", markInteraction, {
-      capture: true,
-      once: true,
-    });
-
-    // Safari odak geri yüklemesi ilk render sonrasında
-    // gerçekleşebildiğinden kısa başlangıç aralığını kontrol et.
-    const frame = window.requestAnimationFrame(clearUnrequestedFocus);
-
-    const timers = [0, 80, 200, 450, 900, 1500].map((ms) =>
-      window.setTimeout(clearUnrequestedFocus, ms)
-    );
-
-    return () => {
-      active = false;
-
-      window.cancelAnimationFrame(frame);
-      timers.forEach(window.clearTimeout);
-
-      window.removeEventListener("pointerdown", markInteraction, true);
-      window.removeEventListener("keydown", markInteraction, true);
-    };
-  }, []);
 
 
   const [email, setEmail] = useState("");
