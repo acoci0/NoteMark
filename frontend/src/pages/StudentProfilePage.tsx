@@ -1290,6 +1290,41 @@ export default function StudentProfilePage() {
   /*
    * Pending doğrulama başvurusunu siler.
    */
+  // NOTMARK_DELETE_CONFIRM_V2
+  const [verificationToDelete, setVerificationToDelete] =
+    useState<StudentVerificationItem | null>(null);
+
+  const [deleteDialogBusy, setDeleteDialogBusy] =
+    useState(false);
+
+  const deleteDialogCancelRef =
+    useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!verificationToDelete) return;
+
+    const previousOverflow = window.document.body.style.overflow;
+    window.document.body.style.overflow = "hidden";
+
+    const onEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape" && !deleteDialogBusy) {
+        setVerificationToDelete(null);
+      }
+    };
+
+    window.document.addEventListener("keydown", onEscape);
+
+    const timer = window.setTimeout(() => {
+      deleteDialogCancelRef.current?.focus();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.document.removeEventListener("keydown", onEscape);
+      window.document.body.style.overflow = previousOverflow;
+    };
+  }, [verificationToDelete, deleteDialogBusy]);
+
   const deleteVerification = async (
     item: StudentVerificationItem
   ) => {
@@ -1297,19 +1332,23 @@ export default function StudentProfilePage() {
       setMessage(
         "Yalnızca inceleme bekleyen doğrulamalar silinebilir."
       );
-
       return;
     }
 
-    const confirmed =
-      window.confirm(
-        `"${item.universityName} - ${item.departmentName}" doğrulamasını silmek istediğinize emin misiniz?\n\nBu işlem geri alınamaz.`
-      );
+    setVerificationToDelete(item);
+  };
 
-    if (!confirmed) {
+  const confirmDeleteVerification = async () => {
+    const item = verificationToDelete;
+
+    if (!item || deleteDialogBusy) return;
+
+    if (item.status !== "Pending") {
+      setVerificationToDelete(null);
       return;
     }
 
+    setDeleteDialogBusy(true);
     setDeletingId(item.id);
     setMessage("");
 
@@ -1332,6 +1371,8 @@ export default function StudentProfilePage() {
       );
     } finally {
       setDeletingId(null);
+      setDeleteDialogBusy(false);
+      setVerificationToDelete(null);
     }
   };
 
@@ -2786,6 +2827,78 @@ export default function StudentProfilePage() {
               />
             ))}
         </div>
+
+        {verificationToDelete && (
+          <div
+            className="notmark-delete-overlay"
+            onMouseDown={(event) => {
+              if (
+                event.target === event.currentTarget &&
+                !deleteDialogBusy
+              ) {
+                setVerificationToDelete(null);
+              }
+            }}
+          >
+            <div
+              className="notmark-delete-dialog"
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="notmark-delete-title"
+              aria-describedby="notmark-delete-description"
+            >
+              <div className="notmark-delete-dialog__icon">
+                <Trash2 size={22} />
+              </div>
+
+              <h2 id="notmark-delete-title">
+                Doğrulamayı Sil
+              </h2>
+
+              <p id="notmark-delete-description">
+                <strong>
+                  {verificationToDelete.universityName}
+                </strong>
+                {" - "}
+                {verificationToDelete.departmentName}
+                {" "}
+                doğrulamasını silmek istediğinize
+                emin misiniz?
+              </p>
+
+              <div className="notmark-delete-dialog__warning">
+                <AlertTriangle size={17} />
+                <span>Bu işlem geri alınamaz.</span>
+              </div>
+
+              <div className="notmark-delete-dialog__actions">
+                <button
+                  ref={deleteDialogCancelRef}
+                  type="button"
+                  className="notmark-delete-dialog__cancel"
+                  disabled={deleteDialogBusy}
+                  onClick={() =>
+                    setVerificationToDelete(null)
+                  }
+                >
+                  Vazgeç
+                </button>
+
+                <button
+                  type="button"
+                  className="notmark-delete-dialog__confirm"
+                  disabled={deleteDialogBusy}
+                  onClick={() =>
+                    void confirmDeleteVerification()
+                  }
+                >
+                  <Trash2 size={16} />
+                  {deleteDialogBusy ? "Siliniyor..." : "Sil"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
