@@ -126,11 +126,20 @@ export async function playStudentVerificationGenie({
   flyingIcon.style.height =
     `${bigH}px`;
 
+  const sourceStyle =
+    window.getComputedStyle(icon);
+
+  const sourceBorder =
+    parseFloat(sourceStyle.borderTopWidth) || 1;
+
+  const sourceRadius =
+    parseFloat(sourceStyle.borderTopLeftRadius) || 11;
+
   flyingIcon.style.borderWidth =
-    `${iconScale}px`;
+    `${sourceBorder * iconScale}px`;
 
   flyingIcon.style.borderRadius =
-    `${11 * iconScale}px`;
+    `${sourceRadius * iconScale}px`;
 
   const svg =
     flyingIcon.querySelector<SVGSVGElement>("svg");
@@ -154,7 +163,7 @@ export async function playStudentVerificationGenie({
         element.tagName.toLowerCase() === "path"
     );
 
-    if (paths.length >= 5) {
+    if (paths.length >= 2) {
       const group =
         window.document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -166,8 +175,24 @@ export async function playStudentVerificationGenie({
       svg.insertBefore(group, paths[0]);
 
       group.append(paths[0], paths[1]);
+
+      group.style.transformBox = "view-box";
+
+      group.style.transformOrigin =
+        "12.5% 25%";
     }
   }
+
+  // NOTMARK_GENIE_V8_SMOOTH_SCALE
+  //
+  // Büyük SVG animasyon başlamadan önce
+  // kendi küçük başlangıç boyutuna getirilir.
+  // Böylece ilk karede büyüklük sıçraması olmaz.
+
+  flyingIcon.style.transform =
+    `scale(${1 / iconScale})`;
+
+  flyingIcon.style.opacity = "1";
 
   scene.append(ghost, flyingIcon);
   window.document.body.appendChild(scene);
@@ -263,8 +288,8 @@ export async function playStudentVerificationGenie({
         }
       ],
       {
-        duration: 700,
-        easing: "cubic-bezier(.25,.65,.18,1)",
+        duration: 1200,
+        easing: "cubic-bezier(.4,0,.2,1)",
         fill: "forwards"
       }
     );
@@ -290,7 +315,7 @@ export async function playStudentVerificationGenie({
       "translate3d(0,0,0) rotate(0deg)";
 
     const lidOpened =
-      "translate3d(-3px,-9px,0) rotate(-38deg)";
+      "translate3d(-5px,-12px,0) rotate(-38deg)";
 
     /*
      * AŞAMA 3
