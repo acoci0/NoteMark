@@ -13,6 +13,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type FormEvent,
   type KeyboardEvent,
 } from "react";
@@ -1307,8 +1308,14 @@ export default function StudentProfilePage() {
   const [trashPosition, setTrashPosition] =
     useState<{ x: number; y: number } | null>(null);
 
-  const [trashOrigin, setTrashOrigin] =
-    useState({ x: 42, y: 42 });
+  // NOTMARK_GENIE_EFFECT_V5
+  // Popup'un merkezinden soldaki kutuya hareket mesafesi.
+  const [genieTravel, setGenieTravel] =
+    useState({ x: 0, y: 0 });
+
+  // Animasyon bitince ekranı yeniden gösterir.
+  const [deleteReveal, setDeleteReveal] =
+    useState(false);
 
   const deleteDialogCancelRef =
     useRef<HTMLButtonElement>(null);
@@ -1333,6 +1340,20 @@ export default function StudentProfilePage() {
       }
     };
   }, []);
+
+  // Sinematik geçişte arka plan parçacıklarını duraklat.
+  useEffect(() => {
+    const body = window.document.body;
+
+    body.classList.toggle(
+      "notmark-genie-active",
+      deleteFlight
+    );
+
+    return () => {
+      body.classList.remove("notmark-genie-active");
+    };
+  }, [deleteFlight]);
 
   // Modal açıkken sayfanın kaydırılmasını engelle.
   // Önceki odak konumunu kapatırken geri yükle.
@@ -1461,7 +1482,9 @@ export default function StudentProfilePage() {
 
     setDeleteDialogError("");
     setDeleteFlight(false);
+    setDeleteReveal(false);
     setTrashPosition(null);
+    setGenieTravel({ x: 0, y: 0 });
     setVerificationToDelete(item);
   };
 
@@ -1515,68 +1538,138 @@ export default function StudentProfilePage() {
           .querySelector(".student-app-shell")
           ?.getAttribute("data-motion") === "off";
 
-      const iconRect =
-        deleteDialogIconRef.current
-          ?.getBoundingClientRect();
-
       const panelRect =
         deleteDialogPanelRef.current
           ?.getBoundingClientRect();
 
+      // Kullanıcı hareket azaltmayı seçtiyse
+      // silme işlemi animasyonsuz tamamlanır.
       if (
         reducedMotion ||
         motionOff ||
-        !iconRect ||
-        !panelRect
+        !panelRect ||
+        panelRect.width <= 0
       ) {
+        setItems((current) =>
+          current.filter((x) => x.id !== item.id)
+        );
+
         setVerificationToDelete(null);
         setDeleteDialogBusy(false);
         setDeletingId(null);
 
         deleteInFlightRef.current = false;
-
-        await load();
         return;
       }
 
-      // Animasyonun hedefi gerçek çöp ikonu merkezidir.
-      const iconCenterX =
-        iconRect.left + iconRect.width / 2;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
 
-      const iconCenterY =
-        iconRect.top + iconRect.height / 2;
+      const panelCenterX =
+        panelRect.left + panelRect.width / 2;
 
-      // Popup bu noktaya doğru küçülerek kapanır.
-      setTrashOrigin({
-        x: iconCenterX - panelRect.left,
-        y: iconCenterY - panelRect.top
+      const panelCenterY =
+        panelRect.top + panelRect.height / 2;
+
+      /*
+       * Çöp kutusu popup'un üzerinde değil,
+       * ekranın sol tarafında konumlanır.
+       *
+       * Masaüstünde popup ile arasında
+       * görsel olarak yeterli boşluk kalır.
+       */
+      const trashX = Math.max(
+        68,
+        Math.min(
+          viewportWidth * 0.23,
+          panelRect.left - 105
+        )
+      );
+
+      const trashY = Math.max(
+        95,
+        Math.min(
+          viewportHeight - 95,
+          panelCenterY
+        )
+      );
+
+      /*
+       * Genie transform'u popup'un kendi
+       * merkezinden hesaplanır.
+       *
+       * Sabit koordinat kullanılmaz.
+       */
+      setGenieTravel({
+        x: trashX - panelCenterX,
+        y: trashY - panelCenterY
       });
 
       setTrashPosition({
-        x: iconCenterX,
-        y: iconCenterY
+        x: trashX,
+        y: trashY
       });
 
-      // API başarılı: artık pencereyi çöp kutusuna çek.
+      /*
+       * API işlemi zaten başarılı.
+       *
+       * Listeyi şimdi güncelliyoruz;
+       * böylece perde kalkarken yeniden
+       * loading ekranına geçilmiyor.
+       */
+      setItems((current) =>
+        current.filter((x) => x.id !== item.id)
+      );
+
+      setDeleteReveal(false);
+
+      /*
+       * Faz 1:
+       * Arka plan düz lacivert olur.
+       *
+       * Faz 2:
+       * Soldaki çöp kutusu büyür.
+       *
+       * Faz 3:
+       * Kapak açılır.
+       *
+       * Faz 4:
+       * Popup soldaki kutuya akarak küçülür.
+       */
       setDeleteFlight(true);
 
-      // Animasyon tamamlandıktan sonra liste yenilenir.
-      deleteFlightTimerRef.current = window.setTimeout(
-        () => {
-          deleteFlightTimerRef.current = null;
+      deleteFlightTimerRef.current =
+        window.setTimeout(() => {
 
-          setVerificationToDelete(null);
-          setDeleteFlight(false);
-          setTrashPosition(null);
-          setDeleteDialogBusy(false);
-          setDeletingId(null);
+          /*
+           * Faz 5:
+           * Kapak kapanmış ve çöp kutusu
+           * kaybolmuştur.
+           *
+           * Şimdi ekran yeniden görünür.
+           */
+          setDeleteReveal(true);
 
-          deleteInFlightRef.current = false;
+          deleteFlightTimerRef.current =
+            window.setTimeout(() => {
 
-          void load();
-        },
-        2050
-      );
+              deleteFlightTimerRef.current = null;
+
+              setVerificationToDelete(null);
+              setDeleteFlight(false);
+              setDeleteReveal(false);
+
+              setTrashPosition(null);
+              setGenieTravel({ x: 0, y: 0 });
+
+              setDeleteDialogBusy(false);
+              setDeletingId(null);
+
+              deleteInFlightRef.current = false;
+
+            }, 460);
+
+        }, 2100);
 
     } catch (error: unknown) {
       // API başarısızsa başarı animasyonu oynatılmaz.
@@ -3051,7 +3144,7 @@ export default function StudentProfilePage() {
           <div
             className={`notmark-delete-overlay${
               deleteFlight ? " is-consuming" : ""
-            }`}
+            }${deleteReveal ? " is-revealing" : ""}`}
             onMouseDown={(event) => {
               if (
                 event.target === event.currentTarget &&
@@ -3071,8 +3164,29 @@ export default function StudentProfilePage() {
               aria-describedby="notmark-delete-description"
               aria-busy={deleteDialogBusy}
               style={{
-                transformOrigin:
-                  `${trashOrigin.x}px ${trashOrigin.y}px`
+                transformOrigin: "center center",
+                ...({
+                  "--nm-genie-x22":
+                    `${genieTravel.x * 0.22}px`,
+                  "--nm-genie-y22":
+                    `${genieTravel.y * 0.22}px`,
+                  "--nm-genie-x48":
+                    `${genieTravel.x * 0.48}px`,
+                  "--nm-genie-y48":
+                    `${genieTravel.y * 0.48}px`,
+                  "--nm-genie-x76":
+                    `${genieTravel.x * 0.76}px`,
+                  "--nm-genie-y76":
+                    `${genieTravel.y * 0.76}px`,
+                  "--nm-genie-x92":
+                    `${genieTravel.x * 0.92}px`,
+                  "--nm-genie-y92":
+                    `${genieTravel.y * 0.92}px`,
+                  "--nm-genie-x":
+                    `${genieTravel.x}px`,
+                  "--nm-genie-y":
+                    `${genieTravel.y}px`
+                } as CSSProperties)
               }}
             >
               <div

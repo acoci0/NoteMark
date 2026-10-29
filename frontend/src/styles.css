@@ -38954,3 +38954,401 @@ input[type="file"]::file-selector-button {
 }
 
 /* NOTMARK_VERIFICATION_DELETE_V4_END */
+
+
+/* =========================================================
+   NOTMARK_GENIE_EFFECT_V5
+   macOS-inspired window-to-trash transition
+
+   Performans:
+   - transform + opacity animasyonları
+   - sabit renk arka plan
+   - animasyon sırasında backdrop-filter yok
+   - requestAnimationFrame döngüsü yok
+   - JS ile her karede DOM ölçümü yok
+   ========================================================= */
+
+
+/* =========================================================
+   1. ARKA PLAN
+   ========================================================= */
+
+.notmark-delete-overlay.is-consuming {
+  background: #08111f !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  animation: none !important;
+
+  isolation: isolate;
+
+  transition:
+    background-color 180ms ease;
+}
+
+/* Açık tema için de sinematik geçiş düz lacivert. */
+
+.student-app-shell[data-theme="light"]
+.notmark-delete-overlay.is-consuming {
+  background: #08111f !important;
+}
+
+/* Animasyon süresince arka plan parçacıklarını durdur. */
+
+body.notmark-genie-active
+.notmark-profile-math-layer,
+
+body.notmark-genie-active
+.notmark-profile-math-particle,
+
+body.notmark-genie-active
+.notmark-profile-math-symbol {
+  visibility: hidden !important;
+  animation-play-state: paused !important;
+}
+
+
+/* =========================================================
+   2. SOL TARAFTAKI COP KUTUSU
+   ========================================================= */
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-flying-trash {
+  position: fixed;
+
+  z-index: 3;
+
+  width: 40px;
+  height: 40px;
+
+  margin-left: -20px;
+  margin-top: -20px;
+
+  pointer-events: none;
+
+  transform-origin: center center;
+
+  backface-visibility: hidden;
+
+  will-change: transform, opacity;
+
+  animation:
+    notmark-v5-trash
+    2100ms
+    cubic-bezier(.3, 0, .2, 1)
+    both !important;
+}
+
+/* Çöp kutusunun gövde ve kapak çizimleri */
+
+.notmark-delete-overlay.is-consuming
+.notmark-trash-animated-svg {
+  width: 25px;
+  height: 31px;
+
+  display: block;
+
+  overflow: visible;
+
+  color: #ff91a4;
+}
+
+/* Kapak açılıp kapanır. */
+
+.notmark-delete-overlay.is-consuming
+.notmark-trash-lid {
+  transform-box: view-box;
+  transform-origin: 12px 20px;
+
+  will-change: transform;
+
+  animation:
+    notmark-v5-lid
+    2100ms
+    cubic-bezier(.4, 0, .2, 1)
+    both !important;
+}
+
+
+/* =========================================================
+   3. GENIE EFFECT - POPUP SOLA AKAR
+   ========================================================= */
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-dialog {
+  z-index: 2;
+
+  pointer-events: none;
+
+  transform-origin: center center !important;
+
+  backface-visibility: hidden;
+
+  will-change: transform, opacity;
+
+  animation:
+    notmark-v5-genie
+    2100ms
+    cubic-bezier(.28, .66, .18, 1)
+    both !important;
+}
+
+
+/* =========================================================
+   4. COP KUTUSU BUYUME VE KAYBOLMA
+   ========================================================= */
+
+@keyframes notmark-v5-trash {
+
+  0% {
+    opacity: 0;
+    transform: scale(.7);
+  }
+
+  12% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+
+  24% {
+    opacity: 1;
+    transform: scale(2.45);
+  }
+
+  36% {
+    opacity: 1;
+    transform: scale(3.3);
+  }
+
+  72% {
+    opacity: 1;
+    transform: scale(3.3);
+  }
+
+  84% {
+    opacity: 1;
+    transform: scale(3.15);
+  }
+
+  92% {
+    opacity: .48;
+    transform: scale(3.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.7);
+  }
+}
+
+
+/* =========================================================
+   5. KAPAK ACILMA / KAPANMA
+   ========================================================= */
+
+@keyframes notmark-v5-lid {
+
+  0%,
+  23% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg);
+  }
+
+  36% {
+    transform:
+      translate3d(-3px, -9px, 0)
+      rotate(-38deg);
+  }
+
+  69% {
+    transform:
+      translate3d(-3px, -9px, 0)
+      rotate(-38deg);
+  }
+
+  82% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg);
+  }
+
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg);
+  }
+}
+
+
+/* =========================================================
+   6. GENIE EFFECT
+
+   Popup sabit biçimde küçülmez.
+
+   Önce sola yönelir.
+   Sonra yatay ve dikey ölçüler
+   farklı oranlarda daralır.
+   Hafif skew hareketiyle kutuya akar.
+   ========================================================= */
+
+@keyframes notmark-v5-genie {
+
+  0%,
+  27% {
+    opacity: 1;
+
+    transform:
+      translate3d(0, 0, 0)
+      skewY(0deg)
+      scale(1, 1);
+  }
+
+  39% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        var(--nm-genie-x22),
+        var(--nm-genie-y22),
+        0
+      )
+      skewY(-5deg)
+      scale(.94, .98);
+  }
+
+  53% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        var(--nm-genie-x48),
+        var(--nm-genie-y48),
+        0
+      )
+      skewY(-11deg)
+      scale(.73, .80);
+  }
+
+  65% {
+    opacity: .95;
+
+    transform:
+      translate3d(
+        var(--nm-genie-x76),
+        var(--nm-genie-y76),
+        0
+      )
+      skewY(-17deg)
+      scale(.38, .46);
+  }
+
+  73% {
+    opacity: .75;
+
+    transform:
+      translate3d(
+        var(--nm-genie-x92),
+        var(--nm-genie-y92),
+        0
+      )
+      skewY(-9deg)
+      scale(.12, .23);
+  }
+
+  80% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--nm-genie-x),
+        var(--nm-genie-y),
+        0
+      )
+      skewY(0deg)
+      scale(.012, .018);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--nm-genie-x),
+        var(--nm-genie-y),
+        0
+      )
+      scale(.012, .018);
+  }
+}
+
+
+/* =========================================================
+   7. EKRANIN YENIDEN GORUNMESI
+   ========================================================= */
+
+.notmark-delete-overlay.is-consuming.is-revealing {
+  pointer-events: none;
+
+  animation:
+    notmark-v5-screen-reveal
+    460ms
+    ease-in-out
+    forwards !important;
+}
+
+@keyframes notmark-v5-screen-reveal {
+
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+
+/* =========================================================
+   8. GPU VE MOBIL OPTIMIZASYONU
+   ========================================================= */
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-dialog,
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-flying-trash {
+  transform-style: flat;
+}
+
+@media (max-width: 600px) {
+
+  .notmark-delete-overlay.is-consuming
+  .notmark-delete-flying-trash {
+    transform-origin: center center;
+  }
+}
+
+
+/* =========================================================
+   9. HAREKET AZALTMA TERCIHI
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .notmark-delete-overlay.is-consuming
+  .notmark-delete-dialog,
+
+  .notmark-delete-overlay.is-consuming
+  .notmark-delete-flying-trash,
+
+  .notmark-delete-overlay.is-consuming
+  .notmark-trash-lid,
+
+  .notmark-delete-overlay.is-consuming.is-revealing {
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_GENIE_EFFECT_V5_END */
