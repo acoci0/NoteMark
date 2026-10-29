@@ -38091,3 +38091,65 @@ input[type="file"]::file-selector-button {
 }
 
 /* NOTMARK_STATUS_BADGES_V2_END */
+
+/* NOTMARK_STATUS_BADGES_V3_START */
+
+/* Üniversite doğrulama durumları: butonlardan ayrı tasarım */
+
+.student-app-shell[data-theme="dark"] .student-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+
+  min-height: 30px !important;
+  padding: 6px 12px !important;
+
+  border-radius: 7px !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-left-width: 3px !important;
+
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  letter-spacing: .035em !important;
+  line-height: 1.2 !important;
+
+  background: rgba(8,15,29,.72) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+
+  cursor: default !important;
+  transform: none !important;
+}
+
+.student-app-shell[data-theme="dark"]
+.student-status--pending {
+  color: #f6c979 !important;
+  border-left-color: #f0aa38 !important;
+}
+
+.student-app-shell[data-theme="dark"]
+.student-status--approved {
+  color: #83e8bd !important;
+  border-left-color: #36d49a !important;
+}
+
+.student-app-shell[data-theme="dark"]
+.student-status--rejected {
+  color: #f4a0ae !important;
+  border-left-color: #ef657c !important;
+}
+
+.student-app-shell[data-theme="dark"]
+.student-status svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+}
+
+.student-app-shell[data-theme="dark"]
+.student-status:hover {
+  transform: none !important;
+  filter: none !important;
+}
+
+/* NOTMARK_STATUS_BADGES_V3_END */
