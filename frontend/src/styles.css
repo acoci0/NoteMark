@@ -38723,3 +38723,234 @@ input[type="file"]::file-selector-button {
 }
 
 /* NOTMARK_DELETE_CINEMATIC_V3_END */
+
+
+/* =====================================================
+   NOTMARK_VERIFICATION_DELETE_V4
+
+   Rejected + Pending ortak silme tasarımı.
+   Animasyon:
+   1. Çöp kutusu büyür.
+   2. Kapak açılır.
+   3. Popup kutuya çekilir.
+   4. Kapak kapanır.
+   5. Kutu yavaşça kaybolur.
+   ===================================================== */
+
+/* İtiraz ve silme butonları yan yana */
+
+.student-app-shell
+.student-verification-card__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.student-app-shell
+.student-verification-card__actions
+.student-appeal-button {
+  order: 1;
+}
+
+.student-app-shell
+.student-verification-card__actions
+.student-delete-button {
+  order: 2;
+}
+
+/* SVG çöp kutusu */
+
+.notmark-trash-animated-svg {
+  width: 24px;
+  height: 29px;
+
+  overflow: visible;
+
+  color: #ff91a4;
+
+  transform: translateZ(0);
+}
+
+/* Kapak menteşesi */
+
+.notmark-trash-lid {
+  transform-box: view-box;
+  transform-origin: 12px 20px;
+
+  will-change: transform;
+}
+
+/* Gövde sabit kalır */
+
+.notmark-trash-body {
+  transform-box: fill-box;
+}
+
+/* Eski uçuş animasyonunu güncelle */
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-flying-trash {
+  animation:
+    notmark-trash-v4-flight
+    2050ms
+    cubic-bezier(.35, 0, .2, 1)
+    both;
+}
+
+/* Popup kapağın açılmasından sonra küçülür */
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-dialog {
+  animation:
+    notmark-trash-v4-consume
+    2050ms
+    cubic-bezier(.38, 0, .20, 1)
+    both;
+}
+
+/* Kapağın açılması ve kapanması */
+
+.notmark-delete-overlay.is-consuming
+.notmark-trash-lid {
+  animation:
+    notmark-trash-v4-lid
+    2050ms
+    cubic-bezier(.4, 0, .2, 1)
+    both;
+}
+
+/* Perde animasyonunu yeni süreyle eşleştir */
+
+.notmark-delete-overlay.is-consuming {
+  animation-duration: 2050ms;
+}
+
+/* Çöp kutusu açılıp kapanırken büyür */
+
+@keyframes notmark-trash-v4-flight {
+  0% {
+    opacity: 0.15;
+    transform: scale(.85);
+  }
+
+  15% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+
+  30% {
+    opacity: 1;
+    transform: scale(3);
+  }
+
+  55% {
+    opacity: 1;
+    transform: scale(3);
+  }
+
+  77% {
+    opacity: 1;
+    transform: scale(3);
+  }
+
+  86% {
+    opacity: .88;
+    transform: scale(2.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.55);
+  }
+}
+
+/* Gerçek, ayrı kapak hareketi */
+
+@keyframes notmark-trash-v4-lid {
+  0%,
+  16% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg);
+  }
+
+  32%,
+  61% {
+    transform:
+      translate3d(-2px, -8px, 0)
+      rotate(-36deg);
+  }
+
+  77%,
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg);
+  }
+}
+
+/* Popup çöp kutusuna doğru çekilir */
+
+@keyframes notmark-trash-v4-consume {
+  0%,
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(.70);
+  }
+
+  58% {
+    opacity: .9;
+    transform: scale(.34);
+  }
+
+  69% {
+    opacity: 0;
+    transform: scale(.015);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(.015);
+  }
+}
+
+/* Mobilde butonlar gerektiğinde alt satıra geçer */
+
+@media (max-width: 480px) {
+  .student-app-shell
+  .student-verification-card__actions {
+    gap: 8px;
+  }
+
+  .student-app-shell
+  .student-verification-card__actions
+  :is(.student-appeal-button, .student-delete-button) {
+    min-width: 0;
+    flex: 1 1 145px;
+  }
+}
+
+/* Hareket azaltma tercihi */
+
+@media (prefers-reduced-motion: reduce) {
+  .notmark-delete-overlay.is-consuming
+  .notmark-delete-flying-trash,
+
+  .notmark-delete-overlay.is-consuming
+  .notmark-delete-dialog,
+
+  .notmark-delete-overlay.is-consuming
+  .notmark-trash-lid {
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_VERIFICATION_DELETE_V4_END */

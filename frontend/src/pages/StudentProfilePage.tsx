@@ -1447,9 +1447,12 @@ export default function StudentProfilePage() {
   const deleteVerification = async (
     item: StudentVerificationItem
   ) => {
-    if (item.status !== "Pending") {
+    if (
+      item.status !== "Pending" &&
+      item.status !== "Rejected"
+    ) {
       setMessage(
-        "Yalnızca inceleme bekleyen doğrulamalar silinebilir."
+        "Yalnızca incelemedeki veya reddedilen doğrulamalar silinebilir."
       );
       return;
     }
@@ -1475,7 +1478,10 @@ export default function StudentProfilePage() {
       return;
     }
 
-    if (item.status !== "Pending") {
+    if (
+      item.status !== "Pending" &&
+      item.status !== "Rejected"
+    ) {
       setVerificationToDelete(null);
       return;
     }
@@ -1494,7 +1500,9 @@ export default function StudentProfilePage() {
       );
 
       setMessage(
-        "Doğrulama başvurunuz başarıyla silindi."
+        item.status === "Rejected"
+          ? "Reddedilen doğrulama listenizden kaldırıldı."
+          : "Doğrulama başvurunuz başarıyla silindi."
       );
 
       // Hareket azaltma tercihi varsa animasyon atlanır.
@@ -1567,7 +1575,7 @@ export default function StudentProfilePage() {
 
           void load();
         },
-        1450
+        2050
       );
 
     } catch (error: unknown) {
@@ -3134,7 +3142,46 @@ export default function StudentProfilePage() {
                 }}
                 aria-hidden="true"
               >
-                <Trash2 size={20} strokeWidth={1.9} />
+                <svg
+                  className="notmark-trash-animated-svg"
+                  viewBox="0 0 64 76"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g className="notmark-trash-lid">
+                    <path
+                      d="M12 20H52"
+                      stroke="currentColor"
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M25 14H39"
+                      stroke="currentColor"
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                    />
+                  </g>
+
+                  <g className="notmark-trash-body">
+                    <path
+                      d="M17 27L21 64C21.2 66 23 68 25 68H39C41 68 42.8 66 43 64L47 27"
+                      fill="currentColor"
+                      fillOpacity="0.09"
+                      stroke="currentColor"
+                      strokeWidth="3.5"
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                    />
+
+                    <path
+                      d="M28 36V58M36 36V58"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                    />
+                  </g>
+                </svg>
               </div>
             )}
           </div>
@@ -3250,6 +3297,19 @@ function VerificationCard({
             >
               <AlertTriangle size={16} />
               Karara İtiraz Et
+            </button>
+
+            <button
+              type="button"
+              className="student-delete-button"
+              disabled={deleting}
+              onClick={() => void onDelete(item)}
+            >
+              <Trash2 size={16} />
+
+              {deleting
+                ? "Siliniyor..."
+                : "Doğrulamayı sil"}
             </button>
           </div>
         )}

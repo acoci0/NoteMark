@@ -69,7 +69,28 @@ public sealed class StudentVerificationsController(
                 .ToListAsync(
                     cancellationToken);
 
-        return Ok(items);
+        // NOTMARK_VERIFICATION_DELETE_V4
+        // Öğrencinin listesinden kaldırdığı reddedilmiş
+        // doğrulamalar güvenlik kayıtlarında korunur.
+
+        var dismissedIds = await db.AuditLogs
+            .AsNoTracking()
+            .Where(x =>
+                x.ActorUserId == userId.Value &&
+                x.Action == "StudentVerificationDismissed" &&
+                x.EntityType == "StudentVerification")
+            .Select(x => x.EntityId)
+            .ToListAsync(cancellationToken);
+
+        var dismissedSet = dismissedIds.ToHashSet(
+            StringComparer.OrdinalIgnoreCase);
+
+        var visibleItems = items
+            .Where(x => !dismissedSet.Contains(
+                x.Id.ToString("D")))
+            .ToList();
+
+        return Ok(visibleItems);
     }
 
     /*
@@ -115,9 +136,46 @@ public sealed class StudentVerificationsController(
             });
         }
 
+        // Reddedilen doğrulama listeden kaldırılabilir.
+        // Güvenlik inceleme kaydı ve belge korunur.
+        // İşlem yalnızca kaydın sahibi tarafından yapılır.
+        if (
+            verification.Status ==
+            VerificationStatus.Rejected
+        )
+        {
+            var entityId =
+                verification.Id.ToString("D");
+
+            var dismissed = await db.AuditLogs
+                .AnyAsync(
+                    x =>
+                        x.ActorUserId == userId.Value &&
+                        x.Action == "StudentVerificationDismissed" &&
+                        x.EntityType == "StudentVerification" &&
+                        x.EntityId == entityId,
+                    cancellationToken);
+
+            if (!dismissed)
+            {
+                db.AuditLogs.Add(new AuditLog
+                {
+                    ActorUserId = userId.Value,
+                    Action = "StudentVerificationDismissed",
+                    EntityType = "StudentVerification",
+                    EntityId = entityId
+                });
+
+                await db.SaveChangesAsync(
+                    cancellationToken);
+            }
+
+            return NoContent();
+        }
+
         /*
-         * Öğrenci yalnızca inceleme bekleyen
-         * başvurusunu geri çekebilir.
+         * Pending başvuru gerçekten silinir.
+         * Approved kayıt silinemez.
          */
         if (
             verification.Status !=
