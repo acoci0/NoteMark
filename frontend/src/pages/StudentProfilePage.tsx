@@ -2884,18 +2884,7 @@ export default function StudentProfilePage() {
               aria-busy={deleteDialogBusy}
             >
               <div ref={deleteDialogIconRef} className="notmark-delete-dialog__icon" aria-hidden="true">
-                <svg className="notmark-trash-animated-svg" viewBox="0 0 64 76" fill="none" aria-hidden="true">
-                  <g className="notmark-trash-lid">
-                    <path d="M12 20H52" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-                    <path d="M25 14H39" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-                  </g>
-                  <g className="notmark-trash-body">
-                    <path d="M17 27L21 64C21.2 66 23 68 25 68H39C41 68 42.8 66 43 64L47 27"
-                      fill="currentColor" fillOpacity="0.09" stroke="currentColor"
-                      strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round" />
-                    <path d="M28 36V58M36 36V58" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                  </g>
-                </svg>
+                <Trash2 size={24} strokeWidth={1.9} className="notmark-trash-animated-svg" />
               </div>
               <h2 id="notmark-delete-title">Doğrulamayı Sil</h2>
               <p id="notmark-delete-description">

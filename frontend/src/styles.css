@@ -38322,3 +38322,24 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
   .notmark-delete-dialog__actions button { transition:none; }
 }
 /* NOTMARK_GENIE_EFFECT_V6_END */
+
+/* NOTMARK_TRASH_SHARPNESS_V7 */
+
+.notmark-delete-dialog__icon .notmark-trash-animated-svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  shape-rendering: geometricPrecision;
+}
+
+.notmark-genie-v6-icon .notmark-trash-animated-svg {
+  shape-rendering: geometricPrecision;
+  overflow: visible;
+}
+
+.notmark-genie-v6-icon .notmark-trash-lid {
+  transform-box: view-box;
+  transform-origin: 3px 6px;
+}
+
+/* NOTMARK_TRASH_SHARPNESS_V7_END */

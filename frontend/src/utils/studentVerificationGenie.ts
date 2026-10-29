@@ -98,6 +98,77 @@ export async function playStudentVerificationGenie({
     pointerEvents: "none",
   });
 
+  // NOTMARK_TRASH_SHARPNESS_V7
+
+  const iconScale = 3.1;
+
+  const originalSvg =
+    icon.querySelector<SVGSVGElement>("svg");
+
+  const svgRect =
+    originalSvg?.getBoundingClientRect();
+
+  const bigW =
+    iconRect.width * iconScale;
+
+  const bigH =
+    iconRect.height * iconScale;
+
+  flyingIcon.style.left =
+    `${iconRect.left - (bigW - iconRect.width) / 2}px`;
+
+  flyingIcon.style.top =
+    `${iconRect.top - (bigH - iconRect.height) / 2}px`;
+
+  flyingIcon.style.width =
+    `${bigW}px`;
+
+  flyingIcon.style.height =
+    `${bigH}px`;
+
+  flyingIcon.style.borderWidth =
+    `${iconScale}px`;
+
+  flyingIcon.style.borderRadius =
+    `${11 * iconScale}px`;
+
+  const svg =
+    flyingIcon.querySelector<SVGSVGElement>("svg");
+
+  if (svg) {
+    svg.style.width =
+      `${(svgRect?.width ?? 24) * iconScale}px`;
+
+    svg.style.height =
+      `${(svgRect?.height ?? 24) * iconScale}px`;
+
+    svg.setAttribute(
+      "shape-rendering",
+      "geometricPrecision"
+    );
+
+    // Trash2 ikonunun kapak ve sapını ayır.
+
+    const paths = Array.from(svg.children).filter(
+      (element) =>
+        element.tagName.toLowerCase() === "path"
+    );
+
+    if (paths.length >= 5) {
+      const group =
+        window.document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+
+      group.classList.add("notmark-trash-lid");
+
+      svg.insertBefore(group, paths[0]);
+
+      group.append(paths[0], paths[1]);
+    }
+  }
+
   scene.append(ghost, flyingIcon);
   window.document.body.appendChild(scene);
   const running: Animation[] = [];
@@ -178,7 +249,7 @@ export async function playStudentVerificationGenie({
         {
           opacity: 1,
           transform: position(
-            0, 0, 1, 1
+            0, 0, 1 / iconScale, 1 / iconScale
           )
         },
         {
@@ -186,8 +257,8 @@ export async function playStudentVerificationGenie({
           transform: position(
             iconX,
             iconY,
-            3.1,
-            3.1
+            1,
+            1
           )
         }
       ],
@@ -204,11 +275,11 @@ export async function playStudentVerificationGenie({
 
     /*
      * AŞAMA 2
-     * Çöp kutusu 1,5 saniye sabit bekler.
+     * Çöp kutusu 0,9 saniye sabit bekler.
      *
      * Popup bu sırada kesinlikle hareket etmez.
      */
-    await wait(1500);
+    await wait(900);
 
     const lid =
       flyingIcon.querySelector<SVGGElement>(
@@ -363,8 +434,8 @@ export async function playStudentVerificationGenie({
           transform: position(
             iconX,
             iconY,
-            3.1,
-            3.1
+            1,
+            1
           )
         },
         {
@@ -372,8 +443,8 @@ export async function playStudentVerificationGenie({
           transform: position(
             iconX,
             iconY,
-            2.85,
-            2.85
+            0.92,
+            0.92
           )
         }
       ],
