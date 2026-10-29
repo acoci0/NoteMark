@@ -165,12 +165,6 @@ export default function StudentNoteSubmissionsPage() {
           </p>
         </div>
 
-        <Link
-          className="secondary-button note-submissions-marketplace-link"
-          to="/student/marketplace"
-        >
-          Talep Panosuna Git
-        </Link>
       </header>
 
       {error && (

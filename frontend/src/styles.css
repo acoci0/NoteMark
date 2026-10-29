@@ -38343,3 +38343,216 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_TRASH_SHARPNESS_V7_END */
+
+
+/* NOTMARK_PROFILE_NOTICE_V2_START */
+
+.student-app-shell .student-profile-page > .student-message.notmark-profile-notice {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 62px;
+  margin: 0 auto 18px;
+  padding: 13px 16px;
+
+  border: 1px solid rgba(66, 129, 186, .30);
+  border-radius: 14px;
+
+  background: linear-gradient(
+    115deg,
+    #1c2c3c,
+    #122131 58%,
+    #101b2a
+  );
+
+  box-shadow:
+    0 12px 32px rgba(2, 8, 20, .22),
+    inset 0 1px rgba(255,255,255,.04);
+
+  color: #e5eff9;
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+}
+
+/* Başarı bildirimi */
+
+.student-app-shell .student-profile-page > .student-message.notmark-profile-notice--success {
+  border-color: rgba(64, 209, 153, .32);
+
+  background: linear-gradient(
+    115deg,
+    #173a36,
+    #152a33 53%,
+    #111e2c
+  );
+
+  animation:
+    notmark-notice-enter .25s ease-out both,
+    notmark-notice-exit .42s ease-in 5s forwards;
+}
+
+/* Hata bildirimi */
+
+.student-app-shell .student-profile-page > .student-message.notmark-profile-notice--error {
+  border-color: rgba(249, 126, 136, .34);
+
+  background: linear-gradient(
+    115deg,
+    #39252f,
+    #202535 53%,
+    #111d2c
+  );
+
+  animation: notmark-notice-enter .25s ease-out both;
+}
+
+/* İkon */
+
+.student-app-shell .notmark-profile-notice__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(85, 225, 172, .31);
+  border-radius: 11px;
+
+  color: #69ebbc;
+  background: rgba(48, 178, 139, .11);
+}
+
+.student-app-shell
+.notmark-profile-notice--error
+.notmark-profile-notice__icon {
+  color: #ff9aab;
+  border-color: rgba(255, 143, 167, .28);
+  background: rgba(230, 82, 113, .10);
+}
+
+/* Mesaj metni */
+
+.student-app-shell .notmark-profile-notice__text {
+  flex: 1;
+  min-width: 0;
+
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+/* Kapatma butonu */
+
+.student-app-shell .notmark-profile-notice__close {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+
+  border: 1px solid rgba(179, 204, 230, .15);
+  border-radius: 9px;
+
+  background: rgba(255,255,255,.045);
+  color: inherit;
+
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.student-app-shell .notmark-profile-notice__close:hover {
+  background: rgba(255,255,255,.12);
+}
+
+.student-app-shell .notmark-profile-notice__close:focus-visible {
+  outline: 2px solid #73baff;
+  outline-offset: 2px;
+}
+
+/* Açık tema */
+
+.student-app-shell[data-theme="light"]
+.student-profile-page > .student-message.notmark-profile-notice--success {
+  color: #16583e;
+
+  background: linear-gradient(
+    115deg,
+    #e6f9f0,
+    #f3faff
+  );
+}
+
+.student-app-shell[data-theme="light"]
+.student-profile-page > .student-message.notmark-profile-notice--error {
+  color: #7f3548;
+
+  background: linear-gradient(
+    115deg,
+    #fff1f4,
+    #f4f8ff
+  );
+}
+
+/* Görünme animasyonu */
+
+@keyframes notmark-notice-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 5 saniye sonra yumuşak kaybolma */
+
+@keyframes notmark-notice-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-9px);
+    filter: blur(3px);
+  }
+}
+
+/* Mobil */
+
+@media (max-width: 640px) {
+  .student-app-shell
+  .student-profile-page > .notmark-profile-notice {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .student-app-shell .notmark-profile-notice__text {
+    font-size: 13px;
+  }
+}
+
+/* Erişilebilirlik */
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell
+  .student-profile-page > .notmark-profile-notice {
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_PROFILE_NOTICE_V2_END */

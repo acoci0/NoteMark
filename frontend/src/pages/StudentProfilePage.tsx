@@ -110,6 +110,24 @@ export default function StudentProfilePage() {
   const [message, setMessage] =
     useState("");
 
+  // NOTMARK_PROFILE_NOTICE_V2
+  const successNotice =
+    message === "Öğrenci belgeniz incelemeye gönderildi." ||
+    message === "Doğrulama başvurunuz başarıyla silindi." ||
+    message === "Reddedilen doğrulama listenizden kaldırıldı.";
+
+  useEffect(() => {
+    if (!successNotice) return;
+
+    const timer = window.setTimeout(() => {
+      setMessage((current) =>
+        current === message ? "" : current
+      );
+    }, 5420);
+
+    return () => window.clearTimeout(timer);
+  }, [message, successNotice]);
+
   const [
     activeStudentCount,
     setActiveStudentCount,
@@ -2032,11 +2050,32 @@ export default function StudentProfilePage() {
 
       {message && (
         <div
-          className="student-message"
-          role="status"
-          aria-live="polite"
+          className={`student-message notmark-profile-notice ${
+            successNotice
+              ? "notmark-profile-notice--success"
+              : "notmark-profile-notice--error"
+          }`}
+          role={successNotice ? "status" : "alert"}
+          aria-live={successNotice ? "polite" : "assertive"}
         >
-          {message}
+          <span className="notmark-profile-notice__icon" aria-hidden="true">
+            {successNotice
+              ? <CheckCircle2 size={20} />
+              : <AlertTriangle size={20} />}
+          </span>
+
+          <span className="notmark-profile-notice__text">
+            {message}
+          </span>
+
+          <button
+            type="button"
+            className="notmark-profile-notice__close"
+            aria-label="Bildirimi kapat"
+            onClick={() => setMessage("")}
+          >
+            ×
+          </button>
         </div>
       )}
 
