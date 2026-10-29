@@ -51,6 +51,20 @@ export default function StudentLoginPage() {
   const studentMode = role === "student";
 
   const emailInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const input = emailInputRef.current;
+
+      if (input && document.activeElement === input) {
+        input.blur();
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

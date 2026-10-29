@@ -148,7 +148,7 @@ export default function StudentRegisterPage() {
               <small className="notmark-register-brand-caption">ÖĞRENCİ ÜYELİĞİ</small>
             </span>
           </Link>
-          <Link className="notmark-register-back" to="/login?role=student" onClick={goToLogin}><span aria-hidden="true">←</span> Giriş sayfasına dön</Link>
+
         </header>
         <section className="notmark-register-card" aria-labelledby="notmark-register-title">
           <h1 id="notmark-register-title">Hesap Oluştur</h1>
