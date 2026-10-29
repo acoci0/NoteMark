@@ -37923,3 +37923,95 @@ input[type="file"]::file-selector-button {
   .notmark-register-page .notmark-register-card {transition: none; transform: none;}
 }
 /* NOTMARK V69 / DARK NAVY REGISTER + DATA ACKNOWLEDGEMENTS END */
+
+/* NOTMARK_STUDENT_DARK_ACTION_BUTTONS_V1 */
+/*
+ * Öğrenci panelindeki iki aksiyon butonu.
+ * Yalnızca karanlık tema; açık tema korunur.
+ */
+
+/* Üniversite doğrulamasını sil */
+.student-app-shell[data-theme="dark"] .student-delete-button {
+  color: #ff9ca8;
+  background: linear-gradient(
+    135deg,
+    rgba(103, 34, 48, 0.34),
+    rgba(54, 24, 38, 0.66)
+  );
+  border: 1px solid rgba(255, 112, 132, 0.36);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.student-app-shell[data-theme="dark"] .student-delete-button:hover:not(:disabled) {
+  color: #ffd0d6;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 43, 62, 0.48),
+    rgba(83, 30, 48, 0.78)
+  );
+  border-color: rgba(255, 125, 144, 0.65);
+  box-shadow: 0 5px 20px rgba(180, 45, 70, 0.15);
+  transform: translateY(-1px);
+}
+
+.student-app-shell[data-theme="dark"] .student-delete-button:focus-visible {
+  outline: 2px solid #ff9ca8;
+  outline-offset: 3px;
+}
+
+.student-app-shell[data-theme="dark"] .student-delete-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Gönderdiğim Notlar - sağ üst Talep Panosuna Git */
+.student-app-shell[data-theme="dark"]
+  .note-submissions-marketplace-link {
+  color: #a9ceff;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 70, 119, 0.42),
+    rgba(19, 39, 70, 0.82)
+  );
+  border: 1px solid rgba(104, 163, 255, 0.38);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.student-app-shell[data-theme="dark"]
+  .note-submissions-marketplace-link:hover {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    rgba(46, 100, 178, 0.58),
+    rgba(27, 61, 113, 0.9)
+  );
+  border-color: rgba(130, 187, 255, 0.72);
+  box-shadow: 0 6px 22px rgba(40, 113, 230, 0.16);
+  transform: translateY(-1px);
+}
+
+.student-app-shell[data-theme="dark"]
+  .note-submissions-marketplace-link:focus-visible {
+  outline: 2px solid #8bbcff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell[data-theme="dark"] .student-delete-button,
+  .student-app-shell[data-theme="dark"]
+    .note-submissions-marketplace-link {
+    transition: none;
+    transform: none;
+  }
+}
