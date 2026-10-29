@@ -156,54 +156,62 @@ export async function playStudentVerificationGenie({
       "geometricPrecision"
     );
 
-    // NOTMARK_TRASH2_LID_GEOMETRY_V9
-    //
-    // İlk iki path gövdenin iç çizgileridir.
-    // Gerçek kapak, SVG path içeriğine göre seçilir.
+    // NOTMARK_TRASH2_LID_FIX_V10
+    // Sabit Lucide Trash2 geometrisi.
+    // Gövde sabit; sadece kapak hareket eder.
 
-    const paths = Array.from(svg.children).filter(
-      (element): element is SVGPathElement =>
-        element instanceof SVGPathElement
+    const ns = "http://www.w3.org/2000/svg";
+
+    const makePath = (d: string): SVGPathElement => {
+      const path =
+        window.document.createElementNS(ns, "path");
+
+      path.setAttribute("d", d);
+
+      return path;
+    };
+
+    const binBody = makePath(
+      "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
     );
 
-    const rim = paths.find(
-      (path) =>
-        path.getAttribute("d") === "M3 6h18"
+    const binLineLeft = makePath("M10 11v6");
+    const binLineRight = makePath("M14 11v6");
+
+    const lidGroup =
+      window.document.createElementNS(ns, "g");
+
+    lidGroup.classList.add(
+      "notmark-trash-lid"
     );
 
-    const handle = paths.find(
-      (path) =>
-        path.getAttribute("d") ===
-        "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+    lidGroup.style.transformBox = "view-box";
+
+    lidGroup.style.transformOrigin = "3px 6px";
+
+    const lidRim = makePath("M3 6h18");
+
+    const lidHandle = makePath(
+      "M8 6V4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2"
     );
 
-    const body = paths.find(
-      (path) =>
-        path.getAttribute("d") ===
-        "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+    lidGroup.append(
+      lidRim,
+      lidHandle
     );
 
-    if (rim && handle && body) {
-      const group =
-        window.document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "g"
-        );
+    svg.setAttribute(
+      "viewBox",
+      "0 0 24 24"
+    );
 
-      group.classList.add("notmark-trash-lid");
+    svg.replaceChildren(
+      binBody,
+      binLineLeft,
+      binLineRight,
+      lidGroup
+    );
 
-      group.style.transformBox = "view-box";
-
-      // Sol kenar, kapağın gerçek menteşe noktası.
-      group.style.transformOrigin = "3px 6px";
-
-      svg.insertBefore(group, rim);
-
-      // Sadece üst kenar ve tutamak hareket eder.
-      group.append(rim, handle);
-    }
-
-    // SVG yapısı değişirse gövde hareket ettirilmez.
   }
 
   // NOTMARK_GENIE_V8_SMOOTH_SCALE
