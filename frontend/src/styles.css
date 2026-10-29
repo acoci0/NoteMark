@@ -38015,3 +38015,79 @@ input[type="file"]::file-selector-button {
     transform: none;
   }
 }
+
+/* NOTMARK_STATUS_BADGES_V2_START */
+
+/*
+ * Üniversite doğrulama durumları.
+ * İşlem butonlarından bağımsız görsel hiyerarşi.
+ */
+
+.student-app-shell[data-theme="dark"] .student-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-height: 27px;
+  padding: 5px 11px;
+
+  border-radius: 999px;
+  border: 1px solid transparent;
+
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+
+  white-space: nowrap;
+  box-shadow: none;
+  transform: none;
+  cursor: default;
+}
+
+/* İncelemede */
+
+.student-app-shell[data-theme="dark"]
+.student-status--pending {
+  color: #f5c77d;
+  background: rgba(245, 158, 11, 0.075);
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
+/* Onaylandı */
+
+.student-app-shell[data-theme="dark"]
+.student-status--approved {
+  color: #79e2bb;
+  background: rgba(16, 185, 129, 0.075);
+  border-color: rgba(16, 185, 129, 0.18);
+}
+
+/* Reddedildi */
+
+.student-app-shell[data-theme="dark"]
+.student-status--rejected {
+  color: #f5a0ae;
+  background: rgba(244, 63, 94, 0.075);
+  border-color: rgba(244, 63, 94, 0.18);
+}
+
+/* İkonların görsel dengesi */
+
+.student-app-shell[data-theme="dark"]
+.student-status svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+/* Durum etiketleri buton gibi davranmaz */
+
+.student-app-shell[data-theme="dark"]
+.student-status:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* NOTMARK_STATUS_BADGES_V2_END */
