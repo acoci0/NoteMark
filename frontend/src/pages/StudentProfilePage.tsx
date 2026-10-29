@@ -123,7 +123,7 @@ export default function StudentProfilePage() {
       setMessage((current) =>
         current === message ? "" : current
       );
-    }, 5420);
+    }, 6400);
 
     return () => window.clearTimeout(timer);
   }, [message, successNotice]);
@@ -2068,14 +2068,6 @@ export default function StudentProfilePage() {
             {message}
           </span>
 
-          <button
-            type="button"
-            className="notmark-profile-notice__close"
-            aria-label="Bildirimi kapat"
-            onClick={() => setMessage("")}
-          >
-            ×
-          </button>
         </div>
       )}
 

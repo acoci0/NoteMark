@@ -38345,7 +38345,7 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 /* NOTMARK_TRASH_SHARPNESS_V7_END */
 
 
-/* NOTMARK_PROFILE_NOTICE_V2_START */
+/* NOTMARK_PROFILE_NOTICE_SLOW_FADE_V3_START */
 
 .student-app-shell .student-profile-page > .student-message.notmark-profile-notice {
   box-sizing: border-box;
@@ -38391,8 +38391,8 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
   );
 
   animation:
-    notmark-notice-enter .25s ease-out both,
-    notmark-notice-exit .42s ease-in 5s forwards;
+    notmark-notice-enter .25s ease-out,
+    notmark-notice-exit 1.4s cubic-bezier(.22,.61,.36,1) 5s forwards;
 }
 
 /* Hata bildirimi */
@@ -38445,37 +38445,6 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
   font-size: 14px;
   font-weight: 650;
   line-height: 1.55;
-}
-
-/* Kapatma butonu */
-
-.student-app-shell .notmark-profile-notice__close {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
-
-  border: 1px solid rgba(179, 204, 230, .15);
-  border-radius: 9px;
-
-  background: rgba(255,255,255,.045);
-  color: inherit;
-
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.student-app-shell .notmark-profile-notice__close:hover {
-  background: rgba(255,255,255,.12);
-}
-
-.student-app-shell .notmark-profile-notice__close:focus-visible {
-  outline: 2px solid #73baff;
-  outline-offset: 2px;
 }
 
 /* Açık tema */
@@ -38555,4 +38524,4 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
   }
 }
 
-/* NOTMARK_PROFILE_NOTICE_V2_END */
+/* NOTMARK_PROFILE_NOTICE_SLOW_FADE_V3_END */
