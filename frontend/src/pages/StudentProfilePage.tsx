@@ -1290,41 +1290,160 @@ export default function StudentProfilePage() {
   /*
    * Pending doğrulama başvurusunu siler.
    */
-  // NOTMARK_DELETE_CONFIRM_V2
+  // NOTMARK_DELETE_CINEMATIC_V3
+
   const [verificationToDelete, setVerificationToDelete] =
     useState<StudentVerificationItem | null>(null);
 
   const [deleteDialogBusy, setDeleteDialogBusy] =
     useState(false);
 
+  const [deleteFlight, setDeleteFlight] =
+    useState(false);
+
+  const [deleteDialogError, setDeleteDialogError] =
+    useState("");
+
+  const [trashPosition, setTrashPosition] =
+    useState<{ x: number; y: number } | null>(null);
+
+  const [trashOrigin, setTrashOrigin] =
+    useState({ x: 42, y: 42 });
+
   const deleteDialogCancelRef =
     useRef<HTMLButtonElement>(null);
 
+  const deleteDialogPanelRef =
+    useRef<HTMLDivElement>(null);
+
+  const deleteDialogIconRef =
+    useRef<HTMLDivElement>(null);
+
+  const deleteFlightTimerRef =
+    useRef<number | null>(null);
+
+  const deleteInFlightRef =
+    useRef(false);
+
+  // Animasyon zamanlayıcısını sayfadan ayrılırken temizle.
+  useEffect(() => {
+    return () => {
+      if (deleteFlightTimerRef.current !== null) {
+        window.clearTimeout(deleteFlightTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Modal açıkken sayfanın kaydırılmasını engelle.
+  // Önceki odak konumunu kapatırken geri yükle.
   useEffect(() => {
     if (!verificationToDelete) return;
 
-    const previousOverflow = window.document.body.style.overflow;
-    window.document.body.style.overflow = "hidden";
+    const body = window.document.body;
+    const previousOverflow = body.style.overflow;
 
-    const onEscape = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape" && !deleteDialogBusy) {
-        setVerificationToDelete(null);
-      }
-    };
+    const previousFocus =
+      window.document.activeElement;
 
-    window.document.addEventListener("keydown", onEscape);
+    body.style.overflow = "hidden";
 
-    const timer = window.setTimeout(() => {
-      deleteDialogCancelRef.current?.focus();
+    const focusTimer = window.setTimeout(() => {
+      deleteDialogCancelRef.current?.focus({
+        preventScroll: true
+      });
     }, 0);
 
     return () => {
-      window.clearTimeout(timer);
-      window.document.removeEventListener("keydown", onEscape);
-      window.document.body.style.overflow = previousOverflow;
-    };
-  }, [verificationToDelete, deleteDialogBusy]);
+      window.clearTimeout(focusTimer);
 
+      body.style.overflow = previousOverflow;
+
+      if (
+        previousFocus instanceof HTMLElement &&
+        previousFocus.isConnected
+      ) {
+        previousFocus.focus({ preventScroll: true });
+      }
+    };
+  }, [verificationToDelete?.id]);
+
+  // Escape ile kapatma ve klavye odağını modalde tutma.
+  useEffect(() => {
+    if (!verificationToDelete) return;
+
+    const onKeyDown = (
+      event: globalThis.KeyboardEvent
+    ) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+
+        if (!deleteDialogBusy && !deleteFlight) {
+          setVerificationToDelete(null);
+        }
+
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const dialog = deleteDialogPanelRef.current;
+
+      if (!dialog) return;
+
+      const buttons = Array.from(
+        dialog.querySelectorAll<HTMLButtonElement>(
+          "button:not(:disabled)"
+        )
+      );
+
+      if (buttons.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = buttons[0];
+      const last = buttons[buttons.length - 1];
+
+      const active = window.document.activeElement;
+
+      if (!dialog.contains(active)) {
+        event.preventDefault();
+        first.focus();
+        return;
+      }
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (
+        !event.shiftKey &&
+        active === last
+      ) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.document.addEventListener(
+      "keydown",
+      onKeyDown,
+      true
+    );
+
+    return () => {
+      window.document.removeEventListener(
+        "keydown",
+        onKeyDown,
+        true
+      );
+    };
+  }, [
+    verificationToDelete,
+    deleteDialogBusy,
+    deleteFlight
+  ]);
+
+  // Silme penceresini aç.
   const deleteVerification = async (
     item: StudentVerificationItem
   ) => {
@@ -1335,24 +1454,41 @@ export default function StudentProfilePage() {
       return;
     }
 
+    if (deleteInFlightRef.current) return;
+
+    setDeleteDialogError("");
+    setDeleteFlight(false);
+    setTrashPosition(null);
     setVerificationToDelete(item);
   };
 
+  // API başarılı olduktan sonra sinematik animasyonu başlat.
   const confirmDeleteVerification = async () => {
     const item = verificationToDelete;
 
-    if (!item || deleteDialogBusy) return;
+    if (
+      !item ||
+      deleteDialogBusy ||
+      deleteFlight ||
+      deleteInFlightRef.current
+    ) {
+      return;
+    }
 
     if (item.status !== "Pending") {
       setVerificationToDelete(null);
       return;
     }
 
+    deleteInFlightRef.current = true;
+
     setDeleteDialogBusy(true);
     setDeletingId(item.id);
+    setDeleteDialogError("");
     setMessage("");
 
     try {
+      // Mevcut backend endpoint'i değiştirilmez.
       await studentApi.delete(
         `/student/verifications/${item.id}`
       );
@@ -1361,18 +1497,93 @@ export default function StudentProfilePage() {
         "Doğrulama başvurunuz başarıyla silindi."
       );
 
-      await load();
-    } catch (error: unknown) {
-      setMessage(
-        getErrorMessage(
-          error,
-          "Doğrulama silinirken hata oluştu."
-        )
+      // Hareket azaltma tercihi varsa animasyon atlanır.
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      const motionOff =
+        window.document
+          .querySelector(".student-app-shell")
+          ?.getAttribute("data-motion") === "off";
+
+      const iconRect =
+        deleteDialogIconRef.current
+          ?.getBoundingClientRect();
+
+      const panelRect =
+        deleteDialogPanelRef.current
+          ?.getBoundingClientRect();
+
+      if (
+        reducedMotion ||
+        motionOff ||
+        !iconRect ||
+        !panelRect
+      ) {
+        setVerificationToDelete(null);
+        setDeleteDialogBusy(false);
+        setDeletingId(null);
+
+        deleteInFlightRef.current = false;
+
+        await load();
+        return;
+      }
+
+      // Animasyonun hedefi gerçek çöp ikonu merkezidir.
+      const iconCenterX =
+        iconRect.left + iconRect.width / 2;
+
+      const iconCenterY =
+        iconRect.top + iconRect.height / 2;
+
+      // Popup bu noktaya doğru küçülerek kapanır.
+      setTrashOrigin({
+        x: iconCenterX - panelRect.left,
+        y: iconCenterY - panelRect.top
+      });
+
+      setTrashPosition({
+        x: iconCenterX,
+        y: iconCenterY
+      });
+
+      // API başarılı: artık pencereyi çöp kutusuna çek.
+      setDeleteFlight(true);
+
+      // Animasyon tamamlandıktan sonra liste yenilenir.
+      deleteFlightTimerRef.current = window.setTimeout(
+        () => {
+          deleteFlightTimerRef.current = null;
+
+          setVerificationToDelete(null);
+          setDeleteFlight(false);
+          setTrashPosition(null);
+          setDeleteDialogBusy(false);
+          setDeletingId(null);
+
+          deleteInFlightRef.current = false;
+
+          void load();
+        },
+        1450
       );
-    } finally {
-      setDeletingId(null);
+
+    } catch (error: unknown) {
+      // API başarısızsa başarı animasyonu oynatılmaz.
+      const errorMessage = getErrorMessage(
+        error,
+        "Doğrulama silinirken hata oluştu."
+      );
+
+      setDeleteDialogError(errorMessage);
+      setMessage(errorMessage);
+
       setDeleteDialogBusy(false);
-      setVerificationToDelete(null);
+      setDeletingId(null);
+
+      deleteInFlightRef.current = false;
     }
   };
 
@@ -2830,25 +3041,38 @@ export default function StudentProfilePage() {
 
         {verificationToDelete && (
           <div
-            className="notmark-delete-overlay"
+            className={`notmark-delete-overlay${
+              deleteFlight ? " is-consuming" : ""
+            }`}
             onMouseDown={(event) => {
               if (
                 event.target === event.currentTarget &&
-                !deleteDialogBusy
+                !deleteDialogBusy &&
+                !deleteFlight
               ) {
                 setVerificationToDelete(null);
               }
             }}
           >
             <div
+              ref={deleteDialogPanelRef}
               className="notmark-delete-dialog"
               role="alertdialog"
               aria-modal="true"
               aria-labelledby="notmark-delete-title"
               aria-describedby="notmark-delete-description"
+              aria-busy={deleteDialogBusy}
+              style={{
+                transformOrigin:
+                  `${trashOrigin.x}px ${trashOrigin.y}px`
+              }}
             >
-              <div className="notmark-delete-dialog__icon">
-                <Trash2 size={22} />
+              <div
+                ref={deleteDialogIconRef}
+                className="notmark-delete-dialog__icon"
+                aria-hidden="true"
+              >
+                <Trash2 size={20} strokeWidth={1.9} />
               </div>
 
               <h2 id="notmark-delete-title">
@@ -2859,27 +3083,30 @@ export default function StudentProfilePage() {
                 <strong>
                   {verificationToDelete.universityName}
                 </strong>
-                {" - "}
+                {" — "}
                 {verificationToDelete.departmentName}
                 {" "}
-                doğrulamasını silmek istediğinize
-                emin misiniz?
+                doğrulamasını silmek istiyor musunuz?
               </p>
 
-              <div className="notmark-delete-dialog__warning">
-                <AlertTriangle size={17} />
-                <span>Bu işlem geri alınamaz.</span>
-              </div>
+              {deleteDialogError && (
+                <p
+                  className="notmark-delete-dialog__error"
+                  role="alert"
+                >
+                  {deleteDialogError}
+                </p>
+              )}
 
               <div className="notmark-delete-dialog__actions">
                 <button
                   ref={deleteDialogCancelRef}
                   type="button"
                   className="notmark-delete-dialog__cancel"
-                  disabled={deleteDialogBusy}
-                  onClick={() =>
-                    setVerificationToDelete(null)
-                  }
+                  disabled={deleteDialogBusy || deleteFlight}
+                  onClick={() => {
+                    setVerificationToDelete(null);
+                  }}
                 >
                   Vazgeç
                 </button>
@@ -2887,16 +3114,29 @@ export default function StudentProfilePage() {
                 <button
                   type="button"
                   className="notmark-delete-dialog__confirm"
-                  disabled={deleteDialogBusy}
-                  onClick={() =>
-                    void confirmDeleteVerification()
-                  }
+                  disabled={deleteDialogBusy || deleteFlight}
+                  onClick={() => {
+                    void confirmDeleteVerification();
+                  }}
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={15} />
                   {deleteDialogBusy ? "Siliniyor..." : "Sil"}
                 </button>
               </div>
             </div>
+
+            {deleteFlight && trashPosition && (
+              <div
+                className="notmark-delete-flying-trash"
+                style={{
+                  left: trashPosition.x,
+                  top: trashPosition.y
+                }}
+                aria-hidden="true"
+              >
+                <Trash2 size={20} strokeWidth={1.9} />
+              </div>
+            )}
           </div>
         )}
       </section>

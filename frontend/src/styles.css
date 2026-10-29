@@ -38225,122 +38225,213 @@ input[type="file"]::file-selector-button {
 /* NOTMARK_VERIFICATION_ACTION_LAYOUT_V1_END */
 
 
-/* NOTMARK_DELETE_CONFIRM_V2 */
+
+/* =========================================================
+   NOTMARK DELETE CINEMATIC V3
+   Kompakt onay penceresi + trash absorption animation.
+   ========================================================= */
 
 .notmark-delete-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: rgba(2, 7, 18, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+
+  padding: 18px;
+
+  background: rgba(3, 8, 19, 0.68);
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
 }
+
+/* Kompakt popup */
 
 .notmark-delete-dialog {
-  width: min(100%, 440px);
-  padding: 28px;
-  border-radius: 18px;
+  position: relative;
+  z-index: 1;
+
+  box-sizing: border-box;
+
+  width: min(100%, 362px);
+  padding: 22px;
+
+  border-radius: 15px;
+
   background: #172235;
   color: #f4f7fc;
-  border: 1px solid rgba(135, 164, 207, 0.22);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  animation: notmark-delete-enter 180ms ease-out;
+
+  border: 1px solid rgba(139, 163, 198, 0.20);
+
+  box-shadow:
+    0 22px 65px rgba(0, 0, 0, 0.42),
+    0 1px 0 rgba(255, 255, 255, 0.025) inset;
+
+  will-change: transform, opacity;
+
+  animation:
+    notmark-delete-popup-enter
+    220ms
+    cubic-bezier(.2, .8, .2, 1)
+    both;
 }
 
+/* Sol üstteki çöp simgesi */
+
 .notmark-delete-dialog__icon {
-  width: 46px;
-  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 13px;
-  margin-bottom: 18px;
-  background: rgba(244, 63, 94, 0.12);
-  border: 1px solid rgba(244, 63, 94, 0.25);
-  color: #ff8fa4;
+
+  width: 40px;
+  height: 40px;
+
+  margin-bottom: 13px;
+
+  border-radius: 11px;
+
+  color: #ff91a4;
+
+  background: rgba(244, 63, 94, 0.11);
+
+  border: 1px solid rgba(244, 63, 94, 0.20);
+
+  box-sizing: border-box;
 }
 
+/* Başlık */
+
 .notmark-delete-dialog h2 {
-  margin: 0 0 12px;
-  font-size: 22px;
-  font-weight: 750;
+  margin: 0 0 9px;
+
   color: inherit;
+
+  font-size: 19px;
+  font-weight: 750;
+
+  line-height: 1.3;
+  letter-spacing: -0.035em;
 }
+
+/* Açıklama */
 
 .notmark-delete-dialog p {
   margin: 0;
-  color: #b9c5d8;
-  font-size: 14px;
-  line-height: 1.75;
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  color: #bdc8d9;
+
   overflow-wrap: anywhere;
 }
 
 .notmark-delete-dialog p strong {
   color: #f5f7fc;
+  font-weight: 700;
 }
 
-.notmark-delete-dialog__warning {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 22px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: rgba(244, 63, 94, 0.07);
-  border: 1px solid rgba(244, 63, 94, 0.18);
-  color: #ff9cab;
-  font-size: 13px;
-  font-weight: 600;
+/* API başarısız olduğunda gösterilir */
+
+.notmark-delete-dialog .notmark-delete-dialog__error {
+  margin-top: 12px;
+  padding: 10px 12px;
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  border-radius: 8px;
+
+  color: #ffb1bf;
+
+  background: rgba(244, 63, 94, 0.10);
+
+  border: 1px solid rgba(244, 63, 94, 0.22);
 }
 
-.notmark-delete-dialog__warning svg {
-  flex-shrink: 0;
-}
+/* Buton grubu */
 
 .notmark-delete-dialog__actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 26px;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-top: 20px;
 }
 
 .notmark-delete-dialog__actions button {
-  min-width: 112px;
-  min-height: 42px;
+  box-sizing: border-box;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 9px;
-  font-size: 13px;
+
+  gap: 7px;
+
+  min-width: 92px;
+  min-height: 37px;
+
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
   font-weight: 700;
+
   cursor: pointer;
-  transition: background 180ms ease, transform 180ms ease;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 .notmark-delete-dialog__cancel {
+  color: #d7dfec;
+
   background: rgba(255, 255, 255, 0.045);
-  color: #d8e1ef;
-  border: 1px solid rgba(155, 176, 210, 0.22);
+
+  border: 1px solid rgba(155, 176, 210, 0.19);
+}
+
+.notmark-delete-dialog__cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.085);
 }
 
 .notmark-delete-dialog__confirm {
-  background: linear-gradient(135deg, #e33f59, #bd2843);
   color: #fff;
-  border: 1px solid rgba(255, 150, 165, 0.35);
+
+  background: linear-gradient(
+    135deg,
+    #e34861,
+    #c72d49
+  );
+
+  border: 1px solid rgba(255, 152, 167, 0.32);
+
+  box-shadow:
+    0 4px 12px rgba(207, 48, 77, 0.13);
+}
+
+.notmark-delete-dialog__confirm:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    #ee526c,
+    #d73551
+  );
+
+  box-shadow:
+    0 5px 18px rgba(207, 48, 77, 0.25);
 }
 
 .notmark-delete-dialog__actions button:hover:not(:disabled) {
   transform: translateY(-1px);
-}
-
-.notmark-delete-dialog__confirm:hover:not(:disabled) {
-  background: linear-gradient(135deg, #f04a65, #ce304c);
 }
 
 .notmark-delete-dialog__actions button:focus-visible {
@@ -38349,62 +38440,286 @@ input[type="file"]::file-selector-button {
 }
 
 .notmark-delete-dialog__actions button:disabled {
-  opacity: 0.55;
+  opacity: 0.60;
   cursor: not-allowed;
+  transform: none;
 }
 
-.student-app-shell[data-theme="light"] .notmark-delete-overlay {
-  background: rgba(15, 23, 42, 0.38);
+/* =========================================================
+   CINEMATIC TRASH ANIMATION
+
+   Faz 1: Çöp kutusu büyür.
+   Faz 2: Popup çöp kutusuna doğru küçülür.
+   Faz 3: Çöp kutusu yavaşça kaybolur.
+   ========================================================= */
+
+/* Popup'un çöp simgesi merkezine çekilmesi */
+
+.notmark-delete-overlay.is-consuming
+.notmark-delete-dialog {
+  pointer-events: none;
+
+  animation:
+    notmark-delete-dialog-consume
+    1450ms
+    cubic-bezier(.38, 0, .20, 1)
+    both;
 }
 
-.student-app-shell[data-theme="light"] .notmark-delete-dialog {
+/* Bağımsız büyüyen çöp kutusu */
+
+.notmark-delete-flying-trash {
+  position: fixed;
+
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  margin-left: -20px;
+  margin-top: -20px;
+
+  border-radius: 11px;
+
+  color: #ff91a4;
+
+  background: rgba(244, 63, 94, 0.14);
+
+  border: 1px solid rgba(244, 63, 94, 0.32);
+
+  box-sizing: border-box;
+
+  pointer-events: none;
+
+  will-change: transform, opacity;
+
+  animation:
+    notmark-delete-trash-flight
+    1450ms
+    cubic-bezier(.36, 0, .20, 1)
+    both;
+}
+
+/* Arka plan da animasyon sonunda hafifçe açılır. */
+
+.notmark-delete-overlay.is-consuming {
+  pointer-events: none;
+
+  animation:
+    notmark-delete-backdrop-exit
+    1450ms
+    ease-in-out
+    both;
+}
+
+/* Popup açılışı */
+
+@keyframes notmark-delete-popup-enter {
+  from {
+    opacity: 0;
+    transform:
+      translate3d(0, 8px, 0)
+      scale(.975);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translate3d(0, 0, 0)
+      scale(1);
+  }
+}
+
+/* Popup simgenin içine doğru kapanır. */
+
+@keyframes notmark-delete-dialog-consume {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  16% {
+    opacity: 1;
+    transform: scale(.985);
+  }
+
+  35% {
+    opacity: 1;
+    transform: scale(.72);
+  }
+
+  55% {
+    opacity: .85;
+    transform: scale(.28);
+  }
+
+  72% {
+    opacity: 0;
+    transform: scale(.015);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(.015);
+  }
+}
+
+/* Çöp kutusu büyür, popup'u içine alır, sonra kaybolur. */
+
+@keyframes notmark-delete-trash-flight {
+  0% {
+    opacity: .1;
+    transform: scale(.85);
+  }
+
+  16% {
+    opacity: 1;
+    transform: scale(1.65);
+  }
+
+  35% {
+    opacity: 1;
+    transform: scale(2.7);
+  }
+
+  58% {
+    opacity: 1;
+    transform: scale(2.9);
+  }
+
+  76% {
+    opacity: .92;
+    transform: scale(2.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.55);
+  }
+}
+
+/* Son aşamada perde yavaşça açılır. */
+
+@keyframes notmark-delete-backdrop-exit {
+  0%,
+  65% {
+    background: rgba(3, 8, 19, 0.68);
+  }
+
+  100% {
+    background: rgba(3, 8, 19, 0);
+  }
+}
+
+/* =========================================================
+   ACIK TEMA
+   ========================================================= */
+
+.student-app-shell[data-theme="light"]
+.notmark-delete-overlay {
+  background: rgba(15, 23, 42, 0.37);
+}
+
+.student-app-shell[data-theme="light"]
+.notmark-delete-dialog {
   background: #fff;
+
   color: #172338;
-  border-color: rgba(45, 65, 95, 0.14);
-  box-shadow: 0 24px 75px rgba(22, 38, 66, 0.22);
+
+  border-color: rgba(45, 65, 95, 0.13);
+
+  box-shadow:
+    0 22px 65px rgba(22, 38, 66, 0.20);
 }
 
-.student-app-shell[data-theme="light"] .notmark-delete-dialog p {
-  color: #59677b;
+.student-app-shell[data-theme="light"]
+.notmark-delete-dialog p {
+  color: #64748b;
 }
 
-.student-app-shell[data-theme="light"] .notmark-delete-dialog p strong {
-  color: #172338;
+.student-app-shell[data-theme="light"]
+.notmark-delete-dialog p strong {
+  color: #1e293b;
 }
 
-.student-app-shell[data-theme="light"] .notmark-delete-dialog__cancel {
-  background: #f3f6fa;
+.student-app-shell[data-theme="light"]
+.notmark-delete-dialog__cancel {
   color: #334155;
+
+  background: #f3f6fa;
+
   border-color: #d8e0ea;
 }
 
-@keyframes notmark-delete-enter {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
+.student-app-shell[data-theme="light"]
+.notmark-delete-dialog__cancel:hover:not(:disabled) {
+  background: #e8edf5;
+}
+
+.student-app-shell[data-theme="light"]
+.notmark-delete-overlay.is-consuming {
+  animation-name:
+    notmark-delete-backdrop-exit-light;
+}
+
+@keyframes notmark-delete-backdrop-exit-light {
+  0%,
+  65% {
+    background: rgba(15, 23, 42, 0.37);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+
+  100% {
+    background: rgba(15, 23, 42, 0);
   }
 }
 
+/* =========================================================
+   MOBIL
+   ========================================================= */
+
 @media (max-width: 480px) {
+  .notmark-delete-overlay {
+    padding: 16px;
+  }
+
   .notmark-delete-dialog {
-    padding: 22px;
+    width: 100%;
+    max-width: 362px;
+
+    padding: 20px;
+  }
+
+  .notmark-delete-dialog h2 {
+    font-size: 18px;
   }
 
   .notmark-delete-dialog__actions {
-    flex-direction: column-reverse;
+    gap: 8px;
   }
 
   .notmark-delete-dialog__actions button {
-    width: 100%;
+    min-width: 88px;
   }
 }
 
+/* =========================================================
+   ERISILEBILIRLIK VE HAREKET TERCIHLERI
+   ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
-  .notmark-delete-dialog {
-    animation: none;
+  .notmark-delete-dialog,
+  .notmark-delete-flying-trash,
+  .notmark-delete-overlay.is-consuming {
+    animation: none !important;
+  }
+
+  .notmark-delete-dialog__actions button {
+    transition: none !important;
   }
 }
+
+/* NOTMARK_DELETE_CINEMATIC_V3_END */
