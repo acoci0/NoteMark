@@ -70,7 +70,7 @@ export default function StudentRegisterPage() {
     event.preventDefault();
     void navigateWithAuthFlight(
       navigate, "/login?role=student", registerLogoRef.current,
-      ".notmark-auth-logo-frame"
+      ".notmark-auth-brand .notmark-auth-logo-frame, .notmark-auth-card-logo"
     );
   };
 

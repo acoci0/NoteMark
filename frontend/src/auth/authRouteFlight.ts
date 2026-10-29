@@ -36,6 +36,56 @@ async function animate(
   }
 }
 
+
+/**
+ * Responsive giriş/kayıt ekranlarında görünür logoyu seçer.
+ * Tam ekran düzenindeki mevcut öncelik sırası korunur.
+ */
+function isVisibleAuthLogo(
+  element: HTMLElement | null
+): element is HTMLElement {
+  if (!element || !element.isConnected) return false;
+
+  const rect = element.getBoundingClientRect();
+
+  if (rect.width < 10 || rect.height < 10) {
+    return false;
+  }
+
+  let current: HTMLElement | null = element;
+
+  while (current) {
+    const style = window.getComputedStyle(current);
+
+    if (
+      style.display === "none" ||
+      style.visibility === "hidden"
+    ) {
+      return false;
+    }
+
+    current = current.parentElement;
+  }
+
+  return true;
+}
+
+export function resolveVisibleAuthLogo(
+  ...candidates: Array<HTMLElement | null>
+): HTMLElement | null {
+  return candidates.find(isVisibleAuthLogo) ?? null;
+}
+
+export function findVisibleAuthLogo(
+  selector: string
+): HTMLElement | null {
+  return resolveVisibleAuthLogo(
+    ...Array.from(
+      document.querySelectorAll<HTMLElement>(selector)
+    )
+  );
+}
+
 export async function navigateWithAuthFlight(
   navigate: NavigateFunction,
   to: string,
@@ -104,7 +154,7 @@ export async function navigateWithAuthFlight(
     await paint();
     await paint();
 
-    destination = document.querySelector<HTMLElement>(destinationSelector);
+    destination = findVisibleAuthLogo(destinationSelector);
     const rect = destination?.getBoundingClientRect();
     if (destination && rect && rect.width >= 10) {
       destinationVisibility = destination.style.visibility;

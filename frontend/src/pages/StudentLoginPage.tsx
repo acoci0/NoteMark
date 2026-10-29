@@ -17,7 +17,7 @@ import { createPortal } from "react-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useStudentAuth } from "../auth/StudentAuthContext";
 import NotMarkAtlas from "../components/NotMarkAtlas";
-import { navigateWithAuthFlight } from "../auth/authRouteFlight";
+import { navigateWithAuthFlight, resolveVisibleAuthLogo } from "../auth/authRouteFlight";
 
 type LoginRole = "student" | "admin";
 
@@ -457,7 +457,7 @@ export default function StudentLoginPage() {
                 onClick={() => {
                   void navigateWithAuthFlight(
                     navigate, "/register",
-                    leftLogoRef.current ?? cardLogoRef.current,
+                    resolveVisibleAuthLogo(leftLogoRef.current, cardLogoRef.current),
                     ".notmark-register-brand-frame"
                   );
                 }}
