@@ -125,40 +125,268 @@ export async function playStudentVerificationGenie({
     window.document.body.classList.add("notmark-genie-v6-active");
     await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
 
-    const duration = 2070;
-    const fly = flyingIcon.animate([
-      { offset: 0, opacity: 1, transform: position(0, 0, 1, 1) },
-      { offset: .28, opacity: 1, transform: position(iconX, iconY, 3.1, 3.1) },
-      { offset: .85, opacity: 1, transform: position(iconX, iconY, 3.1, 3.1) },
-      { offset: 1, opacity: 0, transform: position(iconX, iconY, 2.8, 2.8) },
-    ], { duration, easing: "cubic-bezier(.3,0,.2,1)", fill: "forwards" });
+    // NOTMARK_GENIE_V6_SEQUENCED_TIMING_V2
+
+    // AbortController destekli bekleme.
+    const wait = (
+      ms: number
+    ): Promise<void> => new Promise(
+      (resolve, reject) => {
+        if (signal?.aborted) {
+          reject(
+            new DOMException(
+              "Animasyon iptal edildi",
+              "AbortError"
+            )
+          );
+          return;
+        }
+
+        const onAbort = () => {
+          window.clearTimeout(timer);
+
+          reject(
+            new DOMException(
+              "Animasyon iptal edildi",
+              "AbortError"
+            )
+          );
+        };
+
+        const timer = window.setTimeout(() => {
+          signal?.removeEventListener(
+            "abort",
+            onAbort
+          );
+          resolve();
+        }, ms);
+
+        signal?.addEventListener(
+          "abort",
+          onAbort,
+          { once: true }
+        );
+      }
+    );
+
+    /*
+     * AŞAMA 1
+     * Çöp kutusu sola gider ve tamamen büyür.
+     */
+    const fly = flyingIcon.animate(
+      [
+        {
+          opacity: 1,
+          transform: position(
+            0, 0, 1, 1
+          )
+        },
+        {
+          opacity: 1,
+          transform: position(
+            iconX,
+            iconY,
+            3.1,
+            3.1
+          )
+        }
+      ],
+      {
+        duration: 700,
+        easing: "cubic-bezier(.25,.65,.18,1)",
+        fill: "forwards"
+      }
+    );
+
     running.push(fly);
 
-    const flow = ghost.animate([
-      { offset: 0, opacity: 1, transform: position(0, 0, 1, 1) },
-      { offset: .30, opacity: 1, transform: position(0, 0, 1, 1) },
-      { offset: .46, opacity: 1, transform: position(panelX * .22, panelY * .22, .95, .97, -3) },
-      { offset: .60, opacity: 1, transform: position(panelX * .58, panelY * .58, .72, .79, -8) },
-      { offset: .72, opacity: .84, transform: position(panelX * .91, panelY * .91, .20, .29, -11) },
-      { offset: .80, opacity: 0, transform: position(panelX, panelY, .012, .018) },
-      { offset: 1, opacity: 0, transform: position(panelX, panelY, .012, .018) },
-    ], { duration, easing: "cubic-bezier(.27,.65,.2,1)", fill: "forwards" });
-    running.push(flow);
+    await fly.finished;
 
-    const lid = flyingIcon.querySelector<SVGGElement>(".notmark-trash-lid");
+    /*
+     * AŞAMA 2
+     * Çöp kutusu 1,5 saniye sabit bekler.
+     *
+     * Popup bu sırada kesinlikle hareket etmez.
+     */
+    await wait(1500);
+
+    const lid =
+      flyingIcon.querySelector<SVGGElement>(
+        ".notmark-trash-lid"
+      );
+
+    const lidClosed =
+      "translate3d(0,0,0) rotate(0deg)";
+
+    const lidOpened =
+      "translate3d(-3px,-9px,0) rotate(-38deg)";
+
+    /*
+     * AŞAMA 3
+     * Kapak tamamen açılır.
+     */
     if (lid) {
-      const opening = lid.animate([
-        { offset: 0, transform: "translate3d(0,0,0) rotate(0deg)" },
-        { offset: .29, transform: "translate3d(0,0,0) rotate(0deg)" },
-        { offset: .41, transform: "translate3d(-3px,-9px,0) rotate(-38deg)" },
-        { offset: .73, transform: "translate3d(-3px,-9px,0) rotate(-38deg)" },
-        { offset: .86, transform: "translate3d(0,0,0) rotate(0deg)" },
-        { offset: 1, transform: "translate3d(0,0,0) rotate(0deg)" },
-      ], { duration, easing: "ease-in-out", fill: "forwards" });
+      const opening = lid.animate(
+        [
+          { transform: lidClosed },
+          { transform: lidOpened }
+        ],
+        {
+          duration: 320,
+          easing: "ease-out",
+          fill: "forwards"
+        }
+      );
+
       running.push(opening);
+
+      await opening.finished;
     }
 
-    await Promise.all(running.slice(1).map((animation) => animation.finished));
+    /*
+     * AŞAMA 4
+     * Kapak açıkken popup çöp kutusuna akar.
+     */
+    const flow = ghost.animate(
+      [
+        {
+          offset: 0,
+          opacity: 1,
+          transform: position(
+            0, 0, 1, 1
+          )
+        },
+        {
+          offset: 0.16,
+          opacity: 1,
+          transform: position(
+            panelX * 0.13,
+            panelY * 0.13,
+            0.97,
+            0.99,
+            -2
+          )
+        },
+        {
+          offset: 0.38,
+          opacity: 1,
+          transform: position(
+            panelX * 0.44,
+            panelY * 0.44,
+            0.82,
+            0.89,
+            -6
+          )
+        },
+        {
+          offset: 0.64,
+          opacity: 0.96,
+          transform: position(
+            panelX * 0.78,
+            panelY * 0.78,
+            0.42,
+            0.52,
+            -10
+          )
+        },
+        {
+          offset: 0.84,
+          opacity: 0.64,
+          transform: position(
+            panelX * 0.95,
+            panelY * 0.95,
+            0.10,
+            0.17,
+            -5
+          )
+        },
+        {
+          offset: 1,
+          opacity: 0,
+          transform: position(
+            panelX,
+            panelY,
+            0.012,
+            0.018
+          )
+        }
+      ],
+      {
+        duration: 1300,
+        easing: "cubic-bezier(.28,.60,.22,1)",
+        fill: "forwards"
+      }
+    );
+
+    running.push(flow);
+
+    await flow.finished;
+
+    /*
+     * AŞAMA 5
+     * Popup tamamen içeri girdikten sonra
+     * kapağı kapat.
+     */
+    if (lid) {
+      const closing = lid.animate(
+        [
+          { transform: lidOpened },
+          { transform: lidClosed }
+        ],
+        {
+          duration: 280,
+          easing: "ease-in-out",
+          fill: "forwards"
+        }
+      );
+
+      running.push(closing);
+
+      await closing.finished;
+    }
+
+    /*
+     * AŞAMA 6
+     * Popup girdikten sonra toplam 0,8 sn:
+     * 280 ms kapak + 520 ms sabit bekleme.
+     */
+    await wait(520);
+
+    /*
+     * AŞAMA 7
+     * Çöp kutusu yavaşça kaybolur.
+     */
+    const disappear = flyingIcon.animate(
+      [
+        {
+          opacity: 1,
+          transform: position(
+            iconX,
+            iconY,
+            3.1,
+            3.1
+          )
+        },
+        {
+          opacity: 0,
+          transform: position(
+            iconX,
+            iconY,
+            2.85,
+            2.85
+          )
+        }
+      ],
+      {
+        duration: 420,
+        easing: "ease-in-out",
+        fill: "forwards"
+      }
+    );
+
+    running.push(disappear);
+
+    await disappear.finished;
 
     // React rerender happens only when the scene is completely opaque.
     cover();
