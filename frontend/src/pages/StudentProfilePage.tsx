@@ -1391,6 +1391,12 @@ export default function StudentProfilePage() {
     const controller = new AbortController();
     deleteAbortRef.current = controller;
     let deleted = false;
+
+    // NOTMARK_DELETE_NOTICE_AFTER_GENIE_V1
+    const successMessage = item.status === "Rejected"
+      ? "Reddedilen doğrulama listenizden kaldırıldı."
+      : "Doğrulama başvurunuz başarıyla silindi.";
+
     const finish = () => {
       if (!deleteMountedRef.current) return;
       setItems((current) => current.filter((entry) => entry.id !== item.id));
@@ -1399,9 +1405,6 @@ export default function StudentProfilePage() {
     try {
       await studentApi.delete(`/student/verifications/${item.id}`);
       deleted = true;
-      setMessage(item.status === "Rejected"
-        ? "Reddedilen doğrulama listenizden kaldırıldı."
-        : "Doğrulama başvurunuz başarıyla silindi.");
 
       const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
         window.document.querySelector(".student-app-shell")?.getAttribute("data-motion") === "off";
@@ -1412,9 +1415,27 @@ export default function StudentProfilePage() {
         onCovered: finish,
         signal: controller.signal,
       });
+
+      // Genie Effect tamamen bitti.
+      // Panel yeniden göründü.
+      // Bildirimin 5 + 1,4 saniyelik süresi şimdi başlar.
+      if (
+        deleteMountedRef.current &&
+        !controller.signal.aborted
+      ) {
+        setMessage(successMessage);
+      }
     } catch (error: unknown) {
-      if (deleted) finish();
-      else {
+      if (deleted) {
+        finish();
+
+        if (
+          deleteMountedRef.current &&
+          !controller.signal.aborted
+        ) {
+          setMessage(successMessage);
+        }
+      } else {
         const errorMessage = getErrorMessage(error, "Doğrulama silinirken hata oluştu.");
         if (deleteMountedRef.current) {
           setDeleteDialogError(errorMessage);
