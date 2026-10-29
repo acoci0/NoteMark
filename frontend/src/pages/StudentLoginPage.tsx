@@ -52,6 +52,105 @@ export default function StudentLoginPage() {
 
   const emailInputRef = useRef<HTMLInputElement>(null);
 
+  // Logo animasyonu bittikten 3 saniye sonra otomatik odak.
+  // Kullanıcı etkileşimde bulunursa otomatik odak iptal edilir.
+  useEffect(() => {
+    let timer: number | undefined;
+    let cancelled = false;
+
+    const cancelAutoFocus = () => {
+      cancelled = true;
+
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+        timer = undefined;
+      }
+    };
+
+    const onFlightComplete = (event: Event) => {
+      const detail = (event as CustomEvent<{
+        destination: string;
+      }>).detail;
+
+      if (!detail?.destination.startsWith("/login")) {
+        return;
+      }
+
+      if (cancelled) {
+        return;
+      }
+
+      timer = window.setTimeout(() => {
+        timer = undefined;
+
+        if (cancelled) {
+          return;
+        }
+
+        const input = emailInputRef.current;
+
+        if (!input || !input.isConnected || input.disabled) {
+          return;
+        }
+
+        // Kullanıcı başka bir form alanını seçmişse
+        // odağı kesinlikle değiştirme.
+        const active = document.activeElement;
+
+        if (
+          active instanceof HTMLElement &&
+          active !== document.body &&
+          active !== document.documentElement
+        ) {
+          return;
+        }
+
+        input.focus({ preventScroll: true });
+      }, 3000);
+    };
+
+    window.addEventListener(
+      "notmark:auth-flight-complete",
+      onFlightComplete
+    );
+
+    window.addEventListener(
+      "pointerdown",
+      cancelAutoFocus,
+      true
+    );
+
+    window.addEventListener(
+      "keydown",
+      cancelAutoFocus,
+      true
+    );
+
+    return () => {
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+      }
+
+      window.removeEventListener(
+        "notmark:auth-flight-complete",
+        onFlightComplete
+      );
+
+      window.removeEventListener(
+        "pointerdown",
+        cancelAutoFocus,
+        true
+      );
+
+      window.removeEventListener(
+        "keydown",
+        cancelAutoFocus,
+        true
+      );
+    };
+  }, []);
+
+
 
 
 

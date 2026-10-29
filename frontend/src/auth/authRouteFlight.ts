@@ -174,5 +174,13 @@ export async function navigateWithAuthFlight(
     logo?.remove();
     cover?.remove();
     flightRunning = false;
+
+    if (navigated && to.startsWith("/login")) {
+      window.dispatchEvent(
+        new CustomEvent("notmark:auth-flight-complete", {
+          detail: { destination: to },
+        })
+      );
+    }
   }
 }
