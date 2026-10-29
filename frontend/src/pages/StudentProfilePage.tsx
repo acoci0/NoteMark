@@ -13,7 +13,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type FormEvent,
   type KeyboardEvent,
 } from "react";
@@ -21,6 +20,7 @@ import {
 import { isAxiosError } from "axios";
 
 import studentApi from "../api/studentClient";
+import { playStudentVerificationGenie } from "../utils/studentVerificationGenie";
 
 import StudentComplaintDialog from "../components/StudentComplaintDialog";
 
@@ -1291,400 +1291,125 @@ export default function StudentProfilePage() {
   /*
    * Pending doğrulama başvurusunu siler.
    */
-  // NOTMARK_DELETE_CINEMATIC_V3
-
+  // NOTMARK_GENIE_EFFECT_V6
   const [verificationToDelete, setVerificationToDelete] =
     useState<StudentVerificationItem | null>(null);
+  const [deleteDialogBusy, setDeleteDialogBusy] = useState(false);
+  const [deleteDialogError, setDeleteDialogError] = useState("");
+  const deleteDialogCancelRef = useRef<HTMLButtonElement>(null);
+  const deleteDialogPanelRef = useRef<HTMLDivElement>(null);
+  const deleteDialogIconRef = useRef<HTMLDivElement>(null);
+  const deleteInFlightRef = useRef(false);
+  const deleteAbortRef = useRef<AbortController | null>(null);
+  const deleteMountedRef = useRef(true);
 
-  const [deleteDialogBusy, setDeleteDialogBusy] =
-    useState(false);
-
-  const [deleteFlight, setDeleteFlight] =
-    useState(false);
-
-  const [deleteDialogError, setDeleteDialogError] =
-    useState("");
-
-  const [trashPosition, setTrashPosition] =
-    useState<{ x: number; y: number } | null>(null);
-
-  // NOTMARK_GENIE_EFFECT_V5
-  // Popup'un merkezinden soldaki kutuya hareket mesafesi.
-  const [genieTravel, setGenieTravel] =
-    useState({ x: 0, y: 0 });
-
-  // Animasyon bitince ekranı yeniden gösterir.
-  const [deleteReveal, setDeleteReveal] =
-    useState(false);
-
-  const deleteDialogCancelRef =
-    useRef<HTMLButtonElement>(null);
-
-  const deleteDialogPanelRef =
-    useRef<HTMLDivElement>(null);
-
-  const deleteDialogIconRef =
-    useRef<HTMLDivElement>(null);
-
-  const deleteFlightTimerRef =
-    useRef<number | null>(null);
-
-  const deleteInFlightRef =
-    useRef(false);
-
-  // Animasyon zamanlayıcısını sayfadan ayrılırken temizle.
   useEffect(() => {
+    deleteMountedRef.current = true;
     return () => {
-      if (deleteFlightTimerRef.current !== null) {
-        window.clearTimeout(deleteFlightTimerRef.current);
-      }
+      deleteMountedRef.current = false;
+      deleteAbortRef.current?.abort();
     };
   }, []);
 
-  // Sinematik geçişte arka plan parçacıklarını duraklat.
-  useEffect(() => {
-    const body = window.document.body;
-
-    body.classList.toggle(
-      "notmark-genie-active",
-      deleteFlight
-    );
-
-    return () => {
-      body.classList.remove("notmark-genie-active");
-    };
-  }, [deleteFlight]);
-
-  // Modal açıkken sayfanın kaydırılmasını engelle.
-  // Önceki odak konumunu kapatırken geri yükle.
   useEffect(() => {
     if (!verificationToDelete) return;
-
     const body = window.document.body;
     const previousOverflow = body.style.overflow;
-
-    const previousFocus =
-      window.document.activeElement;
-
+    const priorFocus = window.document.activeElement;
     body.style.overflow = "hidden";
-
     const focusTimer = window.setTimeout(() => {
-      deleteDialogCancelRef.current?.focus({
-        preventScroll: true
-      });
+      deleteDialogCancelRef.current?.focus({ preventScroll: true });
     }, 0);
 
-    return () => {
-      window.clearTimeout(focusTimer);
-
-      body.style.overflow = previousOverflow;
-
-      if (
-        previousFocus instanceof HTMLElement &&
-        previousFocus.isConnected
-      ) {
-        previousFocus.focus({ preventScroll: true });
-      }
-    };
-  }, [verificationToDelete?.id]);
-
-  // Escape ile kapatma ve klavye odağını modalde tutma.
-  useEffect(() => {
-    if (!verificationToDelete) return;
-
-    const onKeyDown = (
-      event: globalThis.KeyboardEvent
-    ) => {
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-
-        if (!deleteDialogBusy && !deleteFlight) {
-          setVerificationToDelete(null);
-        }
-
+        if (!deleteDialogBusy) setVerificationToDelete(null);
         return;
       }
-
       if (event.key !== "Tab") return;
-
       const dialog = deleteDialogPanelRef.current;
-
       if (!dialog) return;
-
-      const buttons = Array.from(
-        dialog.querySelectorAll<HTMLButtonElement>(
-          "button:not(:disabled)"
-        )
-      );
-
-      if (buttons.length === 0) {
-        event.preventDefault();
-        return;
-      }
-
+      const buttons = Array.from(dialog.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"));
+      if (!buttons.length) { event.preventDefault(); return; }
       const first = buttons[0];
       const last = buttons[buttons.length - 1];
-
       const active = window.document.activeElement;
-
-      if (!dialog.contains(active)) {
-        event.preventDefault();
-        first.focus();
-        return;
-      }
-
-      if (event.shiftKey && active === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (
-        !event.shiftKey &&
-        active === last
-      ) {
-        event.preventDefault();
-        first.focus();
-      }
+      if (!dialog.contains(active)) { event.preventDefault(); first.focus(); }
+      else if (event.shiftKey && active === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && active === last) { event.preventDefault(); first.focus(); }
     };
-
-    window.document.addEventListener(
-      "keydown",
-      onKeyDown,
-      true
-    );
-
+    window.document.addEventListener("keydown", onKeyDown, true);
     return () => {
-      window.document.removeEventListener(
-        "keydown",
-        onKeyDown,
-        true
-      );
+      window.clearTimeout(focusTimer);
+      body.style.overflow = previousOverflow;
+      window.document.removeEventListener("keydown", onKeyDown, true);
+      if (priorFocus instanceof HTMLElement && priorFocus.isConnected) {
+        priorFocus.focus({ preventScroll: true });
+      }
     };
-  }, [
-    verificationToDelete,
-    deleteDialogBusy,
-    deleteFlight
-  ]);
+  }, [verificationToDelete, deleteDialogBusy]);
 
-  // Silme penceresini aç.
-  const deleteVerification = async (
-    item: StudentVerificationItem
-  ) => {
-    if (
-      item.status !== "Pending" &&
-      item.status !== "Rejected"
-    ) {
-      setMessage(
-        "Yalnızca incelemedeki veya reddedilen doğrulamalar silinebilir."
-      );
+  const deleteVerification = async (item: StudentVerificationItem) => {
+    if (item.status !== "Pending" && item.status !== "Rejected") {
+      setMessage("Yalnızca incelemedeki veya reddedilen doğrulamalar silinebilir.");
       return;
     }
-
     if (deleteInFlightRef.current) return;
-
     setDeleteDialogError("");
-    setDeleteFlight(false);
-    setDeleteReveal(false);
-    setTrashPosition(null);
-    setGenieTravel({ x: 0, y: 0 });
     setVerificationToDelete(item);
   };
 
-  // API başarılı olduktan sonra sinematik animasyonu başlat.
   const confirmDeleteVerification = async () => {
     const item = verificationToDelete;
-
-    if (
-      !item ||
-      deleteDialogBusy ||
-      deleteFlight ||
-      deleteInFlightRef.current
-    ) {
-      return;
-    }
-
-    if (
-      item.status !== "Pending" &&
-      item.status !== "Rejected"
-    ) {
-      setVerificationToDelete(null);
-      return;
-    }
+    if (!item || deleteInFlightRef.current) return;
+    if (item.status !== "Pending" && item.status !== "Rejected") return;
 
     deleteInFlightRef.current = true;
-
     setDeleteDialogBusy(true);
     setDeletingId(item.id);
     setDeleteDialogError("");
     setMessage("");
-
+    const controller = new AbortController();
+    deleteAbortRef.current = controller;
+    let deleted = false;
+    const finish = () => {
+      if (!deleteMountedRef.current) return;
+      setItems((current) => current.filter((entry) => entry.id !== item.id));
+      setVerificationToDelete(null);
+    };
     try {
-      // Mevcut backend endpoint'i değiştirilmez.
-      await studentApi.delete(
-        `/student/verifications/${item.id}`
-      );
+      await studentApi.delete(`/student/verifications/${item.id}`);
+      deleted = true;
+      setMessage(item.status === "Rejected"
+        ? "Reddedilen doğrulama listenizden kaldırıldı."
+        : "Doğrulama başvurunuz başarıyla silindi.");
 
-      setMessage(
-        item.status === "Rejected"
-          ? "Reddedilen doğrulama listenizden kaldırıldı."
-          : "Doğrulama başvurunuz başarıyla silindi."
-      );
-
-      // Hareket azaltma tercihi varsa animasyon atlanır.
-      const reducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-
-      const motionOff =
-        window.document
-          .querySelector(".student-app-shell")
-          ?.getAttribute("data-motion") === "off";
-
-      const panelRect =
-        deleteDialogPanelRef.current
-          ?.getBoundingClientRect();
-
-      // Kullanıcı hareket azaltmayı seçtiyse
-      // silme işlemi animasyonsuz tamamlanır.
-      if (
-        reducedMotion ||
-        motionOff ||
-        !panelRect ||
-        panelRect.width <= 0
-      ) {
-        setItems((current) =>
-          current.filter((x) => x.id !== item.id)
-        );
-
-        setVerificationToDelete(null);
+      const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        window.document.querySelector(".student-app-shell")?.getAttribute("data-motion") === "off";
+      if (motionOff) finish();
+      else await playStudentVerificationGenie({
+        panel: deleteDialogPanelRef.current,
+        icon: deleteDialogIconRef.current,
+        onCovered: finish,
+        signal: controller.signal,
+      });
+    } catch (error: unknown) {
+      if (deleted) finish();
+      else {
+        const errorMessage = getErrorMessage(error, "Doğrulama silinirken hata oluştu.");
+        if (deleteMountedRef.current) {
+          setDeleteDialogError(errorMessage);
+          setMessage(errorMessage);
+        }
+      }
+    } finally {
+      deleteAbortRef.current = null;
+      deleteInFlightRef.current = false;
+      if (deleteMountedRef.current) {
         setDeleteDialogBusy(false);
         setDeletingId(null);
-
-        deleteInFlightRef.current = false;
-        return;
       }
-
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-
-      const panelCenterX =
-        panelRect.left + panelRect.width / 2;
-
-      const panelCenterY =
-        panelRect.top + panelRect.height / 2;
-
-      /*
-       * Çöp kutusu popup'un üzerinde değil,
-       * ekranın sol tarafında konumlanır.
-       *
-       * Masaüstünde popup ile arasında
-       * görsel olarak yeterli boşluk kalır.
-       */
-      const trashX = Math.max(
-        68,
-        Math.min(
-          viewportWidth * 0.23,
-          panelRect.left - 105
-        )
-      );
-
-      const trashY = Math.max(
-        95,
-        Math.min(
-          viewportHeight - 95,
-          panelCenterY
-        )
-      );
-
-      /*
-       * Genie transform'u popup'un kendi
-       * merkezinden hesaplanır.
-       *
-       * Sabit koordinat kullanılmaz.
-       */
-      setGenieTravel({
-        x: trashX - panelCenterX,
-        y: trashY - panelCenterY
-      });
-
-      setTrashPosition({
-        x: trashX,
-        y: trashY
-      });
-
-      /*
-       * API işlemi zaten başarılı.
-       *
-       * Listeyi şimdi güncelliyoruz;
-       * böylece perde kalkarken yeniden
-       * loading ekranına geçilmiyor.
-       */
-      setItems((current) =>
-        current.filter((x) => x.id !== item.id)
-      );
-
-      setDeleteReveal(false);
-
-      /*
-       * Faz 1:
-       * Arka plan düz lacivert olur.
-       *
-       * Faz 2:
-       * Soldaki çöp kutusu büyür.
-       *
-       * Faz 3:
-       * Kapak açılır.
-       *
-       * Faz 4:
-       * Popup soldaki kutuya akarak küçülür.
-       */
-      setDeleteFlight(true);
-
-      deleteFlightTimerRef.current =
-        window.setTimeout(() => {
-
-          /*
-           * Faz 5:
-           * Kapak kapanmış ve çöp kutusu
-           * kaybolmuştur.
-           *
-           * Şimdi ekran yeniden görünür.
-           */
-          setDeleteReveal(true);
-
-          deleteFlightTimerRef.current =
-            window.setTimeout(() => {
-
-              deleteFlightTimerRef.current = null;
-
-              setVerificationToDelete(null);
-              setDeleteFlight(false);
-              setDeleteReveal(false);
-
-              setTrashPosition(null);
-              setGenieTravel({ x: 0, y: 0 });
-
-              setDeleteDialogBusy(false);
-              setDeletingId(null);
-
-              deleteInFlightRef.current = false;
-
-            }, 460);
-
-        }, 2100);
-
-    } catch (error: unknown) {
-      // API başarısızsa başarı animasyonu oynatılmaz.
-      const errorMessage = getErrorMessage(
-        error,
-        "Doğrulama silinirken hata oluştu."
-      );
-
-      setDeleteDialogError(errorMessage);
-      setMessage(errorMessage);
-
-      setDeleteDialogBusy(false);
-      setDeletingId(null);
-
-      deleteInFlightRef.current = false;
     }
   };
 
@@ -3142,15 +2867,9 @@ export default function StudentProfilePage() {
 
         {verificationToDelete && (
           <div
-            className={`notmark-delete-overlay${
-              deleteFlight ? " is-consuming" : ""
-            }${deleteReveal ? " is-revealing" : ""}`}
+            className="notmark-delete-overlay"
             onMouseDown={(event) => {
-              if (
-                event.target === event.currentTarget &&
-                !deleteDialogBusy &&
-                !deleteFlight
-              ) {
+              if (event.target === event.currentTarget && !deleteDialogBusy) {
                 setVerificationToDelete(null);
               }
             }}
@@ -3163,141 +2882,41 @@ export default function StudentProfilePage() {
               aria-labelledby="notmark-delete-title"
               aria-describedby="notmark-delete-description"
               aria-busy={deleteDialogBusy}
-              style={{
-                transformOrigin: "center center",
-                ...({
-                  "--nm-genie-x22":
-                    `${genieTravel.x * 0.22}px`,
-                  "--nm-genie-y22":
-                    `${genieTravel.y * 0.22}px`,
-                  "--nm-genie-x48":
-                    `${genieTravel.x * 0.48}px`,
-                  "--nm-genie-y48":
-                    `${genieTravel.y * 0.48}px`,
-                  "--nm-genie-x76":
-                    `${genieTravel.x * 0.76}px`,
-                  "--nm-genie-y76":
-                    `${genieTravel.y * 0.76}px`,
-                  "--nm-genie-x92":
-                    `${genieTravel.x * 0.92}px`,
-                  "--nm-genie-y92":
-                    `${genieTravel.y * 0.92}px`,
-                  "--nm-genie-x":
-                    `${genieTravel.x}px`,
-                  "--nm-genie-y":
-                    `${genieTravel.y}px`
-                } as CSSProperties)
-              }}
             >
-              <div
-                ref={deleteDialogIconRef}
-                className="notmark-delete-dialog__icon"
-                aria-hidden="true"
-              >
-                <Trash2 size={20} strokeWidth={1.9} />
-              </div>
-
-              <h2 id="notmark-delete-title">
-                Doğrulamayı Sil
-              </h2>
-
-              <p id="notmark-delete-description">
-                <strong>
-                  {verificationToDelete.universityName}
-                </strong>
-                {" — "}
-                {verificationToDelete.departmentName}
-                {" "}
-                doğrulamasını silmek istiyor musunuz?
-              </p>
-
-              {deleteDialogError && (
-                <p
-                  className="notmark-delete-dialog__error"
-                  role="alert"
-                >
-                  {deleteDialogError}
-                </p>
-              )}
-
-              <div className="notmark-delete-dialog__actions">
-                <button
-                  ref={deleteDialogCancelRef}
-                  type="button"
-                  className="notmark-delete-dialog__cancel"
-                  disabled={deleteDialogBusy || deleteFlight}
-                  onClick={() => {
-                    setVerificationToDelete(null);
-                  }}
-                >
-                  Vazgeç
-                </button>
-
-                <button
-                  type="button"
-                  className="notmark-delete-dialog__confirm"
-                  disabled={deleteDialogBusy || deleteFlight}
-                  onClick={() => {
-                    void confirmDeleteVerification();
-                  }}
-                >
-                  <Trash2 size={15} />
-                  {deleteDialogBusy ? "Siliniyor..." : "Sil"}
-                </button>
-              </div>
-            </div>
-
-            {deleteFlight && trashPosition && (
-              <div
-                className="notmark-delete-flying-trash"
-                style={{
-                  left: trashPosition.x,
-                  top: trashPosition.y
-                }}
-                aria-hidden="true"
-              >
-                <svg
-                  className="notmark-trash-animated-svg"
-                  viewBox="0 0 64 76"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+              <div ref={deleteDialogIconRef} className="notmark-delete-dialog__icon" aria-hidden="true">
+                <svg className="notmark-trash-animated-svg" viewBox="0 0 64 76" fill="none" aria-hidden="true">
                   <g className="notmark-trash-lid">
-                    <path
-                      d="M12 20H52"
-                      stroke="currentColor"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M25 14H39"
-                      stroke="currentColor"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                    />
+                    <path d="M12 20H52" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+                    <path d="M25 14H39" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
                   </g>
-
                   <g className="notmark-trash-body">
-                    <path
-                      d="M17 27L21 64C21.2 66 23 68 25 68H39C41 68 42.8 66 43 64L47 27"
-                      fill="currentColor"
-                      fillOpacity="0.09"
-                      stroke="currentColor"
-                      strokeWidth="3.5"
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                    />
-
-                    <path
-                      d="M28 36V58M36 36V58"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
+                    <path d="M17 27L21 64C21.2 66 23 68 25 68H39C41 68 42.8 66 43 64L47 27"
+                      fill="currentColor" fillOpacity="0.09" stroke="currentColor"
+                      strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round" />
+                    <path d="M28 36V58M36 36V58" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                   </g>
                 </svg>
               </div>
-            )}
+              <h2 id="notmark-delete-title">Doğrulamayı Sil</h2>
+              <p id="notmark-delete-description">
+                <strong>{verificationToDelete.universityName}</strong>
+                {" — "}{verificationToDelete.departmentName}{" "}
+                doğrulamasını silmek istiyor musunuz?
+              </p>
+              {deleteDialogError && (
+                <p className="notmark-delete-dialog__error" role="alert">{deleteDialogError}</p>
+              )}
+              <div className="notmark-delete-dialog__actions">
+                <button ref={deleteDialogCancelRef} type="button" className="notmark-delete-dialog__cancel"
+                  disabled={deleteDialogBusy} onClick={() => setVerificationToDelete(null)}>
+                  Vazgeç
+                </button>
+                <button type="button" className="notmark-delete-dialog__confirm"
+                  disabled={deleteDialogBusy} onClick={() => void confirmDeleteVerification()}>
+                  <Trash2 size={15} />{deleteDialogBusy ? "Siliniyor..." : "Sil"}
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </section>
