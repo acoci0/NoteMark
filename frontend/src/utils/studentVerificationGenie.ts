@@ -156,14 +156,34 @@ export async function playStudentVerificationGenie({
       "geometricPrecision"
     );
 
-    // Trash2 ikonunun kapak ve sapını ayır.
+    // NOTMARK_TRASH2_LID_GEOMETRY_V9
+    //
+    // İlk iki path gövdenin iç çizgileridir.
+    // Gerçek kapak, SVG path içeriğine göre seçilir.
 
     const paths = Array.from(svg.children).filter(
-      (element) =>
-        element.tagName.toLowerCase() === "path"
+      (element): element is SVGPathElement =>
+        element instanceof SVGPathElement
     );
 
-    if (paths.length >= 2) {
+    const rim = paths.find(
+      (path) =>
+        path.getAttribute("d") === "M3 6h18"
+    );
+
+    const handle = paths.find(
+      (path) =>
+        path.getAttribute("d") ===
+        "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+    );
+
+    const body = paths.find(
+      (path) =>
+        path.getAttribute("d") ===
+        "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+    );
+
+    if (rim && handle && body) {
       const group =
         window.document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -172,15 +192,18 @@ export async function playStudentVerificationGenie({
 
       group.classList.add("notmark-trash-lid");
 
-      svg.insertBefore(group, paths[0]);
-
-      group.append(paths[0], paths[1]);
-
       group.style.transformBox = "view-box";
 
-      group.style.transformOrigin =
-        "12.5% 25%";
+      // Sol kenar, kapağın gerçek menteşe noktası.
+      group.style.transformOrigin = "3px 6px";
+
+      svg.insertBefore(group, rim);
+
+      // Sadece üst kenar ve tutamak hareket eder.
+      group.append(rim, handle);
     }
+
+    // SVG yapısı değişirse gövde hareket ettirilmez.
   }
 
   // NOTMARK_GENIE_V8_SMOOTH_SCALE
@@ -311,11 +334,10 @@ export async function playStudentVerificationGenie({
         ".notmark-trash-lid"
       );
 
-    const lidClosed =
-      "translate3d(0,0,0) rotate(0deg)";
+    const lidClosed = "rotate(0deg)";
 
-    const lidOpened =
-      "translate3d(-5px,-12px,0) rotate(-38deg)";
+    // Kapak sol menteşe etrafında açılır.
+    const lidOpened = "rotate(-43deg)";
 
     /*
      * AŞAMA 3
