@@ -147,7 +147,7 @@ export async function navigateWithAuthFlight(
     await animate(cover, [{ opacity: 0 }, { opacity: 1 }], 340);
     await animate(logo, [{ transform: start }, { transform: center }], 720);
     ring.style.animationPlayState = "running";
-    await wait(2000);
+    await wait(1400);
 
     navigate(to, { replace });
     navigated = true;

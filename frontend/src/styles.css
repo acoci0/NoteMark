@@ -36672,7 +36672,7 @@ input[type="file"]::file-selector-button {
   border-radius: 20%;
 }
 
-/* Orijinal turuncu isik: tam tur 2 saniye */
+/* Orijinal turuncu isik: tam tur 1,4 saniye */
 
 .notmark-auth-cinematic-ring {
   --notmark-auth-angle: 0deg;
@@ -36704,7 +36704,7 @@ input[type="file"]::file-selector-button {
     0 0 16px rgba(255,107,11,.12);
 
   animation:
-    notmark-auth-border-spin 2s linear 1 both;
+    notmark-auth-border-spin 1.4s linear 1 both;
 
   animation-play-state: paused;
 }
@@ -37019,7 +37019,7 @@ input[type="file"]::file-selector-button {
     0 0 10px rgba(255, 107, 11, .10);
 
   animation:
-    notmark-auth-border-spin 2s linear 1 both;
+    notmark-auth-border-spin 1.4s linear 1 both;
 
   animation-play-state: paused;
 }
@@ -37504,7 +37504,7 @@ input[type="file"]::file-selector-button {
   will-change: transform;
 }
 .notmark-auth-route-logo .notmark-auth-cinematic-ring {
-  animation: notmark-auth-border-spin 2s linear 1 both;
+  animation: notmark-auth-border-spin 1.4s linear 1 both;
   animation-play-state: paused;
 }
 @media (max-width: 560px) {

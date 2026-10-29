@@ -175,6 +175,8 @@ export default function StudentLoginPage() {
   const flightRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
+  // NOTMARK_STUDENT_LOGIN_CINEMATIC_V1_14S
+  const studentLoginFlightRef = useRef(false);
   const switchingRef = useRef(false);
   const mountedRef = useRef(true);
   const animationsRef = useRef<Animation[]>([]);
@@ -362,7 +364,7 @@ export default function StudentLoginPage() {
           "running";
       }
 
-      await delay(2000);
+      await delay(1400);
 
       if (!mountedRef.current) return;
 
@@ -403,7 +405,7 @@ export default function StudentLoginPage() {
     }
   };
 
-  if (studentMode && isStudentAuthenticated) {
+  if (studentMode && isStudentAuthenticated && !studentLoginFlightRef.current) {
     return <Navigate to="/student/profile" replace />;
   }
   if (!studentMode && isAuthenticated) {
@@ -412,14 +414,32 @@ export default function StudentLoginPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (loading || roleTransitioning) return;
+    if (loading || roleTransitioning || studentLoginFlightRef.current) return;
 
     setError("");
     setLoading(true);
     try {
       if (studentMode) {
+        // Kimlik doğrulama başarılı olmadan logo geçişi başlamaz.
+        // Ref auth state güncellemesinden ÖNCE açılır.
+        studentLoginFlightRef.current = true;
         await studentLogin(email.trim(), password);
-        navigate("/student/profile", { replace: true });
+
+        // Rol/kayıt geçişindeki mevcut koyu ekran ve turuncu logo kullanılır.
+        // Rota değiştikten sonra logo öğrenci panelindeki sol üst logoya iner.
+        await navigateWithAuthFlight(
+          navigate,
+          "/student/profile",
+          resolveVisibleAuthLogo(leftLogoRef.current, cardLogoRef.current),
+          ".student-brand__mark",
+          true
+        );
+
+        // Başka bir geçiş devam ediyorsa yardımcı fonksiyon erken dönebilir.
+        // Başarılı oturum hiçbir koşulda giriş ekranında mahsur kalmamalı.
+        if (window.location.pathname === "/login") {
+          navigate("/student/profile", { replace: true });
+        }
       } else {
         await adminLogin(email.trim(), password);
         navigate("/", { replace: true });
@@ -433,7 +453,8 @@ export default function StudentLoginPage() {
         setError("Giriş tamamlanamadı. Lütfen yeniden deneyin.");
       }
     } finally {
-      setLoading(false);
+      studentLoginFlightRef.current = false;
+      if (mountedRef.current) setLoading(false);
     }
   };
 
