@@ -32,6 +32,8 @@ import {
   useStudentAppearance,
 } from "../auth/StudentAppearanceContext";
 
+import StudentNotificationCenter from "../components/StudentNotificationCenter";
+
 export default function StudentLayout() {
   const location = useLocation();
 
@@ -427,6 +429,11 @@ export default function StudentLayout() {
           </nav>
 
           <div className="student-account-area">
+            <StudentNotificationCenter
+              key={student?.id ?? "anonymous"}
+              studentId={student?.id ?? ""}
+            />
+
             <NavLink
               to="/student/profile"
               className="student-account-chip"
