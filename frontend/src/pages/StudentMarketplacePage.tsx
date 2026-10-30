@@ -1,5 +1,5 @@
 import {
-  BookOpen,
+  LayoutGrid,
   CheckCircle2,
   FileText,
   FileUp,
@@ -293,7 +293,7 @@ export default function StudentMarketplacePage() {
 
       {requests.length === 0 ? (
         <section className="marketplace-empty">
-          <BookOpen size={30} />
+          <LayoutGrid size={30} />
 
           <h2>
             Şu anda uygun talep yok
