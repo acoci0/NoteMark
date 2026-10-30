@@ -382,7 +382,11 @@ export default function StudentNoteRequestsPage({
 
       {requests.length === 0 ? (
         <section className="marketplace-empty notmark-request-board-empty">
-          <BookOpen size={30} />
+          {view === "paused" ? (
+            <PauseCircle size={30} aria-hidden="true" />
+          ) : (
+            <BookOpen size={30} aria-hidden="true" />
+          )}
 
           <h2>
             {view === "paused" ? "Beklemede talebiniz yok" : "Şu anda listelenecek talebiniz yok"}

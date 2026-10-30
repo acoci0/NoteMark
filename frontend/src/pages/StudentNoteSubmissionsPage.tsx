@@ -175,9 +175,11 @@ export default function StudentNoteSubmissionsPage() {
 
       {submissions.length === 0 ? (
         <section className="student-requests-empty note-submissions-empty">
-          <div className="student-requests-empty__icon">
-            <FileText size={28} />
-          </div>
+          <FileText
+            size={30}
+            className="notmark-submissions-empty-symbol"
+            aria-hidden="true"
+          />
 
           <h2>
             Henüz not göndermediniz

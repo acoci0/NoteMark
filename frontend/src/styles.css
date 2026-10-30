@@ -39578,3 +39578,105 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_REQUEST_EMPTY_MARKETPLACE_V5_END */
+
+
+/* NOTMARK_EMPTY_ICONS_V6_START */
+
+/*
+ * Taleplerim ve Beklemeye Aldıklarım
+ * Talep Panosu ile aynı SVG ölçüleri.
+ */
+
+.student-app-shell .student-requests-page
+.notmark-request-board-empty.marketplace-empty > svg {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 auto;
+
+  margin: 0 0 17px;
+
+  color: var(--student-accent) !important;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(var(--student-accent-rgb), .18)
+    );
+}
+
+/*
+ * Gönderdiğim Notlar:
+ * Belge ikonu çerçevesiz ve arka plansız.
+ */
+
+.student-app-shell .note-submissions-page
+.note-submissions-empty > svg.notmark-submissions-empty-symbol {
+  display: block;
+  position: relative;
+  z-index: 1;
+
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 auto;
+
+  margin: 0 0 17px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+  box-shadow: none;
+
+  color: var(--student-accent) !important;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(var(--student-accent-rgb), .18)
+    );
+
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+/* Hafif hover parıltısı */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .student-app-shell .note-submissions-page
+  .note-submissions-empty:hover > svg.notmark-submissions-empty-symbol {
+    transform: translateY(-2px);
+
+    filter:
+      drop-shadow(
+        0 0 11px
+        rgba(var(--student-accent-rgb), .32)
+      );
+  }
+}
+
+/* Animasyon tercihleri */
+
+.student-app-shell[data-motion="off"] .note-submissions-page
+.note-submissions-empty > svg.notmark-submissions-empty-symbol {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .student-app-shell .note-submissions-page
+  .note-submissions-empty > svg.notmark-submissions-empty-symbol {
+    transition: none;
+  }
+
+  .student-app-shell .note-submissions-page
+  .note-submissions-empty:hover > svg.notmark-submissions-empty-symbol {
+    transform: none;
+  }
+}
+
+/* NOTMARK_EMPTY_ICONS_V6_END */
