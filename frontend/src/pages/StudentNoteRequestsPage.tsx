@@ -9,14 +9,12 @@ import {
   Sparkles,
   PauseCircle,
   PlayCircle,
-  LockKeyhole,
   Trash2,
-  AlertTriangle,
-  X,
 } from "lucide-react";
 
 import {
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -29,6 +27,7 @@ import {
 } from "axios";
 
 import studentApi from "../api/studentClient";
+import { playStudentVerificationGenie } from "../utils/studentVerificationGenie";
 
 import type {
   StudentNoteRequest,
@@ -38,7 +37,7 @@ type ApiErrorResponse = {
   message?: string;
 };
 
-type RequestAction = "pause" | "resume" | "close" | "delete";
+type RequestAction = "pause" | "resume";
 
 export default function StudentNoteRequestsPage({
   view = "all",
@@ -62,17 +61,106 @@ export default function StudentNoteRequestsPage({
   ] = useState("");
 
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [confirmation, setConfirmation] = useState<{
-    request: StudentNoteRequest;
-    action: "close" | "delete";
-  } | null>(null);
+  // NOTMARK_REQUEST_GENIE_V3
+  const [confirmation, setConfirmation] =
+    useState<StudentNoteRequest | null>(null);
+
+  const [deleteError, setDeleteError] = useState("");
   const [notice, setNotice] = useState("");
+
+  const deletePanelRef = useRef<HTMLDivElement>(null);
+  const deleteIconRef = useRef<HTMLDivElement>(null);
+  const deleteCancelRef = useRef<HTMLButtonElement>(null);
+
+  const deleteInFlightRef = useRef(false);
+  const deleteAbortRef = useRef<AbortController | null>(null);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     if (!notice) return;
     const timer = window.setTimeout(() => setNotice(""), 6400);
     return () => window.clearTimeout(timer);
   }, [notice]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+      deleteAbortRef.current?.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!confirmation) return;
+
+    const body = window.document.body;
+    const previousOverflow = body.style.overflow;
+    const previousFocus = window.document.activeElement;
+
+    body.style.overflow = "hidden";
+
+    const focusTimer = window.setTimeout(() => {
+      deleteCancelRef.current?.focus({ preventScroll: true });
+    }, 0);
+
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        if (!busyId) setConfirmation(null);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const panel = deletePanelRef.current;
+      if (!panel) return;
+
+      const buttons = Array.from(
+        panel.querySelectorAll<HTMLButtonElement>(
+          "button:not(:disabled)"
+        )
+      );
+
+      if (!buttons.length) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = buttons[0];
+      const last = buttons[buttons.length - 1];
+      const active = window.document.activeElement;
+
+      if (!panel.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.document.addEventListener("keydown", onKeyDown, true);
+
+    return () => {
+      window.clearTimeout(focusTimer);
+      window.document.removeEventListener(
+        "keydown", onKeyDown, true
+      );
+
+      body.style.overflow = previousOverflow;
+
+      if (
+        previousFocus instanceof HTMLElement &&
+        previousFocus.isConnected
+      ) {
+        previousFocus.focus({ preventScroll: true });
+      }
+    };
+  }, [confirmation, busyId]);
 
   useEffect(() => {
     const load = async () => {
@@ -89,7 +177,11 @@ export default function StudentNoteRequestsPage({
               : "/student/note-requests/mine"
           );
 
-        setRequests(data);
+        setRequests(data.filter((request) =>
+          view === "paused"
+            ? request.lifecycleStatus === "Paused"
+            : request.lifecycleStatus !== "Paused"
+        ));
       } catch (requestError) {
         setError(
           getErrorMessage(
@@ -105,38 +197,141 @@ export default function StudentNoteRequestsPage({
     void load();
   }, [view]);
 
-  const changeRequest = async (request: StudentNoteRequest, action: RequestAction) => {
-    if (busyId) return;
+  const changeRequest = async (
+    request: StudentNoteRequest,
+    action: RequestAction
+  ) => {
+    if (busyId || deleteInFlightRef.current) return;
+
     setBusyId(request.id);
     setError("");
     setNotice("");
-    try {
-      const nextStatus: StudentNoteRequest["lifecycleStatus"] = action === "pause" ? "Paused"
-        : action === "resume" ? "Active" : "Closed";
 
-      if (action === "delete") {
-        await studentApi.delete(`/student/note-requests/${request.id}`);
-        setRequests((current) => current.filter((x) => x.id !== request.id));
+    try {
+      const nextStatus: StudentNoteRequest["lifecycleStatus"] =
+        action === "pause" ? "Paused" : "Active";
+
+      await studentApi.put(
+        `/student/note-requests/${request.id}/lifecycle`,
+        { status: nextStatus }
+      );
+
+      setRequests((current) => current
+        .map((entry) => entry.id === request.id
+          ? { ...entry, lifecycleStatus: nextStatus }
+          : entry)
+        .filter((entry) => view === "paused"
+          ? entry.lifecycleStatus === "Paused"
+          : entry.lifecycleStatus !== "Paused")
+      );
+
+      setNotice(action === "pause"
+        ? "Talebiniz beklemeye alındı. Beklemeye Aldıklarım bölümünden yönetebilirsiniz."
+        : "Talebiniz yeniden aktif edildi."
+      );
+    } catch (requestError) {
+      setError(getErrorMessage(
+        requestError,
+        "Talep güncellenemedi. Listeyi yenileyin."
+      ));
+    } finally {
+      if (mountedRef.current) setBusyId(null);
+    }
+  };
+
+  const openDeleteDialog = (request: StudentNoteRequest) => {
+    if (busyId || deleteInFlightRef.current) return;
+
+    setDeleteError("");
+    setConfirmation(request);
+  };
+
+  const confirmDeleteRequest = async () => {
+    const request = confirmation;
+
+    if (!request || busyId || deleteInFlightRef.current) return;
+
+    deleteInFlightRef.current = true;
+
+    setBusyId(request.id);
+    setDeleteError("");
+    setError("");
+    setNotice("");
+
+    const controller = new AbortController();
+    deleteAbortRef.current = controller;
+
+    let deleted = false;
+
+    const finish = () => {
+      if (!mountedRef.current) return;
+
+      setRequests((current) =>
+        current.filter((entry) => entry.id !== request.id)
+      );
+
+      setConfirmation(null);
+    };
+
+    try {
+      await studentApi.delete(
+        `/student/note-requests/${request.id}`
+      );
+
+      deleted = true;
+
+      const motionOff =
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches ||
+        window.document.querySelector(
+          ".student-app-shell"
+        )?.getAttribute("data-motion") === "off";
+
+      if (motionOff) {
+        finish();
       } else {
-        await studentApi.put(`/student/note-requests/${request.id}/lifecycle`, {
-          status: nextStatus,
+        await playStudentVerificationGenie({
+          panel: deletePanelRef.current,
+          icon: deleteIconRef.current,
+          onCovered: finish,
+          signal: controller.signal,
         });
-        setRequests((current) => current
-          .map((x) => x.id === request.id ? {
-            ...x, lifecycleStatus: nextStatus,
-          } : x)
-          .filter((x) => view !== "paused" || x.lifecycleStatus === "Paused"));
       }
 
-      setNotice(action === "pause" ? "Talebiniz beklemeye alındı."
-        : action === "resume" ? "Talebiniz yeniden aktif edildi."
-        : action === "close" ? "Talebiniz kapatıldı."
-        : "Talebiniz listeden kaldırıldı; önceki gönderimler korunur.");
+      if (
+        mountedRef.current &&
+        !controller.signal.aborted
+      ) {
+        setNotice(
+          "Talebiniz silindi. Geçmiş gönderimler ve satış kayıtları korundu."
+        );
+      }
     } catch (requestError) {
-      setError(getErrorMessage(requestError, "Talep güncellenemedi. Listeyi yenileyin."));
+      if (deleted) {
+        finish();
+
+        if (
+          mountedRef.current &&
+          !controller.signal.aborted
+        ) {
+          setNotice(
+            "Talebiniz silindi. Geçmiş gönderimler ve satış kayıtları korundu."
+          );
+        }
+      } else if (mountedRef.current) {
+        setDeleteError(getErrorMessage(
+          requestError,
+          "Talep silinemedi. Lütfen tekrar deneyin."
+        ));
+      }
     } finally {
-      setBusyId(null);
-      setConfirmation(null);
+      deleteAbortRef.current = null;
+      deleteInFlightRef.current = false;
+
+      if (mountedRef.current) {
+        setBusyId(null);
+      }
     }
   };
 
@@ -354,35 +549,61 @@ export default function StudentNoteRequestsPage({
                 <div className="notmark-request-actions">
                   {request.lifecycleStatus === "Active" && (
                     <>
-                      <button type="button" className="secondary-button notmark-request-action notmark-request-action--pause"
-                        disabled={busyId !== null} onClick={() => void changeRequest(request, "pause")}>
-                        <PauseCircle size={17} /> Beklemeye Al
-                      </button>
-                      <button type="button" className="secondary-button notmark-request-action notmark-request-action--close"
+                      <button
+                        type="button"
+                        className="secondary-button notmark-request-action notmark-request-action--pause"
                         disabled={busyId !== null}
-                        onClick={() => setConfirmation({ request, action: "close" })}>
-                        <LockKeyhole size={17} /> Talebi Kapat
+                        onClick={() => void changeRequest(request, "pause")}
+                      >
+                        <PauseCircle size={17} />
+                        Beklemeye Al
+                      </button>
+
+                      <button
+                        type="button"
+                        className="student-delete-button notmark-request-delete"
+                        disabled={busyId !== null}
+                        onClick={() => openDeleteDialog(request)}
+                      >
+                        <Trash2 size={17} />
+                        Talebi Sil
                       </button>
                     </>
                   )}
+
                   {request.lifecycleStatus === "Paused" && (
                     <>
-                      <button type="button" className="primary-button notmark-request-action notmark-request-action--primary"
-                        disabled={busyId !== null} onClick={() => void changeRequest(request, "resume")}>
-                        <PlayCircle size={17} /> Yeniden Aktif Et
-                      </button>
-                      <button type="button" className="secondary-button notmark-request-action notmark-request-action--danger"
+                      <button
+                        type="button"
+                        className="notmark-request-action notmark-request-action--resume"
                         disabled={busyId !== null}
-                        onClick={() => setConfirmation({ request, action: "delete" })}>
-                        <Trash2 size={17} /> Talebi Sil
+                        onClick={() => void changeRequest(request, "resume")}
+                      >
+                        <PlayCircle size={17} />
+                        Yeniden Aktif Et
+                      </button>
+
+                      <button
+                        type="button"
+                        className="student-delete-button notmark-request-delete"
+                        disabled={busyId !== null}
+                        onClick={() => openDeleteDialog(request)}
+                      >
+                        <Trash2 size={17} />
+                        Talebi Sil
                       </button>
                     </>
                   )}
+
                   {request.lifecycleStatus === "Closed" && (
-                    <button type="button" className="secondary-button notmark-request-action notmark-request-action--danger"
+                    <button
+                      type="button"
+                      className="student-delete-button notmark-request-delete"
                       disabled={busyId !== null}
-                      onClick={() => setConfirmation({ request, action: "delete" })}>
-                      <Trash2 size={17} /> Talebi Sil
+                      onClick={() => openDeleteDialog(request)}
+                    >
+                      <Trash2 size={17} />
+                      Talebi Sil
                     </button>
                   )}
                 </div>
@@ -393,36 +614,79 @@ export default function StudentNoteRequestsPage({
       )}
 
       {confirmation && (
-        <div className="notmark-request-modal-backdrop" role="presentation"
+        <div
+          className="notmark-delete-overlay"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget && !busyId) setConfirmation(null);
-          }}>
-          <div className="notmark-request-modal" role="alertdialog" aria-modal="true"
-            aria-labelledby="notmark-request-confirm-title"
-            aria-describedby="notmark-request-confirm-description">
-            <div className="notmark-request-modal__top">
-              <AlertTriangle size={23} />
-              <button type="button" aria-label="Vazgeç"
-                disabled={busyId !== null} onClick={() => setConfirmation(null)}>
-                <X size={19} />
-              </button>
+            if (
+              event.target === event.currentTarget &&
+              !busyId
+            ) {
+              setConfirmation(null);
+            }
+          }}
+        >
+          <div
+            ref={deletePanelRef}
+            className="notmark-delete-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="notmark-request-delete-title"
+            aria-describedby="notmark-request-delete-description"
+            aria-busy={busyId !== null}
+          >
+            <div
+              ref={deleteIconRef}
+              className="notmark-delete-dialog__icon"
+              aria-hidden="true"
+            >
+              <Trash2
+                size={24}
+                strokeWidth={1.9}
+                className="notmark-trash-animated-svg"
+              />
             </div>
-            <h2 id="notmark-request-confirm-title">
-              {confirmation.action === "delete" ? "Talep silinsin mi?" : "Talep kapatılsın mı?"}
+
+            <h2 id="notmark-request-delete-title">
+              Talebi Sil
             </h2>
-            <p id="notmark-request-confirm-description">
-              <strong>{confirmation.request.courseName}</strong>
-              {confirmation.action === "delete"
-                ? " talebiniz listelerinizden kaldırılır. Önceki gönderimler ve satış kayıtları korunur."
-                : " talebiniz kapatılır ve artık yeni PDF kabul etmez. Bu işlem geri alınamaz."}
+
+            <p id="notmark-request-delete-description">
+              <strong>{confirmation.courseName}</strong>
+              {" — "}
+              {confirmation.topic}
+              {" "}
+              talebini silmek istiyor musunuz?
+              Daha önce gönderilen notlar ve satış kayıtları korunur.
             </p>
-            <div className="notmark-request-modal__actions">
-              <button type="button" className="secondary-button" disabled={busyId !== null}
-                onClick={() => setConfirmation(null)}>Vazgeç</button>
-              <button type="button" className="primary-button notmark-request-modal__confirm"
+
+            {deleteError && (
+              <p
+                className="notmark-delete-dialog__error"
+                role="alert"
+              >
+                {deleteError}
+              </p>
+            )}
+
+            <div className="notmark-delete-dialog__actions">
+              <button
+                ref={deleteCancelRef}
+                type="button"
+                className="notmark-delete-dialog__cancel"
                 disabled={busyId !== null}
-                onClick={() => void changeRequest(confirmation.request, confirmation.action)}>
-                {busyId ? "İşleniyor..." : confirmation.action === "delete" ? "Talebi Sil" : "Talebi Kapat"}
+                onClick={() => setConfirmation(null)}
+              >
+                Vazgeç
+              </button>
+
+              <button
+                type="button"
+                className="notmark-delete-dialog__confirm"
+                disabled={busyId !== null}
+                onClick={() => void confirmDeleteRequest()}
+              >
+                <Trash2 size={15} />
+                {busyId ? "Siliniyor..." : "Sil"}
               </button>
             </div>
           </div>

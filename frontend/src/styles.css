@@ -38824,3 +38824,110 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
   }
 }
 /* NOTMARK_REQUEST_LIFECYCLE_V2_BUTTON_SYSTEM_END */
+
+
+/* NOTMARK_REQUEST_GENIE_V3 */
+
+.student-app-shell .student-requests-page > .notmark-request-notice,
+.student-app-shell .student-requests-page > .note-request-message {
+  box-sizing: border-box;
+  width: min(1040px, 100%);
+  max-width: 100%;
+  margin: 0 auto 18px;
+}
+
+.student-app-shell .notmark-request-actions .notmark-request-delete {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.student-app-shell .notmark-request-actions .notmark-request-delete:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+/* Yeniden aktif et - yeşil buton */
+
+.student-app-shell .student-requests-page .notmark-request-action--resume {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(71, 223, 153, .48);
+  color: #effff7;
+  background: linear-gradient(135deg, #139e69, #087651);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 10px 24px rgba(12,136,83,.17);
+
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
+
+.student-app-shell .student-requests-page .notmark-request-action--resume:hover:not(:disabled) {
+  color: #fff;
+  background: linear-gradient(135deg, #18b578, #0a895e);
+  border-color: rgba(96, 241, 174, .72);
+  transform: translateY(-1px);
+  box-shadow: 0 13px 26px rgba(12,136,83,.23);
+}
+
+.student-app-shell .student-requests-page .notmark-request-action--resume:focus-visible {
+  outline: 2px solid #83f3bb;
+  outline-offset: 3px;
+}
+
+.student-app-shell .student-requests-page .notmark-request-action--resume:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.student-app-shell[data-theme="light"] .student-requests-page .notmark-request-action--resume {
+  color: #fff;
+  background: linear-gradient(135deg, #16a36e, #097956);
+  border-color: #0e9867;
+}
+
+/* Mobil uyum */
+
+@media (max-width: 720px) {
+  .student-app-shell .notmark-request-actions .notmark-request-delete,
+  .student-app-shell .notmark-request-actions .notmark-request-action--resume {
+    flex: 1 1 180px;
+  }
+}
+
+@media (max-width: 560px) {
+  .student-app-shell .notmark-request-actions .notmark-request-delete,
+  .student-app-shell .notmark-request-actions .notmark-request-action--resume {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell .student-requests-page .notmark-request-action--resume {
+    transition: none;
+  }
+}

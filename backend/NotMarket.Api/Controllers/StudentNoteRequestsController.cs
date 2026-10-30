@@ -227,7 +227,14 @@ public sealed class StudentNoteRequestsController(
             .Where(x => x.BuyerId == buyerId.Value &&
                         x.LifecycleStatus != NoteRequestLifecycle.Deleted);
 
-        if (status is not null)
+        // NOTMARK_REQUEST_GENIE_V3
+        // Bekleyenler yalnızca ayrı sayfada listelenir.
+        if (status is null)
+        {
+            query = query.Where(
+                x => x.LifecycleStatus != NoteRequestLifecycle.Paused);
+        }
+        else
         {
             query = query.Where(x => x.LifecycleStatus == status);
         }
@@ -364,9 +371,12 @@ public sealed class StudentNoteRequestsController(
         if (current is null)
             return NotFound(new { message = "Talep bulunamadı." });
 
-        if (current != NoteRequestLifecycle.Paused &&
+        // Aktif, beklemede ve kapalı talepler silinebilir.
+        // Sahiplik ve önceki durum kontrolleri korunur.
+        if (current != NoteRequestLifecycle.Active &&
+            current != NoteRequestLifecycle.Paused &&
             current != NoteRequestLifecycle.Closed)
-            return Conflict(new { message = "Talebi silmeden önce beklemeye alın veya kapatın." });
+            return Conflict(new { message = "Bu talep silinemez." });
 
         var affected = await db.NoteRequests
             .Where(x => x.Id == requestId && x.BuyerId == buyerId.Value &&
