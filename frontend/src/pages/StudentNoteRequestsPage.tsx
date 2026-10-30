@@ -381,10 +381,8 @@ export default function StudentNoteRequestsPage({
       )}
 
       {requests.length === 0 ? (
-        <section className="student-requests-empty">
-          <div className="student-requests-empty__icon">
-            <BookOpen size={28} />
-          </div>
+        <section className="marketplace-empty notmark-request-board-empty">
+          <BookOpen size={30} />
 
           <h2>
             {view === "paused" ? "Beklemede talebiniz yok" : "Şu anda listelenecek talebiniz yok"}
@@ -398,7 +396,7 @@ export default function StudentNoteRequestsPage({
 
           {view === "paused" ? (
             <Link
-              className="secondary-button"
+              className="primary-button"
               to="/student/note-requests"
             >
               <BookOpen size={17} />

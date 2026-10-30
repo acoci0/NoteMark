@@ -39445,3 +39445,136 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_REQUEST_THEME_V4_END */
+
+
+/* NOTMARK_REQUEST_EMPTY_MARKETPLACE_V5_START */
+
+/*
+ * TALEPLERIM / BEKLEMEYE ALDIKLARIM
+ *
+ * Gerçek Talep Panosu marketplace-empty tasarımı.
+ * Açık/koyu tema ve kullanıcı vurgu rengi desteklenir.
+ */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty.marketplace-empty {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: min(
+    var(--student-content-width, 1100px),
+    100%
+  );
+
+  max-width: 100%;
+  min-height: 300px;
+
+  margin: 0 auto;
+  padding: 40px 24px;
+
+  border-radius: 18px;
+  text-align: center;
+}
+
+/*
+ * Kitap ikonunun rengi ve hover parıltısı
+ * mevcut marketplace-empty stilinden gelir.
+ */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty > svg {
+  flex-shrink: 0;
+}
+
+/* Başlık */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty > h2 {
+  max-width: 560px;
+  margin: 0 0 7px;
+}
+
+/* Açıklama */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty > p {
+  max-width: 440px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/*
+ * Beklemeye Aldıklarım: Taleplerime Git
+ * Taleplerim: Not İste
+ *
+ * Her ikisi aynı primary-button şablonunu kullanır.
+ */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty > a.primary-button {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  width: fit-content;
+  min-height: 42px;
+
+  margin: 20px auto 0;
+  padding: 10px 16px;
+
+  white-space: nowrap;
+}
+
+/*
+ * Marketplace boş durum SVG stili, butonun
+ * içindeki küçük ikona taşınmasın.
+ */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty > a.primary-button svg {
+  width: 17px;
+  height: 17px;
+
+  margin: 0;
+
+  color: currentColor !important;
+  filter: none;
+  transform: none;
+}
+
+/* Klavye erişilebilirliği */
+
+.student-app-shell
+.student-requests-page
+.notmark-request-board-empty > a.primary-button:focus-visible {
+  outline: 2px solid var(--student-accent);
+  outline-offset: 3px;
+}
+
+/* Mobil */
+
+@media (max-width: 600px) {
+  .student-app-shell
+  .student-requests-page
+  .notmark-request-board-empty.marketplace-empty {
+    min-height: 280px;
+    padding: 32px 18px;
+  }
+}
+
+/* NOTMARK_REQUEST_EMPTY_MARKETPLACE_V5_END */
