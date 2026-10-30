@@ -520,7 +520,7 @@ export default function StudentNoteRequestsPage({
 
           {view === "paused" ? (
             <Link
-              className="primary-button"
+              className="primary-button nm-action nm-action--accent"
               to="/student/note-requests"
             >
               <BookOpen size={17} />
@@ -528,7 +528,7 @@ export default function StudentNoteRequestsPage({
             </Link>
           ) : (
             <Link
-              className="primary-button"
+              className="primary-button nm-action nm-action--accent"
               to="/student/note-requests/new"
             >
               <Plus size={17} />
@@ -690,7 +690,7 @@ export default function StudentNoteRequestsPage({
                     <>
                       <button
                         type="button"
-                        className="secondary-button notmark-request-action notmark-request-action--pause"
+                        className="secondary-button notmark-request-action notmark-request-action--pause nm-action nm-action--amber"
                         disabled={busyId !== null}
                         onClick={() => void changeRequest(request, "pause")}
                       >
@@ -702,7 +702,7 @@ export default function StudentNoteRequestsPage({
 
                       <button
                         type="button"
-                        className="student-delete-button notmark-request-delete"
+                        className="student-delete-button notmark-request-delete nm-action nm-action--red"
                         disabled={busyId !== null}
                         onClick={() => openDeleteDialog(request)}
                       >
@@ -716,7 +716,7 @@ export default function StudentNoteRequestsPage({
                     <>
                       <button
                         type="button"
-                        className="notmark-request-action notmark-request-action--resume"
+                        className="notmark-request-action notmark-request-action--resume nm-action nm-action--green"
                         disabled={busyId !== null}
                         onClick={() => void changeRequest(request, "resume")}
                       >
@@ -728,7 +728,7 @@ export default function StudentNoteRequestsPage({
 
                       <button
                         type="button"
-                        className="student-delete-button notmark-request-delete"
+                        className="student-delete-button notmark-request-delete nm-action nm-action--red"
                         disabled={busyId !== null}
                         onClick={() => openDeleteDialog(request)}
                       >
@@ -741,7 +741,7 @@ export default function StudentNoteRequestsPage({
                   {request.lifecycleStatus === "Closed" && (
                     <button
                       type="button"
-                      className="student-delete-button notmark-request-delete"
+                      className="student-delete-button notmark-request-delete nm-action nm-action--red"
                       disabled={busyId !== null}
                       onClick={() => openDeleteDialog(request)}
                     >
@@ -815,7 +815,7 @@ export default function StudentNoteRequestsPage({
               <button
                 ref={deleteCancelRef}
                 type="button"
-                className="notmark-delete-dialog__cancel"
+                className="notmark-delete-dialog__cancel nm-action nm-action--amber"
                 disabled={busyId !== null}
                 onClick={() => setConfirmation(null)}
               >
@@ -824,7 +824,7 @@ export default function StudentNoteRequestsPage({
 
               <button
                 type="button"
-                className="notmark-delete-dialog__confirm"
+                className="notmark-delete-dialog__confirm nm-action nm-action--red"
                 disabled={busyId !== null}
                 onClick={() => void confirmDeleteRequest()}
               >

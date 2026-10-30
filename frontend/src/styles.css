@@ -41378,3 +41378,419 @@ button:focus-visible {
 }
 
 /* NOTMARK_UPLOAD_MODAL_THEME_V15_END */
+
+/* NOTMARK_SEMANTIC_ACTION_SYSTEM_V16_START */
+
+/*
+ * NOTMARK - SEMANTIC ACTION BUTTON SYSTEM
+ *
+ * Amber: bekletme / iptal / itiraz
+ * Green: onay / aktif etme
+ * Red: silme
+ * Orange: sorun bildirme
+ * Accent: seçili kullanıcı teması
+ *
+ * Kullanıcı panelindeki renkli işlem butonları
+ * için ortak tasarım sistemi.
+ */
+
+.student-app-shell {
+  --nm-amber-border: #dba52d;
+  --nm-amber-text: #ffd078;
+
+  --nm-amber-fill:
+    linear-gradient(
+      130deg,
+      rgba(120,83,33,.39),
+      rgba(73,56,36,.23)
+    );
+
+  --nm-amber-hover:
+    linear-gradient(
+      130deg,
+      rgba(151,103,28,.49),
+      rgba(86,64,32,.33)
+    );
+
+  --nm-amber-glow:
+    rgba(231,164,46,.19);
+
+  --nm-green-border: #27bd78;
+  --nm-green-text: #93ebbb;
+
+  --nm-green-fill:
+    linear-gradient(
+      130deg,
+      rgba(28,127,82,.35),
+      rgba(22,79,63,.25)
+    );
+
+  --nm-green-hover:
+    linear-gradient(
+      130deg,
+      rgba(30,161,98,.47),
+      rgba(18,107,75,.32)
+    );
+
+  --nm-green-glow:
+    rgba(37,191,112,.19);
+
+  --nm-red-border: #cf6178;
+  --nm-red-text: #ff9fad;
+
+  --nm-red-fill:
+    linear-gradient(
+      130deg,
+      rgba(126,40,64,.34),
+      rgba(83,36,55,.24)
+    );
+
+  --nm-red-hover:
+    linear-gradient(
+      130deg,
+      rgba(156,43,69,.47),
+      rgba(104,38,58,.36)
+    );
+
+  --nm-red-glow:
+    rgba(222,72,104,.17);
+
+  --nm-orange-border: #ef8739;
+  --nm-orange-text: #ffb681;
+
+  --nm-orange-fill:
+    linear-gradient(
+      130deg,
+      rgba(142,76,26,.35),
+      rgba(86,51,30,.24)
+    );
+
+  --nm-orange-hover:
+    linear-gradient(
+      130deg,
+      rgba(171,83,20,.48),
+      rgba(108,56,25,.33)
+    );
+
+  --nm-orange-glow:
+    rgba(240,115,36,.17);
+}
+
+
+/* ==================================================
+   ORTAK BUTON YAPISI
+   ================================================== */
+
+.student-app-shell .nm-action {
+  --nm-line:
+    var(--student-accent);
+
+  --nm-ink:
+    var(--student-accent-strong);
+
+  --nm-fill:
+    linear-gradient(
+      130deg,
+      rgba(var(--student-accent-rgb),.19),
+      rgba(var(--student-accent-rgb),.065)
+    );
+
+  --nm-hover:
+    linear-gradient(
+      130deg,
+      rgba(var(--student-accent-rgb),.28),
+      rgba(var(--student-accent-rgb),.115)
+    );
+
+  --nm-glow:
+    rgba(var(--student-accent-rgb),.18);
+
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 46px;
+
+  padding: 10px 16px;
+  margin: 0;
+
+  border:
+    1.5px solid var(--nm-line) !important;
+
+  border-radius: 13px;
+
+  background:
+    var(--nm-fill) !important;
+
+  color:
+    var(--nm-ink) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 3px 15px rgba(0,0,0,.055) !important;
+
+  font: inherit;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  line-height: 1.3;
+
+  text-align: center;
+  text-decoration: none;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    color .18s ease,
+    box-shadow .18s ease;
+}
+
+
+/* ==================================================
+   SARI / AMBER
+   ================================================== */
+
+.student-app-shell .nm-action--amber {
+  --nm-line:
+    var(--nm-amber-border);
+
+  --nm-ink:
+    var(--nm-amber-text);
+
+  --nm-fill:
+    var(--nm-amber-fill);
+
+  --nm-hover:
+    var(--nm-amber-hover);
+
+  --nm-glow:
+    var(--nm-amber-glow);
+}
+
+
+/* ==================================================
+   YESIL
+   ================================================== */
+
+.student-app-shell .nm-action--green {
+  --nm-line:
+    var(--nm-green-border);
+
+  --nm-ink:
+    var(--nm-green-text);
+
+  --nm-fill:
+    var(--nm-green-fill);
+
+  --nm-hover:
+    var(--nm-green-hover);
+
+  --nm-glow:
+    var(--nm-green-glow);
+}
+
+
+/* ==================================================
+   KIRMIZI
+   ================================================== */
+
+.student-app-shell .nm-action--red {
+  --nm-line:
+    var(--nm-red-border);
+
+  --nm-ink:
+    var(--nm-red-text);
+
+  --nm-fill:
+    var(--nm-red-fill);
+
+  --nm-hover:
+    var(--nm-red-hover);
+
+  --nm-glow:
+    var(--nm-red-glow);
+}
+
+
+/* ==================================================
+   TURUNCU
+   ================================================== */
+
+.student-app-shell .nm-action--orange {
+  --nm-line:
+    var(--nm-orange-border);
+
+  --nm-ink:
+    var(--nm-orange-text);
+
+  --nm-fill:
+    var(--nm-orange-fill);
+
+  --nm-hover:
+    var(--nm-orange-hover);
+
+  --nm-glow:
+    var(--nm-orange-glow);
+}
+
+
+/* ==================================================
+   HOVER / ETKILESIM
+   ================================================== */
+
+@media (hover:hover) and (pointer:fine) {
+  .student-app-shell
+  .nm-action:hover:not(:disabled) {
+    transform: translateY(-1px);
+
+    border-color:
+      var(--nm-line) !important;
+
+    background:
+      var(--nm-hover) !important;
+
+    color:
+      var(--nm-ink) !important;
+
+    box-shadow:
+      0 0 0 1px var(--nm-glow),
+      0 0 17px var(--nm-glow) !important;
+  }
+}
+
+.student-app-shell
+.nm-action:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.student-app-shell .nm-action svg {
+  flex: 0 0 auto;
+
+  color: currentColor !important;
+}
+
+.student-app-shell
+.nm-action:focus-visible {
+  outline: 2px solid var(--nm-line);
+  outline-offset: 3px;
+}
+
+.student-app-shell
+.nm-action:disabled {
+  opacity: .58;
+
+  cursor: wait;
+
+  transform: none !important;
+
+  box-shadow: none !important;
+}
+
+
+/* ==================================================
+   ACIK TEMA
+   ================================================== */
+
+.student-app-shell[data-theme="light"] {
+  --nm-amber-border: #c28c1c;
+  --nm-amber-text: #795009;
+
+  --nm-amber-fill:
+    linear-gradient(130deg,#fff3d8,#ffedc5);
+
+  --nm-amber-hover:
+    linear-gradient(130deg,#ffe9b4,#ffdf9c);
+
+  --nm-green-border: #168b55;
+  --nm-green-text: #12613d;
+
+  --nm-green-fill:
+    linear-gradient(130deg,#e5f8ed,#d3f0e1);
+
+  --nm-green-hover:
+    linear-gradient(130deg,#cdefd9,#b6e5cb);
+
+  --nm-red-border: #c35770;
+  --nm-red-text: #8a2942;
+
+  --nm-red-fill:
+    linear-gradient(130deg,#fff0f3,#ffdee5);
+
+  --nm-red-hover:
+    linear-gradient(130deg,#ffe0e7,#ffcbd5);
+
+  --nm-orange-border: #d77b2d;
+  --nm-orange-text: #8a420f;
+
+  --nm-orange-fill:
+    linear-gradient(130deg,#fff0e1,#ffdfc5);
+
+  --nm-orange-hover:
+    linear-gradient(130deg,#ffe4cd,#ffd3af);
+}
+
+.student-app-shell[data-theme="light"]
+.nm-action--accent {
+  --nm-ink:
+    var(--student-accent-strong);
+}
+
+
+/* ==================================================
+   MOBIL EKRANLAR
+   ================================================== */
+
+@media (max-width:430px) {
+  .student-app-shell .nm-action {
+    min-height: 46px;
+
+    gap: 5px;
+    padding: 9px 7px;
+
+    font-size: 11px;
+  }
+
+  .student-app-shell .nm-action svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+
+/* ==================================================
+   HAREKET TERCIHLERI
+   ================================================== */
+
+@media (prefers-reduced-motion:reduce) {
+  .student-app-shell .nm-action {
+    transition: none !important;
+  }
+
+  .student-app-shell
+  .nm-action:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+.student-app-shell[data-motion="off"]
+.nm-action {
+  transition: none !important;
+}
+
+.student-app-shell[data-motion="off"]
+.nm-action:hover:not(:disabled) {
+  transform: none;
+}
+
+/* NOTMARK_SEMANTIC_ACTION_SYSTEM_V16_END */

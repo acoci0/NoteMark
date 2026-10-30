@@ -2107,7 +2107,7 @@ export default function StudentProfilePage() {
           </div>
 
           <button
-            className="primary-button"
+            className="primary-button nm-action nm-action--accent"
             type="button"
             onClick={toggleForm}
           >
@@ -2871,7 +2871,7 @@ export default function StudentProfilePage() {
             <div className="student-form-actions">
               <button
                 type="button"
-                className="secondary-button"
+                className="secondary-button nm-action nm-action--amber"
                 disabled={submitting}
                 onClick={() => {
                   resetForm();
@@ -2884,7 +2884,7 @@ export default function StudentProfilePage() {
 
               <button
                 type="submit"
-                className="primary-button"
+                className="primary-button nm-action nm-action--green"
                 disabled={submitting}
               >
                 {submitting
@@ -2948,11 +2948,11 @@ export default function StudentProfilePage() {
                 <p className="notmark-delete-dialog__error" role="alert">{deleteDialogError}</p>
               )}
               <div className="notmark-delete-dialog__actions">
-                <button ref={deleteDialogCancelRef} type="button" className="notmark-delete-dialog__cancel"
+                <button ref={deleteDialogCancelRef} type="button" className="notmark-delete-dialog__cancel nm-action nm-action--amber"
                   disabled={deleteDialogBusy} onClick={() => setVerificationToDelete(null)}>
                   Vazgeç
                 </button>
-                <button type="button" className="notmark-delete-dialog__confirm"
+                <button type="button" className="notmark-delete-dialog__confirm nm-action nm-action--red"
                   disabled={deleteDialogBusy} onClick={() => void confirmDeleteVerification()}>
                   <Trash2 size={15} />{deleteDialogBusy ? "Siliniyor..." : "Sil"}
                 </button>
@@ -3032,7 +3032,7 @@ function VerificationCard({
           <div className="student-verification-card__actions">
             <button
               type="button"
-              className="student-delete-button"
+              className="student-delete-button nm-action nm-action--red"
               disabled={deleting}
               onClick={() =>
                 void onDelete(item)
@@ -3064,7 +3064,7 @@ function VerificationCard({
           <div className="student-verification-card__actions">
             <button
               type="button"
-              className="student-appeal-button"
+              className="student-appeal-button nm-action nm-action--amber"
               onClick={() =>
                 setAppealOpen(true)
               }
@@ -3075,7 +3075,7 @@ function VerificationCard({
 
             <button
               type="button"
-              className="student-delete-button"
+              className="student-delete-button nm-action nm-action--red"
               disabled={deleting}
               onClick={() => void onDelete(item)}
             >

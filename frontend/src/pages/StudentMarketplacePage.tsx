@@ -423,8 +423,8 @@ export default function StudentMarketplacePage() {
                   <button
                     className={
                       request.hasActiveSubmission
-                        ? "secondary-button marketplace-submit-button"
-                        : "primary-button marketplace-submit-button"
+                        ? "secondary-button marketplace-submit-button nm-action nm-action--accent"
+                        : "primary-button marketplace-submit-button nm-action nm-action--accent"
                     }
                     type="button"
                     disabled={

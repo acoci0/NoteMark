@@ -880,7 +880,7 @@ export default function StudentNoteRequestPage() {
           )}
 
           <button
-            className="primary-button note-request-submit"
+            className="primary-button note-request-submit nm-action nm-action--accent"
             type="submit"
             disabled={
               submitting ||

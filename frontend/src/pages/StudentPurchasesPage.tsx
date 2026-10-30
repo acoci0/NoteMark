@@ -289,7 +289,7 @@ export default function StudentPurchasesPage() {
                     <footer className="student-purchase-card__actions">
                       <button
                         type="button"
-                        className="secondary-button"
+                        className="secondary-button nm-action nm-action--accent"
                         disabled={
                           downloadingId ===
                           order.id
@@ -313,7 +313,7 @@ export default function StudentPurchasesPage() {
                       {order.status === "Paid" && (
                       <button
                         type="button"
-                        className="student-report-problem-button"
+                        className="student-report-problem-button nm-action nm-action--orange"
                         onClick={() =>
                           setIssueOrderId(
                             order.id

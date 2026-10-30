@@ -193,7 +193,7 @@ export default function StudentNoteSubmissionsPage() {
           </p>
 
           <Link
-            className="primary-button"
+            className="primary-button nm-action nm-action--accent"
             to="/student/marketplace"
           >
             Talep Panosuna Git
@@ -317,7 +317,7 @@ export default function StudentNoteSubmissionsPage() {
 
                     {submission.generatedPdfAvailable && (
                       <button
-                        className="secondary-button"
+                        className="secondary-button nm-action nm-action--accent"
                         type="button"
                         disabled={
                           downloadingId ===
@@ -340,7 +340,7 @@ export default function StudentNoteSubmissionsPage() {
 
                     {submission.status === "Rejected" && (
                       <button
-                        className="student-appeal-button"
+                        className="student-appeal-button nm-action nm-action--amber"
                         type="button"
                         onClick={() =>
                           setAppealTarget(
