@@ -38525,3 +38525,126 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_PROFILE_NOTICE_SLOW_FADE_V3_END */
+
+
+/* NOTMARK_REQUEST_LIFECYCLE_V1 */
+.student-app-shell .notmark-request-state {
+  display:inline-flex; align-items:center; width:max-content;
+  margin-top:9px; padding:5px 10px; border-radius:999px;
+  font-size:11px; font-weight:800; letter-spacing:.025em;
+  border:1px solid rgba(66,146,255,.30);
+  color:#68b3ff; background:rgba(24,111,232,.10);
+}
+.student-app-shell .notmark-request-state--paused {
+  color:#ffd28b; background:rgba(241,158,44,.10);
+  border-color:rgba(249,178,64,.35);
+}
+.student-app-shell .notmark-request-state--closed {
+  color:#c4ccda; background:rgba(159,175,201,.08);
+  border-color:rgba(159,175,201,.25);
+}
+.student-app-shell .notmark-request-actions {
+  display:flex; align-items:center; justify-content:flex-end;
+  gap:10px; flex-wrap:wrap; margin-top:18px;
+  padding-top:17px; border-top:1px solid rgba(96,142,201,.16);
+}
+.student-app-shell .notmark-request-action {
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:8px; padding:10px 15px; min-height:41px;
+  border-radius:11px; font-size:13px; font-weight:750;
+  transition: transform .18s ease, box-shadow .18s ease,
+    border-color .18s ease, background .18s ease;
+}
+.student-app-shell .notmark-request-action:hover:not(:disabled) {
+  transform:translateY(-2px);
+  box-shadow:0 7px 20px rgba(37,118,241,.18);
+}
+.student-app-shell .notmark-request-action--danger {
+  color:#ff9aab; border:1px solid rgba(245,107,126,.42);
+  background:rgba(176,43,74,.09);
+}
+.student-app-shell .notmark-request-action--danger:hover:not(:disabled) {
+  background:rgba(176,43,74,.17);
+  box-shadow:0 7px 18px rgba(222,59,89,.12);
+}
+.student-app-shell .notmark-request-action:focus-visible {
+  outline:2px solid #8bc0ff; outline-offset:3px;
+}
+.student-app-shell .notmark-request-action:disabled {
+  opacity:.55; cursor:wait;
+}
+.student-app-shell .notmark-request-notice {
+  padding:13px 16px; margin:0 0 18px;
+  border:1px solid rgba(66,210,150,.34); border-radius:12px;
+  background:linear-gradient(110deg,#173a37,#142233);
+  color:#a6f2d0; font-size:13px; font-weight:650;
+  animation:notmark-request-notice-enter .2s ease-out,
+    notmark-request-notice-leave 1.4s ease-in-out 5s forwards;
+}
+@keyframes notmark-request-notice-enter {
+  from {opacity:0; transform:translateY(-6px)}
+  to {opacity:1; transform:translateY(0)}
+}
+@keyframes notmark-request-notice-leave {
+  from {opacity:1; transform:translateY(0)}
+  to {opacity:0; transform:translateY(-8px)}
+}
+.student-app-shell .notmark-request-modal-backdrop {
+  position:fixed; inset:0; z-index:2147483000;
+  display:flex; align-items:center; justify-content:center;
+  padding:18px; background:rgba(1,7,19,.76);
+  backdrop-filter:blur(9px);
+}
+.student-app-shell .notmark-request-modal {
+  width:min(100%,480px); box-sizing:border-box; padding:26px;
+  border:1px solid rgba(67,120,187,.43); border-radius:20px;
+  background:linear-gradient(140deg,#1b2b3e,#0f1c2d);
+  box-shadow:0 26px 85px rgba(0,0,0,.55),0 0 35px rgba(28,111,215,.10);
+  color:#ecf4ff;
+}
+.student-app-shell .notmark-request-modal__top {
+  display:flex; justify-content:space-between; align-items:center;
+  color:#ffbd83;
+}
+.student-app-shell .notmark-request-modal__top button {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:32px; height:32px; border:1px solid rgba(157,181,211,.20);
+  border-radius:9px; background:rgba(255,255,255,.035);
+  color:#b4c6dc; cursor:pointer;
+}
+.student-app-shell .notmark-request-modal h2 {
+  margin:14px 0 9px; font-size:23px; color:#fff;
+}
+.student-app-shell .notmark-request-modal p {
+  line-height:1.65; color:#adbbcc; margin:0 0 24px;
+}
+.student-app-shell .notmark-request-modal p strong {color:#fff}
+.student-app-shell .notmark-request-modal__actions {
+  display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;
+}
+.student-app-shell .notmark-request-modal__actions button {
+  display:inline-flex; gap:8px; justify-content:center; align-items:center;
+  min-height:43px; padding:10px 17px; border-radius:11px; font-weight:750;
+}
+.student-app-shell .notmark-request-modal__confirm {
+  border:1px solid #f08459; color:#fff;
+  background:linear-gradient(120deg,#e45b41,#b52f4b);
+}
+.student-app-shell[data-theme="light"] .notmark-request-notice {
+  background:#ecfff6; color:#175e43;
+}
+.student-app-shell[data-theme="light"] .notmark-request-modal {
+  background:linear-gradient(145deg,#fff,#eef4fd); color:#14263b;
+}
+.student-app-shell[data-theme="light"] .notmark-request-modal h2,
+.student-app-shell[data-theme="light"] .notmark-request-modal p strong {color:#12263a}
+.student-app-shell[data-theme="light"] .notmark-request-modal p {color:#52657d}
+@media (max-width:600px) {
+  .student-app-shell .notmark-request-actions {justify-content:stretch}
+  .student-app-shell .notmark-request-action {flex:1 1 150px}
+  .student-app-shell .notmark-request-modal {padding:20px}
+}
+@media (prefers-reduced-motion:reduce) {
+  .student-app-shell .notmark-request-notice {animation:none}
+  .student-app-shell .notmark-request-action {transition:none}
+}

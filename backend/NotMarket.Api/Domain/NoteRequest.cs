@@ -58,7 +58,19 @@ public sealed class NoteRequest
     public decimal SuggestedMinPrice { get; set; }
     public decimal SuggestedMaxPrice { get; set; }
 
+    // Existing requests and new records are Active by default.
+    [MaxLength(16)]
+    public string LifecycleStatus { get; set; } = NoteRequestLifecycle.Active;
+
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
     public ICollection<NoteSubmission> Submissions { get; set; } = [];
+}
+
+public static class NoteRequestLifecycle
+{
+    public const string Active = "Active";
+    public const string Paused = "Paused";
+    public const string Closed = "Closed";
+    public const string Deleted = "Deleted";
 }

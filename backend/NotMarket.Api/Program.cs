@@ -601,6 +601,24 @@ app.MapGet(
             }))
     .AllowAnonymous();
 
+app.MapGet("/health/note-request-lifecycle", async (
+    AppDbContext db, CancellationToken cancellationToken) =>
+{
+    try
+    {
+        // Force the database to resolve the new column even with zero rows.
+        await db.NoteRequests.AsNoTracking()
+            .Select(x => x.LifecycleStatus)
+            .Take(1)
+            .ToListAsync(cancellationToken);
+        return Results.Ok(new { status = "ok" });
+    }
+    catch
+    {
+        return Results.StatusCode(503);
+    }
+}).AllowAnonymous();
+
 app.MapControllers();
 
 /*

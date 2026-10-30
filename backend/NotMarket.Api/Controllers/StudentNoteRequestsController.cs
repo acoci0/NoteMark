@@ -101,6 +101,7 @@ public sealed class StudentNoteRequestsController(
                     x =>
                         x.BuyerId !=
                             sellerId.Value &&
+                        x.LifecycleStatus == NoteRequestLifecycle.Active &&
                         x.Topic != null &&
                         x.ContentType != null)
                 .OrderByDescending(
@@ -185,7 +186,8 @@ public sealed class StudentNoteRequestsController(
                             request.SuggestedMaxPrice,
                             submittedRequestIds.Contains(
                                 request.Id),
-                            request.CreatedAt))
+                            request.CreatedAt,
+                            request.LifecycleStatus))
                 .ToArray();
 
         return Ok(response);
@@ -201,6 +203,7 @@ public sealed class StudentNoteRequestsController(
     public async Task<
         ActionResult<IReadOnlyList<NoteRequestResponse>>>
         GetMine(
+            [FromQuery] string? status,
             CancellationToken cancellationToken)
     {
         var buyerId =
@@ -211,18 +214,28 @@ public sealed class StudentNoteRequestsController(
             return Unauthorized();
         }
 
-        var requests =
-            await db.NoteRequests
-                .AsNoTracking()
-                .Where(
-                    x =>
-                        x.BuyerId ==
-                        buyerId.Value)
-                .OrderByDescending(
-                    x => x.CreatedAt)
-                .Take(100)
-                .ToListAsync(
-                    cancellationToken);
+        if (status is not null &&
+            status != NoteRequestLifecycle.Active &&
+            status != NoteRequestLifecycle.Paused &&
+            status != NoteRequestLifecycle.Closed)
+        {
+            return BadRequest(new { message = "Geçersiz talep filtresi." });
+        }
+
+        var query = db.NoteRequests
+            .AsNoTracking()
+            .Where(x => x.BuyerId == buyerId.Value &&
+                        x.LifecycleStatus != NoteRequestLifecycle.Deleted);
+
+        if (status is not null)
+        {
+            query = query.Where(x => x.LifecycleStatus == status);
+        }
+
+        var requests = await query
+            .OrderByDescending(x => x.CreatedAt)
+            .Take(200)
+            .ToListAsync(cancellationToken);
 
         var response =
             requests
@@ -259,8 +272,8 @@ public sealed class StudentNoteRequestsController(
                 .SingleOrDefaultAsync(
                     x =>
                         x.Id == requestId &&
-                        x.BuyerId ==
-                            buyerId.Value,
+                        x.BuyerId == buyerId.Value &&
+                        x.LifecycleStatus != NoteRequestLifecycle.Deleted,
                     cancellationToken);
 
         if (request is null)
@@ -274,6 +287,98 @@ public sealed class StudentNoteRequestsController(
 
         return Ok(
             MapResponse(request));
+    }
+
+    /*
+     * A request belongs exclusively to its buyer.
+     * Legal transitions: Active -> Paused/Closed;
+     * Paused -> Active/Closed; Closed is terminal.
+     * ExecuteUpdate checks the previous status atomically.
+     */
+    [HttpPut("{requestId:guid}/lifecycle")]
+    public async Task<IActionResult> ChangeLifecycle(
+        Guid requestId,
+        ChangeNoteRequestLifecycleRequest input,
+        CancellationToken cancellationToken)
+    {
+        var buyerId = GetUserId();
+        if (buyerId is null) return Unauthorized();
+        if (requestId == Guid.Empty) return BadRequest();
+
+        var target = input.Status?.Trim();
+        if (target != NoteRequestLifecycle.Active &&
+            target != NoteRequestLifecycle.Paused &&
+            target != NoteRequestLifecycle.Closed)
+        {
+            return BadRequest(new { message = "Geçersiz talep durumu." });
+        }
+
+        var current = await db.NoteRequests.AsNoTracking()
+            .Where(x => x.Id == requestId && x.BuyerId == buyerId.Value &&
+                        x.LifecycleStatus != NoteRequestLifecycle.Deleted)
+            .Select(x => x.LifecycleStatus)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (current is null)
+            return NotFound(new { message = "Talep bulunamadı." });
+
+        var allowed =
+            current == NoteRequestLifecycle.Active &&
+                (target == NoteRequestLifecycle.Paused || target == NoteRequestLifecycle.Closed) ||
+            current == NoteRequestLifecycle.Paused &&
+                (target == NoteRequestLifecycle.Active || target == NoteRequestLifecycle.Closed);
+
+        if (!allowed)
+            return Conflict(new { message = "Bu durum geçişine izin verilmiyor. Listeyi yenileyin." });
+
+        var affected = await db.NoteRequests
+            .Where(x => x.Id == requestId && x.BuyerId == buyerId.Value &&
+                        x.LifecycleStatus == current)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(x => x.LifecycleStatus, target!), cancellationToken);
+
+        if (affected != 1)
+            return Conflict(new { message = "Talep durumu değişmiş. Listeyi yenileyin." });
+
+        return Ok(new { lifecycleStatus = target });
+    }
+
+    /*
+     * Soft delete: NoteSubmissions, Orders and Payments are never erased.
+     * Users must pause or close active requests before deleting.
+     */
+    [HttpDelete("{requestId:guid}")]
+    public async Task<IActionResult> DeleteRequest(
+        Guid requestId,
+        CancellationToken cancellationToken)
+    {
+        var buyerId = GetUserId();
+        if (buyerId is null) return Unauthorized();
+
+        var current = await db.NoteRequests.AsNoTracking()
+            .Where(x => x.Id == requestId && x.BuyerId == buyerId.Value &&
+                        x.LifecycleStatus != NoteRequestLifecycle.Deleted)
+            .Select(x => x.LifecycleStatus)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (current is null)
+            return NotFound(new { message = "Talep bulunamadı." });
+
+        if (current != NoteRequestLifecycle.Paused &&
+            current != NoteRequestLifecycle.Closed)
+            return Conflict(new { message = "Talebi silmeden önce beklemeye alın veya kapatın." });
+
+        var affected = await db.NoteRequests
+            .Where(x => x.Id == requestId && x.BuyerId == buyerId.Value &&
+                        x.LifecycleStatus == current)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(x => x.LifecycleStatus, NoteRequestLifecycle.Deleted),
+                cancellationToken);
+
+        if (affected != 1)
+            return Conflict(new { message = "Talep değişmiş. Listeyi yenileyin." });
+
+        return NoContent();
     }
 
     /*
@@ -646,7 +751,8 @@ public sealed class StudentNoteRequestsController(
             request.AdditionalNotes,
             request.SuggestedMinPrice,
             request.SuggestedMaxPrice,
-            request.CreatedAt);
+            request.CreatedAt,
+            request.LifecycleStatus);
     }
 
     private Guid? GetUserId()

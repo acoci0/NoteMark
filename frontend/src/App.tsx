@@ -68,6 +68,11 @@ export default function App() {
           />
 
           <Route
+            path="/student/note-requests/paused"
+            element={<StudentNoteRequestsPage view="paused" />}
+          />
+
+          <Route
             path="/student/note-submissions"
             element={<StudentNoteSubmissionsPage />}
           />

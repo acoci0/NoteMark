@@ -485,6 +485,14 @@ public sealed class StudentNoteSubmissionsController(
             });
         }
 
+        if (noteRequest.LifecycleStatus != NoteRequestLifecycle.Active)
+        {
+            return Conflict(new
+            {
+                message = "Talep artık aktif değil. Bu talebe yeni not gönderilemez."
+            });
+        }
+
         /*
          * Kullanıcı kendi oluşturduğu talebe
          * satıcı olarak not gönderemez.
@@ -595,6 +603,17 @@ public sealed class StudentNoteSubmissionsController(
                 sellerId.Value,
                 upload.Document,
                 cancellationToken);
+
+        // Request may have been paused while the document was uploading.
+        var stillActive = await db.NoteRequests.AsNoTracking()
+            .AnyAsync(x => x.Id == noteRequest.Id &&
+                           x.LifecycleStatus == NoteRequestLifecycle.Active,
+                      cancellationToken);
+        if (!stillActive)
+        {
+            await TryDeleteDocumentAsync(relativePath);
+            return Conflict(new { message = "Talep yükleme sırasında kapatıldı veya beklemeye alındı." });
+        }
 
         var submission =
             new NoteSubmission

@@ -409,6 +409,13 @@ public sealed class AppDbContext(
                 x => x.ContentType)
             .HasConversion<string>();
 
+        noteRequest.Property(x => x.LifecycleStatus)
+            .HasMaxLength(16)
+            .IsRequired()
+            .HasDefaultValue(NoteRequestLifecycle.Active);
+
+        noteRequest.HasIndex(x => new { x.BuyerId, x.LifecycleStatus });
+
         noteRequest.ToTable(
             "NoteRequests",
             table =>
@@ -425,6 +432,10 @@ public sealed class AppDbContext(
                     "\"ContentType\" IN ('NoteOnly', 'DetailedSummary') AND " +
                     "\"QuestionCount\" IS NULL" +
                     ")");
+
+                table.HasCheckConstraint(
+                    "CK_NoteRequests_LifecycleStatus",
+                    "\"LifecycleStatus\" IN ('Active', 'Paused', 'Closed', 'Deleted')");
 
                 table.HasCheckConstraint(
                     "CK_NoteRequests_PriceRange",

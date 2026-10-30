@@ -7,6 +7,12 @@ import {
   MessageSquareText,
   Plus,
   Sparkles,
+  PauseCircle,
+  PlayCircle,
+  LockKeyhole,
+  Trash2,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 
 import {
@@ -32,7 +38,13 @@ type ApiErrorResponse = {
   message?: string;
 };
 
-export default function StudentNoteRequestsPage() {
+type RequestAction = "pause" | "resume" | "close" | "delete";
+
+export default function StudentNoteRequestsPage({
+  view = "all",
+}: {
+  view?: "all" | "paused";
+}) {
   const [
     requests,
     setRequests,
@@ -49,6 +61,19 @@ export default function StudentNoteRequestsPage() {
     setError,
   ] = useState("");
 
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [confirmation, setConfirmation] = useState<{
+    request: StudentNoteRequest;
+    action: "close" | "delete";
+  } | null>(null);
+  const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(""), 6400);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+
   useEffect(() => {
     const load = async () => {
       setLoading(true);
@@ -59,7 +84,9 @@ export default function StudentNoteRequestsPage() {
           await studentApi.get<
             StudentNoteRequest[]
           >(
-            "/student/note-requests/mine"
+            view === "paused"
+              ? "/student/note-requests/mine?status=Paused"
+              : "/student/note-requests/mine"
           );
 
         setRequests(data);
@@ -76,7 +103,42 @@ export default function StudentNoteRequestsPage() {
     };
 
     void load();
-  }, []);
+  }, [view]);
+
+  const changeRequest = async (request: StudentNoteRequest, action: RequestAction) => {
+    if (busyId) return;
+    setBusyId(request.id);
+    setError("");
+    setNotice("");
+    try {
+      const nextStatus: StudentNoteRequest["lifecycleStatus"] = action === "pause" ? "Paused"
+        : action === "resume" ? "Active" : "Closed";
+
+      if (action === "delete") {
+        await studentApi.delete(`/student/note-requests/${request.id}`);
+        setRequests((current) => current.filter((x) => x.id !== request.id));
+      } else {
+        await studentApi.put(`/student/note-requests/${request.id}/lifecycle`, {
+          status: nextStatus,
+        });
+        setRequests((current) => current
+          .map((x) => x.id === request.id ? {
+            ...x, lifecycleStatus: nextStatus,
+          } : x)
+          .filter((x) => view !== "paused" || x.lifecycleStatus === "Paused"));
+      }
+
+      setNotice(action === "pause" ? "Talebiniz beklemeye alındı."
+        : action === "resume" ? "Talebiniz yeniden aktif edildi."
+        : action === "close" ? "Talebiniz kapatıldı."
+        : "Talebiniz listeden kaldırıldı; önceki gönderimler korunur.");
+    } catch (requestError) {
+      setError(getErrorMessage(requestError, "Talep güncellenemedi. Listeyi yenileyin."));
+    } finally {
+      setBusyId(null);
+      setConfirmation(null);
+    }
+  };
 
   if (loading) {
     return null;
@@ -92,7 +154,7 @@ export default function StudentNoteRequestsPage() {
 
           <div className="student-requests-title-row">
             <h1>
-              Taleplerim
+              {view === "paused" ? "Beklemeye Aldıklarım" : "Taleplerim"}
             </h1>
 
             {!loading && (
@@ -103,9 +165,9 @@ export default function StudentNoteRequestsPage() {
           </div>
 
           <p>
-            Yayınladığınız not taleplerini
-            ve talep ayrıntılarını buradan
-            görüntüleyebilirsiniz.
+            {view === "paused"
+              ? "Beklemeye aldığınız talepleri yeniden etkinleştirin veya kaldırın."
+              : "Not taleplerinizin durumunu yönetin; gerektiğinde beklemeye alın veya kapatın."}
           </p>
         </div>
 
@@ -117,6 +179,12 @@ export default function StudentNoteRequestsPage() {
           Yeni Not İste
         </Link>
       </header>
+
+      {notice && (
+        <div role="status" className="notmark-request-notice" key={notice}>
+          {notice}
+        </div>
+      )}
 
       {error && (
         <div className="note-request-message note-request-message--error">
@@ -131,7 +199,7 @@ export default function StudentNoteRequestsPage() {
           </div>
 
           <h2>
-            Henüz not talebiniz yok
+            {view === "paused" ? "Beklemede talebiniz yok" : "Henüz not talebiniz yok"}
           </h2>
 
           <p>
@@ -185,6 +253,10 @@ export default function StudentNoteRequestsPage() {
                     <p>
                       {request.topic}
                     </p>
+                    <span className={`notmark-request-state notmark-request-state--${request.lifecycleStatus.toLowerCase()}`}>
+                      {request.lifecycleStatus === "Active" ? "Aktif"
+                        : request.lifecycleStatus === "Paused" ? "Beklemede" : "Kapalı"}
+                    </span>
                   </div>
 
                   <div className="student-request-card__price">
@@ -278,9 +350,82 @@ export default function StudentNoteRequestsPage() {
                     </div>
                   </div>
                 )}
+
+                <div className="notmark-request-actions">
+                  {request.lifecycleStatus === "Active" && (
+                    <>
+                      <button type="button" className="secondary-button notmark-request-action"
+                        disabled={busyId !== null} onClick={() => void changeRequest(request, "pause")}>
+                        <PauseCircle size={17} /> Beklemeye Al
+                      </button>
+                      <button type="button" className="secondary-button notmark-request-action"
+                        disabled={busyId !== null}
+                        onClick={() => setConfirmation({ request, action: "close" })}>
+                        <LockKeyhole size={17} /> Talebi Kapat
+                      </button>
+                    </>
+                  )}
+                  {request.lifecycleStatus === "Paused" && (
+                    <>
+                      <button type="button" className="primary-button notmark-request-action"
+                        disabled={busyId !== null} onClick={() => void changeRequest(request, "resume")}>
+                        <PlayCircle size={17} /> Yeniden Aktif Et
+                      </button>
+                      <button type="button" className="secondary-button notmark-request-action notmark-request-action--danger"
+                        disabled={busyId !== null}
+                        onClick={() => setConfirmation({ request, action: "delete" })}>
+                        <Trash2 size={17} /> Talebi Sil
+                      </button>
+                    </>
+                  )}
+                  {request.lifecycleStatus === "Closed" && (
+                    <button type="button" className="secondary-button notmark-request-action notmark-request-action--danger"
+                      disabled={busyId !== null}
+                      onClick={() => setConfirmation({ request, action: "delete" })}>
+                      <Trash2 size={17} /> Talebi Sil
+                    </button>
+                  )}
+                </div>
               </article>
             )
           )}
+        </div>
+      )}
+
+      {confirmation && (
+        <div className="notmark-request-modal-backdrop" role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && !busyId) setConfirmation(null);
+          }}>
+          <div className="notmark-request-modal" role="alertdialog" aria-modal="true"
+            aria-labelledby="notmark-request-confirm-title"
+            aria-describedby="notmark-request-confirm-description">
+            <div className="notmark-request-modal__top">
+              <AlertTriangle size={23} />
+              <button type="button" aria-label="Vazgeç"
+                disabled={busyId !== null} onClick={() => setConfirmation(null)}>
+                <X size={19} />
+              </button>
+            </div>
+            <h2 id="notmark-request-confirm-title">
+              {confirmation.action === "delete" ? "Talep silinsin mi?" : "Talep kapatılsın mı?"}
+            </h2>
+            <p id="notmark-request-confirm-description">
+              <strong>{confirmation.request.courseName}</strong>
+              {confirmation.action === "delete"
+                ? " talebiniz listelerinizden kaldırılır. Önceki gönderimler ve satış kayıtları korunur."
+                : " talebiniz kapatılır ve artık yeni PDF kabul etmez. Bu işlem geri alınamaz."}
+            </p>
+            <div className="notmark-request-modal__actions">
+              <button type="button" className="secondary-button" disabled={busyId !== null}
+                onClick={() => setConfirmation(null)}>Vazgeç</button>
+              <button type="button" className="primary-button notmark-request-modal__confirm"
+                disabled={busyId !== null}
+                onClick={() => void changeRequest(confirmation.request, confirmation.action)}>
+                {busyId ? "İşleniyor..." : confirmation.action === "delete" ? "Talebi Sil" : "Talebi Kapat"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

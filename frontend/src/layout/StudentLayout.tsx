@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  PauseCircle,
   ChevronDown,
   FileText,
   LayoutGrid,
@@ -357,6 +358,19 @@ export default function StudentLayout() {
                 >
                   <BookOpen size={17} />
                   <span>Taleplerim</span>
+                </NavLink>
+
+                <NavLink
+                  to="/student/note-requests/paused"
+                  end
+                  className={({ isActive }) =>
+                    isActive
+                      ? "student-nav-menu__item student-nav-menu__item--active"
+                      : "student-nav-menu__item"
+                  }
+                >
+                  <PauseCircle size={17} />
+                  <span>Beklemeye Aldıklarım</span>
                 </NavLink>
 
                 <NavLink

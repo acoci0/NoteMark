@@ -21,7 +21,8 @@ public sealed record NoteRequestResponse(
     string? AdditionalNotes,
     decimal SuggestedMinPrice,
     decimal SuggestedMaxPrice,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt,
+    string LifecycleStatus);
 
 public sealed record MarketplaceNoteRequestResponse(
     Guid Id,
@@ -36,4 +37,7 @@ public sealed record MarketplaceNoteRequestResponse(
     decimal SuggestedMinPrice,
     decimal SuggestedMaxPrice,
     bool HasActiveSubmission,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt,
+    string LifecycleStatus);
+
+public sealed record ChangeNoteRequestLifecycleRequest(string Status);

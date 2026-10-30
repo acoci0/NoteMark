@@ -124,6 +124,11 @@ export type NoteRequestContentType =
   | "DetailedSummary"
   | "StudyQuestions";
 
+export type NoteRequestLifecycleStatus =
+  | "Active"
+  | "Paused"
+  | "Closed";
+
 export type StudentNoteRequest = {
   id: string;
   universityName: string;
@@ -137,6 +142,7 @@ export type StudentNoteRequest = {
   suggestedMinPrice: number;
   suggestedMaxPrice: number;
   createdAt: string;
+  lifecycleStatus: NoteRequestLifecycleStatus;
 };
 
 export type MarketplaceNoteRequest =
