@@ -1,24 +1,50 @@
-/* NOTMARK UNIFIED STUDENT CARD SURFACES V1
-   Referans: Hesabım > Üniversite Doğrulamalarım ana paneli.
-   Yalnızca öğrenci arayüzündeki içerik kartlarının yüzeyi değişir.
-   Sayfa zeminleri, butonlar, bildirimler ve anlamlı durum renkleri korunur.
+/*
+ NOTMARK UNIFIED STUDENT CARD SURFACES V2
+
+ Referans:
+ Hesabım > Üniversite Doğrulamalarım ana paneli.
+
+ Koyu lacivert-mor arka plan.
+ Açık renkli eski yüzey kaldırıldı.
+
+ Orijinal referans panel korunur.
+ Butonlar, animasyonlar ve kenarlıklar korunur.
 */
 
 .student-app-shell[data-theme="dark"] {
-  --notmark-unified-card-surface: linear-gradient(
-    145deg,
-    var(--student-surface),
-    rgba(var(--student-accent-rgb), 0.025)
-  );
+  --notmark-unified-card-surface:
+    radial-gradient(
+      ellipse 70% 105% at 56% 43%,
+      rgba(var(--student-accent-rgb), 0.095) 0%,
+      rgba(var(--student-accent-rgb), 0.025) 44%,
+      transparent 76%
+    ),
+    linear-gradient(
+      145deg,
+      var(--student-surface) 0%,
+      #1b2534 42%,
+      #0c1420 100%
+    );
+
+  --notmark-unified-card-base: #0c1420;
 }
 
 .student-app-shell[data-theme="light"] {
-  --notmark-unified-card-surface: var(--student-surface);
+  --notmark-unified-card-surface:
+    var(--student-surface);
+
+  --notmark-unified-card-base:
+    var(--student-surface);
 }
 
-/* #root kapsamı: önceki !important yüzey kurallarından daha belirgin. */
+/*
+ Ortak kart arka planı.
+
+ Ana doğrulama paneli hariç.
+ Mevcut renkli durum göstergeleri korunur.
+*/
+
 #root .student-app-shell[data-theme] :is(
-  .student-profile-section,
   .student-profile-stat-card,
   .student-verification-form,
   .student-verification-card,
@@ -43,6 +69,9 @@
   .student-accent-option,
   .student-settings-footer
 ) {
-  background: var(--notmark-unified-card-surface, var(--student-surface)) !important;
-  background-color: var(--student-surface) !important;
+  background:
+    var(--notmark-unified-card-surface) !important;
+
+  background-color:
+    var(--notmark-unified-card-base) !important;
 }
