@@ -39708,3 +39708,109 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
   opacity: 1 !important;
 }
 /* NOTMARK_LIFECYCLE_SPOTLIGHT_V10_END */
+
+
+/* NOTMARK_RESPONSIVE_CARD_ACTIONS_V12_START */
+/*
+ * Dar ekrandaki ÇİFT kart aksiyonları için ortak düzen.
+ * 1) Taleplerim / Beklemeye Aldıklarım
+ * 2) Satın Aldıklarım (PDF'i İndir + Sorun Bildir)
+ * 3) Hesabım / Reddedilen Üniversite Doğrulaması
+ *
+ * Yalnızca iki veya daha çok doğrudan buton olduğunda devreye girer.
+ * Tek buton, modal ve form davranışları değişmez.
+ */
+
+@media (max-width: 900px) {
+  .student-app-shell .student-requests-page
+  .notmark-request-actions:has(> button + button),
+  .student-app-shell .student-purchases-page
+  .student-purchase-card__actions:has(> button + button),
+  .student-app-shell .student-profile-page
+  .student-verification-card__actions:has(> button + button) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row;
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .student-app-shell .student-requests-page
+  .notmark-request-actions:has(> button + button) > button,
+  .student-app-shell .student-purchases-page
+  .student-purchase-card__actions:has(> button + button) > button,
+  .student-app-shell .student-profile-page
+  .student-verification-card__actions:has(> button + button) > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: stretch;
+    align-self: stretch;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 46px;
+    height: 100%;
+    flex: none !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px clamp(7px, 1.6vw, 14px);
+
+    gap: 6px;
+    text-align: center;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .student-app-shell .student-requests-page
+  .notmark-request-actions:has(> button + button) > button svg,
+  .student-app-shell .student-purchases-page
+  .student-purchase-card__actions:has(> button + button) > button svg,
+  .student-app-shell .student-profile-page
+  .student-verification-card__actions:has(> button + button) > button svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .student-app-shell .student-requests-page
+  .notmark-request-actions:has(> button + button),
+  .student-app-shell .student-purchases-page
+  .student-purchase-card__actions:has(> button + button),
+  .student-app-shell .student-profile-page
+  .student-verification-card__actions:has(> button + button) {
+    gap: 8px;
+  }
+
+  .student-app-shell .student-requests-page
+  .notmark-request-actions:has(> button + button) > button,
+  .student-app-shell .student-purchases-page
+  .student-purchase-card__actions:has(> button + button) > button,
+  .student-app-shell .student-profile-page
+  .student-verification-card__actions:has(> button + button) > button {
+    font-size: clamp(10px, 2.8vw, 12px);
+    gap: 5px;
+    padding-inline: 6px;
+  }
+
+  .student-app-shell .student-requests-page
+  .notmark-request-actions:has(> button + button) > button svg,
+  .student-app-shell .student-purchases-page
+  .student-purchase-card__actions:has(> button + button) > button svg,
+  .student-app-shell .student-profile-page
+  .student-verification-card__actions:has(> button + button) > button svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* NOTMARK_RESPONSIVE_CARD_ACTIONS_V12_END */
