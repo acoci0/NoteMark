@@ -10,6 +10,7 @@ import { StudentAuthProvider } from "./auth/StudentAuthContext";
 import { StudentAppearanceProvider } from "./auth/StudentAppearanceContext";
 
 import "./styles.css";
+import "./student-card-surfaces.css";
 
 createRoot(
   document.getElementById("root")!

@@ -1,0 +1,48 @@
+/* NOTMARK UNIFIED STUDENT CARD SURFACES V1
+   Referans: Hesabım > Üniversite Doğrulamalarım ana paneli.
+   Yalnızca öğrenci arayüzündeki içerik kartlarının yüzeyi değişir.
+   Sayfa zeminleri, butonlar, bildirimler ve anlamlı durum renkleri korunur.
+*/
+
+.student-app-shell[data-theme="dark"] {
+  --notmark-unified-card-surface: linear-gradient(
+    145deg,
+    var(--student-surface),
+    rgba(var(--student-accent-rgb), 0.025)
+  );
+}
+
+.student-app-shell[data-theme="light"] {
+  --notmark-unified-card-surface: var(--student-surface);
+}
+
+/* #root kapsamı: önceki !important yüzey kurallarından daha belirgin. */
+#root .student-app-shell[data-theme] :is(
+  .student-profile-section,
+  .student-profile-stat-card,
+  .student-verification-form,
+  .student-verification-card,
+  .marketplace-card,
+  .marketplace-empty,
+  .marketplace-upload-summary > div,
+  .student-request-card,
+  .student-requests-empty,
+  .note-submissions-empty,
+  .student-purchase-card,
+  .student-purchases-empty,
+  .student-earning-card,
+  .student-earnings-panel,
+  .student-transaction-summary > div,
+  .student-revenue-breakdown__net,
+  .note-request-panel,
+  .note-request-price-card,
+  .note-request-verification > div,
+  .note-content-option,
+  .student-settings-panel,
+  .student-setting-option,
+  .student-accent-option,
+  .student-settings-footer
+) {
+  background: var(--notmark-unified-card-surface, var(--student-surface)) !important;
+  background-color: var(--student-surface) !important;
+}
