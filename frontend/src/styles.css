@@ -39680,3 +39680,31 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_EMPTY_ICONS_V6_END */
+
+
+/* NOTMARK_LIFECYCLE_SPOTLIGHT_V10_START */
+/* Finans giriş efektiyle birebir: opacity 0→1, 160ms ease-out both. */
+.student-app-shell .student-requests-page
+.notmark-request-board-empty--reveal {
+  animation: notmark-student-page-ready 160ms ease-out both;
+  will-change: opacity;
+}
+
+.student-app-shell[data-motion="reduced"] .student-requests-page
+.notmark-request-board-empty--reveal {
+  animation-duration: 110ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell .student-requests-page
+  .notmark-request-board-empty--reveal {
+    animation-duration: 110ms;
+  }
+}
+
+.student-app-shell[data-motion="off"] .student-requests-page
+.notmark-request-board-empty--reveal {
+  animation: none !important;
+  opacity: 1 !important;
+}
+/* NOTMARK_LIFECYCLE_SPOTLIGHT_V10_END */

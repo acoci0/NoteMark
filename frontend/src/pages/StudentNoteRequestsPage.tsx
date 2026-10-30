@@ -69,6 +69,12 @@ export default function StudentNoteRequestsPage({
   const [deleteError, setDeleteError] = useState("");
   const [notice, setNotice] = useState("");
 
+  // NOTMARK_LIFECYCLE_SPOTLIGHT_V10
+  // Son kart kaybolduktan sonra 500 ms; ardından Finans fade efekti.
+  const [emptyStatePhase, setEmptyStatePhase] = useState<
+    "ready" | "waiting" | "reveal"
+  >("ready");
+
   const deletePanelRef = useRef<HTMLDivElement>(null);
   const deleteIconRef = useRef<HTMLDivElement>(null);
   const deleteCancelRef = useRef<HTMLButtonElement>(null);
@@ -92,6 +98,23 @@ export default function StudentNoteRequestsPage({
     const timer = window.setTimeout(() => setNotice(""), 6400);
     return () => window.clearTimeout(timer);
   }, [notice]);
+
+  // Sayaç, son kart DOM'dan kalktıktan sonra başlar.
+  useEffect(() => {
+    if (
+      loading ||
+      requests.length !== 0 ||
+      emptyStatePhase !== "waiting"
+    ) return;
+
+    const timer = window.setTimeout(() => {
+      if (mountedRef.current) {
+        setEmptyStatePhase("reveal");
+      }
+    }, 500);
+
+    return () => window.clearTimeout(timer);
+  }, [loading, requests.length, emptyStatePhase]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -178,6 +201,7 @@ export default function StudentNoteRequestsPage({
     const load = async () => {
       setLoading(true);
       setError("");
+      setEmptyStatePhase("ready");
 
       try {
         const { data } =
@@ -248,8 +272,7 @@ export default function StudentNoteRequestsPage({
         return;
       }
 
-      // 2. API başarılıysa mikro animasyon oynat.
-      // Animasyon 900 ms sürer.
+      // 2. API başarılıysa 1500 ms çerçeve+ikon+çıkış animasyonu.
       await playStudentRequestLifecycleMotion({
         card: lifecycleCardRefs.current.get(
           request.id
@@ -268,7 +291,11 @@ export default function StudentNoteRequestsPage({
         return;
       }
 
-      // 3. Kart ancak animasyondan sonra kalkar.
+      // 3. Son kart kalkınca bekleme ve boş durum fade'i başlar.
+      if (requests.length === 1) {
+        setEmptyStatePhase("waiting");
+      }
+
       setRequests((current) => current
         .map((entry) =>
           entry.id === request.id
@@ -346,6 +373,11 @@ export default function StudentNoteRequestsPage({
 
     const finish = () => {
       if (!mountedRef.current) return;
+
+      // Silme Genie Effect'i değişmez; son kartta aynı boş geçiş.
+      if (requests.length === 1) {
+        setEmptyStatePhase("waiting");
+      }
 
       setRequests((current) =>
         current.filter((entry) => entry.id !== request.id)
@@ -462,7 +494,14 @@ export default function StudentNoteRequestsPage({
       )}
 
       {requests.length === 0 ? (
-        <section className="marketplace-empty notmark-request-board-empty">
+        emptyStatePhase === "waiting" ? null : (
+        <section
+          className={`marketplace-empty notmark-request-board-empty${
+            emptyStatePhase === "reveal"
+              ? " notmark-request-board-empty--reveal"
+              : ""
+          }`}
+        >
           {view === "paused" ? (
             <PauseCircle size={30} aria-hidden="true" />
           ) : (
@@ -497,6 +536,7 @@ export default function StudentNoteRequestsPage({
             </Link>
           )}
         </section>
+        )
       ) : (
         <div className="student-request-list">
           {requests.map(
