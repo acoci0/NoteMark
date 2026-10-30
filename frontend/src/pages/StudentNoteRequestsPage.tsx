@@ -362,17 +362,10 @@ export default function StudentNoteRequestsPage({
           <p>
             {view === "paused"
               ? "Beklemeye aldığınız talepleri yeniden etkinleştirin veya kaldırın."
-              : "Not taleplerinizin durumunu yönetin; gerektiğinde beklemeye alın veya kapatın."}
+              : "Not taleplerinizi yönetin; beklemeye alın veya ihtiyaç kalmadığında silin."}
           </p>
         </div>
 
-        <Link
-          className="primary-button student-request-new-button"
-          to="/student/note-requests/new"
-        >
-          <Plus size={17} />
-          Yeni Not İste
-        </Link>
       </header>
 
       {notice && (
@@ -394,22 +387,32 @@ export default function StudentNoteRequestsPage({
           </div>
 
           <h2>
-            {view === "paused" ? "Beklemede talebiniz yok" : "Henüz not talebiniz yok"}
+            {view === "paused" ? "Beklemede talebiniz yok" : "Şu anda listelenecek talebiniz yok"}
           </h2>
 
           <p>
-            İhtiyacınız olan ders ve
-            konuyu belirleyerek ilk
-            talebinizi yayınlayabilirsiniz.
+            {view === "paused"
+              ? "Beklemeye aldığınız talep bulunmuyor. Aktif taleplerinizi Taleplerim bölümünden yönetebilirsiniz."
+              : "İhtiyacınız olan ders ve konuyu belirleyerek ilk talebinizi yayınlayabilirsiniz."}
           </p>
 
-          <Link
-            className="primary-button"
-            to="/student/note-requests/new"
-          >
-            <Plus size={17} />
-            Not İste
-          </Link>
+          {view === "paused" ? (
+            <Link
+              className="secondary-button"
+              to="/student/note-requests"
+            >
+              <BookOpen size={17} />
+              Taleplerime Git
+            </Link>
+          ) : (
+            <Link
+              className="primary-button"
+              to="/student/note-requests/new"
+            >
+              <Plus size={17} />
+              Not İste
+            </Link>
+          )}
         </section>
       ) : (
         <div className="student-request-list">

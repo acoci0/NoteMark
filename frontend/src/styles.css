@@ -39170,3 +39170,278 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_REQUEST_ACTIONS_REFINED_V2_END */
+
+
+/* NOTMARK_REQUEST_THEME_V4_START */
+
+/*
+ * NotMark - Taleplerim / Beklemeye Aldıklarım
+ *
+ * Kullanıcının seçtiği:
+ * - Açık / koyu tema
+ * - Sarı / mor / mavi / yeşil vurgu rengi
+ *
+ * Yalnızca ilgili sayfalara uygulanır.
+ */
+
+.student-app-shell .student-requests-page {
+  background: var(--student-bg);
+  color: var(--student-text);
+}
+
+/* Başlıklar ve açıklamalar */
+
+.student-app-shell .student-requests-page .student-requests-header h1,
+.student-app-shell .student-requests-page .student-requests-empty h2,
+.student-app-shell .student-requests-page .student-request-card__title h2 {
+  color: var(--student-text);
+}
+
+.student-app-shell .student-requests-page .student-requests-header p,
+.student-app-shell .student-requests-page .student-requests-empty p,
+.student-app-shell .student-requests-page .student-request-card__title p {
+  color: var(--student-muted);
+}
+
+.student-app-shell .student-requests-page .section-kicker {
+  color: var(--student-accent-strong);
+}
+
+/* Talep sayacı */
+
+.student-app-shell .student-requests-page .student-request-count {
+  border-color: rgba(var(--student-accent-rgb), .32);
+  background: rgba(var(--student-accent-rgb), .10);
+  color: var(--student-accent-strong);
+}
+
+/*
+ * Bildirim:
+ * Talep kartı ile birebir aynı maksimum genişlik.
+ */
+
+.student-app-shell .student-requests-page > .notmark-request-notice,
+.student-app-shell .student-requests-page > .note-request-message {
+  box-sizing: border-box;
+  display: block;
+
+  width: min(1040px, 100%);
+  max-width: 100%;
+
+  margin: 0 auto 18px;
+  border-radius: 13px;
+}
+
+/*
+ * Başarı bildiriminde yeşil durum rengi korunur.
+ * Zemin açık/koyu kullanıcı temasına uyarlanır.
+ */
+
+.student-app-shell .student-requests-page > .notmark-request-notice {
+  border: 1px solid rgba(53, 199, 133, .36);
+
+  background: linear-gradient(
+    105deg,
+    rgba(31, 176, 113, .12),
+    var(--student-surface)
+  );
+
+  color: #72e6b0;
+
+  box-shadow:
+    0 8px 24px rgba(3, 12, 27, .09);
+}
+
+.student-app-shell[data-theme="light"]
+.student-requests-page > .notmark-request-notice {
+  background: linear-gradient(
+    105deg,
+    #e7f8ef,
+    var(--student-surface)
+  );
+
+  color: #176647;
+}
+
+/* Talep kartlarının yüzeyi */
+
+.student-app-shell .student-requests-page .student-request-card {
+  border-color: rgba(var(--student-accent-rgb), .23);
+
+  background: linear-gradient(
+    145deg,
+    var(--student-surface),
+    var(--student-surface-soft)
+  );
+
+  color: var(--student-text);
+
+  box-shadow:
+    0 12px 32px rgba(5, 16, 31, .08);
+}
+
+/* Kart hover efekti kullanıcının vurgu rengine uyum sağlar. */
+
+.student-app-shell .student-requests-page .student-request-card:hover {
+  border-color: rgba(var(--student-accent-rgb), .62);
+
+  box-shadow:
+    0 0 0 1px rgba(var(--student-accent-rgb), .09),
+    0 0 22px rgba(var(--student-accent-rgb), .11),
+    0 14px 36px rgba(5, 16, 31, .12);
+}
+
+/* Ders ve boş durum ikonları */
+
+.student-app-shell .student-requests-page .student-request-card__icon,
+.student-app-shell .student-requests-page .student-requests-empty__icon {
+  border: 1px solid rgba(var(--student-accent-rgb), .28);
+  background: var(--student-accent-soft);
+  color: var(--student-accent-strong);
+
+  box-shadow:
+    0 8px 20px rgba(var(--student-accent-rgb), .11);
+}
+
+/* Ayırıcı çizgiler */
+
+.student-app-shell .student-requests-page .student-request-card__academic,
+.student-app-shell .student-requests-page .notmark-request-actions {
+  border-color: var(--student-border);
+}
+
+/* Üniversite ve bilgi kutuları */
+
+.student-app-shell .student-requests-page .student-request-card__academic span,
+.student-app-shell .student-requests-page .student-request-card__details > div,
+.student-app-shell .student-requests-page .student-request-card__note {
+  border-color: rgba(var(--student-accent-rgb), .15);
+  background: var(--student-surface-soft);
+}
+
+/* İkincil metinler */
+
+.student-app-shell .student-requests-page .student-request-card__academic span,
+.student-app-shell .student-requests-page .student-request-card__details span {
+  color: var(--student-muted);
+}
+
+/* Bilgi değerleri */
+
+.student-app-shell .student-requests-page .student-request-card__details strong,
+.student-app-shell .student-requests-page .student-request-card__note p {
+  color: var(--student-text);
+}
+
+/* Ek açıklama vurguları */
+
+.student-app-shell .student-requests-page .student-request-card__note span,
+.student-app-shell .student-requests-page .student-request-card__note-icon {
+  color: var(--student-accent-strong);
+}
+
+/* Önerilen fiyat */
+
+.student-app-shell .student-requests-page .student-request-card__price {
+  border-color: rgba(var(--student-accent-rgb), .30);
+  background: rgba(var(--student-accent-rgb), .095);
+}
+
+.student-app-shell .student-requests-page .student-request-card__price strong {
+  color: var(--student-accent-strong);
+}
+
+/* Aktif durum etiketi */
+
+.student-app-shell .student-requests-page
+.notmark-request-state:not(.notmark-request-state--paused):not(.notmark-request-state--closed) {
+  border-color: rgba(var(--student-accent-rgb), .36);
+  background: rgba(var(--student-accent-rgb), .11);
+  color: var(--student-accent-strong);
+}
+
+/* Boş durum kartı */
+
+.student-app-shell .student-requests-page .student-requests-empty {
+  border-color: rgba(var(--student-accent-rgb), .30);
+
+  background: linear-gradient(
+    145deg,
+    var(--student-surface),
+    var(--student-surface-soft)
+  );
+
+  color: var(--student-text);
+
+  box-shadow:
+    0 12px 34px rgba(5, 16, 31, .08);
+}
+
+/* Beklemeye Aldıklarım boş durum yönlendirmesi */
+
+.student-app-shell .student-requests-page
+.student-requests-empty > .secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: 1px solid rgba(var(--student-accent-rgb), .33);
+  background: rgba(var(--student-accent-rgb), .09);
+  color: var(--student-accent-strong);
+}
+
+.student-app-shell .student-requests-page
+.student-requests-empty > .secondary-button:hover {
+  border-color: rgba(var(--student-accent-rgb), .64);
+  background: rgba(var(--student-accent-rgb), .16);
+}
+
+.student-app-shell .student-requests-page
+.student-requests-empty > a:focus-visible {
+  outline: 2px solid var(--student-accent);
+  outline-offset: 3px;
+}
+
+/* Tablet */
+
+@media (max-width: 760px) {
+  .student-app-shell .student-requests-page {
+    padding: 26px 18px 56px;
+  }
+
+  .student-app-shell .student-requests-page > .notmark-request-notice,
+  .student-app-shell .student-requests-page > .note-request-message {
+    width: min(1040px, 100%);
+    max-width: 100%;
+  }
+}
+
+/* Mobil */
+
+@media (max-width: 480px) {
+  .student-app-shell .student-requests-page {
+    padding: 22px 14px 44px;
+  }
+
+  .student-app-shell .student-requests-page
+  .student-requests-title-row h1 {
+    font-size: clamp(25px, 7.5vw, 34px);
+  }
+}
+
+/* Animasyon kapatma tercihi */
+
+.student-app-shell[data-motion="off"]
+.student-requests-page .notmark-request-notice,
+
+.student-app-shell[data-motion="off"]
+.student-requests-page .student-request-card,
+
+.student-app-shell[data-motion="off"]
+.student-requests-page .notmark-request-action {
+  animation: none;
+  transition: none;
+}
+
+/* NOTMARK_REQUEST_THEME_V4_END */
