@@ -354,11 +354,11 @@ export default function StudentNoteRequestsPage({
                 <div className="notmark-request-actions">
                   {request.lifecycleStatus === "Active" && (
                     <>
-                      <button type="button" className="secondary-button notmark-request-action"
+                      <button type="button" className="secondary-button notmark-request-action notmark-request-action--pause"
                         disabled={busyId !== null} onClick={() => void changeRequest(request, "pause")}>
                         <PauseCircle size={17} /> Beklemeye Al
                       </button>
-                      <button type="button" className="secondary-button notmark-request-action"
+                      <button type="button" className="secondary-button notmark-request-action notmark-request-action--close"
                         disabled={busyId !== null}
                         onClick={() => setConfirmation({ request, action: "close" })}>
                         <LockKeyhole size={17} /> Talebi Kapat
@@ -367,7 +367,7 @@ export default function StudentNoteRequestsPage({
                   )}
                   {request.lifecycleStatus === "Paused" && (
                     <>
-                      <button type="button" className="primary-button notmark-request-action"
+                      <button type="button" className="primary-button notmark-request-action notmark-request-action--primary"
                         disabled={busyId !== null} onClick={() => void changeRequest(request, "resume")}>
                         <PlayCircle size={17} /> Yeniden Aktif Et
                       </button>
