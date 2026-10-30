@@ -40374,3 +40374,1007 @@ body.notmark-genie-v6-active .notmark-profile-math-particle {
 }
 
 /* NOTMARK_STUDENT_NOTIFICATION_CENTER_V13_END */
+
+/* NOTMARK_NAVBAR_CONTROL_GROUP_V15_START */
+
+/*
+ * NOTMARK STUDENT - ACCOUNT CONTROL GROUP
+ *
+ * Bildirim / Profil / Ayarlar / Çıkış
+ * Ortak yükseklik: 42px
+ * Tema: öğrenci renk değişkenleri
+ */
+
+.student-app-shell .student-account-area {
+  --account-control-size: 42px;
+
+  display: flex;
+  flex: 0 0 auto;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 7px;
+
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+
+  margin-left: auto;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .15);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--student-accent-rgb), .055),
+      transparent 75%
+    ),
+    var(--student-surface);
+
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, .045);
+}
+
+/* Dört kontrolün ortak geometrisi */
+
+.student-app-shell .student-account-area
+:is(
+  .student-notification-trigger,
+  .student-settings-button,
+  .student-logout-button
+) {
+  position: relative;
+
+  width: var(--account-control-size);
+  min-width: var(--account-control-size);
+  height: var(--account-control-size);
+
+  flex: 0 0 var(--account-control-size);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0;
+
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .19);
+
+  border-radius: 12px;
+
+  background: var(--student-surface-soft);
+  color: var(--student-muted);
+
+  box-shadow: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.student-app-shell .student-account-area
+:is(
+  .student-notification-trigger,
+  .student-settings-button,
+  .student-logout-button
+) > svg {
+  width: 19px;
+  height: 19px;
+
+  flex-shrink: 0;
+
+  stroke-width: 1.9;
+}
+
+/* Profil alanı aynı yüksekliği kullanır. */
+
+.student-app-shell .student-account-area
+.student-account-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  gap: 9px;
+
+  min-width: var(--account-control-size);
+  min-height: var(--account-control-size);
+  height: var(--account-control-size);
+
+  margin: 0;
+  padding: 4px 8px 4px 5px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .24);
+
+  border-radius: 12px;
+
+  background:
+    rgba(var(--student-accent-rgb), .075);
+
+  color: var(--student-text);
+
+  text-decoration: none;
+
+  box-shadow: none;
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+/* Profil avatarı */
+
+.student-app-shell .student-account-area
+.student-account-chip__avatar {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 0;
+  padding: 0;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .32);
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--student-accent-rgb), .22),
+      rgba(var(--student-accent-rgb), .09)
+    );
+
+  color: var(--student-accent-strong);
+
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: -.02em;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+/* Profil metinleri */
+
+.student-app-shell .student-account-area
+.student-account-chip__text {
+  min-width: 0;
+}
+
+.student-app-shell .student-account-area
+.student-account-chip__text strong {
+  color: var(--student-text);
+}
+
+.student-app-shell .student-account-area
+.student-account-chip__text span {
+  color: var(--student-muted);
+}
+
+/* Ortak hover: tema renginde hafif aydınlanma */
+
+@media (hover: hover) and (pointer: fine) {
+  .student-app-shell .student-account-area
+  :is(
+    .student-notification-trigger,
+    .student-settings-button,
+    .student-account-chip
+  ):hover {
+    transform: translateY(-1px);
+
+    border-color:
+      rgba(var(--student-accent-rgb), .60);
+
+    background:
+      rgba(var(--student-accent-rgb), .12);
+
+    color: var(--student-accent-strong);
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .055),
+      0 0 16px
+        rgba(var(--student-accent-rgb), .15);
+  }
+
+  .student-app-shell .student-account-area
+  .student-account-chip:hover
+  .student-account-chip__avatar {
+    transform: none;
+
+    box-shadow:
+      0 0 12px
+        rgba(var(--student-accent-rgb), .18);
+  }
+}
+
+/* Bildirim zili açıkken */
+
+.student-app-shell .student-account-area
+.student-notification-trigger--open {
+  border-color:
+    rgba(var(--student-accent-rgb), .68);
+
+  background:
+    rgba(var(--student-accent-rgb), .15);
+
+  color: var(--student-accent-strong);
+
+  box-shadow:
+    0 0 16px
+      rgba(var(--student-accent-rgb), .20);
+}
+
+/* Yeni bildirim sayacı */
+
+.student-app-shell .student-account-area
+.student-notification-badge {
+  position: absolute;
+
+  top: -6px;
+  right: -6px;
+
+  min-width: 19px;
+  height: 19px;
+
+  border:
+    2px solid var(--student-surface);
+
+  background: var(--student-accent);
+  color: var(--student-accent-text);
+}
+
+/* Ayarlar aktif */
+
+.student-app-shell .student-account-area
+.student-settings-button--active {
+  border-color: var(--student-accent);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--student-accent),
+      var(--student-accent-strong)
+    );
+
+  color: var(--student-accent-text);
+
+  box-shadow:
+    0 0 15px
+      rgba(var(--student-accent-rgb), .20);
+}
+
+/* Hesabım sayfası aktifken profil butonu */
+
+.student-app-shell .student-account-area
+.student-account-chip.active {
+  border-color:
+    rgba(var(--student-accent-rgb), .55);
+
+  background:
+    rgba(var(--student-accent-rgb), .13);
+}
+
+/* Çıkış ikonu normalde diğerleriyle uyumlu */
+
+.student-app-shell .student-account-area
+.student-logout-button {
+  color: var(--student-muted);
+}
+
+/* Çıkışın tehlike rengi yalnızca hover/focus */
+
+@media (hover: hover) and (pointer: fine) {
+  .student-app-shell .student-account-area
+  .student-logout-button:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(231, 88, 105, .55);
+
+    background: rgba(231, 88, 105, .11);
+
+    color: #eb6b7c;
+
+    box-shadow:
+      0 0 15px rgba(231, 88, 105, .15);
+  }
+}
+
+/* Klavye erişilebilirliği */
+
+.student-app-shell .student-account-area
+:is(
+  .student-notification-trigger,
+  .student-account-chip,
+  .student-settings-button,
+  .student-logout-button
+):focus-visible {
+  outline: 2px solid var(--student-accent);
+  outline-offset: 3px;
+}
+
+/*
+ * Responsive:
+ * Kullanıcı adı gizlenince profil de diğer
+ * ikonlarla aynı dış ölçüye sahip olur.
+ */
+
+@media (max-width: 1200px) {
+  .student-app-shell .student-account-area
+  .student-account-chip {
+    width: var(--account-control-size);
+    min-width: var(--account-control-size);
+
+    padding: 4px;
+
+    flex: 0 0 var(--account-control-size);
+  }
+
+  .student-app-shell .student-account-area
+  .student-account-chip__text {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .student-app-shell .student-account-area {
+    --account-control-size: 38px;
+
+    width: auto;
+
+    gap: 5px;
+    padding: 4px;
+
+    margin-left: auto;
+
+    border-radius: 14px;
+  }
+
+  .student-app-shell .student-account-area
+  :is(
+    .student-notification-trigger,
+    .student-settings-button,
+    .student-logout-button,
+    .student-account-chip
+  ) {
+    width: var(--account-control-size);
+    min-width: var(--account-control-size);
+    height: var(--account-control-size);
+    min-height: var(--account-control-size);
+
+    flex: 0 0 var(--account-control-size);
+
+    border-radius: 10px;
+  }
+
+  .student-app-shell .student-account-area
+  .student-account-chip__avatar {
+    width: 29px;
+    height: 29px;
+
+    flex-basis: 29px;
+
+    font-size: 10px;
+  }
+
+  .student-app-shell .student-account-area
+  :is(
+    .student-notification-trigger,
+    .student-settings-button,
+    .student-logout-button
+  ) > svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Kullanıcının hareket tercihi */
+
+.student-app-shell[data-motion="off"]
+.student-account-area
+:is(
+  .student-notification-trigger,
+  .student-account-chip,
+  .student-account-chip__avatar,
+  .student-settings-button,
+  .student-logout-button
+) {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell .student-account-area
+  :is(
+    .student-notification-trigger,
+    .student-account-chip,
+    .student-account-chip__avatar,
+    .student-settings-button,
+    .student-logout-button
+  ) {
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_NAVBAR_CONTROL_GROUP_V15_END */
+
+/* NOTMARK_UPLOAD_MODAL_THEME_V15_START */
+
+/*
+ * NOT GÖNDER MODALI
+ *
+ * Kullanıcı temasıyla uyumlu yüzeyler.
+ * Vazgeç: amber
+ * PDF gönder: yeşil
+ */
+
+/* Arka plan */
+
+.student-app-shell .marketplace-modal-backdrop {
+  background: rgba(5, 12, 27, .76);
+
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Ana modal */
+
+.student-app-shell .marketplace-upload-modal {
+  box-sizing: border-box;
+
+  width: min(660px, 100%);
+  max-width: 100%;
+
+  max-height: calc(100dvh - 40px);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding: 28px;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .56);
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--student-accent-rgb), .075),
+      transparent 48%
+    ),
+    var(--student-surface);
+
+  color: var(--student-text);
+
+  box-shadow:
+    0 0 0 1px
+      rgba(var(--student-accent-rgb), .045),
+    0 0 28px
+      rgba(var(--student-accent-rgb), .11),
+    0 28px 75px rgba(0,0,0,.32);
+
+  scrollbar-width: thin;
+
+  animation:
+    notmark-upload-modal-v15-enter
+    210ms ease-out both;
+}
+
+@keyframes notmark-upload-modal-v15-enter {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(.988);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Başlık ve ayırıcı */
+
+.student-app-shell
+.marketplace-upload-modal__header {
+  border-bottom:
+    1px solid var(--student-border);
+}
+
+.student-app-shell
+.marketplace-upload-modal__header h2 {
+  color: var(--student-text);
+
+  overflow-wrap: anywhere;
+}
+
+.student-app-shell
+.marketplace-upload-modal__header p {
+  color: var(--student-muted);
+}
+
+.student-app-shell
+.marketplace-upload-modal__header .section-kicker {
+  color: var(--student-accent-strong);
+}
+
+/* Kapatma */
+
+.student-app-shell .marketplace-modal-close {
+  flex: 0 0 39px;
+
+  width: 39px;
+  height: 39px;
+
+  border:
+    1px solid var(--student-border);
+
+  border-radius: 11px;
+
+  background: var(--student-surface-soft);
+  color: var(--student-text);
+
+  cursor: pointer;
+
+  transition:
+    border-color 170ms ease,
+    background-color 170ms ease,
+    color 170ms ease;
+}
+
+.student-app-shell
+.marketplace-modal-close:hover:not(:disabled) {
+  border-color:
+    rgba(var(--student-accent-rgb), .58);
+
+  background:
+    rgba(var(--student-accent-rgb), .11);
+
+  color: var(--student-accent-strong);
+}
+
+/* İçerik / soru / fiyat kartları */
+
+.student-app-shell
+.marketplace-upload-summary {
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.student-app-shell
+.marketplace-upload-summary > div {
+  min-width: 0;
+
+  padding: 13px;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .20);
+
+  border-radius: 12px;
+
+  background: var(--student-surface-soft);
+}
+
+.student-app-shell
+.marketplace-upload-summary span {
+  color: var(--student-muted);
+}
+
+.student-app-shell
+.marketplace-upload-summary strong {
+  color: var(--student-text);
+
+  overflow-wrap: anywhere;
+}
+
+/* Not başlığı */
+
+.student-app-shell .marketplace-upload-modal
+.note-request-field {
+  display: grid;
+  gap: 8px;
+
+  color: var(--student-text);
+}
+
+.student-app-shell .marketplace-upload-modal
+.note-request-field > span {
+  color: var(--student-text);
+
+  font-weight: 750;
+}
+
+.student-app-shell .marketplace-upload-modal
+.note-request-field input {
+  box-sizing: border-box;
+
+  width: 100%;
+  min-width: 0;
+
+  min-height: 48px;
+  padding: 12px 14px;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .28);
+
+  border-radius: 12px;
+
+  background: var(--student-surface-soft);
+  color: var(--student-text);
+
+  outline: none;
+}
+
+.student-app-shell .marketplace-upload-modal
+.note-request-field input:focus {
+  border-color: var(--student-accent);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(var(--student-accent-rgb), .13);
+}
+
+/* PDF seçme alanı */
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-file-field {
+  display: grid;
+  gap: 8px;
+
+  color: var(--student-text);
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-file-field > span {
+  color: var(--student-text);
+
+  font-weight: 750;
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-file-field input {
+  box-sizing: border-box;
+
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+
+  min-height: 54px;
+
+  padding: 10px 12px;
+
+  border:
+    1px dashed
+    rgba(var(--student-accent-rgb), .54);
+
+  border-radius: 12px;
+
+  background: var(--student-surface-soft);
+  color: var(--student-text);
+
+  cursor: pointer;
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-file-field input::file-selector-button {
+  margin-right: 10px;
+
+  padding: 8px 11px;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .42);
+
+  border-radius: 9px;
+
+  background:
+    rgba(var(--student-accent-rgb), .11);
+
+  color: var(--student-text);
+
+  font: inherit;
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-file-field input:hover {
+  border-color: var(--student-accent);
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-file-field small {
+  color: var(--student-muted);
+}
+
+/* Seçilen dosya kartı */
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-selected-file {
+  min-width: 0;
+
+  border:
+    1px solid
+    rgba(var(--student-accent-rgb), .24);
+
+  border-radius: 12px;
+
+  background: var(--student-surface-soft);
+  color: var(--student-text);
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-selected-file svg {
+  color: var(--student-accent-strong);
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-selected-file strong {
+  color: var(--student-text);
+
+  overflow-wrap: anywhere;
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-selected-file span {
+  color: var(--student-muted);
+}
+
+/* Alt işlem alanı */
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-upload-actions {
+  display: flex;
+
+  align-items: stretch;
+  justify-content: flex-end;
+
+  flex-wrap: nowrap;
+
+  gap: 11px;
+
+  margin-top: 25px;
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-upload-actions > button {
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-width: 132px;
+  min-height: 45px;
+
+  margin: 0;
+  padding: 10px 16px;
+
+  border-radius: 11px;
+
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+
+  cursor: pointer;
+
+  transition:
+    transform 170ms ease,
+    border-color 170ms ease,
+    background-color 170ms ease,
+    color 170ms ease,
+    box-shadow 170ms ease;
+}
+
+/* Vazgeç: sarı / amber */
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-upload-actions > button:first-child {
+  border: 1px solid rgba(245,184,63,.75);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(143,95,16,.31),
+      rgba(92,63,16,.18)
+    );
+
+  color: #ffd077;
+
+  box-shadow:
+    0 0 13px rgba(239,169,50,.11);
+}
+
+/* Gönder: yeşil */
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-upload-actions > button:last-child {
+  border: 1px solid rgba(48,211,126,.72);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(25,145,85,.36),
+      rgba(14,95,61,.26)
+    );
+
+  color: #91efbc;
+
+  box-shadow:
+    0 0 15px rgba(40,193,109,.13);
+}
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-upload-actions > button:last-child svg {
+  color: currentColor;
+}
+
+/* Hover */
+
+@media (hover: hover) and (pointer: fine) {
+  .student-app-shell .marketplace-upload-modal
+  .marketplace-upload-actions
+  > button:first-child:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    border-color: #ffd369;
+
+    background: rgba(207,148,35,.23);
+
+    box-shadow:
+      0 0 18px rgba(240,173,46,.23);
+  }
+
+  .student-app-shell .marketplace-upload-modal
+  .marketplace-upload-actions
+  > button:last-child:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    border-color: #48f49a;
+
+    background: rgba(24,166,94,.28);
+
+    box-shadow:
+      0 0 20px rgba(36,211,113,.24);
+  }
+}
+
+/* Açık tema: okunabilir kontrast */
+
+.student-app-shell[data-theme="light"]
+.marketplace-upload-modal
+.marketplace-upload-actions > button:first-child {
+  border-color: #c9982a;
+
+  background: #fff2d6;
+  color: #805300;
+}
+
+.student-app-shell[data-theme="light"]
+.marketplace-upload-modal
+.marketplace-upload-actions > button:last-child {
+  border-color: #168e54;
+
+  background: #dff6e9;
+  color: #126540;
+}
+
+/* Disabled ve klavye */
+
+.student-app-shell .marketplace-upload-modal
+.marketplace-upload-actions > button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+
+  transform: none;
+  box-shadow: none;
+}
+
+.student-app-shell .marketplace-upload-modal
+button:focus-visible {
+  outline: 2px solid var(--student-accent);
+  outline-offset: 3px;
+}
+
+/* Mobil */
+
+@media (max-width: 640px) {
+  .student-app-shell .marketplace-modal-backdrop {
+    padding: 12px;
+  }
+
+  .student-app-shell .marketplace-upload-modal {
+    max-height: calc(100dvh - 24px);
+
+    padding: 20px 17px;
+    border-radius: 17px;
+  }
+
+  .student-app-shell .marketplace-upload-modal
+  .marketplace-upload-summary {
+    grid-template-columns: 1fr;
+
+    gap: 9px;
+  }
+
+  .student-app-shell .marketplace-upload-modal
+  .marketplace-upload-actions {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    gap: 9px;
+
+    width: 100%;
+  }
+
+  .student-app-shell .marketplace-upload-modal
+  .marketplace-upload-actions > button {
+    width: 100%;
+    min-width: 0;
+
+    padding: 10px 7px;
+
+    font-size: 12px;
+  }
+}
+
+/* Hareket tercihleri */
+
+.student-app-shell[data-motion="off"]
+.marketplace-upload-modal {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell .marketplace-upload-modal {
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_UPLOAD_MODAL_THEME_V15_END */
