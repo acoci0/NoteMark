@@ -28,6 +28,7 @@ import {
 
 import studentApi from "../api/studentClient";
 import { playStudentVerificationGenie } from "../utils/studentVerificationGenie";
+import { playStudentRequestLifecycleMotion } from "../utils/studentRequestLifecycleMotion";
 
 import type {
   StudentNoteRequest,
@@ -76,6 +77,16 @@ export default function StudentNoteRequestsPage({
   const deleteAbortRef = useRef<AbortController | null>(null);
   const mountedRef = useRef(true);
 
+  // NOTMARK_REQUEST_MICRO_MOTION_V8
+  // Çift tıklama ve eşzamanlı işlemleri engeller.
+  const lifecycleInFlightRef = useRef(false);
+
+  const lifecycleAbortRef =
+    useRef<AbortController | null>(null);
+
+  const lifecycleCardRefs =
+    useRef(new Map<string, HTMLElement>());
+
   useEffect(() => {
     if (!notice) return;
     const timer = window.setTimeout(() => setNotice(""), 6400);
@@ -88,6 +99,7 @@ export default function StudentNoteRequestsPage({
     return () => {
       mountedRef.current = false;
       deleteAbortRef.current?.abort();
+      lifecycleAbortRef.current?.abort();
     };
   }, []);
 
@@ -201,46 +213,110 @@ export default function StudentNoteRequestsPage({
     request: StudentNoteRequest,
     action: RequestAction
   ) => {
-    if (busyId || deleteInFlightRef.current) return;
+    if (
+      busyId ||
+      deleteInFlightRef.current ||
+      lifecycleInFlightRef.current
+    ) {
+      return;
+    }
+
+    lifecycleInFlightRef.current = true;
+
+    const controller = new AbortController();
+    lifecycleAbortRef.current = controller;
 
     setBusyId(request.id);
     setError("");
     setNotice("");
 
     try {
-      const nextStatus: StudentNoteRequest["lifecycleStatus"] =
+      const nextStatus:
+        StudentNoteRequest["lifecycleStatus"] =
         action === "pause" ? "Paused" : "Active";
 
+      // 1. Önce backend işlemi başarılı olmalı.
       await studentApi.put(
         `/student/note-requests/${request.id}/lifecycle`,
         { status: nextStatus }
       );
 
+      if (
+        !mountedRef.current ||
+        controller.signal.aborted
+      ) {
+        return;
+      }
+
+      // 2. API başarılıysa mikro animasyon oynat.
+      // Animasyon 900 ms sürer.
+      await playStudentRequestLifecycleMotion({
+        card: lifecycleCardRefs.current.get(
+          request.id
+        ),
+        action,
+        signal: controller.signal,
+        motion: window.document.querySelector(
+          ".student-app-shell"
+        )?.getAttribute("data-motion"),
+      });
+
+      if (
+        !mountedRef.current ||
+        controller.signal.aborted
+      ) {
+        return;
+      }
+
+      // 3. Kart ancak animasyondan sonra kalkar.
       setRequests((current) => current
-        .map((entry) => entry.id === request.id
-          ? { ...entry, lifecycleStatus: nextStatus }
-          : entry)
-        .filter((entry) => view === "paused"
-          ? entry.lifecycleStatus === "Paused"
-          : entry.lifecycleStatus !== "Paused")
+        .map((entry) =>
+          entry.id === request.id
+            ? {
+                ...entry,
+                lifecycleStatus: nextStatus,
+              }
+            : entry
+        )
+        .filter((entry) =>
+          view === "paused"
+            ? entry.lifecycleStatus === "Paused"
+            : entry.lifecycleStatus !== "Paused"
+        )
       );
 
-      setNotice(action === "pause"
-        ? "Talebiniz beklemeye alındı. Beklemeye Aldıklarım bölümünden yönetebilirsiniz."
-        : "Talebiniz yeniden aktif edildi."
+      // 4. Bildirim süresi şimdi başlar.
+      setNotice(
+        action === "pause"
+          ? "Talebiniz beklemeye alındı. Beklemeye Aldıklarım bölümünden yönetebilirsiniz."
+          : "Talebiniz yeniden aktif edildi."
       );
     } catch (requestError) {
-      setError(getErrorMessage(
-        requestError,
-        "Talep güncellenemedi. Listeyi yenileyin."
-      ));
+      if (
+        mountedRef.current &&
+        !controller.signal.aborted
+      ) {
+        setError(getErrorMessage(
+          requestError,
+          "Talep güncellenemedi. Listeyi yenileyin."
+        ));
+      }
     } finally {
-      if (mountedRef.current) setBusyId(null);
+      lifecycleAbortRef.current = null;
+      lifecycleInFlightRef.current = false;
+
+      if (mountedRef.current) {
+        setBusyId(null);
+      }
     }
   };
 
   const openDeleteDialog = (request: StudentNoteRequest) => {
-    if (busyId || deleteInFlightRef.current) return;
+    if (
+      busyId ||
+      deleteInFlightRef.current ||
+      lifecycleInFlightRef.current
+    ) return;
 
     setDeleteError("");
     setConfirmation(request);
@@ -249,7 +325,12 @@ export default function StudentNoteRequestsPage({
   const confirmDeleteRequest = async () => {
     const request = confirmation;
 
-    if (!request || busyId || deleteInFlightRef.current) return;
+    if (
+      !request ||
+      busyId ||
+      deleteInFlightRef.current ||
+      lifecycleInFlightRef.current
+    ) return;
 
     deleteInFlightRef.current = true;
 
@@ -423,6 +504,19 @@ export default function StudentNoteRequestsPage({
               <article
                 className="student-request-card"
                 key={request.id}
+                aria-busy={busyId === request.id}
+                ref={(node) => {
+                  if (node) {
+                    lifecycleCardRefs.current.set(
+                      request.id,
+                      node
+                    );
+                  } else {
+                    lifecycleCardRefs.current.delete(
+                      request.id
+                    );
+                  }
+                }}
               >
                 <div className="student-request-card__accent" />
 
@@ -561,7 +655,9 @@ export default function StudentNoteRequestsPage({
                         onClick={() => void changeRequest(request, "pause")}
                       >
                         <PauseCircle size={17} />
-                        Beklemeye Al
+                        {busyId === request.id
+                          ? "Beklemeye alınıyor..."
+                          : "Beklemeye Al"}
                       </button>
 
                       <button
@@ -585,7 +681,9 @@ export default function StudentNoteRequestsPage({
                         onClick={() => void changeRequest(request, "resume")}
                       >
                         <PlayCircle size={17} />
-                        Yeniden Aktif Et
+                        {busyId === request.id
+                          ? "Etkinleştiriliyor..."
+                          : "Yeniden Aktif Et"}
                       </button>
 
                       <button
