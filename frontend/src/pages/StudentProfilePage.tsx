@@ -2073,8 +2073,8 @@ export default function StudentProfilePage() {
         <div
           className={`student-message notmark-profile-notice ${
             successNotice
-              ? "notmark-profile-notice--success"
-              : "notmark-profile-notice--error"
+              ? "notmark-profile-notice--success nm-feedback nm-feedback--success"
+              : "notmark-profile-notice--error nm-feedback nm-feedback--error"
           }`}
           role={successNotice ? "status" : "alert"}
           aria-live={successNotice ? "polite" : "assertive"}

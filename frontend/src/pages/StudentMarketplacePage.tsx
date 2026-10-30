@@ -1,6 +1,7 @@
 import {
   LayoutGrid,
   CheckCircle2,
+  AlertTriangle,
   FileText,
   FileUp,
   ListChecks,
@@ -107,6 +108,20 @@ export default function StudentMarketplacePage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  // NOTMARK_UNIFIED_NOTIFICATIONS_V17
+  // 5 sn görünür + 1,4 sn kaybolma.
+  useEffect(() => {
+    if (!success) return;
+
+    const timer = window.setTimeout(() => {
+      setSuccess((current) =>
+        current === success ? "" : current
+      );
+    }, 6400);
+
+    return () => window.clearTimeout(timer);
+  }, [success]);
 
   const openUpload = (
     request:
@@ -271,20 +286,22 @@ export default function StudentMarketplacePage() {
 
       {error && (
         <div
-          className="note-request-message note-request-message--error"
+          className="note-request-message note-request-message--error nm-feedback nm-feedback--error"
           role="alert"
         >
-          {error}
+          <AlertTriangle size={18} aria-hidden="true" />
+          <span>{error}</span>
         </div>
       )}
 
       {success && (
         <div
-          className="marketplace-success"
+          className="marketplace-success nm-feedback nm-feedback--success"
           role="status"
         >
           <CheckCircle2
-            size={20}
+            size={18}
+            aria-hidden="true"
           />
 
           {success}

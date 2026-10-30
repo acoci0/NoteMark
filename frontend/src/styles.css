@@ -41794,3 +41794,245 @@ button:focus-visible {
 }
 
 /* NOTMARK_SEMANTIC_ACTION_SYSTEM_V16_END */
+
+/* NOTMARK_UNIFIED_NOTIFICATIONS_V17_START */
+
+/*
+ * NotMark Öğrenci Bildirim Standardı
+ *
+ * Hesabım / Talep Panosu
+ *
+ * Başarı: Yeşil
+ * Hata: Kırmızı
+ *
+ * 200ms giriş
+ * 5000ms görünür
+ * 1400ms çıkış
+ */
+
+.student-app-shell .nm-feedback--success {
+  --nm-notice-border: rgba(53,199,133,.36);
+  --nm-notice-bg: linear-gradient(
+    105deg,
+    rgba(31,176,113,.13),
+    var(--student-surface)
+  );
+  --nm-notice-text: #78e5b3;
+}
+
+.student-app-shell .nm-feedback--error {
+  --nm-notice-border: rgba(239,91,111,.38);
+  --nm-notice-bg: linear-gradient(
+    105deg,
+    rgba(214,67,88,.13),
+    var(--student-surface)
+  );
+  --nm-notice-text: #ff9ba9;
+}
+
+/* Kompakt ortak bildirim yüzeyi */
+
+.student-app-shell .student-profile-page
+> .student-message.notmark-profile-notice.nm-feedback,
+
+.student-app-shell .marketplace-page
+> .marketplace-success.nm-feedback,
+
+.student-app-shell .marketplace-page
+> .note-request-message.nm-feedback {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  width: min(
+    var(--student-content-width, 1100px),
+    100%
+  );
+
+  max-width:
+    var(--student-content-width, 1100px);
+
+  min-height: 48px;
+
+  margin: 0 auto 18px;
+  padding: 11px 15px;
+
+  border:
+    1px solid var(--nm-notice-border);
+
+  border-radius: 13px;
+
+  background: var(--nm-notice-bg);
+  color: var(--nm-notice-text);
+
+  box-shadow:
+    0 8px 24px rgba(3,12,27,.09);
+
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+/* İkonların aynı ölçüde ve çerçevesiz olması */
+
+.student-app-shell .student-profile-page
+> .nm-feedback .notmark-profile-notice__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+.student-app-shell .nm-feedback svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+
+  margin: 0;
+  color: inherit;
+}
+
+.student-app-shell .student-profile-page
+> .nm-feedback .notmark-profile-notice__text {
+  flex: 1;
+  min-width: 0;
+
+  margin: 0;
+
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.student-app-shell .marketplace-page
+> .nm-feedback > span {
+  min-width: 0;
+  color: inherit;
+}
+
+/* Başarı: giriş ve otomatik çıkış */
+
+.student-app-shell .student-profile-page
+> .student-message.notmark-profile-notice.nm-feedback--success,
+
+.student-app-shell .marketplace-page
+> .marketplace-success.nm-feedback--success {
+  animation:
+    notmark-feedback-v17-in
+      .2s ease-out,
+    notmark-feedback-v17-out
+      1.4s ease-in-out 5s forwards;
+}
+
+/* Hata: otomatik kaybolmaz */
+
+.student-app-shell .student-profile-page
+> .student-message.notmark-profile-notice.nm-feedback--error,
+
+.student-app-shell .marketplace-page
+> .note-request-message.nm-feedback--error {
+  animation:
+    notmark-feedback-v17-in
+      .2s ease-out;
+}
+
+@keyframes notmark-feedback-v17-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes notmark-feedback-v17-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* Açık tema */
+
+.student-app-shell[data-theme="light"]
+.nm-feedback--success {
+  --nm-notice-bg: linear-gradient(
+    105deg,
+    #e7f8ef,
+    var(--student-surface)
+  );
+  --nm-notice-text: #176647;
+}
+
+.student-app-shell[data-theme="light"]
+.nm-feedback--error {
+  --nm-notice-bg: linear-gradient(
+    105deg,
+    #fff0f1,
+    var(--student-surface)
+  );
+  --nm-notice-text: #9e3042;
+}
+
+/* Mobil */
+
+@media (max-width: 640px) {
+  .student-app-shell .student-profile-page
+  > .student-message.notmark-profile-notice.nm-feedback,
+
+  .student-app-shell .marketplace-page
+  > .marketplace-success.nm-feedback,
+
+  .student-app-shell .marketplace-page
+  > .note-request-message.nm-feedback {
+    min-height: 46px;
+    padding: 11px 12px;
+    gap: 9px;
+    font-size: 12px;
+  }
+}
+
+/* Hareket azaltma tercihleri */
+
+.student-app-shell[data-motion="off"]
+.nm-feedback {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-app-shell .nm-feedback {
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_UNIFIED_NOTIFICATIONS_V17_END */
