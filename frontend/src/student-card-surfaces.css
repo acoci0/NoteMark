@@ -1514,3 +1514,103 @@
 }
 
 /* NOTMARK_SETTINGS_HOVER_V16_END */
+
+/* =========================================================
+   NOTMARK SETTINGS ACTIVE THEME ICON V17
+
+   Aktif görünüm:
+   - Koyu/Açık/Sistem metni yerine ikon
+   - Vurgu rengiyle otomatik renk eşleşmesi
+   - Açık/koyu tema desteği
+   - Mevcut panel hover korunur
+   ========================================================= */
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  min-height: 70px;
+}
+
+/* Tema ikonu */
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance
+.student-settings-status__theme-icon {
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 40px;
+
+  width: 40px;
+  height: 40px;
+
+  color:
+    var(--student-accent) !important;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(var(--student-accent-rgb), .24)
+    );
+
+  transition:
+    color 170ms ease,
+    filter 170ms ease !important;
+}
+
+/* İkonun iç çizgileri */
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance
+.student-settings-status__theme-icon svg {
+
+  width: 28px;
+  height: 28px;
+
+  stroke: currentColor;
+}
+
+/* Animasyon azaltılmış */
+
+#root .student-app-shell[data-motion="reduced"]
+.student-settings-page
+.student-settings-status__theme-icon {
+
+  transition:
+    color 80ms ease,
+    filter 80ms ease !important;
+}
+
+/* Animasyon kapalı */
+
+#root .student-app-shell[data-motion="off"]
+.student-settings-page
+.student-settings-status__theme-icon {
+
+  transition: none !important;
+  filter: none !important;
+}
+
+/* Sistem hareket azaltma tercihi */
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell
+  .student-settings-page
+  .student-settings-status__theme-icon {
+
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_SETTINGS_ACTIVE_THEME_ICON_V17_END */
