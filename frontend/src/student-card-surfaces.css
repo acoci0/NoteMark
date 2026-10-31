@@ -1614,3 +1614,223 @@
 }
 
 /* NOTMARK_SETTINGS_ACTIVE_THEME_ICON_V17_END */
+
+/* =========================================================
+   NOTMARK_SETTINGS_ACTIVE_THEME_REFINED_V18
+
+   aktif görünüm kutusu:
+   - hover yalnızca dış çerçevede
+   - soldaki kalın glow/şerit yok
+   - finans > genel özet mantığına yakın daha dengeli düzen
+   - daha rafine tipografi
+   ========================================================= */
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance {
+  position: relative;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+
+  min-height: 108px;
+  padding: 22px 24px !important;
+
+  border-color:
+    rgba(var(--student-accent-rgb), .34) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, .022),
+      rgba(255, 255, 255, .008)
+    ),
+    var(--notmark-unified-card-surface, var(--student-surface)) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(var(--student-accent-rgb), .028),
+    0 12px 28px rgba(8, 15, 27, .085) !important;
+
+  transform: none !important;
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    background 170ms ease !important;
+}
+
+/* soldaki kalın parlama / iç glow tamamen kapalı */
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance::before,
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* hover: sadece dış çerçeve parlasın */
+@media (hover: hover) and (pointer: fine) {
+  #root .student-app-shell[data-theme]
+  .student-settings-page
+  .student-settings-status--appearance:hover {
+    transform: none !important;
+
+    border-color:
+      rgba(var(--student-accent-rgb), .66) !important;
+
+    box-shadow:
+      0 0 0 1px rgba(var(--student-accent-rgb), .06),
+      0 0 16px rgba(var(--student-accent-rgb), .11),
+      0 12px 28px rgba(8, 15, 27, .085) !important;
+  }
+}
+
+/* başlık metni: daha premium görünüm */
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance > span:first-child {
+  display: block;
+
+  margin: 0;
+  padding: 0;
+
+  color:
+    rgba(229, 236, 248, .88) !important;
+
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  letter-spacing: .01em !important;
+
+  text-shadow: none !important;
+}
+
+/* ikon alanı: finans kartı gibi ayrı küçük odak alanı */
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance
+.student-settings-status__theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  border-radius: 16px;
+
+  border:
+    1px solid rgba(var(--student-accent-rgb), .24) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(var(--student-accent-rgb), .10),
+      rgba(var(--student-accent-rgb), .05)
+    ) !important;
+
+  color:
+    var(--student-accent) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(var(--student-accent-rgb), .045) inset !important;
+
+  filter:
+    drop-shadow(0 0 8px rgba(var(--student-accent-rgb), .16));
+
+  transition:
+    border-color 170ms ease,
+    background 170ms ease,
+    color 170ms ease,
+    filter 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+/* ikon çizgileri */
+#root .student-app-shell[data-theme]
+.student-settings-page
+.student-settings-status--appearance
+.student-settings-status__theme-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+}
+
+/* hover sırasında sadece ikonu hafif netleştir */
+@media (hover: hover) and (pointer: fine) {
+  #root .student-app-shell[data-theme]
+  .student-settings-page
+  .student-settings-status--appearance:hover
+  .student-settings-status__theme-icon {
+    border-color:
+      rgba(var(--student-accent-rgb), .36) !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(var(--student-accent-rgb), .13),
+        rgba(var(--student-accent-rgb), .07)
+      ) !important;
+
+    filter:
+      drop-shadow(0 0 10px rgba(var(--student-accent-rgb), .20));
+
+    box-shadow:
+      0 0 0 1px rgba(var(--student-accent-rgb), .07) inset !important;
+  }
+}
+
+/* açık tema metin dengesi */
+#root .student-app-shell[data-theme="light"]
+.student-settings-page
+.student-settings-status--appearance > span:first-child {
+  color:
+    rgba(32, 43, 60, .82) !important;
+}
+
+/* animasyon azaltılmış */
+#root .student-app-shell[data-motion="reduced"]
+.student-settings-page
+.student-settings-status--appearance,
+#root .student-app-shell[data-motion="reduced"]
+.student-settings-page
+.student-settings-status__theme-icon {
+  transition:
+    border-color 80ms ease,
+    box-shadow 80ms ease,
+    background 80ms ease,
+    color 80ms ease,
+    filter 80ms ease !important;
+}
+
+/* animasyon kapalı */
+#root .student-app-shell[data-motion="off"]
+.student-settings-page
+.student-settings-status--appearance,
+#root .student-app-shell[data-motion="off"]
+.student-settings-page
+.student-settings-status__theme-icon {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* sistem hareket azaltma tercihi */
+@media (prefers-reduced-motion: reduce) {
+  #root .student-app-shell
+  .student-settings-page
+  .student-settings-status--appearance,
+  #root .student-app-shell
+  .student-settings-page
+  .student-settings-status__theme-icon {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_SETTINGS_ACTIVE_THEME_REFINED_V18_END */
