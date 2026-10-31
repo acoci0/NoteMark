@@ -249,14 +249,6 @@
   .student-request-card .student-request-card__details > div,
   .student-request-card .student-request-card__note,
 
-  .note-request-panel .note-request-field input:not(:focus),
-  .note-request-panel .note-request-field select:not(:focus),
-  .note-request-panel .note-request-field textarea:not(:focus),
-  .note-request-panel .question-count-button:not(.question-count-button--selected):not(:focus-visible),
-  .note-request-panel .note-request-verification > div,
-  .note-request-panel .note-content-option:not(
-    .note-content-option--selected
-  ),
 
   .student-earnings-panel .student-transaction-summary > div,
   .student-earnings-panel .student-revenue-breakdown__net,
@@ -292,14 +284,6 @@
     .student-request-card:hover .student-request-card__details > div,
     .student-request-card:hover .student-request-card__note,
 
-    .note-request-panel:hover .note-request-field input:not(:focus),
-    .note-request-panel:hover .note-request-field select:not(:focus),
-    .note-request-panel:hover .note-request-field textarea:not(:focus),
-    .note-request-panel:hover .question-count-button:not(.question-count-button--selected):not(:focus-visible),
-    .note-request-panel:hover .note-request-verification > div,
-    .note-request-panel:hover .note-content-option:not(
-      .note-content-option--selected
-    ),
 
     .student-earnings-panel:hover .student-transaction-summary > div,
     .student-earnings-panel:hover .student-revenue-breakdown__net,
@@ -334,14 +318,6 @@
     background 170ms ease !important;
 }
 
-/* NOT ISTE: fiyat bilgi kutusu */
-
-#root .student-app-shell[data-theme] .note-request-page
-.note-request-price-meta {
-  transition:
-    border-color 170ms ease,
-    background 170ms ease !important;
-}
 
 @media (hover: hover) and (pointer: fine) {
 
@@ -354,30 +330,237 @@
       rgba(var(--student-accent-rgb), .13) !important;
   }
 
-  #root .student-app-shell[data-theme] .note-request-page
-  .note-request-price-card:hover .note-request-price-meta {
-    border-color:
-      rgba(var(--student-accent-rgb), .22) !important;
-
-    background:
-      rgba(var(--student-accent-rgb), .11) !important;
-  }
 }
 
 /* Hareket tercihlerine saygı */
 
 #root .student-app-shell[data-motion="off"] .student-requests-page
-.student-request-card__price,
-#root .student-app-shell[data-motion="off"] .note-request-page
-.note-request-price-meta {
+.student-request-card__price {
   transition: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   #root .student-app-shell .student-requests-page
-  .student-request-card__price,
-  #root .student-app-shell .note-request-page
-  .note-request-price-meta {
+  .student-request-card__price {
     transition: none !important;
   }
 }
+
+/* NOTMARK_NOTE_REQUEST_HOVER_V8
+
+   Ana paneller: hover animasyonu yok.
+   Alt bilgi kutuları: toplu hover yok.
+   Input / select / textarea: sadece kendi çerçevesi.
+   Fiyat paneli: üst hizalı, sadece kendi çerçevesi.
+*/
+
+/* ANA PANELLER */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-panel,
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-panel:hover {
+  transform: none !important;
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      var(--notmark-box-border-alpha)
+    ) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(var(--student-accent-rgb), .018),
+    0 10px 28px rgba(8, 15, 27, .08) !important;
+
+  transition: none !important;
+}
+
+/* UNIVERSITE / FAKULTE / BOLUM BILGI KUTULARI */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-verification > div,
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-verification > div:hover {
+  transform: none !important;
+
+  border-color:
+    rgba(var(--student-accent-rgb), .22) !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, .025) !important;
+
+  transition: none !important;
+}
+
+/* ICERIK SECENEKLERI */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-content-option:not(.note-content-option--selected),
+#root .student-app-shell[data-theme] .note-request-page
+.note-content-option:not(.note-content-option--selected):hover {
+  transform: none !important;
+
+  border-color:
+    var(--student-border) !important;
+
+  background:
+    var(--notmark-unified-card-surface) !important;
+
+  box-shadow:
+    none !important;
+
+  transition: none !important;
+}
+
+/* SORU SAYISI SECENEKLERI */
+
+#root .student-app-shell[data-theme] .note-request-page
+.question-count-button:not(.question-count-button--selected):hover {
+  border-color:
+    var(--student-border) !important;
+
+  color:
+    var(--student-muted) !important;
+
+  box-shadow:
+    none !important;
+}
+
+/* PANEL IKONUNDA HOVER PARLAMASI OLMASIN */
+
+#root .student-app-shell .note-request-page
+.note-request-panel:hover .note-request-step svg {
+  transform: none !important;
+  filter: none !important;
+}
+
+/* VERI GIRIS ALANLARI */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-field :is(input, select, textarea) {
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+/* SADECE MOUSE'UN UZERINDE OLDUGU ALAN PARLAR */
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme] .note-request-page
+  .note-request-field
+  :is(input, select, textarea):hover:not(:focus):not(:disabled) {
+
+    border-color:
+      rgba(var(--student-accent-rgb), .68) !important;
+
+    box-shadow:
+      0 0 0 2px
+      rgba(var(--student-accent-rgb), .09) !important;
+  }
+}
+
+/* FIYAT PANELI UST HIZASI */
+
+@media (min-width: 821px) {
+
+  #root .student-app-shell .note-request-page
+  .note-request-form {
+    align-items: start !important;
+  }
+
+  #root .student-app-shell .note-request-page
+  .note-request-form > .note-request-price-card {
+
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+
+    position: relative !important;
+    top: 0 !important;
+
+    align-self: start !important;
+    justify-self: stretch !important;
+
+    margin-top: 0 !important;
+    transform: none !important;
+  }
+}
+
+/* MOBIL DUZEN */
+
+@media (max-width: 820px) {
+
+  #root .student-app-shell .note-request-page
+  .note-request-form > .note-request-price-card {
+
+    grid-column: 1 !important;
+    grid-row: auto !important;
+
+    position: static !important;
+    top: auto !important;
+
+    margin-top: 0 !important;
+  }
+}
+
+/* FIYAT PANELI: SADECE CERCEVE VURGUSU */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-price-card {
+
+  transform: none !important;
+
+  transition:
+    border-color 170ms ease !important;
+
+  box-shadow:
+    0 0 0 1px rgba(var(--student-accent-rgb), .018),
+    0 10px 28px rgba(8, 15, 27, .08) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme] .note-request-page
+  .note-request-price-card:hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(var(--student-accent-rgb), .72) !important;
+  }
+}
+
+/* FIYAT PANELININ IC BILGISI PARLAMASIN */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-price-card:hover .note-request-price-meta {
+
+  border-color:
+    rgba(var(--student-accent-rgb), .16) !important;
+
+  background:
+    rgba(var(--student-accent-rgb), .075) !important;
+}
+
+/* ERISILEBILIRLIK */
+
+#root .student-app-shell[data-motion="off"] .note-request-page
+.note-request-field :is(input, select, textarea),
+#root .student-app-shell[data-motion="off"] .note-request-page
+.note-request-price-card {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell .note-request-page
+  .note-request-field :is(input, select, textarea),
+  #root .student-app-shell .note-request-page
+  .note-request-price-card {
+
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_NOTE_REQUEST_HOVER_V8_END */
