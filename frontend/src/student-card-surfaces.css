@@ -224,7 +224,7 @@
 
 /* NOTMARK_RESIDUAL_GLOW_CLEANUP_V4_END */
 
-/* NOTMARK_NESTED_CARD_GLOW_V6
+/* NOTMARK_NESTED_CARD_GLOW_V7
    Referans: student-purchase-card__meta > div
 
    Transition: 170ms ease
@@ -237,8 +237,6 @@
 /* Alt kutuların zamanlaması */
 
 #root .student-app-shell[data-theme] :is(
-  .student-profile-section .student-verification-form,
-  .student-profile-section .student-verification-card,
 
   .marketplace-card .marketplace-card__academic > span,
   .marketplace-card .marketplace-card__content,
@@ -251,6 +249,10 @@
   .student-request-card .student-request-card__details > div,
   .student-request-card .student-request-card__note,
 
+  .note-request-panel .note-request-field input:not(:focus),
+  .note-request-panel .note-request-field select:not(:focus),
+  .note-request-panel .note-request-field textarea:not(:focus),
+  .note-request-panel .question-count-button:not(.question-count-button--selected):not(:focus-visible),
   .note-request-panel .note-request-verification > div,
   .note-request-panel .note-content-option:not(
     .note-content-option--selected
@@ -278,8 +280,6 @@
 @media (hover: hover) and (pointer: fine) {
 
   #root .student-app-shell[data-theme] :is(
-    .student-profile-section:hover .student-verification-form,
-    .student-profile-section:hover .student-verification-card,
 
     .marketplace-card:hover .marketplace-card__academic > span,
     .marketplace-card:hover .marketplace-card__content,
@@ -292,6 +292,10 @@
     .student-request-card:hover .student-request-card__details > div,
     .student-request-card:hover .student-request-card__note,
 
+    .note-request-panel:hover .note-request-field input:not(:focus),
+    .note-request-panel:hover .note-request-field select:not(:focus),
+    .note-request-panel:hover .note-request-field textarea:not(:focus),
+    .note-request-panel:hover .question-count-button:not(.question-count-button--selected):not(:focus-visible),
     .note-request-panel:hover .note-request-verification > div,
     .note-request-panel:hover .note-content-option:not(
       .note-content-option--selected
@@ -319,4 +323,61 @@
   }
 }
 
-/* NOTMARK_NESTED_CARD_GLOW_V6_END */
+/* NOTMARK_NESTED_CARD_GLOW_V7_END */
+
+/* TALEPLERIM: fiyat kutusu */
+
+#root .student-app-shell[data-theme] .student-requests-page
+.student-request-card__price {
+  transition:
+    border-color 170ms ease,
+    background 170ms ease !important;
+}
+
+/* NOT ISTE: fiyat bilgi kutusu */
+
+#root .student-app-shell[data-theme] .note-request-page
+.note-request-price-meta {
+  transition:
+    border-color 170ms ease,
+    background 170ms ease !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme] .student-requests-page
+  .student-request-card:hover .student-request-card__price {
+    border-color:
+      rgba(var(--student-accent-rgb), .34) !important;
+
+    background:
+      rgba(var(--student-accent-rgb), .13) !important;
+  }
+
+  #root .student-app-shell[data-theme] .note-request-page
+  .note-request-price-card:hover .note-request-price-meta {
+    border-color:
+      rgba(var(--student-accent-rgb), .22) !important;
+
+    background:
+      rgba(var(--student-accent-rgb), .11) !important;
+  }
+}
+
+/* Hareket tercihlerine saygı */
+
+#root .student-app-shell[data-motion="off"] .student-requests-page
+.student-request-card__price,
+#root .student-app-shell[data-motion="off"] .note-request-page
+.note-request-price-meta {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #root .student-app-shell .student-requests-page
+  .student-request-card__price,
+  #root .student-app-shell .note-request-page
+  .note-request-price-meta {
+    transition: none !important;
+  }
+}
