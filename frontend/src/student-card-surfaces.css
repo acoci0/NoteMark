@@ -1068,3 +1068,82 @@
 }
 
 /* NOTMARK_FINANCE_TRANSACTION_HOVER_V11_END */
+
+/* =========================================================
+   NOTMARK_EMPTY_CARD_AURORA_CLEANUP_V12
+
+   Kapsam:
+   - Taleplerim boş durum kutusu
+   - Beklemeye Aldıklarım boş durum kutusu
+   - Aynı yapıdaki diğer öğrenci boş durum kartları
+
+   Amaç:
+   Sağ üstte kalan aurora/parıltı katmanını kaldırmak.
+   Kutu tasarımı, kenarlık, tipografi ve butonlar korunur.
+   ========================================================= */
+
+.student-app-shell[data-theme="dark"] {
+  --notmark-empty-card-surface-clean:
+    linear-gradient(
+      145deg,
+      var(--student-surface) 0%,
+      #1b2534 42%,
+      #0c1420 100%
+    );
+}
+
+.student-app-shell[data-theme="light"] {
+  --notmark-empty-card-surface-clean:
+    var(--student-surface);
+}
+
+/* Ana yüzey: aurora katmanını kaldır */
+#root .student-app-shell[data-theme] :is(
+  .student-requests-empty,
+  .student-purchases-empty,
+  .note-submissions-empty
+),
+#root .student-app-shell[data-theme] :is(
+  .student-requests-empty,
+  .student-purchases-empty,
+  .note-submissions-empty
+):hover {
+  background-image: none !important;
+
+  background:
+    var(--notmark-empty-card-surface-clean) !important;
+
+  background-color:
+    var(--notmark-unified-card-base, var(--student-surface)) !important;
+}
+
+/* Eğer pseudo-element üzerinden glow geliyorsa onu da kapat */
+#root .student-app-shell[data-theme] :is(
+  .student-requests-empty,
+  .student-purchases-empty,
+  .note-submissions-empty
+)::before,
+#root .student-app-shell[data-theme] :is(
+  .student-requests-empty,
+  .student-purchases-empty,
+  .note-submissions-empty
+)::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Hover sırasında border / buton / içerik bozulmasın */
+#root .student-app-shell[data-theme] :is(
+  .student-requests-empty,
+  .student-purchases-empty,
+  .note-submissions-empty
+) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* NOTMARK_EMPTY_CARD_AURORA_CLEANUP_V12_END */
