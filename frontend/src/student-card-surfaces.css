@@ -162,3 +162,64 @@
 }
 
 /* NOTMARK_AURORA_CLEANUP_V3_END */
+
+/* NOTMARK_RESIDUAL_GLOW_CLEANUP_V4 */
+
+/*
+  hesap sayfası dışındaki öğrenci sayfalarında
+  global pointer glow ve olası üst katman parlamaları kapatılır.
+*/
+
+.student-app-shell:has(.marketplace-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-requests-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.note-submissions-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-purchases-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.note-request-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-earnings-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-settings-page) .notmark-global-pointer-glow {
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
+/* ilgili sayfalardaki üst dekor katmanlarını da kapat */
+.student-app-shell .student-route-transition > :is(
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+)::before,
+.student-app-shell .student-route-transition > :is(
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+)::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* bu sayfalarda herhangi bir üst glow katmanı kalmasın */
+.student-app-shell .student-route-transition > :is(
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+) {
+  isolation: isolate;
+}
+
+/* NOTMARK_RESIDUAL_GLOW_CLEANUP_V4_END */
