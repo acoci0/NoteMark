@@ -224,135 +224,99 @@
 
 /* NOTMARK_RESIDUAL_GLOW_CLEANUP_V4_END */
 
-/* NOTMARK_NESTED_CARD_GLOW_V5
+/* NOTMARK_NESTED_CARD_GLOW_V6
+   Referans: student-purchase-card__meta > div
 
-   Referans:
-   Satın Aldıklarım > Ana kart > İç bilgi kutuları.
-
-   Ana kart hover olduğunda alt kutular
-   hafifçe ve eşzamanlı olarak canlanır.
-
-   Hareket, global Aurora veya yeni
-   ışık katmanı oluşturulmaz.
+   Transition: 170ms ease
+   Border alpha: .22
+   Background alpha: .035
+   Ek glow: yok
+   Hareket: yok
 */
 
-.student-app-shell[data-theme="dark"] {
-  --nm-nested-border-alpha: .25;
-  --nm-nested-inset-alpha: .035;
-  --nm-nested-glow-alpha: .075;
-  --nm-nested-tint-alpha: .035;
+/* Alt kutuların zamanlaması */
+
+#root .student-app-shell[data-theme] :is(
+  .student-profile-section .student-verification-form,
+  .student-profile-section .student-verification-card,
+
+  .marketplace-card .marketplace-card__academic > span,
+  .marketplace-card .marketplace-card__content,
+  .marketplace-card .marketplace-card__note,
+
+  .marketplace-upload-modal .marketplace-upload-summary > div,
+  .marketplace-upload-modal .marketplace-selected-file,
+
+  .student-request-card .student-request-card__academic > span,
+  .student-request-card .student-request-card__details > div,
+  .student-request-card .student-request-card__note,
+
+  .note-request-panel .note-request-verification > div,
+  .note-request-panel .note-content-option:not(
+    .note-content-option--selected
+  ),
+
+  .student-earnings-panel .student-transaction-summary > div,
+  .student-earnings-panel .student-revenue-breakdown__net,
+
+  .student-settings-panel .student-setting-option:not(
+    .student-setting-option--active
+  ),
+  .student-settings-panel .student-accent-option:not(
+    .student-accent-option--active
+  )
+) {
+  transform: none !important;
+
+  transition:
+    border-color 170ms ease,
+    background 170ms ease !important;
 }
 
-.student-app-shell[data-theme="light"] {
-  --nm-nested-border-alpha: .20;
-  --nm-nested-inset-alpha: .025;
-  --nm-nested-glow-alpha: .045;
-  --nm-nested-tint-alpha: .025;
-}
-
-/*
-   Yalnızca kutu üzerinde hover kullanılır.
-   Seçili seçenekler ve durum etiketleri
-   özel tasarımlarını korur.
-*/
+/* Ana kart hover olduğunda alt kutular birlikte canlanır */
 
 @media (hover: hover) and (pointer: fine) {
 
   #root .student-app-shell[data-theme] :is(
+    .student-profile-section:hover .student-verification-form,
+    .student-profile-section:hover .student-verification-card,
 
-    /* HESABIM */
-    .student-profile-section:hover
-    .student-verification-form,
+    .marketplace-card:hover .marketplace-card__academic > span,
+    .marketplace-card:hover .marketplace-card__content,
+    .marketplace-card:hover .marketplace-card__note,
 
-    .student-profile-section:hover
-    .student-verification-card,
+    .marketplace-upload-modal:hover .marketplace-upload-summary > div,
+    .marketplace-upload-modal:hover .marketplace-selected-file,
 
-    /* TALEP PANOSU */
-    .marketplace-card:hover
-    .marketplace-card__academic > span,
+    .student-request-card:hover .student-request-card__academic > span,
+    .student-request-card:hover .student-request-card__details > div,
+    .student-request-card:hover .student-request-card__note,
 
-    .marketplace-card:hover
-    .marketplace-card__content,
-
-    .marketplace-card:hover
-    .marketplace-card__note,
-
-    /* NOT GÖNDER MODALI */
-    .marketplace-upload-modal:hover
-    .marketplace-upload-summary > div,
-
-    .marketplace-upload-modal:hover
-    .marketplace-selected-file,
-
-    /* TALEPLERİM / BEKLEYEN / GÖNDERDİKLERİM */
-    .student-request-card:hover
-    .student-request-card__academic > span,
-
-    .student-request-card:hover
-    .student-request-card__details > div,
-
-    .student-request-card:hover
-    .student-request-card__note,
-
-    /* NOT İSTE */
-    .note-request-panel:hover
-    .note-request-verification > div,
-
-    .note-request-panel:hover
-    .note-content-option:not(
+    .note-request-panel:hover .note-request-verification > div,
+    .note-request-panel:hover .note-content-option:not(
       .note-content-option--selected
     ),
 
-    /* FİNANS */
-    .student-earnings-panel:hover
-    .student-transaction-summary > div,
+    .student-earnings-panel:hover .student-transaction-summary > div,
+    .student-earnings-panel:hover .student-revenue-breakdown__net,
 
-    .student-earnings-panel:hover
-    .student-revenue-breakdown__net,
-
-    /* AYARLAR */
-    .student-settings-panel:hover
-    .student-setting-option:not(
+    .student-settings-panel:hover .student-setting-option:not(
       .student-setting-option--active
     ),
-
-    .student-settings-panel:hover
-    .student-accent-option:not(
+    .student-settings-panel:hover .student-accent-option:not(
       .student-accent-option--active
     )
-
   ) {
+    transform: none !important;
+
     border-color:
-      rgba(
-        var(--student-accent-rgb),
-        var(--nm-nested-border-alpha)
-      ) !important;
+      rgba(var(--student-accent-rgb), .22) !important;
 
-    box-shadow:
-      inset 0 0 0 1px
-        rgba(
-          var(--student-accent-rgb),
-          var(--nm-nested-inset-alpha)
-        ),
-      0 0 14px
-        rgba(
-          var(--student-accent-rgb),
-          var(--nm-nested-glow-alpha)
-        ) !important;
+    background:
+      rgba(var(--student-accent-rgb), .035) !important;
 
-    background-image:
-      linear-gradient(
-        135deg,
-        rgba(
-          var(--student-accent-rgb),
-          var(--nm-nested-tint-alpha)
-        ),
-        rgba(
-          var(--student-accent-rgb),
-          .008
-        )
-      ) !important;
+    box-shadow: none !important;
   }
 }
 
-/* NOTMARK_NESTED_CARD_GLOW_V5_END */
+/* NOTMARK_NESTED_CARD_GLOW_V6_END */
