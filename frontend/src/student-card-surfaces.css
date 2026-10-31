@@ -1171,3 +1171,40 @@
 }
 
 /* NOTMARK_EMPTY_CORNER_GLOW_FIX_V13_END */
+
+/* =========================================================
+   NOTMARK_PROFILE_STATS_CORNER_GLOW_V14
+
+   Hedef:
+   Hesabım > Üç istatistik kartı
+
+   Doğrulanmış bölüm
+   Aktif üniversite
+   Bekleyen başvuru
+
+   Yalnızca sağ alt köşedeki radial glow kaldırılır.
+
+   Korunan:
+   - Kart arka planı
+   - Kenarlık ve hover efektleri
+   - Üstteki ince vurgu çizgisi (::before)
+   - İkonlar ve tipografi
+   - Sayfa Aurora'sı ve matematik sembolleri
+   ========================================================= */
+
+#root .student-app-shell[data-theme]
+.student-profile-page
+.student-profile-header
+.student-profile-stat-card::after {
+
+  content: none !important;
+  display: none !important;
+
+  background: none !important;
+  background-image: none !important;
+
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* NOTMARK_PROFILE_STATS_CORNER_GLOW_V14_END */
