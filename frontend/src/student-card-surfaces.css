@@ -1147,3 +1147,27 @@
 }
 
 /* NOTMARK_EMPTY_CARD_AURORA_CLEANUP_V12_END */
+
+/*
+  NOTMARK_EMPTY_CORNER_GLOW_FIX_V13
+
+  Gerçek hedef:
+  StudentNoteRequestsPage.tsx
+  marketplace-empty.notmark-request-board-empty
+
+  Sorun kaynağı:
+  styles.css -> .marketplace-empty::before
+  Sağ üstte konumlanan radial-gradient katmanı.
+
+  Sadece Taleplerim ve Beklemeye Aldıklarım.
+  Ana kart arka planı, kenarlık ve hover korunur.
+*/
+
+#root .student-app-shell
+.student-requests-page
+.notmark-request-board-empty.marketplace-empty::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* NOTMARK_EMPTY_CORNER_GLOW_FIX_V13_END */
