@@ -564,3 +564,260 @@
 }
 
 /* NOTMARK_NOTE_REQUEST_HOVER_V8_END */
+
+/* ========================================================
+   NOTMARK_NOTE_REQUEST_HOVER_V9
+
+   1. Ana paneller: yalnızca çerçeve hover
+   2. Fiyat kutusu: sol kenarda kalın vurgu
+   3. İçerik seçimi: seçili kart sabit
+   4. Seçilmeyen kart: yalnızca kendi çerçevesi
+   5. Diğer öğrenci sayfaları etkilenmez
+   ======================================================== */
+
+
+/* ========================================================
+   1. AKADEMİK BİLGİLER VE İSTEDİĞİNİZ İÇERİK
+
+   Ana panelin üzerine gelince yalnızca kendi
+   çerçevesi yumuşak şekilde aydınlanır.
+   ======================================================== */
+
+#root .student-app-shell[data-theme]
+.note-request-page .note-request-panel {
+
+  transform: none !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .note-request-page .note-request-panel:hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .62
+      ) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .055),
+      0 0 16px
+        rgba(var(--student-accent-rgb), .095),
+      0 10px 28px
+        rgba(8, 15, 27, .08) !important;
+  }
+}
+
+
+/* ========================================================
+   2. FİYAT KUTUSU
+
+   Üstteki kalın mavi şerit kaldırılır.
+   Hover sırasında kalın vurgu SOL tarafta olur.
+   ======================================================== */
+
+/* Önceki üst şerit */
+
+#root .student-app-shell[data-theme]
+.note-request-page .note-request-price-card::before {
+
+  content: none !important;
+  display: none !important;
+}
+
+/* Normal fiyat paneli */
+
+#root .student-app-shell[data-theme]
+.note-request-page .note-request-price-card {
+
+  transform: none !important;
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .26
+    ) !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(var(--student-accent-rgb), .018),
+    0 10px 28px
+      rgba(8, 15, 27, .08) !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+/* İmleç fiyat kutusunun üzerindeyken */
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .note-request-page .note-request-price-card:hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .72
+      ) !important;
+
+    box-shadow:
+      inset 4px 0 0
+        rgba(var(--student-accent-rgb), .94),
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .10),
+      0 0 18px
+        rgba(var(--student-accent-rgb), .12),
+      0 10px 28px
+        rgba(8, 15, 27, .08) !important;
+  }
+}
+
+
+/* ========================================================
+   3. İÇERİK SEÇENEKLERİ
+
+   Yalnızca ders notu
+   Ders notunun detaylı özeti
+   Ders notuyla alakalı çalışma soruları
+   ======================================================== */
+
+/*
+   Seçili olmayan kutular:
+   Arka plan ve konum değişmez.
+   Kenarlık yumuşak geçişle parlar.
+*/
+
+#root .student-app-shell[data-theme]
+.note-request-page
+.note-content-option:not(.note-content-option--selected) {
+
+  transform: none !important;
+
+  box-shadow: none !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .note-request-page
+  .note-content-option:not(.note-content-option--selected):hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .64
+      ) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .045),
+      0 0 13px
+        rgba(var(--student-accent-rgb), .09) !important;
+  }
+}
+
+
+/* ========================================================
+   4. SEÇİLİ İÇERİK KUTUSU
+
+   Seçim sırasında çerçeve mavi kalır.
+   Sol kenarda kalın vurgu korunur.
+   Mouse üzerine gelince görünüm değişmez.
+   ======================================================== */
+
+#root .student-app-shell[data-theme]
+.note-request-page .note-content-option--selected,
+
+#root .student-app-shell[data-theme]
+.note-request-page .note-content-option--selected:hover {
+
+  transform: none !important;
+
+  border-color:
+    var(--student-accent) !important;
+
+  box-shadow:
+    inset 4px 0 0
+      rgba(var(--student-accent-rgb), .94),
+    inset 0 0 0 1px
+      rgba(var(--student-accent-rgb), .24),
+    0 7px 20px
+      rgba(var(--student-accent-rgb), .075) !important;
+
+  transition: none !important;
+}
+
+
+/* ========================================================
+   5. FİYAT BİLGİSİ
+
+   Panel hover olunca iç bilgi kutusunun
+   arka planı ve çerçevesi değişmeyecek.
+   ======================================================== */
+
+#root .student-app-shell[data-theme]
+.note-request-page .note-request-price-card:hover
+.note-request-price-meta {
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      .16
+    ) !important;
+
+  background:
+    rgba(
+      var(--student-accent-rgb),
+      .075
+    ) !important;
+
+  box-shadow: none !important;
+}
+
+
+/* ========================================================
+   6. ERİŞİLEBİLİRLİK
+
+   Hareket kapalıysa animasyon uygulanmaz.
+   ======================================================== */
+
+#root .student-app-shell[data-motion="off"]
+.note-request-page :is(
+  .note-request-panel,
+  .note-request-price-card,
+  .note-content-option
+) {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell
+  .note-request-page :is(
+    .note-request-panel,
+    .note-request-price-card,
+    .note-content-option
+  ) {
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_NOTE_REQUEST_HOVER_V9_END */
