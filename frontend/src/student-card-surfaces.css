@@ -821,3 +821,63 @@
 }
 
 /* NOTMARK_NOTE_REQUEST_HOVER_V9_END */
+
+/* NOTMARK_QUESTION_COUNT_HOVER_V10
+
+   Seçili soru sayısı sabit kalır.
+   Yalnızca seçili olmayan seçeneklerin
+   çerçevesi hover sırasında parlar.
+
+   Referans: Not İste V9 içerik seçeneği hover.
+*/
+
+/* NORMAL DURUM: YUMUŞAK GEÇİŞ */
+
+#root .student-app-shell[data-theme]
+.note-request-page
+.question-count-button:not(.question-count-button--selected) {
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+/* HOVER: SADECE ÇERÇEVE VE HAFİF IŞIK */
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .note-request-page
+  .question-count-button:not(.question-count-button--selected):hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(var(--student-accent-rgb), .64) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .045),
+      0 0 13px
+        rgba(var(--student-accent-rgb), .09) !important;
+  }
+}
+
+/* ERİŞİLEBİLİRLİK */
+
+#root .student-app-shell[data-motion="off"]
+.note-request-page
+.question-count-button:not(.question-count-button--selected) {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell
+  .note-request-page
+  .question-count-button:not(.question-count-button--selected) {
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_QUESTION_COUNT_HOVER_V10_END */
