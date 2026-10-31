@@ -248,14 +248,8 @@
 
 
   .student-earnings-panel .student-transaction-summary > div,
-  .student-earnings-panel .student-revenue-breakdown__net,
+  .student-earnings-panel .student-revenue-breakdown__net
 
-  .student-settings-panel .student-setting-option:not(
-    .student-setting-option--active
-  ),
-  .student-settings-panel .student-accent-option:not(
-    .student-accent-option--active
-  )
 ) {
   transform: none !important;
 
@@ -280,14 +274,8 @@
 
 
     .student-earnings-panel:hover .student-transaction-summary > div,
-    .student-earnings-panel:hover .student-revenue-breakdown__net,
+    .student-earnings-panel:hover .student-revenue-breakdown__net
 
-    .student-settings-panel:hover .student-setting-option:not(
-      .student-setting-option--active
-    ),
-    .student-settings-panel:hover .student-accent-option:not(
-      .student-accent-option--active
-    )
   ) {
     transform: none !important;
 
@@ -1293,3 +1281,236 @@
 }
 
 /* NOTMARK_MARKETPLACE_NESTED_HOVER_V15_END */
+
+/* =========================================================
+   NOTMARK_SETTINGS_HOVER_V16
+
+   Kapsam: Öğrenci Ayarları
+
+   1. Toplu alt kutu hover yok.
+   2. Seçili olmayan kutular bağımsız parlar.
+   3. Seçili kutuların görünümü sabit.
+   4. Ana panellerin hover efekti korunur.
+   5. Animasyon tercihlerine uyulur.
+   ========================================================= */
+
+
+/* 1. ALT SEÇENEKLERİN GEÇİŞLERİ */
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+:is(
+  .student-setting-option,
+  .student-accent-option
+) {
+  transform: none !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+
+/* 2. SADECE İMLECİN ÜZERİNDEKİ KUTU PARLAR */
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .student-settings-page
+  .student-setting-option:not(
+    .student-setting-option--active
+  ):hover,
+
+  #root .student-app-shell[data-theme]
+  .student-settings-page
+  .student-accent-option:not(
+    .student-accent-option--active
+  ):hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(var(--student-accent-rgb), .64) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .045),
+      0 0 13px
+        rgba(var(--student-accent-rgb), .09) !important;
+  }
+}
+
+
+/* 3. SEÇİLİ TEMA VE ANİMASYON KUTULARI - KOYU TEMA */
+
+#root .student-app-shell[data-theme="dark"]
+.student-settings-page
+.student-setting-option--active,
+
+#root .student-app-shell[data-theme="dark"]
+.student-settings-page
+.student-setting-option--active:hover {
+
+  transform: none !important;
+
+  border-color:
+    var(--student-accent) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--student-accent-rgb), .26),
+      rgba(var(--student-accent-rgb), .12)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--student-accent-rgb), .55),
+    0 0 15px
+      rgba(var(--student-accent-rgb), .12) !important;
+}
+
+
+/* 4. SEÇİLİ TEMA VE ANİMASYON KUTULARI - AÇIK TEMA */
+
+#root .student-app-shell[data-theme="light"]
+.student-settings-page
+.student-setting-option--active,
+
+#root .student-app-shell[data-theme="light"]
+.student-settings-page
+.student-setting-option--active:hover {
+
+  transform: none !important;
+
+  border-color:
+    var(--student-accent) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--student-accent-rgb), .12),
+      rgba(var(--student-accent-rgb), .06)
+    ),
+    var(--student-surface) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--student-accent-rgb), .40),
+    0 0 12px
+      rgba(var(--student-accent-rgb), .07) !important;
+}
+
+
+/* 5. SEÇİLİ VURGU RENGİ - KOYU TEMA */
+
+#root .student-app-shell[data-theme="dark"]
+.student-settings-page
+.student-accent-option--active,
+
+#root .student-app-shell[data-theme="dark"]
+.student-settings-page
+.student-accent-option--active:hover {
+
+  transform: none !important;
+
+  border-color:
+    var(--student-accent) !important;
+
+  background:
+    rgba(var(--student-accent-rgb), .16) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--student-accent-rgb), .45),
+    0 0 14px
+      rgba(var(--student-accent-rgb), .10) !important;
+}
+
+
+/* 6. SEÇİLİ VURGU RENGİ - AÇIK TEMA */
+
+#root .student-app-shell[data-theme="light"]
+.student-settings-page
+.student-accent-option--active,
+
+#root .student-app-shell[data-theme="light"]
+.student-settings-page
+.student-accent-option--active:hover {
+
+  transform: none !important;
+
+  border-color:
+    var(--student-accent) !important;
+
+  background:
+    rgba(var(--student-accent-rgb), .09) !important;
+
+  box-shadow:
+    inset 0 0 0 1px
+      rgba(var(--student-accent-rgb), .35) !important;
+}
+
+
+/* 7. KLAVYE ERİŞİLEBİLİRLİĞİ */
+
+#root .student-app-shell[data-theme]
+.student-settings-page
+:is(
+  .student-setting-option,
+  .student-accent-option
+):focus-visible {
+
+  outline:
+    2px solid var(--student-accent) !important;
+
+  outline-offset: 3px;
+}
+
+
+/* 8. AZALTILMIŞ ANİMASYON */
+
+#root .student-app-shell[data-theme][data-motion="reduced"]
+.student-settings-page
+:is(
+  .student-setting-option,
+  .student-accent-option
+) {
+
+  transition:
+    border-color 80ms ease,
+    box-shadow 80ms ease !important;
+}
+
+
+/* 9. ANİMASYON KAPALI */
+
+#root .student-app-shell[data-theme][data-motion="off"]
+.student-settings-page
+:is(
+  .student-setting-option,
+  .student-accent-option
+) {
+
+  transition: none !important;
+  animation: none !important;
+}
+
+
+/* 10. SİSTEM HAREKET AZALTMA TERCİHİ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell[data-theme]
+  .student-settings-page
+  :is(
+    .student-setting-option,
+    .student-accent-option
+  ) {
+
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* NOTMARK_SETTINGS_HOVER_V16_END */
