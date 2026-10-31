@@ -238,9 +238,6 @@
 
 #root .student-app-shell[data-theme] :is(
 
-  .marketplace-card .marketplace-card__academic > span,
-  .marketplace-card .marketplace-card__content,
-  .marketplace-card .marketplace-card__note,
 
   .marketplace-upload-modal .marketplace-upload-summary > div,
   .marketplace-upload-modal .marketplace-selected-file,
@@ -273,9 +270,6 @@
 
   #root .student-app-shell[data-theme] :is(
 
-    .marketplace-card:hover .marketplace-card__academic > span,
-    .marketplace-card:hover .marketplace-card__content,
-    .marketplace-card:hover .marketplace-card__note,
 
     .marketplace-upload-modal:hover .marketplace-upload-summary > div,
     .marketplace-upload-modal:hover .marketplace-selected-file,
@@ -1208,3 +1202,94 @@
 }
 
 /* NOTMARK_PROFILE_STATS_CORNER_GLOW_V14_END */
+
+/* =========================================================
+   NOTMARK_MARKETPLACE_NESTED_HOVER_V15
+
+   Kapsam:
+   Talep Panosu > Talep kartı > Alt bilgi kutuları
+
+   - Ana kart hover korunur.
+   - Toplu alt kutu hover kaldırılır.
+   - Sadece üzerine gelinen alt kutu parlar.
+   - Hareket yok.
+   - Arka plan değişmez.
+   - 170ms ease.
+   ========================================================= */
+
+/* ALT KUTULARIN NORMAL DURUMU */
+
+#root .student-app-shell[data-theme]
+.marketplace-page .marketplace-card
+.marketplace-card__academic > span,
+
+#root .student-app-shell[data-theme]
+.marketplace-page .marketplace-card
+.marketplace-card__content,
+
+#root .student-app-shell[data-theme]
+.marketplace-page .marketplace-card
+.marketplace-card__note {
+
+  transform: none !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+}
+
+/* BAĞIMSIZ HOVER */
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .marketplace-page .marketplace-card
+  .marketplace-card__academic > span:hover,
+
+  #root .student-app-shell[data-theme]
+  .marketplace-page .marketplace-card
+  .marketplace-card__content:hover,
+
+  #root .student-app-shell[data-theme]
+  .marketplace-page .marketplace-card
+  .marketplace-card__note:hover {
+
+    transform: none !important;
+
+    border-color:
+      rgba(var(--student-accent-rgb), .64) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .045),
+      0 0 13px
+        rgba(var(--student-accent-rgb), .09) !important;
+  }
+}
+
+/* HAREKET KAPALI */
+
+#root .student-app-shell[data-motion="off"]
+.marketplace-page .marketplace-card
+:is(
+  .marketplace-card__academic > span,
+  .marketplace-card__content,
+  .marketplace-card__note
+) {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell
+  .marketplace-page .marketplace-card
+  :is(
+    .marketplace-card__academic > span,
+    .marketplace-card__content,
+    .marketplace-card__note
+  ) {
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_MARKETPLACE_NESTED_HOVER_V15_END */
