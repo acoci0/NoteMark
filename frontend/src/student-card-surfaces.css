@@ -13,12 +13,6 @@
 
 .student-app-shell[data-theme="dark"] {
   --notmark-unified-card-surface:
-    radial-gradient(
-      ellipse 70% 105% at 56% 43%,
-      rgba(var(--student-accent-rgb), 0.095) 0%,
-      rgba(var(--student-accent-rgb), 0.025) 44%,
-      transparent 76%
-    ),
     linear-gradient(
       145deg,
       var(--student-surface) 0%,
@@ -75,3 +69,96 @@
   background-color:
     var(--notmark-unified-card-base) !important;
 }
+
+
+/* NOTMARK_AURORA_CLEANUP_V3
+   Kart yüzeyleri korunur.
+   Kutuların üstünde görünen ambient aurora/glow efektleri kaldırılır.
+*/
+
+/* Bu sayfalardaki üst aurora katmanlarını kapat */
+.student-app-shell
+.student-route-transition
+> :is(
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+)::before,
+.student-app-shell
+.student-route-transition
+> :is(
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+)::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Sayfa üstünde yüzen ambient aurora / glow katmanlarını kaldır */
+.student-app-shell
+.student-route-transition
+> :is(
+  .marketplace-page,
+  .student-requests-page,
+  .note-submissions-page,
+  .student-purchases-page,
+  .note-request-page,
+  .student-earnings-page,
+  .student-settings-page
+) {
+  background-image: none !important;
+}
+
+/* Global pointer glow bu sayfalarda kartların üstünde görünmesin */
+.student-app-shell:has(.marketplace-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-requests-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.note-submissions-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-purchases-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.note-request-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-earnings-page) .notmark-global-pointer-glow,
+.student-app-shell:has(.student-settings-page) .notmark-global-pointer-glow {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Kartların kendi koyu yüzeyi kalsın */
+#root .student-app-shell[data-theme] :is(
+  .marketplace-card,
+  .marketplace-empty,
+  .marketplace-upload-summary > div,
+  .student-request-card,
+  .student-requests-empty,
+  .note-submissions-empty,
+  .student-purchase-card,
+  .student-purchases-empty,
+  .student-earning-card,
+  .student-earnings-panel,
+  .student-transaction-summary > div,
+  .student-revenue-breakdown__net,
+  .note-request-panel,
+  .note-request-price-card,
+  .note-request-verification > div,
+  .note-content-option,
+  .student-settings-panel,
+  .student-setting-option,
+  .student-accent-option,
+  .student-settings-footer
+) {
+  position: relative;
+  z-index: 2;
+}
+
+/* NOTMARK_AURORA_CLEANUP_V3_END */
