@@ -881,3 +881,190 @@
 }
 
 /* NOTMARK_QUESTION_COUNT_HOVER_V10_END */
+
+/* =========================================================
+   NOTMARK FINANCE TRANSACTION HOVER V11
+
+   Kapsam: Finans > İşlem özeti > 3 alt bilgi kutusu
+
+   Ana panel hover: mevcut davranış korunur.
+   Alt kutular: bağımsız hover.
+   Geçiş: 170ms ease.
+   Metin kontrastı artırılır.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   ALT KUTULARIN NORMAL DURUMU
+
+   Ana kartın hover durumundan bağımsız görünüm.
+   V7 toplu hover ve eski hareket kuralları sıfırlanır.
+   --------------------------------------------------------- */
+
+#root .student-app-shell[data-theme]
+.student-earnings-content-grid
+> .student-earnings-panel
+> .student-transaction-summary
+> div {
+
+  transform: none !important;
+
+  background:
+    var(--notmark-unified-card-surface) !important;
+
+  background-color:
+    var(--notmark-unified-card-base) !important;
+
+  border-color:
+    rgba(
+      var(--student-accent-rgb),
+      var(--notmark-box-border-alpha)
+    ) !important;
+
+  box-shadow:
+    0 0 0 1px
+      rgba(var(--student-accent-rgb), .018),
+    0 10px 28px
+      rgba(8, 15, 27, .08) !important;
+
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease !important;
+
+  will-change: auto;
+}
+
+
+/* ---------------------------------------------------------
+   YALNIZCA UZERINE GELINEN ALT KUTU PARLAR
+
+   Diğer iki kutu tamamen normal görünümünü korur.
+   --------------------------------------------------------- */
+
+@media (hover: hover) and (pointer: fine) {
+
+  #root .student-app-shell[data-theme]
+  .student-earnings-content-grid
+  > .student-earnings-panel
+  > .student-transaction-summary
+  > div:hover {
+
+    transform: none !important;
+
+    background:
+      var(--notmark-unified-card-surface) !important;
+
+    border-color:
+      rgba(
+        var(--student-accent-rgb),
+        .68
+      ) !important;
+
+    box-shadow:
+      0 0 0 1px
+        rgba(var(--student-accent-rgb), .055),
+      0 0 14px
+        rgba(var(--student-accent-rgb), .11),
+      0 10px 28px
+        rgba(8, 15, 27, .08) !important;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   METIN OKUNABILIRLIGI
+
+   Etiketler biraz büyür.
+   Sayısal değerler daha net görünür.
+   Hover sırasında metin rengi değişmez.
+   --------------------------------------------------------- */
+
+#root .student-app-shell[data-theme]
+.student-earnings-content-grid
+> .student-earnings-panel
+> .student-transaction-summary
+> div > span {
+
+  font-size: 11.5px !important;
+  font-weight: 650 !important;
+  line-height: 1.45 !important;
+
+  letter-spacing: .005em;
+  opacity: 1 !important;
+
+  text-shadow: none !important;
+}
+
+#root .student-app-shell[data-theme]
+.student-earnings-content-grid
+> .student-earnings-panel
+> .student-transaction-summary
+> div > strong {
+
+  color:
+    var(--student-text) !important;
+
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+
+  font-variant-numeric: tabular-nums;
+
+  text-shadow: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   KOYU TEMA KONTRASTI
+   --------------------------------------------------------- */
+
+#root .student-app-shell[data-theme="dark"]
+.student-earnings-content-grid
+> .student-earnings-panel
+> .student-transaction-summary
+> div > span {
+
+  color: #c5d0df !important;
+}
+
+
+/* ---------------------------------------------------------
+   ACIK TEMA KONTRASTI
+   --------------------------------------------------------- */
+
+#root .student-app-shell[data-theme="light"]
+.student-earnings-content-grid
+> .student-earnings-panel
+> .student-transaction-summary
+> div > span {
+
+  color: #526078 !important;
+}
+
+
+/* ---------------------------------------------------------
+   ERISILEBILIRLIK
+   --------------------------------------------------------- */
+
+#root .student-app-shell[data-motion="off"]
+.student-earnings-content-grid
+> .student-earnings-panel
+> .student-transaction-summary
+> div {
+
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  #root .student-app-shell
+  .student-earnings-content-grid
+  > .student-earnings-panel
+  > .student-transaction-summary
+  > div {
+
+    transition: none !important;
+  }
+}
+
+/* NOTMARK_FINANCE_TRANSACTION_HOVER_V11_END */
