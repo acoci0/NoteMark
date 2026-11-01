@@ -129,7 +129,7 @@ export default function StudentSettingsPage() {
         </div>
 
         <div
-          className="student-settings-status student-settings-status--appearance"
+          className="student-settings-status student-settings-status--appearance student-earnings-heading__badge"
           aria-label={`Aktif görünüm: ${
             theme === "system"
               ? "Sistem"
@@ -138,19 +138,21 @@ export default function StudentSettingsPage() {
                 : "Açık"
           }`}
         >
-          <span>Aktif görünüm</span>
-
           <span
             className="student-settings-status__theme-icon"
             aria-hidden="true"
           >
             {theme === "system" ? (
-              <Monitor size={28} strokeWidth={2.2} />
+              <Monitor size={18} />
             ) : resolvedTheme === "dark" ? (
-              <Moon size={28} strokeWidth={2.2} />
+              <Moon size={18} />
             ) : (
-              <Sun size={28} strokeWidth={2.2} />
+              <Sun size={18} />
             )}
+          </span>
+
+          <span className="student-settings-status__label">
+            Aktif görünüm
           </span>
         </div>
       </header>
